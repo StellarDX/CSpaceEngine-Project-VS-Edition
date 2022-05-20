@@ -340,10 +340,8 @@ void OSCStream::Orbit(Object Obj)
 		WriteKeyValue("Inclination     ", Obj.Orbit.Inclination, 2);
 		WriteKeyValue("AscendingNode   ", Obj.Orbit.AscendingNode, 2);
 		float64 LongOfPericen = Obj.Orbit.AscendingNode + Obj.Orbit.ArgOfPericenter;
-		if (LongOfPericen > 360) { LongOfPericen -= 360; }
 		WriteKeyValue("LongOfPericen   ", LongOfPericen, 2);
 		float64 MeanLongitude = Obj.Orbit.AscendingNode + Obj.Orbit.ArgOfPericenter + Obj.Orbit.MeanAnomaly;
-		if (MeanLongitude > 360) { MeanLongitude -= 360; }
 		WriteKeyValue("MeanLongitude   ", MeanLongitude, 2);
 	};
 
