@@ -8,6 +8,6 @@
  * Some data types from other languages(e.g. vecx, matx from GLSL)
  * Some math functions
  * Time support(only for windows)
- * Rotation models
- * Orbit models
+ * Rotation models calculations
+ * Orbit models calculations
  * ...and more
