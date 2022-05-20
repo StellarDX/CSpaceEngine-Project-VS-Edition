@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header files">
+      <UniqueIdentifier>{ee44ec82-1137-41d6-b33e-a5003c56b0cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GLSL">
+      <UniqueIdentifier>{faca6384-a398-4420-859c-0d635f75e87a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SE Object Files">
+      <UniqueIdentifier>{aa42a9e6-29b7-4dd2-b080-06123ab8376c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math Functions">
+      <UniqueIdentifier>{c2a25778-0dea-4100-a929-b52d90f4278f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SC Stream">
+      <UniqueIdentifier>{3b447126-a54d-4bee-80fe-fe29f6c5fdf1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="headers\Core\CSECore.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\gl\gltypes.h">
+      <Filter>GLSL</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\gl\gl_vec2.h">
+      <Filter>GLSL</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\CSE.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Core\ConstLists.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\gl\gl_vec3.h">
+      <Filter>GLSL</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\gl\gl_vec4.h">
+      <Filter>GLSL</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Core\CelObject.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\math\AsMath.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\stream\istream.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\stream\ostream.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\stream\scstream.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Core\SpTypes.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+    <None Include="headers\gl\gl_vec2.inl">
+      <Filter>GLSL</Filter>
+    </None>
+    <None Include="headers\gl\gl_vec3.inl">
+      <Filter>GLSL</Filter>
+    </None>
+    <None Include="headers\gl\gl_vec4.inl">
+      <Filter>GLSL</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="celobject\Orbit.cc">
+      <Filter>SE Object Files</Filter>
+    </ClCompile>
+    <ClCompile Include="celobject\Rotation.cc">
+      <Filter>SE Object Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scstream\istream.cc">
+      <Filter>SC Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="scstream\ostream.cc">
+      <Filter>SC Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="celobject\SpTypes.cc">
+      <Filter>SE Object Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
