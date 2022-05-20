@@ -1618,7 +1618,6 @@ Object GetSEObject(ISCStream istream, string name)
 			GetNumber(istream.Catalogs[ObjectNum].AccDisk, "GravLensScale") // Unused
 		);
 
-		float64 JetRadius;
 		if (find(istream.Catalogs[ObjectNum].AccDisk, "JetRadiusKm"))
 		{
 			Obj.AccretionDisk.JetRadius = GetNumber(istream.Catalogs[ObjectNum].AccDisk, "JetRadiusKm") * 1000;

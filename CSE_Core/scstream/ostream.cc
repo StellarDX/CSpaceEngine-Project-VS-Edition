@@ -218,8 +218,8 @@ void OSCStream::Physical(Object Obj)
 		WriteKeyValue("AlbedoGeom      ", Obj.AlbedoGeom);
 		if (Obj.Type == "Star" /* || isRemnant(Obj) */)
 		{
-			WriteKeyValue("Luminosity      ", Obj.KerrSpin);
-			WriteKeyValue("LumBol          ", Obj.KerrCharge);
+			WriteKeyValue("KerrSpin        ", Obj.KerrSpin);
+			WriteKeyValue("KerrCharge      ", Obj.KerrCharge);
 		}
 	}
 }
