@@ -565,23 +565,23 @@ ISCStream parser::parse()
 					PTD = false;
 				}
 				--Layer;
+
+				if (Layer == 0)
+				{
+					if (S == InLife && !LifeStr[LifeCount].empty())
+					{
+						++LifeCount;
+					}
+
+					if (S == InClouds && !CloudLayer.empty())
+					{
+						CloudsStr.push_back(CloudLayer);
+						CloudLayer.clear();
+					}
+
+					S = Base;
+				}
 				continue;
-			}
-
-			if (Layer == 0)
-			{
-				if (S == InLife && !LifeStr[LifeCount].empty())
-				{
-					++LifeCount;
-				}
-
-				if (S == InClouds && !CloudLayer.empty())
-				{
-					CloudsStr.push_back(CloudLayer);
-					CloudLayer.clear();
-				}
-
-				S = Base;
 			}
 
 			// Detect Sub-tables
