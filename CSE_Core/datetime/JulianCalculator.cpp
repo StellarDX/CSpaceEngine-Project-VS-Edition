@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 #include <.\date\Date_Time.h>
 
 using namespace std;
@@ -66,7 +67,7 @@ double UnixTime(double JD) // https://en.wikipedia.org/wiki/Unix_time
     return (JD - 2440587.5) * 86400;
 }
 
-int dotNetDateTime(double JD) // https://en.wikipedia.org/wiki/.NET
+int64 dotNetDateTime(double JD) // https://en.wikipedia.org/wiki/.NET
 {
     return (JD - 1721425.5) * 864000000000;
 }
@@ -218,7 +219,7 @@ int main()
 {
 	PROGSTART
 
-    cout << '\n' 
+    cout << '\n'
          << "|---------------------------------------------------|" << '\n'
          << "| Astronomy Epoch Calculator(Based on CSpaceEngine) |" << '\n'
          << "|---------------------------------------------------|" << '\n'

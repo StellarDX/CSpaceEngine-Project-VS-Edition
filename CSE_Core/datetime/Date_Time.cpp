@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <ctime>
+#include <cmath>
 #include <windows.h> // Windows only
 #include "..\headers\date\Date_Time.h"
 
