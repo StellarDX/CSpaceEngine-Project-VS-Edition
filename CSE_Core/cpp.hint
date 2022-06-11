@@ -8,3 +8,5 @@
 #define _SC_BEGIN namespace sc {
 #define _SC_END }
 #define _SC
+#define _TIME_BEGIN namespace epoch{
+#define _TIME_END }

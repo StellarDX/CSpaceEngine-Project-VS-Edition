@@ -16,6 +16,9 @@
     <Filter Include="SC Stream">
       <UniqueIdentifier>{3b447126-a54d-4bee-80fe-fe29f6c5fdf1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DateTime">
+      <UniqueIdentifier>{9db4d9eb-72f6-4b0d-9dc0-62fc1a5972a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\Core\CSECore.h">
@@ -57,6 +60,9 @@
     <ClInclude Include="headers\Core\SpTypes.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\date\Date_Time.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -85,6 +91,9 @@
     </ClCompile>
     <ClCompile Include="celobject\SpTypes.cc">
       <Filter>SE Object Files</Filter>
+    </ClCompile>
+    <ClCompile Include="datetime\Date_Time.cpp">
+      <Filter>DateTime</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

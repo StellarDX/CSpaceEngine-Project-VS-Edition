@@ -5,6 +5,11 @@ VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CSE_Core", "CSE_Core\CSE_Core.vcxproj", "{0BDC6248-74BD-489A-A77A-939E60E9F3EA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JulianCalculator", "JulianCalculator\JulianCalculator.vcxproj", "{3E22C4EA-5C9A-43EB-9350-E0F887171E68}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0BDC6248-74BD-489A-A77A-939E60E9F3EA} = {0BDC6248-74BD-489A-A77A-939E60E9F3EA}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +26,14 @@ Global
 		{0BDC6248-74BD-489A-A77A-939E60E9F3EA}.Release|x64.Build.0 = Release|x64
 		{0BDC6248-74BD-489A-A77A-939E60E9F3EA}.Release|x86.ActiveCfg = Release|Win32
 		{0BDC6248-74BD-489A-A77A-939E60E9F3EA}.Release|x86.Build.0 = Release|Win32
+		{3E22C4EA-5C9A-43EB-9350-E0F887171E68}.Debug|x64.ActiveCfg = Debug|x64
+		{3E22C4EA-5C9A-43EB-9350-E0F887171E68}.Debug|x64.Build.0 = Debug|x64
+		{3E22C4EA-5C9A-43EB-9350-E0F887171E68}.Debug|x86.ActiveCfg = Debug|Win32
+		{3E22C4EA-5C9A-43EB-9350-E0F887171E68}.Debug|x86.Build.0 = Debug|Win32
+		{3E22C4EA-5C9A-43EB-9350-E0F887171E68}.Release|x64.ActiveCfg = Release|x64
+		{3E22C4EA-5C9A-43EB-9350-E0F887171E68}.Release|x64.Build.0 = Release|x64
+		{3E22C4EA-5C9A-43EB-9350-E0F887171E68}.Release|x86.ActiveCfg = Release|Win32
+		{3E22C4EA-5C9A-43EB-9350-E0F887171E68}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

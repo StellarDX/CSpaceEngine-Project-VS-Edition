@@ -24,5 +24,6 @@
 #include "math/AsMath.h"
 #include "Core/CelObject.h"
 #include "stream/scstream.h"
+#include "date/Date_Time.h"
 
 #endif

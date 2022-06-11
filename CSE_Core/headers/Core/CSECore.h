@@ -95,7 +95,7 @@ public:
 		#endif
 
 		#if CatalogLogLevel == 1 || CatalogLogLevel == 2
-		Level = std::min(Level, CatalogLogLevel);
+		Level = (std::min)(Level, CatalogLogLevel);
 		#endif
 
 		#if CatalogLogLevel == 3 || CatalogLogLevel == 4
