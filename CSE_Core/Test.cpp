@@ -20,6 +20,6 @@ int main()
 	OSCStream os(fout);
 	//os.setf(sc::OSCManip::Fixed);
 	//os.unsetf(sc::OSCManip::Booleans);
-	os << Detail << Fixed << o << p;
+	os << Fixed << o << p;
 	os.Write();
 }

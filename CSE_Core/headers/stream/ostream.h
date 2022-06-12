@@ -73,7 +73,7 @@ class OSCStream : virtual public _SC OSCManip
 {
 	using fmtflags = int;
 
-	fmtflags _Fmtfl = Simple;
+	fmtflags _Fmtfl = Detail;
 	std::ostream& Output;
 	_SC Buffer Catalog;
 
