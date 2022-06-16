@@ -820,7 +820,7 @@ _TIME CSETime getTimeFromJulianDay(const double jd) // Stellarium function
 	_TIME CSETime tm = _TIME CSETime(hours, mins, sec, ms);
 	if (!tm.IsValid())
 	{
-		TimeLog.Out("DateTime", "WARNING", "Invalid QTime:" + std::to_string(hours) + "/" + std::to_string(mins) + "/" + std::to_string(sec) + "/" + std::to_string(ms), SysLogLevel);
+		TimeLog.Out("DateTime", "WARNING", "Invalid Time:" + std::to_string(hours) + "/" + std::to_string(mins) + "/" + std::to_string(sec) + "/" + std::to_string(ms), SysLogLevel);
 	}
 	assert(tm.IsValid());
 	return tm;
