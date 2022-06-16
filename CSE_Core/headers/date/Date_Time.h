@@ -156,6 +156,18 @@ public:
 
 // Internal functons
 
+enum TimeSpec
+{
+	UTC,
+	LocalTime
+};
+/// <summary>
+/// Convert a Julian Day to CSE DateTime class
+/// </summary>
+/// <param name="jd">Julian Date</param>
+/// <returns>CSE DateTime class</returns>
+CSEDateTime jdToDateTime(const double& jd, const TimeSpec timeSpec = UTC);
+
 /// <summary>
 /// Get the current Julian Date from system time.
 /// </summary>
@@ -176,6 +188,8 @@ double GetJDFromBesEpoch(const double Epoch);
 /// (This function is taken from Stellarium.)
 /// </summary>
 double TimeToJDFract(const _TIME CSETime& Time);
+
+_TIME CSETime getTimeFromJulianDay(const double jd);
 
 int NumOfDaysInMonthInYear(const int month, const int year); // From Stellarium
 

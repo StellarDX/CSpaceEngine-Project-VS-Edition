@@ -1,6 +1,7 @@
 ﻿#include "..\headers\stream\ostream.h"
 
 #define _USE_CSE_DEFINES
+#define _USE_CATALOG_LOG_LEVEL
 
 #include "..\headers\Core\ConstLists.h"
 

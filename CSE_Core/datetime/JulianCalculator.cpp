@@ -153,11 +153,7 @@ void ConvertFromGMT()
 
 void GetDateTimeFromJD(float64 JD)
 {
-    float64 JDFrg = (JD + 0.5) - static_cast<int>(floor(JD + 0.5));
-    int Hour = floor(JDFrg * 24);
-    int Minute = floor(((JDFrg * 24) - Hour) * 60);
-    double Second = ((((JDFrg * 24) - Hour) * 60) - Minute) * 60;
-    Display(CSEDateTime(epoch::CSEDate::fromJulianDay(JD), epoch::CSETime(Hour, Minute, Second), 0.0), JD);
+    Display(jdToDateTime(JD), JD);
 }
 
 void ConvertFromJD()

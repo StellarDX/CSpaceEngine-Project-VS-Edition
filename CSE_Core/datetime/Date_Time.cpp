@@ -1,12 +1,15 @@
 // Time Module for CSpaceEngine.
 
 #include <sstream>
+#include <cassert>
 #include <ctime>
 #include <cmath>
 #include <windows.h> // Windows only
 #include "..\headers\date\Date_Time.h"
 
 _CSE_BEGIN
+
+CSELog TimeLog;
 
 CSEDateTime::CSEDateTime(const _TIME CSEDate& Date, const _TIME CSETime& Time, const LONG& TimeZone)
 {
@@ -120,7 +123,7 @@ CSEDateTime CSEDateTime::toUTC() const
 {
 	_TIME CSETime TM = _Time.AddMSecs(-OffsetSecs * 1000.0);
 	_TIME CSEDate DT = _Date.AddDays(ceil(-OffsetSecs * 1000 / 86400000.0));
-	return CSEDateTime(DT, TM, OffsetSecs);
+	return CSEDateTime(DT, TM, (LONG)0);
 }
 
 CSEDateTime CSEDateTime::currentDateTime()
@@ -746,6 +749,27 @@ _TIME_END
 
 // Internal functions
 
+CSEDateTime jdToDateTime(const double& jd, const TimeSpec timeSpec)
+{
+	assert((timeSpec == UTC) || (timeSpec == LocalTime));
+	LONG Offset;
+	if (timeSpec == UTC) { Offset = 0; }
+	else if (timeSpec == LocalTime)
+	{
+		TIME_ZONE_INFORMATION TimeZone;
+		GetSystemTime(&TimeZone.StandardDate);
+		GetTimeZoneInformation(&TimeZone);
+		Offset = TimeZone.Bias / (-60);
+	}
+	CSEDateTime result = CSEDateTime(_TIME CSEDate().fromJulianDay(jd), getTimeFromJulianDay(jd), Offset).AddSecs(Offset * 3600);
+	if (!result.IsValid())
+	{
+		TimeLog.Out("DateTime", "ERROR", "Invalid DateTime.", SysLogLevel);
+	}
+	assert(result.IsValid());
+	return result;
+}
+
 double GetJDFromSystem()
 {
 	return _TIME CSEDate::currentDate().toJulianDay() + TimeToJDFract(_TIME CSETime(0, 0, 0, 0).currentTime());
@@ -759,6 +783,47 @@ double GetJDFromBesEpoch(const double Epoch)
 double TimeToJDFract(const _TIME CSETime& Time)
 {
 	return static_cast<double>((Time.hour() - 12.0) / 24 + Time.minute() / 1440.0 + (Time.second() + Time.msec() / 1000.0) / 86400.0);
+}
+
+_TIME CSETime getTimeFromJulianDay(const double jd) // Stellarium function
+{
+	double decHours = std::fmod(jd + 0.5, 1.0) * 24.;
+	int hours = int(std::floor(decHours));
+	double decMins = (decHours - hours) * 60.;
+	int mins = int(std::floor(decMins));
+	double decSec = (decMins - mins) * 60.;
+	int sec = int(std::floor(decSec));
+	double decMsec = (decSec - sec) * 1000.;
+	int ms = int(std::round(decMsec));
+
+	if (ms >= 1000)
+	{
+		ms -= 1000;
+		sec += 1;
+	}
+	if (sec >= 60)
+	{
+		sec -= 60;
+		mins += 1;
+	}
+	if (mins >= 60)
+	{
+		mins -= 60;
+		hours += 1;
+	}
+	if (hours >= 24)
+	{
+		TimeLog.Out("DateTime", "WARNING", "hours exceed a full day!", SysLogLevel);
+	}
+	hours %= 24;
+
+	_TIME CSETime tm = _TIME CSETime(hours, mins, sec, ms);
+	if (!tm.IsValid())
+	{
+		TimeLog.Out("DateTime", "WARNING", "Invalid QTime:" + std::to_string(hours) + "/" + std::to_string(mins) + "/" + std::to_string(sec) + "/" + std::to_string(ms), SysLogLevel);
+	}
+	assert(tm.IsValid());
+	return tm;
 }
 
 int NumOfDaysInMonthInYear(const int month, const int year) // From Stellarium

@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <ctime>
 
 #if defined _MSC_VER
 #define COMPILER_VERSION std::string("MSC " + std::to_string(_MSC_FULL_VER) + "(" + std::to_string(_MSC_BUILD) + ")")
@@ -69,7 +70,7 @@ public:
 	CSELog(){}
 	CSELog(std::ostream& os) : Output(os){}
 
-	#define LogTimeStamp            false	// print time stamp into log file
+	#define LogTimeStamp            true	// print time stamp into log file
 	#define LogThreadStamp          true	// print thread ID  into log file
 
 	// Level of logging while loading catalogs(IO Stream):
@@ -86,14 +87,19 @@ public:
 	// 2 - log everything
 	#define SysLogLevel        1
 
+	inline std::string gettime()
+	{
+		time_t _TVAL = time(nullptr);
+		tm Time;
+		gmtime_s(&Time, &_TVAL);
+		return std::to_string(Time.tm_hour) + ':' + std::to_string(Time.tm_min) + ':' + std::to_string(Time.tm_sec);
+	}
+
 	inline void Out(std::string Thread, std::string Type, std::string LStr, int Level)
 	{
 		#if CatalogLogLevel > 0
 
-		#if LogTimeStamp == true
-		Output << '[' <<  << ']' << ' ';
-		#endif
-
+		#ifdef _USE_CATALOG_LOG_LEVEL
 		#if CatalogLogLevel == 1 || CatalogLogLevel == 2
 		Level = (std::min)(Level, CatalogLogLevel);
 		#endif
@@ -102,11 +108,17 @@ public:
 		//#undef LogLevel
 		Level = CatalogLogLevel - 2;
 		#endif
+		#else
+		Level = SysLogLevel;
+		#endif
 
 		if (Level == 0) { return; }
 
 		auto LsOut = [&]()->void
 		{
+			#if LogTimeStamp == true
+			Output << '[' << gettime() << ']' << ' ';
+			#endif
 			#if LogThreadStamp == true
 			Output << "[" + Thread + "/" + Type + "]: ";
 			#endif

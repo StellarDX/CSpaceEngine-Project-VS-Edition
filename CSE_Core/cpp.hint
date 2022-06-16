@@ -10,3 +10,4 @@
 #define _SC
 #define _TIME_BEGIN namespace epoch{
 #define _TIME_END }
+#define _TIME
