@@ -1,9 +1,10 @@
+#define _USE_CATALOG_LOG_LEVEL
+
 #include <fstream>
 #include <sstream>
 #include "..\headers\stream\istream.h"
 
 #define _USE_CSE_DEFINES
-#define _USE_CATALOG_LOG_LEVEL
 
 #include "..\headers\Core\ConstLists.h"
 
@@ -409,7 +410,6 @@ ISCStream parser::parse()
 		SCString << Line << '\n';
 	}
 	string SCPreProc = SkipComments(SCString.str());
-	cout << SCPreProc;
 	SCPreProc = Addendl(SCPreProc);
 	#if PARSE_OPTION == 0
 	return SCPreProc;
@@ -1691,5 +1691,7 @@ Object GetSEObject(ISCStream istream, string name)
 
 	return Obj;
 }
+
+#undef _USE_CATALOG_LOG_LEVEL
 
 _CSE_END

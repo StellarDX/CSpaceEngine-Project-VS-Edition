@@ -1,7 +1,8 @@
-﻿#include "..\headers\stream\ostream.h"
+﻿#define _USE_CATALOG_LOG_LEVEL
+
+#include "..\headers\stream\ostream.h"
 
 #define _USE_CSE_DEFINES
-#define _USE_CATALOG_LOG_LEVEL
 
 #include "..\headers\Core\ConstLists.h"
 
@@ -845,5 +846,7 @@ void OSCStream::CometTail(CometTailParam Com)
 	Output.precision(BasicDataPrecision);
 	Output << '\n';
 }
+
+#undef _USE_CATALOG_LOG_LEVEL
 
 _CSE_END
