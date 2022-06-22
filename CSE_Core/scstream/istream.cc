@@ -40,12 +40,12 @@ string parser::SkipComments(string input)
 	{
 		if ('/' == input[i])
 		{
-			if ("//" == input.substr(i, 2))
+			if ("//" == input.substr(i, 2) && S == NoComment)
 			{
 				S = SingleLine;
 				continue;
 			}
-			else if ("/*" == input.substr(i, 2))
+			else if ("/*" == input.substr(i, 2) && S == NoComment)
 			{
 				S = MultiLine;
 				continue;
@@ -409,6 +409,7 @@ ISCStream parser::parse()
 		SCString << Line << '\n';
 	}
 	string SCPreProc = SkipComments(SCString.str());
+	cout << SCPreProc;
 	SCPreProc = Addendl(SCPreProc);
 	#if PARSE_OPTION == 0
 	return SCPreProc;
