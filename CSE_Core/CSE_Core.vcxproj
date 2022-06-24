@@ -39,12 +39,15 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="astromath\MathFuncs.Complex.inl" />
+    <None Include="astromath\MathFuncs.Template.inl" />
     <None Include="cpp.hint" />
     <None Include="headers\gl\gl_vec2.inl" />
     <None Include="headers\gl\gl_vec3.inl" />
     <None Include="headers\gl\gl_vec4.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="astromath\MathFuncs.cc" />
     <ClCompile Include="celobject\Orbit.cc" />
     <ClCompile Include="celobject\Rotation.cc" />
     <ClCompile Include="celobject\SpTypes.cc" />
@@ -160,6 +163,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -177,6 +181,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>

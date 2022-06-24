@@ -29,4 +29,25 @@ all copies or substantial portions of the Software.
 #include "gl_vec3.h"
 #include "gl_vec4.h"
 
+_CSE_BEGIN
+
+#if 0
+template<typename genType>struct vecType;
+template<>struct vecType<vec2> { typedef vec2 type; };
+template<>struct vecType<vec3> { typedef vec3 type; };
+template<>struct vecType<vec4> { typedef vec4 type; };
+#endif
+
+using std::is_same_v;
+
+template<typename genType> // Only used in C++20
+concept vecType =
+(
+	is_same_v<genType, vec2> ||
+	is_same_v<genType, vec3> ||
+	is_same_v<genType, vec4>
+);
+
+_CSE_END
+
 #endif

@@ -43,9 +43,9 @@
 
 _CSE_BEGIN
 
-typedef long long int64;
-typedef double float64;
-typedef unsigned long long uint64;
+typedef long long            int64;
+typedef double               float64;
+typedef unsigned long long   uint64;
 
 template<typename genTypeA = uint64, typename genTypeB = float64>
 inline constexpr genTypeB wrtval(genTypeA Value, uint64 Bits = sizeof(genTypeA))

@@ -116,6 +116,7 @@ const long double Equation41 = (180.0 * 60.0 * 60.0 * AU) / CSE_PI;
 
 // List8: Cosmology
 // Can't promise that these values are correct.
+// Because I don't know why I want to add these "meaningless" constants.
 // Reference:
 // https://en.wikipedia.org/wiki/Cosmological_constant
 // https://en.wikipedia.org/wiki/Planck_units
