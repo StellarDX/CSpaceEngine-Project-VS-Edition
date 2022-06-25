@@ -16,6 +16,7 @@
 #include <complex> // and add complex types
 #include <array>
 #include <vector>
+#include <initializer_list>
 
 /* ************************************************************************** *\
    genTypes in Templates can be multiple data types:
@@ -26,6 +27,8 @@
    and no genDTypes because all the types are already in 64-bit.
 \* ************************************************************************** */
 
+#include "Algorithms.h"
+
 _CSE_BEGIN
 
 using std::complex;
@@ -34,6 +37,7 @@ using std::literals::complex_literals::operator""i;
 
 using std::array;
 using std::vector;
+using std::initializer_list;
 
 #if 0
 template<typename genType>struct floatType;
@@ -55,8 +59,6 @@ public:
 };
 
 extern CSELog MathLog;
-
-float64 sgn(float64 x);
 
 /****************************************************************************************\
 *                                Trigonometric functions                                 *
@@ -292,7 +294,8 @@ concept EquationsInputArray64f =
 	vecType<genType> || 
 	convertible_to<genType, float64*> ||
 	convertible_to<genType, array<float64, size>> ||
-	convertible_to<genType, vector<float64>>
+	convertible_to<genType, vector<float64>> ||
+	convertible_to<genType, initializer_list<float64>>
 );
 
 template<typename genType, int64 size> // Only used in C++20

@@ -101,7 +101,7 @@ public:
 
 		#ifdef _USE_CATALOG_LOG_LEVEL
 		#if CatalogLogLevel == 1 || CatalogLogLevel == 2
-		Level = (std::min)(Level, CatalogLogLevel);
+		Level = Level < CatalogLogLevel ? Level : CatalogLogLevel;
 		#endif
 
 		#if CatalogLogLevel == 3 || CatalogLogLevel == 4

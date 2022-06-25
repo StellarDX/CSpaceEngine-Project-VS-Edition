@@ -69,6 +69,9 @@
     <ClInclude Include="headers\Core\Lumine.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\math\Algorithms.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -85,6 +88,9 @@
       <Filter>Math Functions</Filter>
     </None>
     <None Include="astromath\MathFuncs.Complex.inl">
+      <Filter>Math Functions</Filter>
+    </None>
+    <None Include="astromath\Algorithms.Template.inl">
       <Filter>Math Functions</Filter>
     </None>
   </ItemGroup>
@@ -112,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="lumine\Lumine.cc">
       <Filter>Lumine</Filter>
+    </ClCompile>
+    <ClCompile Include="astromath\Algorithms.cc">
+      <Filter>Math Functions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
