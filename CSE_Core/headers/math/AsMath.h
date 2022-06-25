@@ -14,9 +14,6 @@
 #include "../gl/gltypes.h"
 #include <cmath>   // Base on STD Math
 #include <complex> // and add complex types
-#include <array>
-#include <vector>
-#include <initializer_list>
 
 /* ************************************************************************** *\
    genTypes in Templates can be multiple data types:
@@ -34,10 +31,6 @@ _CSE_BEGIN
 using std::complex;
 using complex64 = complex<float64>;
 using std::literals::complex_literals::operator""i;
-
-using std::array;
-using std::vector;
-using std::initializer_list;
 
 #if 0
 template<typename genType>struct floatType;

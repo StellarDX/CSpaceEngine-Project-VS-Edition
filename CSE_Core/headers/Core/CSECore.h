@@ -9,7 +9,7 @@
 
 #if defined _MSC_VER
 #define COMPILER_VERSION std::string("MSC " + std::to_string(_MSC_FULL_VER) + "(" + std::to_string(_MSC_BUILD) + ")")
-#elif defined __GNUG__
+#elif defined __GNUG__ // CSE has stopped supporting MinGW anymore.
 #define COMPILER_VERSION std::string("GPP " + std::to_string(__GNUC__) + "." + std::to_string(__GNUC_MINOR__) + "." + std::to_string(__GNUC_PATCHLEVEL__))
 #endif
 

@@ -52,9 +52,6 @@
   <ItemGroup>
     <ClCompile Include="astromath\Algorithms.cc" />
     <ClCompile Include="astromath\MathFuncs.cc" />
-    <ClCompile Include="celobject\Orbit.cc" />
-    <ClCompile Include="celobject\Rotation.cc" />
-    <ClCompile Include="celobject\SpTypes.cc" />
     <ClCompile Include="datetime\Date_Time.cpp" />
     <ClCompile Include="lumine\Lumine.cc" />
     <ClCompile Include="scstream\istream.cc" />

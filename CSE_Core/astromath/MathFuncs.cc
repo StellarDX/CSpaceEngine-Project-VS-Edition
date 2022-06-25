@@ -378,7 +378,7 @@ uint64 SolvePoly(vector<float64> Coeffs, vector<complex64>& Roots, int64 p_Error
 
 		// Re-iterate until the numbers p, q, r, s essentially stop changing relative to the desired precision. 
 		// They then have the values P, Q, R, S in some order and in the chosen precision. So the problem is solved.
-		auto MaxDiff = std::max_element(Diffs.begin(), Diffs.end());
+		auto MaxDiff = max(Diffs.begin(), Diffs.end());
 		if (-pow(10, -p_Error) < *MaxDiff && *MaxDiff < pow(10, -p_Error))
 		{
 			break;

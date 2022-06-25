@@ -7,9 +7,6 @@
     <Filter Include="GLSL">
       <UniqueIdentifier>{faca6384-a398-4420-859c-0d635f75e87a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SE Object Files">
-      <UniqueIdentifier>{aa42a9e6-29b7-4dd2-b080-06123ab8376c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Math Functions">
       <UniqueIdentifier>{c2a25778-0dea-4100-a929-b52d90f4278f}</UniqueIdentifier>
     </Filter>
@@ -95,20 +92,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="celobject\Orbit.cc">
-      <Filter>SE Object Files</Filter>
-    </ClCompile>
-    <ClCompile Include="celobject\Rotation.cc">
-      <Filter>SE Object Files</Filter>
-    </ClCompile>
     <ClCompile Include="scstream\istream.cc">
       <Filter>SC Stream</Filter>
     </ClCompile>
     <ClCompile Include="scstream\ostream.cc">
       <Filter>SC Stream</Filter>
-    </ClCompile>
-    <ClCompile Include="celobject\SpTypes.cc">
-      <Filter>SE Object Files</Filter>
     </ClCompile>
     <ClCompile Include="datetime\Date_Time.cpp">
       <Filter>DateTime</Filter>
