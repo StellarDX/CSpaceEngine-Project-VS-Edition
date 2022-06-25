@@ -3,6 +3,7 @@
 #define _USE_CSE_DEFINES
 
 #include "..\headers\math\AsMath.h"
+#include <algorithm>
 
 _CSE_BEGIN
 
@@ -313,5 +314,88 @@ float64 cbrt(float64 x)
 {
 	// SCRAPPED...
 }*/
+
+/////////////////////////////////////////////////////////////////
+//                      Solving Equations                      //
+/////////////////////////////////////////////////////////////////
+
+uint64 SolvePoly(vector<float64> Coeffs, vector<complex64>& Roots, int64 p_Error, int64 MaxIterLog, complex64 Base) // The base function
+{
+	if (Coeffs[0] == 0 || Coeffs.empty())
+	{
+		throw MathException("Highest power of polynomial can't be zero.");
+	}
+	if (Coeffs[0] != 1)
+	{
+		MathLog.Out("MathFuncs", "WARNING", "Highest power of polynomial is not equal to 1, automatically nomalized.", SysLogLevel);
+		float64 Base = Coeffs[0];
+		for (size_t i = 0; i < Coeffs.size(); i++)
+		{
+			Coeffs[i] /= Base;
+		}
+		std::string NewCoeffs;
+		NewCoeffs += '(';
+		for (size_t i = 0; i < Coeffs.size(); i++)
+		{
+			NewCoeffs += std::to_string(Coeffs[i]);
+			if (i < Coeffs.size() - 1) { NewCoeffs += ", "; }
+		}
+		NewCoeffs += ')';
+		MathLog.Out("MathFuncs", "INFO", "New coefficients are: " + NewCoeffs, SysLogLevel);
+	}
+
+	// The clue to the method now is to combine the fixed-point iteration for P with similar iterations for Q, R, S into a simultaneous iteration for all roots.
+	// Initialize p, q, r, s:
+	for (size_t i = 0; i < Coeffs.size() - 1; i++)
+	{
+		Roots.push_back(pow(Base, i));
+	}
+
+	// Make the substitutions
+	auto f = [&](complex64 x)->complex64
+	{
+		complex64 SIG = 0;
+		for (size_t i = 0; i < Coeffs.size(); i++)
+		{
+			SIG += Coeffs[i] * pow(x, Coeffs.size() - i - 1);
+		}
+		return SIG;
+	};
+
+	auto g = [&](complex64 x, uint64 Ignore)->complex64
+	{
+		complex64 PI = 1;
+		for (size_t i = 0; i < Roots.size(); i++)
+		{
+			if (i != Ignore){ PI *= x - Roots[i]; }
+		}
+		return PI;
+	};
+
+	uint64 it = 0;
+
+	while (it < pow(10, MaxIterLog))
+	{
+		vector<float64> Diffs;
+		for (size_t i = 0; i < Coeffs.size() - 1; i++)
+		{
+			complex64 Diff = f(Roots[i]) / g(Roots[i], i);
+			Diffs.push_back(abs(Diff));
+			Roots[i] -= Diff;
+		}
+
+		// Re-iterate until the numbers p, q, r, s essentially stop changing relative to the desired precision. 
+		// They then have the values P, Q, R, S in some order and in the chosen precision. So the problem is solved.
+		auto MaxDiff = std::max_element(Diffs.begin(), Diffs.end());
+		if (-pow(10, -p_Error) < *MaxDiff && *MaxDiff < pow(10, -p_Error))
+		{
+			break;
+		}
+
+		++it;
+	}
+
+	return it;
+}
 
 _CSE_END

@@ -30,6 +30,7 @@ _CSE_BEGIN
 
 using std::complex;
 using complex64 = complex<float64>;
+using std::literals::complex_literals::operator""i;
 
 using std::array;
 using std::vector;
@@ -341,6 +342,32 @@ int SolveCubic(InputArray Coeffs, OutputArray& Roots, int64 p_Error = 10);
 template<typename InputArray = float64*, typename OutputArray = complex64*>
 requires EquationsInputArray64f<InputArray, 5> && EquationsOutputArray64f<OutputArray, 4>
 int SolveQuartic(InputArray Coeffs, OutputArray& Roots, int64 p_Error = 10);
+
+/* ************************************************************************** *\
+   StellarDX: Finding the solving algorithms to a quintic or higher equation 
+   had troubled mathematicians for more than 300 years.
+   Some people in history were tried to derivate the common solving algorithms,
+   but failed. In 1926, Su Jiaju published an article which introduced his 
+   solution and derivation, and discoverd a quintic equation soving formula.
+   But soon, his theory has been disproved by Hua Luogeng.
+   Now, it has been confirmed that solutions of a quintic or higher equation
+   can't be expressed as nth roots. In other words, there is no common solving 
+   formulas for these equations. However, this doesn't mean that they are 
+   completely unsolvable. Iterations maybe the best method to find numerical 
+   roots. Here use the Durand¨CKerner method to solve this problem.
+\* ************************************************************************** */
+
+/// <summary>
+/// finds complex roots of a polynomial using Durand-Kerner method:
+/// http://en.wikipedia.org/wiki/Durand%E2%80%93Kerner_method
+/// </summary>
+/// <param name="Coeffs">A array to store coefficients</param>
+/// <param name="Roots">The roots are stored in this array</param>
+/// <param name="p_Error">Negative logarithm of errors, default is 15, means 10^-15</param>
+/// <param name="MaxIterLog">Logarithm of Max number of iterations, defult is 3</param>
+/// <param name="Base">Base number use to solve.</param>
+/// <returns>Number of iteration</returns>
+uint64 SolvePoly(vector<float64> Coeffs, vector<complex64>& Roots, int64 p_Error = 15, int64 MaxIterLog = 3, complex64 Base = 0.4 + 0.9i);
 
 _CSE_END
 

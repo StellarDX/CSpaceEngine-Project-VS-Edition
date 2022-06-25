@@ -22,6 +22,7 @@
     <ClInclude Include="headers\Core\CelObject.h" />
     <ClInclude Include="headers\Core\ConstLists.h" />
     <ClInclude Include="headers\Core\CSECore.h" />
+    <ClInclude Include="headers\Core\Lumine.h" />
     <ClInclude Include="headers\Core\SpTypes.h" />
     <ClInclude Include="headers\CSE.h" />
     <ClInclude Include="headers\date\Date_Time.h" />
@@ -52,6 +53,7 @@
     <ClCompile Include="celobject\Rotation.cc" />
     <ClCompile Include="celobject\SpTypes.cc" />
     <ClCompile Include="datetime\Date_Time.cpp" />
+    <ClCompile Include="lumine\Lumine.cc" />
     <ClCompile Include="scstream\istream.cc" />
     <ClCompile Include="scstream\ostream.cc" />
   </ItemGroup>

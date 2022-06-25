@@ -19,6 +19,9 @@
     <Filter Include="DateTime">
       <UniqueIdentifier>{9db4d9eb-72f6-4b0d-9dc0-62fc1a5972a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Lumine">
+      <UniqueIdentifier>{fb14f394-9ad5-4164-b74f-80895cafe520}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\Core\CSECore.h">
@@ -63,6 +66,9 @@
     <ClInclude Include="headers\date\Date_Time.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\Core\Lumine.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -103,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="astromath\MathFuncs.cc">
       <Filter>Math Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="lumine\Lumine.cc">
+      <Filter>Lumine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
