@@ -22,13 +22,13 @@
     <ClInclude Include="headers\Core\CelObject.h" />
     <ClInclude Include="headers\Core\ConstLists.h" />
     <ClInclude Include="headers\Core\CSECore.h" />
-    <ClInclude Include="headers\Core\Lumine.h" />
-    <ClInclude Include="headers\Core\SpTypes.h" />
     <ClInclude Include="headers\CSE.h" />
     <ClInclude Include="headers\date\Date_Time.h" />
     <ClInclude Include="headers\gl\gltypes.h" />
     <ClInclude Include="headers\gl\gl_vec3.h" />
     <ClInclude Include="headers\gl\gl_vec4.h" />
+    <ClInclude Include="headers\lumine\Lumine.h" />
+    <ClInclude Include="headers\lumine\SpTypes.h" />
     <ClInclude Include="headers\math\Algorithms.h" />
     <ClInclude Include="headers\math\AsMath.h" />
     <ClInclude Include="headers\stream\istream.h" />

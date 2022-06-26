@@ -59,9 +59,17 @@ concept vecIType =
 template<typename genUType> // Only used in C++20
 concept vecUType =
 (
-	is_same_v<genUType, ivec2> ||
-	is_same_v<genUType, ivec3> ||
-	is_same_v<genUType, ivec4>
+	is_same_v<genUType, uvec2> ||
+	is_same_v<genUType, uvec3> ||
+	is_same_v<genUType, uvec4>
+);
+
+template<typename genBType> // Only used in C++20
+concept vecBType =
+(
+	is_same_v<genBType, bvec2> ||
+	is_same_v<genBType, bvec3> ||
+	is_same_v<genBType, bvec4>
 );
 
 _CSE_END

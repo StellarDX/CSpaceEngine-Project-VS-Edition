@@ -213,6 +213,109 @@ genType max(initializer_list<genType> Array)
 	return Current;
 }
 
+// Clamp Template
+template<typename genType> requires vecType<genType>
+genType clamp(genType x, genType MinVal, genType MaxVal)
+{
+	for (size_t i = 0; i < x.size(); i++)
+	{
+		x[i] = clamp(x[i], MinVal[i], MaxVal[i]);
+	}
+	return x;
+}
+
+template<typename genIType> requires vecIType<genIType>
+genIType clamp(genIType x, genIType MinVal, genIType MaxVal)
+{
+	for (size_t i = 0; i < x.size(); i++)
+	{
+		x[i] = clamp(x[i], MinVal[i], MaxVal[i]);
+	}
+	return x;
+}
+
+template<typename genUType> requires vecUType<genUType>
+genUType clamp(genUType x, genUType MinVal, genUType MaxVal)
+{
+	for (size_t i = 0; i < x.size(); i++)
+	{
+		x[i] = clamp(x[i], MinVal[i], MaxVal[i]);
+	}
+	return x;
+}
+
+// Mix Template
+template<typename genType> requires vecType<genType>
+genType mix(genType x, genType y, genType a)
+{
+	for (size_t i = 0; i < x.size(); i++)
+	{
+		x[i] = mix(x[i], y[i], a[i]);
+	}
+	return x;
+}
+
+template<typename genType, typename genBType> requires vecType<genType> && vecBType<genBType>
+genType mix(genType x, genType y, genBType a)
+{
+	for (size_t i = 0; i < x.size(); i++)
+	{
+		x[i] = mix(x[i], y[i], a[i]);
+	}
+	return x;
+}
+
+template<typename genIType, typename genBType> requires vecIType<genIType> && vecBType<genBType>
+genIType mix(genIType x, genIType y, genBType a)
+{
+	for (size_t i = 0; i < x.size(); i++)
+	{
+		x[i] = mix(x[i], y[i], a[i]);
+	}
+	return x;
+}
+
+template<typename genUType, typename genBType> requires vecUType<genUType> && vecBType<genBType>
+genUType mix(genUType x, genUType y, genBType a)
+{
+	for (size_t i = 0; i < x.size(); i++)
+	{
+		x[i] = mix(x[i], y[i], a[i]);
+	}
+	return x;
+}
+
+template<typename genBType> requires vecBType<genBType>
+genBType mix(genBType x, genBType y, genBType a)
+{
+	for (size_t i = 0; i < x.size(); i++)
+	{
+		x[i] = mix(x[i], y[i], a[i]);
+	}
+	return x;
+}
+
+// Step Template
+template<typename genType> requires vecType<genType>
+genType step(genType edge, genType x)
+{
+	for (size_t i = 0; i < x.size(); i++)
+	{
+		x[i] = step(edge[i], x[i]);
+	}
+	return x;
+}
+
+template<typename genType> requires vecType<genType>
+genType smoothstep(genType edge0, genType edge1, genType x)
+{
+	for (size_t i = 0; i < x.size(); i++)
+	{
+		x[i] = smoothstep(edge0[i], edge1[i], x[i]);
+	}
+	return x;
+}
+
 _CSE_END
 
 #endif
