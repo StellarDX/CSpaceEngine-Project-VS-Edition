@@ -69,6 +69,9 @@
     <ClInclude Include="headers\lumine\SpTypes.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\math\Geometry.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -88,6 +91,9 @@
       <Filter>Math Functions</Filter>
     </None>
     <None Include="astromath\Algorithms.Template.inl">
+      <Filter>Math Functions</Filter>
+    </None>
+    <None Include="astromath\VecGeom.Template.inl">
       <Filter>Math Functions</Filter>
     </None>
   </ItemGroup>

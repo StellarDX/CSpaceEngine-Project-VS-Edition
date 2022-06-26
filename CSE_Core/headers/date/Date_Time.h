@@ -81,6 +81,7 @@ public:
 	static CSEDate fromJulianDay(const double JD);
 
 	/// <returns>true if year is a leap year. Observes 1582 switch from Julian to Gregorian Calendar.</returns>
+	bool isLeap();
 	static bool isLeap(int year);
 
 	static bool IsValid(int year, int month, int day);
@@ -106,8 +107,8 @@ public:
 	int second() const;
 	int msec() const;
 
-	CSETime AddMSecs(int ms) const;
-	CSETime AddSecs(int s) const;
+	CSETime AddMSecs(int ms, int* AddDays = nullptr) const;
+	CSETime AddSecs(int s, int* AddDays = nullptr) const;
 
 	bool setHMS(int h, int m, int s, int ms = 0);
 	std::string toString();
@@ -125,14 +126,14 @@ class CSEDateTime
 	_TIME CSETime _Time;
 
 public:
-	CSEDateTime(const _TIME CSEDate& Date, const _TIME CSETime& Time, const LONG& TimeZone); // Constructs a datetime with the given date and time, using the Time Zone
+	CSEDateTime(const _TIME CSEDate& Date, const _TIME CSETime& Time, const TIME_ZONE_INFORMATION& TimeZone); // Constructs a datetime with the given date and time, using the Time Zone
 	CSEDateTime(const _TIME CSEDate& Date, const _TIME CSETime& Time, const double& OffsetSec);
 	CSEDateTime(const _TIME CSEDate& Date);
 	CSEDateTime() {} // Constructs a null datetime
 
 	_TIME CSEDate date() const { return _Date; }
 	_TIME CSETime time() const { return _Time; }
-	LONG TimeZone() const { return floor(OffsetSecs / 3600.0); }
+	LONG TimeZone() const { return (LONG)floor((OffsetSecs + 1800) / 3600.0); }
 
 	CSEDateTime	AddDays(int ndays) const;
 	CSEDateTime	AddMSecs(int msecs) const;

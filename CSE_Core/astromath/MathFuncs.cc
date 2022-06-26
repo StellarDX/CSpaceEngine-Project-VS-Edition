@@ -366,7 +366,7 @@ uint64 SolvePoly(vector<float64> Coeffs, vector<complex64>& Roots, int64 p_Error
 
 	uint64 it = 0;
 
-	while (it < pow(10, MaxIterLog))
+	while (it < pow(10, (float64)MaxIterLog))
 	{
 		vector<float64> Diffs;
 		for (size_t i = 0; i < Coeffs.size() - 1; i++)
@@ -379,7 +379,7 @@ uint64 SolvePoly(vector<float64> Coeffs, vector<complex64>& Roots, int64 p_Error
 		// Re-iterate until the numbers p, q, r, s essentially stop changing relative to the desired precision. 
 		// They then have the values P, Q, R, S in some order and in the chosen precision. So the problem is solved.
 		auto MaxDiff = max(Diffs.begin(), Diffs.end());
-		if (-pow(10, -p_Error) < *MaxDiff && *MaxDiff < pow(10, -p_Error))
+		if (-pow(10, (float64)-p_Error) < *MaxDiff && *MaxDiff < pow(10, (float64)-p_Error))
 		{
 			break;
 		}

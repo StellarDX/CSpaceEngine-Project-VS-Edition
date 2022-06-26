@@ -31,9 +31,9 @@ double ModifiedJD(double JD)
     return JD - 2400000.5;
 }
 
-long long TruncatedJD(double JD)
+int64 TruncatedJD(double JD)
 {
-    return floor(JD - 2440000.5);
+    return (int64)floor(JD - 2440000.5);
 }
 
 double DublinJD(double JD)
@@ -51,14 +51,14 @@ double CCSDSJD(double JD) // https://en.wikipedia.org/wiki/Consultative_Committe
     return JD - 2436204.5;
 }
 
-long long LilianDate(double JD) // https://en.wikipedia.org/wiki/Lilian_date
+int64 LilianDate(double JD) // https://en.wikipedia.org/wiki/Lilian_date
 {
-    return floor(JD - 2299159.5);
+    return (long long)floor(JD - 2299159.5);
 }
 
-long long RataDie(double JD) // https://en.wikipedia.org/wiki/Rata_Die
+int64 RataDie(double JD) // https://en.wikipedia.org/wiki/Rata_Die
 {
-    return floor(JD - 1721424.5);
+    return (int64)floor(JD - 1721424.5);
 }
 
 double MarsSolDate(double JD) // https://en.wikipedia.org/wiki/Timekeeping_on_Mars#Mars_Sol_Date
@@ -73,7 +73,7 @@ double UnixTime(double JD) // https://en.wikipedia.org/wiki/Unix_time
 
 int64 dotNetDateTime(double JD) // https://en.wikipedia.org/wiki/.NET
 {
-    return (JD - 1721425.5) * 864000000000;
+    return (int64)(JD - 1721425.5) * 864000000000;
 }
 
 double BesselianYear(double JD)
@@ -217,6 +217,7 @@ void WikipediaLink()
 
 int main()
 {
+    SetConsoleTitleW(CSE_TITLE_STRING);
 	PROGSTART
 
     cout << '\n'

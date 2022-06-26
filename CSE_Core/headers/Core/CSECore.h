@@ -6,6 +6,9 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <tchar.h>
+
+#define CSE_TITLE_STRING _T("StellarDX CSE Platform Binary")
 
 #if defined _MSC_VER
 #define COMPILER_VERSION std::string("MSC " + std::to_string(_MSC_FULL_VER) + "(" + std::to_string(_MSC_BUILD) + ")")

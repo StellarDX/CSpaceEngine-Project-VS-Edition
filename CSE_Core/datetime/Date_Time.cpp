@@ -12,9 +12,9 @@ _CSE_BEGIN
 
 CSELog TimeLog;
 
-CSEDateTime::CSEDateTime(const _TIME CSEDate& Date, const _TIME CSETime& Time, const LONG& TimeZone)
+CSEDateTime::CSEDateTime(const _TIME CSEDate& Date, const _TIME CSETime& Time, const TIME_ZONE_INFORMATION& TimeZone)
 {
-	OffsetSecs = TimeZone * 3600;
+	OffsetSecs = -TimeZone.Bias * 60;
 	_Date = Date;
 	_Time = Time;
 }
@@ -43,15 +43,9 @@ CSEDateTime CSEDateTime::AddMSecs(int msecs) const
 {
 	_TIME CSEDate DT = _Date;
 	_TIME CSETime TM = _Time;
-	TM = TM.AddMSecs(msecs);
-	if (msecs >= 0)
-	{
-		DT = DT.AddDays(floor(msecs / 86400000));
-	}
-	else if (msecs < 0)
-	{
-		DT = DT.AddDays(ceil(msecs / 86400000));
-	}
+	int addDays = 0;
+	TM = TM.AddMSecs(msecs, &addDays);
+	DT = DT.AddDays(addDays);
 	return CSEDateTime(DT, TM, OffsetSecs);
 }
 
@@ -66,15 +60,9 @@ CSEDateTime CSEDateTime::AddSecs(int s) const
 {
 	_TIME CSEDate DT = _Date;
 	_TIME CSETime TM = _Time;
-	TM = TM.AddSecs(s);
-	if (s >= 0)
-	{
-		DT = DT.AddDays(floor(s / 86400));
-	}
-	else if (s < 0)
-	{
-		DT = DT.AddDays(ceil(s / 86400));
-	}
+	int addDays = 0;
+	TM = TM.AddSecs(s, &addDays);
+	DT = DT.AddDays(addDays);
 	return CSEDateTime(DT, TM, OffsetSecs);
 }
 
@@ -122,9 +110,9 @@ void CSEDateTime::setTimeZone(const LONG& ToZone)
 
 CSEDateTime CSEDateTime::toUTC() const
 {
-	_TIME CSETime TM = _Time.AddMSecs(-OffsetSecs * 1000.0);
-	_TIME CSEDate DT = _Date.AddDays(ceil(-OffsetSecs * 1000 / 86400000.0));
-	return CSEDateTime(DT, TM, (LONG)0);
+	_TIME CSETime TM = _Time.AddMSecs((int)(-OffsetSecs * 1000.0));
+	_TIME CSEDate DT = _Date.AddDays((int)ceil(-OffsetSecs * 1000 / 86400000.0));
+	return CSEDateTime(DT, TM, 0);
 }
 
 CSEDateTime CSEDateTime::currentDateTime()
@@ -139,7 +127,7 @@ CSEDateTime CSEDateTime::currentDateTime()
 	(
 		_TIME CSEDate(Time.wYear, Time.wMonth, Time.wDay),
 		_TIME CSETime(Time.wHour, Time.wMinute, Time.wSecond, Time.wMilliseconds),
-		TimeZone.Bias / (-60)
+		TimeZone
 	);
 }
 
@@ -151,7 +139,7 @@ CSEDateTime CSEDateTime::currentDateTimeUTC()
 	(
 		_TIME CSEDate(Time.wYear, Time.wMonth, Time.wDay),
 		_TIME CSETime(Time.wHour, Time.wMinute, Time.wSecond, Time.wMilliseconds),
-		0l
+		0.0
 	);
 }
 
@@ -227,8 +215,8 @@ CSEDate CSEDate::AddDays(int ndays)const
 			++D;
 			if (D > NumOfDaysInMonthInYear(M, Y))
 			{
-				++M;
 				D -= NumOfDaysInMonthInYear(M, Y);
+				++M;
 			}
 
 			if (M > 12)
@@ -373,7 +361,7 @@ std::string CSEDate::toString()
 
 int CSEDate::dayOfWeek() const
 {
-	double JD = toJulianDay();
+	double JD = (double)toJulianDay();
 	double d = fmod(JD + 1.5, 7);
 	if (d < 0) { d += 7.0; }
 	return lround(floor(d));
@@ -505,6 +493,19 @@ CSEDate CSEDate::fromJulianDay(const double JD) // From Stellarium
 	return CSEDate(yy, mm, dd);
 }
 
+bool CSEDate::isLeap()
+{
+	if (years > 1582)
+	{
+		if (years % 100 == 0) { return (years % 400 == 0); }
+		else { return (years % 4 == 0); }
+	}
+	else
+	{
+		return (years % 4 == 0); // astronomical year counting: strictly every 4th year.
+	}
+}
+
 bool CSEDate::isLeap(int year)
 {
 	if (year > 1582)
@@ -592,7 +593,7 @@ int CSETime::msec() const
 	return -1;
 }
 
-CSETime CSETime::AddMSecs(int ms) const
+CSETime CSETime::AddMSecs(int ms, int* AddDays) const
 {
 	int H = hours;
 	int M = minutes;
@@ -623,6 +624,10 @@ CSETime CSETime::AddMSecs(int ms) const
 			if (H >= 24)
 			{
 				H -= 24;
+				if (nullptr != AddDays)
+				{
+					++(*AddDays);
+				}
 			}
 		}
 	}
@@ -649,6 +654,10 @@ CSETime CSETime::AddMSecs(int ms) const
 			if (H < 0)
 			{
 				H += 24;
+				if (nullptr != AddDays)
+				{
+					--(*AddDays);
+				}
 			}
 		}
 	}
@@ -656,7 +665,7 @@ CSETime CSETime::AddMSecs(int ms) const
 	return CSETime(H, M, S, mS);
 }
 
-CSETime CSETime::AddSecs(int s) const
+CSETime CSETime::AddSecs(int s, int* AddDays) const
 {
 	int H = hours;
 	int M = minutes;
@@ -681,6 +690,10 @@ CSETime CSETime::AddSecs(int s) const
 			if (H >= 24)
 			{
 				H -= 24;
+				if (nullptr != AddDays)
+				{
+					++(*AddDays);
+				}
 			}
 		}
 	}
@@ -701,6 +714,10 @@ CSETime CSETime::AddSecs(int s) const
 			if (H < 0)
 			{
 				H += 24;
+				if (nullptr != AddDays)
+				{
+					--(*AddDays);
+				}
 			}
 		}
 	}
@@ -754,15 +771,15 @@ CSEDateTime jdToDateTime(const double& jd, const TimeSpec timeSpec)
 {
 	assert((timeSpec == UTC) || (timeSpec == LocalTime));
 	LONG Offset;
+	TIME_ZONE_INFORMATION TimeZone;
 	if (timeSpec == UTC) { Offset = 0; }
 	else if (timeSpec == LocalTime)
 	{
-		TIME_ZONE_INFORMATION TimeZone;
 		GetSystemTime(&TimeZone.StandardDate);
 		GetTimeZoneInformation(&TimeZone);
 		Offset = TimeZone.Bias / (-60);
 	}
-	CSEDateTime result = CSEDateTime(_TIME CSEDate().fromJulianDay(jd), getTimeFromJulianDay(jd), Offset).AddSecs(Offset * 3600);
+	CSEDateTime result = CSEDateTime(_TIME CSEDate().fromJulianDay(jd), getTimeFromJulianDay(jd), TimeZone).AddSecs(Offset * 3600);
 	if (!result.IsValid())
 	{
 		TimeLog.Out("DateTime", "ERROR", "Invalid DateTime.", SysLogLevel);

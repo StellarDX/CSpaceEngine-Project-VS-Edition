@@ -31,6 +31,7 @@
     <ClInclude Include="headers\lumine\SpTypes.h" />
     <ClInclude Include="headers\math\Algorithms.h" />
     <ClInclude Include="headers\math\AsMath.h" />
+    <ClInclude Include="headers\math\Geometry.h" />
     <ClInclude Include="headers\stream\istream.h" />
     <ClInclude Include="headers\stream\ostream.h" />
     <ClInclude Include="headers\stream\scstream.h" />
@@ -44,6 +45,7 @@
     <None Include="astromath\Algorithms.Template.inl" />
     <None Include="astromath\MathFuncs.Complex.inl" />
     <None Include="astromath\MathFuncs.Template.inl" />
+    <None Include="astromath\VecGeom.Template.inl" />
     <None Include="cpp.hint" />
     <None Include="headers\gl\gl_vec2.inl" />
     <None Include="headers\gl\gl_vec3.inl" />
