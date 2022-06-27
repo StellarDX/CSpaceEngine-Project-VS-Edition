@@ -34,9 +34,85 @@ inline constexpr genType const& gl_vec2<genType>::operator[](size_t i) const
 }
 
 template<typename genType>
+inline constexpr gl_vec2<genType>& gl_vec2<genType>::operator+=(const genType& scalar)
+{
+	this->x += scalar;
+	this->y += scalar;
+	return *this;
+}
+
+template<typename genType>
+inline constexpr gl_vec2<genType>& gl_vec2<genType>::operator+=(const gl_vec2& v)
+{
+	this->x += v.x;
+	this->y += v.y;
+	return *this;
+}
+
+template<typename genType>
+inline constexpr gl_vec2<genType>& gl_vec2<genType>::operator-=(const genType& scalar)
+{
+	this->x -= scalar;
+	this->y -= scalar;
+	return *this;
+}
+
+template<typename genType>
+inline constexpr gl_vec2<genType>& gl_vec2<genType>::operator-=(const gl_vec2& v)
+{
+	this->x -= v.x;
+	this->y -= v.y;
+	return *this;
+}
+
+template<typename genType>
+inline constexpr gl_vec2<genType>& gl_vec2<genType>::operator*=(const genType& scalar)
+{
+	this->x *= scalar;
+	this->y *= scalar;
+	return *this;
+}
+
+template<typename genType>
+inline constexpr gl_vec2<genType>& gl_vec2<genType>::operator*=(const gl_vec2& v)
+{
+	this->x *= v.x;
+	this->y *= v.y;
+	return *this;
+}
+
+template<typename genType>
+inline constexpr gl_vec2<genType>& gl_vec2<genType>::operator/=(const genType& scalar)
+{
+	this->x /= scalar;
+	this->y /= scalar;
+	return *this;
+}
+
+template<typename genType>
+inline constexpr gl_vec2<genType>& gl_vec2<genType>::operator/=(const gl_vec2& v)
+{
+	this->x /= v.x;
+	this->y /= v.y;
+	return *this;
+}
+
+template<typename genType>
 constexpr std::ostream& operator<<(std::ostream& os, const gl_vec2<genType>& c)
 {
 	return os << '(' << c.x << ", " << c.y << ')';
+}
+
+template<typename genType>
+constexpr gl_vec2<genType> operator+(gl_vec2<genType> const& v)
+{
+	return v;
+}
+
+template<typename genType>
+constexpr gl_vec2<genType> operator-(gl_vec2<genType> const& v)
+{
+	return gl_vec2<genType>(-v.x, -v.y);
 }
 
 template<typename genType>

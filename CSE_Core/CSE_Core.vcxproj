@@ -27,6 +27,7 @@
     <ClInclude Include="headers\gl\gltypes.h" />
     <ClInclude Include="headers\gl\gl_vec3.h" />
     <ClInclude Include="headers\gl\gl_vec4.h" />
+    <ClInclude Include="headers\gl\matrix.h" />
     <ClInclude Include="headers\lumine\Lumine.h" />
     <ClInclude Include="headers\lumine\SpTypes.h" />
     <ClInclude Include="headers\math\Algorithms.h" />
@@ -50,6 +51,7 @@
     <None Include="headers\gl\gl_vec2.inl" />
     <None Include="headers\gl\gl_vec3.inl" />
     <None Include="headers\gl\gl_vec4.inl" />
+    <None Include="headers\gl\matrix.inl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="astromath\Algorithms.cc" />

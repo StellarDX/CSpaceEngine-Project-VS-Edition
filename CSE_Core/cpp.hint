@@ -2,12 +2,14 @@
 // 如函数和宏的名称。
 // 有关详细信息，请参见 https://go.microsoft.com/fwlink/?linkid=865984
 #define _CSE_BEGIN namespace cse {
+#define _CSE_END }
 #define _GL_BEGIN namespace gl {
 #define _GL_END }
-#define _CSE_END }
+#define _GL
 #define _SC_BEGIN namespace sc {
 #define _SC_END }
 #define _SC
 #define _TIME_BEGIN namespace epoch{
 #define _TIME_END }
 #define _TIME
+

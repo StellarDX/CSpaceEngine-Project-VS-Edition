@@ -79,12 +79,27 @@ public:
 		, y(static_cast<genType>(_yzw.x))
 		, z(static_cast<genType>(_yzw.y))
 		, w(static_cast<genType>(_yzw.z)){}
+
+	constexpr gl_vec4& operator+=(const genType& scalar);
+	constexpr gl_vec4& operator+=(const gl_vec4& v);
+	constexpr gl_vec4& operator-=(const genType& scalar);
+	constexpr gl_vec4& operator-=(const gl_vec4& v);
+	constexpr gl_vec4& operator*=(const genType& scalar);
+	constexpr gl_vec4& operator*=(const gl_vec4& v);
+	constexpr gl_vec4& operator/=(const genType& scalar);
+	constexpr gl_vec4& operator/=(const gl_vec4& v);
 };
 
 // -- Unary operators --
 
 template<typename genType>
 constexpr std::ostream& operator<<(std::ostream& os, const gl_vec4<genType>& c);
+
+template<typename genType>
+constexpr gl_vec4<genType> operator+(gl_vec4<genType> const& v);
+
+template<typename genType>
+constexpr gl_vec4<genType> operator-(gl_vec4<genType> const& v);
 
 // -- Binary operators --
 

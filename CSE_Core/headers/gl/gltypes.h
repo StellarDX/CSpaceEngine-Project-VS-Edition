@@ -28,6 +28,7 @@ all copies or substantial portions of the Software.
 #include "gl_vec2.h"
 #include "gl_vec3.h"
 #include "gl_vec4.h"
+#include "matrix.h"
 
 _CSE_BEGIN
 

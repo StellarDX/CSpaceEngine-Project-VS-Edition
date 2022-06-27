@@ -57,7 +57,36 @@ inline vec3 cross(vec3 x, vec3 y)
 template<typename genType> requires vecType<genType>
 genType normalize(genType v);
 
+/// <summary>
+/// If dot(Nref, I) less than 0 faceforward returns N, otherwise it returns -N.
+/// </summary>
+/// <param name="N">Specifies the vector to orient.</param>
+/// <param name="I">Specifies the incident vector.</param>
+/// <param name="Nref">Specifies the reference vector.</param>
+template<typename genType> requires vecType<genType>
+genType faceforward(genType N, genType I, genType Nref);
 
+/// <summary>
+/// For a given incident vector I and surface normal N reflect returns the reflection direction.
+/// N should be normalized in order to achieve the desired result.
+/// </summary>
+/// <param name="I">Specifies the incident vector.</param>
+/// <param name="N">Specifies the normal vector.</param>
+template<typename genType> requires vecType<genType>
+genType reflect(genType I, genType N);
+
+/// <summary>
+/// For a given incident vector I, surface normal N and ratio of indices of refraction, eta, returns the refraction vector, R.
+/// The direction of normal vector is the upper media.
+/// </summary>
+/// <param name="I">Specifies the incident vector.</param>
+/// <param name="N">Specifies the normal vector.</param>
+/// <param name="eta">Specifies the ratio of indices of refraction. (n2 / n1)</param>
+template<typename genType> requires vecType<genType>
+genType refract(genType I, genType N, float64 eta);
+
+template<typename genType> requires vecType<genType>
+genType refract(genType I, genType N, float64 UpperMediaIndex, float64 LowerMediaIndex);
 
 _CSE_END
 

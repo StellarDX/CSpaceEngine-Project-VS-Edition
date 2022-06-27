@@ -33,12 +33,29 @@ public:
 
 	constexpr explicit gl_vec2(genType scalar) : x(scalar), y(scalar){};
 	constexpr gl_vec2(genType _x, genType _y) : x(_x), y(_y) {};
+
+	// -- Unary arithmetic operators --
+
+	constexpr gl_vec2& operator+=(const genType& scalar);
+	constexpr gl_vec2& operator+=(const gl_vec2& v);
+	constexpr gl_vec2& operator-=(const genType& scalar);
+	constexpr gl_vec2& operator-=(const gl_vec2& v);
+	constexpr gl_vec2& operator*=(const genType& scalar);
+	constexpr gl_vec2& operator*=(const gl_vec2& v);
+	constexpr gl_vec2& operator/=(const genType& scalar);
+	constexpr gl_vec2& operator/=(const gl_vec2& v);
 };
 
 // -- Unary operators --
 
 template<typename genType>
 constexpr std::ostream& operator<<(std::ostream& os, const gl_vec2<genType>& c);
+
+template<typename genType>
+constexpr gl_vec2<genType> operator+(gl_vec2<genType> const& v);
+
+template<typename genType>
+constexpr gl_vec2<genType> operator-(gl_vec2<genType> const& v);
 
 // -- Binary operators --
 
