@@ -253,6 +253,9 @@ template<typename genType> requires vecType<genType> genType sqrt(genType x);
 template<typename genType> requires vecType<genType> genType inversesqrt(genType x);
 template<typename genType> requires vecType<genType> genType cbrt(genType x);
 
+template<typename _Ty, size_t _Size>
+_GL basic_matrix<_Ty, _Size, _Size> pow(_GL basic_matrix<_Ty, _Size, _Size> _A, uint64 _Pow);
+
 // Custom functions(SCRAPPED)
 /*float64 iPow64f(float64 x, float64 power);
 float64 CubeRoot(float64 x);*/

@@ -11,9 +11,9 @@ float64 Length(genType x)
 	float64 len = 0;
 	for (size_t i = 0; i < x.size(); i++)
 	{
-		len += pow(x[i], 2);
+		len += std::pow(x[i], 2);
 	}
-	return sqrt(len);
+	return std::sqrt(len);
 }
 
 template<typename genType> requires vecType<genType>
@@ -70,7 +70,7 @@ genType refract(genType I, genType N, float64 eta)
 	// StellarDX's Implementation (Incident vector and Normal vector will be normalized automatically)
 	// Reference: https://en.wikipedia.org/wiki/Snell%27s_law
 	float64 ctet1 = abs(dot(I, N) / (Length(I) * Length(N)));
-	float64 ctet2 = sqrt(1.0 - pow(eta, 2.) * (1.0 - pow(ctet1, 2.)));
+	float64 ctet2 = std::sqrt(1.0 - std::pow(eta, 2.) * (1.0 - std::pow(ctet1, 2.)));
 	if (std::isnan(ctet2)) { return genType(0.); }
 	return eta * normalize(I) + (eta * ctet1 - ctet2) * normalize(N);
 }

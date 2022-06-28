@@ -1,4 +1,4 @@
-// Basic Matrix standard header (GLSL)
+﻿// Basic Matrix standard header (GLSL)
 
 // Reference:
 // [GLSL Document]https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.4.20.pdf
@@ -175,12 +175,44 @@ public:
     constexpr basic_matrix() = default;
     constexpr basic_matrix(const basic_matrix<_Ty, _Column, _Line>& m);
     constexpr explicit basic_matrix(_Ty _Scalar);
-    constexpr basic_matrix(std::initializer_list<_Ty> _Ilist);
+    constexpr basic_matrix(_STD initializer_list<_Ty> _Ilist);
+    constexpr basic_matrix(_STD initializer_list< _STD initializer_list<_Ty>> _Ilist);
 
     // -- Matrix conversions --
 
     template<size_t _Column2, size_t _Line2>
     constexpr basic_matrix(const basic_matrix<_Ty, _Column2, _Line2>& x);
+
+    // -- Functions in linear algebra --
+
+    /// <summary>
+    /// Returns minor of the entry in the i th row and j th column
+    /// </summary>
+    /// <param name="_CPos">column</param>
+    /// <param name="_LPos">row</param>
+    basic_matrix<_Ty, _Column - 1, _Line - 1> Minor(_In_range_(1, _Column) size_type _CPos, _In_range_(1, _Line) size_type _LPos)const;
+
+    /// <summary>
+    /// Returns the determinant value of the matrix.
+    /// WARNING: This function is EXTREMELY INEFFICIENT for high-dimension matrices, with a time complexity in RIDICULOUS big O notation of O(n!)
+    /// Reference: https://www.tutorialspoint.com/cplusplus-program-to-compute-determinant-of-a-matrix
+    /// </summary>
+    float64 Determinant()const;
+
+    /// <summary>
+    /// Returns the transpose of a matrix
+    /// </summary>
+    basic_matrix<_Ty, _Line, _Column> Transpose()const;
+
+    /// <summary>
+    /// Returns the Adjugate matrix
+    /// </summary>
+    basic_matrix<_Ty, _Line, _Column> Adjugate()const;
+
+    /// <summary>
+    /// Returns the Inverse matrix
+    /// </summary>
+    basic_matrix<_Ty, _Line, _Column> Inverse()const;
 };
 
 // -- Unary operators --
@@ -201,6 +233,15 @@ basic_matrix<_Ty, _Column, _Line> operator+(const basic_matrix<_Ty, _Column, _Li
 
 template<typename _Ty, size_t _Column, size_t _Line>
 basic_matrix<_Ty, _Column, _Line> operator-(const basic_matrix<_Ty, _Column, _Line>& m1, const basic_matrix<_Ty, _Column, _Line>& m2);
+
+template<typename _Ty, size_t _Column, size_t _Line>
+basic_matrix<_Ty, _Column, _Line> operator*(const basic_matrix<_Ty, _Column, _Line>& m1, const _Ty& scalar);
+
+template<typename _Ty, size_t _Column, size_t _Line>
+basic_matrix<_Ty, _Column, _Line> operator*(const _Ty& scalar, const basic_matrix<_Ty, _Column, _Line>& m1);
+
+template<typename _Ty, size_t _Column, size_t _Line, size_t _Size>
+basic_matrix<_Ty, _Column, _Line> operator*(const basic_matrix<_Ty, _Size, _Line>& m1, const basic_matrix<_Ty, _Column, _Size>& m2);
 
 _GL_END
 
