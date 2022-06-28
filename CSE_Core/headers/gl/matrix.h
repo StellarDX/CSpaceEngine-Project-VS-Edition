@@ -170,13 +170,27 @@ public:
         std::_Xout_of_range("invalid matrix subscript");
     }
 
+    template<size_type _NewCol, size_type _NewLine>
+    _NODISCARD constexpr basic_matrix<_Ty, _NewCol, _NewLine> submat(const size_type _CPos, const size_type _LPos) const
+    {
+        basic_matrix<_Ty, _NewCol, _NewLine> _SubMat;
+        for (size_t i = 0; i < _NewLine; i++)
+        {
+            for (size_t j = 0; j < _NewCol; j++)
+            {
+                _SubMat[j][i] = this->_Elems[_CPos + j - 1][_LPos + i - 1];
+            }
+        }
+        return _SubMat;
+    }
+
     // -- Constructors --
 
     constexpr basic_matrix() = default;
     constexpr basic_matrix(const basic_matrix<_Ty, _Column, _Line>& m);
     constexpr explicit basic_matrix(_Ty _Scalar);
     constexpr basic_matrix(_STD initializer_list<_Ty> _Ilist);
-    constexpr basic_matrix(_STD initializer_list< _STD initializer_list<_Ty>> _Ilist);
+    constexpr basic_matrix(_STD initializer_list<_STD initializer_list<_Ty>> _Ilist);
 
     // -- Matrix conversions --
 
@@ -213,6 +227,12 @@ public:
     /// Returns the Inverse matrix
     /// </summary>
     basic_matrix<_Ty, _Line, _Column> Inverse()const;
+
+    /// <summary>
+    /// Finding the rank of a matrix with Gaussian elimination.
+    /// Reference: https://cp-algorithms.com/linear_algebra/rank-matrix.html#implementation
+    /// </summary>
+    uint64 Rank()const;
 };
 
 // -- Unary operators --
@@ -242,6 +262,12 @@ basic_matrix<_Ty, _Column, _Line> operator*(const _Ty& scalar, const basic_matri
 
 template<typename _Ty, size_t _Column, size_t _Line, size_t _Size>
 basic_matrix<_Ty, _Column, _Line> operator*(const basic_matrix<_Ty, _Size, _Line>& m1, const basic_matrix<_Ty, _Column, _Size>& m2);
+
+template<typename _Ty, size_t _Column, size_t _Line>
+basic_matrix<_Ty, _Column, _Line> operator/(const basic_matrix<_Ty, _Column, _Line>& m1, const _Ty& scalar);
+
+template<typename _Ty, size_t _Column, size_t _Line, size_t _Size>
+basic_matrix<_Ty, _Column, _Line> operator/(const basic_matrix<_Ty, _Size, _Line>& m1, const basic_matrix<_Ty, _Column, _Size>& m2);
 
 _GL_END
 

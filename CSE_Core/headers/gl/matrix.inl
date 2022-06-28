@@ -184,6 +184,45 @@ inline basic_matrix<_Ty, _Line, _Column> basic_matrix<_Ty, _Column, _Line>::Inve
 }
 
 template<typename _Ty, size_t _Column, size_t _Line>
+inline uint64 basic_matrix<_Ty, _Column, _Line>::Rank() const
+{
+	float64 _ZERO_ = 1E-9;
+	uint64 _Rank = 0;
+	_STD array<bool, _Column> _SelLine;
+	_SelLine.fill(false);
+	basic_matrix<_Ty, _Column, _Line> _Cpy = *this;
+	for (size_t i = 0; i < _Line; i++)
+	{
+		size_t j;
+		for (j = 0; j < _Column; j++)
+		{
+			if (!_SelLine[j] && std::abs(_Cpy[j][i]) > _ZERO_) { break; }
+		}
+
+		if (j != _Column)
+		{
+			++_Rank;
+			_SelLine[j] = true;
+			for (size_t p = i + 1; p < _Line; p++)
+			{
+				_Cpy[j][p] /= _Cpy[j][i];
+			}
+			for (size_t k = 0; k < _Column; k++)
+			{
+				if (k != j && std::abs(_Cpy[k][i]) > _ZERO_)
+				{
+					for (size_t p = i + 1; p < _Line; p++)
+					{
+						_Cpy[k][p] -= _Cpy[j][p] * _Cpy[k][i];
+					}
+				}
+			}
+		}
+	}
+	return _Rank;
+}
+
+template<typename _Ty, size_t _Column, size_t _Line>
 template<size_t _Column2, size_t _Line2>
 inline constexpr basic_matrix<_Ty, _Column, _Line>::basic_matrix(const basic_matrix<_Ty, _Column2, _Line2>& x)
 {
@@ -314,6 +353,40 @@ basic_matrix<_Ty, _Column, _Line> operator*(const basic_matrix<_Ty, _Size, _Line
 			for (size_t k = 0; k < _Size; k++)
 			{
 				_Total += m1[k][i] * m2[j][k];
+			}
+			m0[j][i] = _Total;
+		}
+	}
+	return m0;
+}
+
+template<typename _Ty, size_t _Column, size_t _Line>
+basic_matrix<_Ty, _Column, _Line> operator/(const basic_matrix<_Ty, _Column, _Line>& m1, const _Ty& scalar)
+{
+	basic_matrix<_Ty, _Column, _Line> m0;
+	for (size_t i = 0; i < _Column; i++)
+	{
+		for (size_t j = 0; j < _Line; j++)
+		{
+			m0[i][j] = m1[i][j] / scalar;
+		}
+	}
+	return m0;
+}
+
+template<typename _Ty, size_t _Column, size_t _Line, size_t _Size>
+basic_matrix<_Ty, _Column, _Line> operator/(const basic_matrix<_Ty, _Size, _Line>& m1, const basic_matrix<_Ty, _Column, _Size>& m2)
+{
+	basic_matrix<_Ty, _Column, _Line> m0;
+	basic_matrix<_Ty, _Column, _Size> _m2 = m2.Inverse();
+	for (size_t i = 0; i < _Line; i++)
+	{
+		for (size_t j = 0; j < _Column; j++)
+		{
+			_Ty _Total = 0;
+			for (size_t k = 0; k < _Size; k++)
+			{
+				_Total += m1[k][i] * _m2[j][k];
 			}
 			m0[j][i] = _Total;
 		}

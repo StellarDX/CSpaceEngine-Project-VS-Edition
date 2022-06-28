@@ -78,7 +78,7 @@ OSCStream& OSCStream::operator<<(OSCStream& (__cdecl* _Pfn)(OSCStream&))
 
 void OSCStream::WaterMark()
 {
-	Output << "// " << "Objects made with SpaceEngine SDK(CSpaceEngine)\n";
+	Output << "// " << "Objects made with CSpaceEngine\n";
 	Output << "// " << "An open-sourced C++ static library by StellarDX\n";
 	Output << "// " << "Compiler Version : " << COMPILER_VERSION << '\n';
 	Output << "// " << "Date : " << "" << '\n';
