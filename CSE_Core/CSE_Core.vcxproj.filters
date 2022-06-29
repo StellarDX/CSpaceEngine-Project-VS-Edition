@@ -60,9 +60,6 @@
     <ClInclude Include="headers\date\Date_Time.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\math\Algorithms.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\lumine\Lumine.h">
       <Filter>Header files</Filter>
     </ClInclude>
@@ -74,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="headers\gl\matrix.h">
       <Filter>GLSL</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\math\Algorithms.h">
+      <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +100,9 @@
       <Filter>Math Functions</Filter>
     </None>
     <None Include="headers\gl\matrix.inl">
+      <Filter>GLSL</Filter>
+    </None>
+    <None Include="headers\gl\vector.inl">
       <Filter>GLSL</Filter>
     </None>
   </ItemGroup>

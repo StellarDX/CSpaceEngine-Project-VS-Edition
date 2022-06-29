@@ -73,6 +73,92 @@ concept vecBType =
 	is_same_v<genBType, bvec4>
 );
 
+// ----------Vector Functions---------- //
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec2 LessThan(_GL gl_vec2<genType> x, _GL gl_vec2<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec3 LessThan(_GL gl_vec3<genType> x, _GL gl_vec3<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec4 LessThan(_GL gl_vec4<genType> x, _GL gl_vec4<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec2 LessThanEqual(_GL gl_vec2<genType> x, _GL gl_vec2<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec3 LessThanEqual(_GL gl_vec3<genType> x, _GL gl_vec3<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec4 LessThanEqual(_GL gl_vec4<genType> x, _GL gl_vec4<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec2 GreaterThan(_GL gl_vec2<genType> x, _GL gl_vec2<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec3 GreaterThan(_GL gl_vec3<genType> x, _GL gl_vec3<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec4 GreaterThan(_GL gl_vec4<genType> x, _GL gl_vec4<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec2 GreaterThanEqual(_GL gl_vec2<genType> x, _GL gl_vec2<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec3 GreaterThanEqual(_GL gl_vec3<genType> x, _GL gl_vec3<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec4 GreaterThanEqual(_GL gl_vec4<genType> x, _GL gl_vec4<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec2 Equal(_GL gl_vec2<genType> x, _GL gl_vec2<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec3 Equal(_GL gl_vec3<genType> x, _GL gl_vec3<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec4 Equal(_GL gl_vec4<genType> x, _GL gl_vec4<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec2 NotEqual(_GL gl_vec2<genType> x, _GL gl_vec2<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec3 NotEqual(_GL gl_vec3<genType> x, _GL gl_vec3<genType> y);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec4 NotEqual(_GL gl_vec4<genType> x, _GL gl_vec4<genType> y);
+
+template<typename bvec> requires vecBType<bvec>
+bool any(bvec x);
+
+template<typename bvec> requires vecBType<bvec>
+bool all(bvec x);
+
+bvec2 operator!(bvec2 x); // because of "not" is already exist as a operator and can't be overloaded, so use this substitusion.
+bvec3 operator!(bvec3 x);
+bvec4 operator!(bvec4 x);
+
 _CSE_END
+
+#include "vector.inl"
 
 #endif

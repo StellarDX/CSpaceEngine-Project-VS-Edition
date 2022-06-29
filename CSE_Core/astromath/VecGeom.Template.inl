@@ -59,7 +59,7 @@ genType reflect(genType I, genType N)
 
 	// StellarDX's Implementation (Normal vector doesn't need to be normalized)
 	// Reference: https://blog.csdn.net/heyuchang666/article/details/51833893
-	genType S = -(dot(I, N) / pow(Length(N), 2)) * N;
+	genType S = -(dot(I, N) / std::pow(Length(N), 2)) * N;
 	genType P = I + S;
 	return 2.0 * P - I;
 }
