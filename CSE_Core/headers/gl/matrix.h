@@ -28,15 +28,307 @@ _CSE_BEGIN
 _GL_BEGIN
 
 template<typename _Ty, size_t _Column, size_t _Line>
-class _Matrix_const_iterator
+class _Matrix_const_iterator //: private _Iterator_base12_compatible
 {
-    // TODO...
+public:
+    #ifdef __cpp_lib_concepts
+    using iterator_concept  = _STD contiguous_iterator_tag;
+    #endif // __cpp_lib_concepts
+    using iterator_category = _STD random_access_iterator_tag;
+    using value_type        = _Ty;
+    using difference_type   = ptrdiff_t;
+    using pointer           = _STD array<_Ty, _Line>*;
+    using pointer_Elem      = _Ty*;
+    using reference         = _Ty&;
+
+    enum _Option_Tag
+    {
+        Line, Column
+    };
+
+private:
+    pointer      _Ptr;
+    pointer_Elem _Elm;
+    size_t       _IdxC;
+    size_t       _IdxL;
+    _Option_Tag  _Opt;
+
+public:
+    _CONSTEXPR17 _Matrix_const_iterator() noexcept : _Ptr(), _IdxC(0), _IdxL(0), _Opt(Column) {}
+
+    _CONSTEXPR17 explicit _Matrix_const_iterator(pointer _Parg, size_t _OffC = 0, size_t _OffL = 0, _Option_Tag _Option = Column) noexcept : _Ptr(_Parg), _IdxC(_OffC), _IdxL(_OffL), _Opt(_Option) {}
+
+    _NODISCARD _CONSTEXPR17 pointer_Elem operator->() const noexcept
+    {
+        _STL_VERIFY(_Ptr, "cannot dereference value-initialized matrix iterator");
+        _STL_VERIFY(_IdxC < _Column && _IdxL < _Line, "cannot dereference out of range matrix iterator");
+        return &(*(_Ptr + _IdxC))[_IdxL];
+    }
+
+    _NODISCARD _CONSTEXPR17 reference operator*() const noexcept
+    {
+        return *operator->();
+    }
+
+    _CONSTEXPR17 _Matrix_const_iterator& operator++() noexcept
+    {
+        _STL_VERIFY(_Ptr, "cannot increment value-initialized matrix iterator");
+        _STL_VERIFY(_IdxC < _Column && _IdxL < _Line, "cannot increment matrix iterator past end");
+        switch (_Opt)
+        {
+        case Line:
+            ++_IdxC;
+            if (_IdxC == _Column)
+            {
+                _IdxC -= _Column;
+                ++_IdxL;
+            }
+            break;
+        case Column:
+            ++_IdxL;
+            if (_IdxL == _Line)
+            {
+                _IdxL -= _Line;
+                ++_IdxC;
+            }
+            break;
+        default:
+            break;
+        }
+
+        return *this;
+    }
+
+    _CONSTEXPR17 _Matrix_const_iterator operator++(int) noexcept
+    {
+        _Matrix_const_iterator _Tmp = *this;
+        ++(*this);
+        return _Tmp;
+    }
+
+    _CONSTEXPR17 _Matrix_const_iterator& operator--() noexcept
+    {
+        _STL_VERIFY(_Ptr, "cannot decrement value-initialized matrix iterator");
+        _STL_VERIFY(_IdxC != 0 || _IdxL != 0, "cannot decrement matrix iterator before begin");
+        switch (_Opt)
+        {
+        case Line:
+            if (_IdxC == 0)
+            {
+                _IdxC += _Column;
+                --_IdxL;
+            }
+            --_IdxC;
+            break;
+        case Column:
+            if (_IdxL == 0)
+            {
+                _IdxL += _Line;
+                --_IdxC;
+            }
+            --_IdxL;
+            break;
+        default:
+            break;
+        }
+        return *this;
+    }
+
+    _CONSTEXPR17 _Matrix_const_iterator operator--(int) noexcept
+    {
+        _Matrix_const_iterator _Tmp = *this;
+        --(*this);
+        return _Tmp;
+    }
+
+    constexpr size_t _Reduce_Dimension() const noexcept
+    {
+        size_t _Idx;
+        switch (_Opt)
+        {
+        case Line:
+            _Idx = _Column * _IdxL + _IdxC;
+            break;
+        case Column:
+            _Idx = _Line * _IdxC + _IdxL;
+            break;
+        default:
+            break;
+        }
+        return _Idx;
+    }
+
+    constexpr void _Incrase_Dimension(size_t _Idx) noexcept
+    {
+        switch (_Opt)
+        {
+        case Line:
+            _IdxL = _Idx / _Column;
+            _IdxC = _Idx % _Column;
+            break;
+        case Column:
+            _IdxC = _Idx / _Line;
+            _IdxL = _Idx % _Line;
+            break;
+        default:
+            break;
+        }
+    }
+
+    constexpr void _Verify_offset(const ptrdiff_t _Off) const noexcept
+    {
+        if (_Off != 0)
+        {
+            _STL_VERIFY(_Ptr, "cannot seek value-initialized matrix iterator");
+        }
+
+        size_t _Idx = _Reduce_Dimension();
+
+        if (_Off < 0) 
+        {
+            _STL_VERIFY(_Idx >= size_t{ 0 } - static_cast<size_t>(_Off), "cannot seek matrix iterator before begin");
+        }
+
+        if (_Off > 0)
+        {
+            _STL_VERIFY(_Column * _Line - _Idx >= static_cast<size_t>(_Off), "cannot seek array iterator after end");
+        }
+    }
+
+    _CONSTEXPR17 _Matrix_const_iterator& operator+=(const ptrdiff_t _Off) noexcept
+    {
+        _Verify_offset(_Off);
+        size_t _Idx = _Reduce_Dimension();
+        _Idx += static_cast<size_t>(_Off);
+        _Incrase_Dimension(_Idx);
+        return *this;
+    }
+
+    _NODISCARD _CONSTEXPR17 _Matrix_const_iterator operator+(const ptrdiff_t _Off) const noexcept
+    {
+        _Matrix_const_iterator _Tmp = *this;
+        _Tmp += _Off;
+        return _Tmp;
+    }
+
+    _CONSTEXPR17 _Matrix_const_iterator& operator-=(const ptrdiff_t _Off) noexcept
+    {
+        return *this += -_Off;
+    }
+
+    _NODISCARD _CONSTEXPR17 _Matrix_const_iterator operator-(const ptrdiff_t _Off) const noexcept
+    {
+        _Matrix_const_iterator _Tmp = *this;
+        _Tmp -= _Off;
+        return _Tmp;
+    }
+
+    _NODISCARD _CONSTEXPR17 reference operator[](const ptrdiff_t _Off) const noexcept
+    {
+        return *(*this + _Off);
+    }
+
+    _CONSTEXPR17 void _Compat(const _Matrix_const_iterator& _Right) const noexcept
+    { // test for compatible iterator pair
+        _STL_VERIFY(_Ptr == _Right._Ptr, "matrix iterators incompatible");
+    }
+
+    _NODISCARD _CONSTEXPR17 bool operator==(const _Matrix_const_iterator& _Right) const noexcept
+    {
+        _Compat(_Right);
+        return _IdxC == _Right._IdxC && _IdxL == _Right._IdxL;
+    }
 };
 
 template<typename _Ty, size_t _Column, size_t _Line>
-class _Matrix_iterator : public _Matrix_const_iterator<_Ty, _Line, _Column>
+class _Matrix_iterator : public _Matrix_const_iterator<_Ty, _Column, _Line>
 {
-    // TODO...
+    public:
+    using _Mybase           = _Matrix_const_iterator<_Ty, _Column, _Line>;
+    #ifdef __cpp_lib_concepts
+    using iterator_concept  = _STD contiguous_iterator_tag;
+    #endif // __cpp_lib_concepts
+    using iterator_category = _STD random_access_iterator_tag;
+    using value_type        = _Ty;
+    using difference_type   = ptrdiff_t;
+    using pointer           = _STD array<_Ty, _Line>*;
+    using pointer_Elem      = _Ty*;
+    using reference         = _Ty&;
+
+    using _Mybase::_Option_Tag;
+
+    _CONSTEXPR17 _Matrix_iterator() noexcept {}
+
+    _CONSTEXPR17 explicit _Matrix_iterator(pointer _Parg, size_t _OffC = 0, size_t _OffL = 0, _Option_Tag _Option = _Mybase::Column) noexcept : _Mybase(_Parg, _OffC, _OffL, _Option) {}
+
+    _NODISCARD _CONSTEXPR17 reference operator*() const noexcept
+    {
+        return const_cast<reference>(_Mybase::operator*());
+    }
+
+    _NODISCARD _CONSTEXPR17 pointer_Elem operator->() const noexcept
+    {
+        return const_cast<pointer_Elem>(_Mybase::operator->());
+    }
+
+    _CONSTEXPR17 _Matrix_iterator& operator++() noexcept
+    {
+        _Mybase::operator++();
+        return *this;
+    }
+
+    _CONSTEXPR17 _Matrix_iterator operator++(int) noexcept
+    {
+        _Matrix_iterator _Tmp = *this;
+        _Mybase::operator++();
+        return _Tmp;
+    }
+
+    _CONSTEXPR17 _Matrix_iterator& operator--() noexcept
+    {
+        _Mybase::operator--();
+        return *this;
+    }
+    
+    _CONSTEXPR17 _Matrix_iterator operator--(int) noexcept
+    {
+        _Matrix_iterator _Tmp = *this;
+        _Mybase::operator--();
+        return _Tmp;
+    }
+
+    _CONSTEXPR17 _Matrix_iterator& operator+=(const ptrdiff_t _Off) noexcept
+    {
+        _Mybase::operator+=(_Off);
+        return *this;
+    }
+
+    _NODISCARD _CONSTEXPR17 _Matrix_iterator operator+(const ptrdiff_t _Off) const noexcept
+    {
+        _Matrix_iterator _Tmp = *this;
+        _Tmp += _Off;
+        return _Tmp;
+    }
+
+    _CONSTEXPR17 _Matrix_iterator& operator-=(const ptrdiff_t _Off) noexcept
+    {
+        _Mybase::operator-=(_Off);
+        return *this;
+    }
+
+    using _Mybase::operator-;
+
+    _NODISCARD _CONSTEXPR17 _Matrix_iterator operator-(const ptrdiff_t _Off) const noexcept
+    {
+        _Matrix_iterator _Tmp = *this;
+        _Tmp -= _Off;
+        return _Tmp;
+    }
+
+    _NODISCARD _CONSTEXPR17 reference operator[](const ptrdiff_t _Off) const noexcept
+    {
+        return const_cast<reference>(_Mybase::operator[](_Off));
+    }
 };
 
 template<typename _Ty, size_t _Column, size_t _Line>
@@ -60,9 +352,6 @@ public:
 
     using iterator       = _Matrix_iterator<_Ty, _Column, _Line>;
     using const_iterator = _Matrix_const_iterator<_Ty, _Column, _Line>;
-
-    using reverse_iterator       = _STD reverse_iterator<iterator>;
-    using const_reverse_iterator = _STD reverse_iterator<const_iterator>;
 
     // -- Value container --
     _STD array<_Ty, _Line> _Elems[_Column]; // using GLM's method
@@ -196,6 +485,137 @@ public:
 
     template<size_t _Column2, size_t _Line2>
     constexpr basic_matrix(const basic_matrix<_Ty, _Column2, _Line2>& x);
+
+    // -- STL Iterators --
+
+    _NODISCARD _CONSTEXPR17 iterator cbegin() noexcept
+    {
+        return iterator(_Elems, 0, 0, iterator::Column);
+    }
+
+    _NODISCARD _CONSTEXPR17 iterator lbegin() noexcept
+    {
+        return iterator(_Elems, 0, 0, iterator::Line);
+    }
+
+    _NODISCARD _CONSTEXPR17 iterator cend() noexcept
+    {
+        return iterator(_Elems, _Column, 0, iterator::Column);
+    }
+
+    _NODISCARD _CONSTEXPR17 iterator lend() noexcept
+    {
+        return iterator(_Elems, 0, _Line, iterator::Line);
+    }
+    /*
+    _NODISCARD _CONSTEXPR17 const_iterator cbegin()const noexcept
+    {
+        return const_iterator(_Elems, 0, 0, const_iterator::Column);
+    }
+
+    _NODISCARD _CONSTEXPR17 const_iterator lbegin()const noexcept
+    {
+        return const_iterator(_Elems, 0, 0, const_iterator::Line);
+    }
+
+    _NODISCARD _CONSTEXPR17 const_iterator cend()const noexcept
+    {
+        return const_iterator(_Elems, _Column, 0, const_iterator::Column);
+    }
+
+    _NODISCARD _CONSTEXPR17 const_iterator lend()const noexcept
+    {
+        return const_iterator(_Elems, 0, _Line, const_iterator::Line);
+    }
+    */
+    _NODISCARD _CONSTEXPR17 iterator begin() noexcept
+    {
+        return cbegin();
+    }
+
+    _NODISCARD _CONSTEXPR17 iterator end() noexcept
+    {
+        return cend();
+    }
+    /*
+    _NODISCARD _CONSTEXPR17 const_iterator begin()const noexcept
+    {
+        return cbegin();
+    }
+
+    _NODISCARD _CONSTEXPR17 const_iterator end()const noexcept
+    {
+        return cend();
+    }
+    */
+    // -- Elementary row operations --
+
+    _NODISCARD constexpr basic_matrix<_Ty, _Column, _Line> swap(size_type _Pos1, size_type _Pos2, _STD string _Option = "Line")
+    {
+        _STL_VERIFY(_Option == "Line" || _Option == "Column", "invalid option");
+        basic_matrix<_Ty, _Column, _Line> _Cpy = *this;
+        if (_Option == "Line")
+        {
+            _STL_VERIFY(_Pos1 <= _Line && _Pos2 <= _Line, "matrix subscript out of range");
+            for (size_t i = 0; i < _Column; i++)
+            {
+                _Cpy[i][_Pos1 - 1] = this->_Elems[i][_Pos2 - 1];
+                _Cpy[i][_Pos2 - 1] = this->_Elems[i][_Pos1 - 1];
+            }
+        }
+        else if (_Option == "Column")
+        {
+            _STL_VERIFY(_Pos1 <= _Column && _Pos2 <= _Column, "matrix subscript out of range");
+            _Cpy[_Pos1 - 1].swap(_Cpy[_Pos2 - 1]);
+        }
+        return _Cpy;
+    }
+
+    _NODISCARD constexpr basic_matrix<_Ty, _Column, _Line> scale(size_type _Pos, _Ty _Multiply, _STD string _Option = "Line")
+    {
+        _STL_VERIFY(_Option == "Line" || _Option == "Column", "invalid option");
+        basic_matrix<_Ty, _Column, _Line> _Cpy = *this;
+        if (_Option == "Line")
+        {
+            _STL_VERIFY(_Pos <= _Line, "matrix subscript out of range");
+            for (size_t i = 0; i < _Column; i++)
+            {
+                _Cpy[i][_Pos - 1] *= _Multiply;
+            }
+        }
+        else if (_Option == "Column")
+        {
+            _STL_VERIFY(_Pos <= _Column, "matrix subscript out of range");
+            for (size_t i = 0; i < _Line; i++)
+            {
+                _Cpy[_Pos - 1][i] *= _Multiply;
+            }
+        }
+        return _Cpy;
+    }
+
+    _NODISCARD constexpr basic_matrix<_Ty, _Column, _Line> add(size_type _Pos1, size_type _Pos2, _Ty _Multiply, _STD string _Option = "Line")
+    {
+        _STL_VERIFY(_Option == "Line" || _Option == "Column", "invalid option");
+        basic_matrix<_Ty, _Column, _Line> _Cpy = *this;
+        if (_Option == "Line")
+        {
+            _STL_VERIFY(_Pos1 <= _Line && _Pos2 <= _Line, "matrix subscript out of range");
+            for (size_t i = 0; i < _Column; i++)
+            {
+                _Cpy[i][_Pos2 - 1] += _Cpy[i][_Pos1 - 1] * _Multiply;
+            }
+        }
+        else if (_Option == "Column")
+        {
+            _STL_VERIFY(_Pos1 <= _Column && _Pos2 <= _Column, "matrix subscript out of range");
+            for (size_t i = 0; i < _Line; i++)
+            {
+                _Cpy[_Pos2 - 1][i] += _Cpy[_Pos1 - 1][i] * _Multiply;
+            }
+        }
+        return _Cpy;
+    }
 
     // -- Functions in linear algebra --
 
