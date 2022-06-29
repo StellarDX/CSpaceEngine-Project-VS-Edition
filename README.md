@@ -27,6 +27,7 @@ os.Write(); // export to file
  * Basic math functions for vecs
  * Solving polynomial equations
  * Algorithms from GLSL
+ * A basic matrix class and linear algebra functions
 
 ## TODO
  * Star Luminosity calculations
