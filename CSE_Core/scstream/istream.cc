@@ -140,6 +140,12 @@ void parser::ParseType(std::string::iterator& It, std::string::iterator& End, IS
 
 	State S = ParsingType;
 
+	if (*It == 'L' && Line.find("LogLevel"))
+	{
+		_SC Log_IS.Out("ISCStream", "WARNING", "A new log level is detected in this file, skipping.", LogLevel);
+		return;
+	}
+
 	while (It != End)
 	{
 		switch (S)
@@ -637,8 +643,12 @@ ISCStream parser::parse()
 				continue;
 			}
 
-			if (Find(It, Line, "Orbit") && S == Base)
+			if ((Find(It, Line, "Orbit") || Find(It, Line, "BinaryOrbit")) && S == Base)
 			{
+				if (Find(It, Line, "BinaryOrbit"))
+				{
+					Current.Catalogs[i].Binary = true;
+				}
 				S = InOrbit;
 				continue;
 			}
@@ -1121,6 +1131,12 @@ Object GetSEObject(ISCStream istream, string name)
 	Obj.StaticPos = GetVec3(istream.Catalogs[ObjectNum].BasicData, "StaticPosPolar");
 	Obj.FixedPos = GetVec3(istream.Catalogs[ObjectNum].BasicData, "FixedPosPolar");
 	#endif
+	Obj.Orbit.Binary = istream.Catalogs[ObjectNum].Binary;
+	if (Obj.Orbit.Binary)
+	{
+		Obj.Orbit.Separation = GetNumber(istream.Catalogs[ObjectNum].Orbit, "Separation") * AU;
+		Obj.Orbit.PositionAngle = GetNumber(istream.Catalogs[ObjectNum].Orbit, "PositionAngle");
+	}
 	Obj.Orbit.AnalyticModel = GetData(istream.Catalogs[ObjectNum].Orbit, "AnalyticModel");
 	Obj.Orbit.RefPlane = GetData(istream.Catalogs[ObjectNum].Orbit, "RefPlane");
 	Obj.Orbit.Eccentricity = GetNumber(istream.Catalogs[ObjectNum].Orbit, "Eccentricity");
@@ -1395,7 +1411,7 @@ Object GetSEObject(ISCStream istream, string name)
 	}
 
 	// Ocean
-	Obj.NoOcean = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoOcean");
+	Obj.NoOcean = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoOcean") || istream.Catalogs[ObjectNum].Ocean.empty();
 	if (!Obj.NoOcean)
 	{
 		if (find(istream.Catalogs[ObjectNum].Ocean, "Height"))
@@ -1422,7 +1438,7 @@ Object GetSEObject(ISCStream istream, string name)
 	}
 
 	// Clouds
-	Obj.NoClouds = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoClouds");
+	Obj.NoClouds = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoClouds") || istream.Catalogs[ObjectNum].Clouds.empty();
 	if (!istream.Catalogs[ObjectNum].Clouds.empty() && !Obj.NoClouds)
 	{
 		Obj.Clouds.cloudsParams1 = vec4
@@ -1469,7 +1485,7 @@ Object GetSEObject(ISCStream istream, string name)
 	}
 
 	// Atmosphere
-	Obj.NoAtmosphere = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoAtmosphere");
+	Obj.NoAtmosphere = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoAtmosphere") || istream.Catalogs[ObjectNum].Atmosphere.empty();
 	if (!Obj.NoAtmosphere)
 	{
 		Obj.Atmosphere.Model = GetData(istream.Catalogs[ObjectNum].Atmosphere, "Model");
@@ -1486,7 +1502,7 @@ Object GetSEObject(ISCStream istream, string name)
 	}
 
 	// Aurora
-	Obj.NoAurora = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoAurora");
+	Obj.NoAurora = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoAurora") || istream.Catalogs[ObjectNum].Aurora.empty();
 	if (!Obj.NoAurora)
 	{
 		Obj.Aurora.Height = GetNumber(istream.Catalogs[ObjectNum].Aurora, "Height");
@@ -1513,7 +1529,7 @@ Object GetSEObject(ISCStream istream, string name)
 	}
 
 	// Rings
-	Obj.NoRings = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoRings");
+	Obj.NoRings = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoRings") || istream.Catalogs[ObjectNum].Rings.empty();
 	if (!Obj.NoRings)
 	{
 		Obj.Rings.Texture = GetData(istream.Catalogs[ObjectNum].Rings, "Texture");
@@ -1569,7 +1585,7 @@ Object GetSEObject(ISCStream istream, string name)
 	}
 
 	// Accretion Disk
-	Obj.NoAccretionDisk = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoAccretionDisk");
+	Obj.NoAccretionDisk = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoAccretionDisk") || istream.Catalogs[ObjectNum].AccDisk.empty();
 	if (!Obj.NoAccretionDisk)
 	{
 		float64 InnerRadius;
@@ -1658,7 +1674,7 @@ Object GetSEObject(ISCStream istream, string name)
 	}
 
 	// Star Corona
-	Obj.NoCorona = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoCorona") || Obj.Type != "Star";
+	Obj.NoCorona = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoCorona") || Obj.Type != "Star" || istream.Catalogs[ObjectNum].Corona.empty();
 	if (!Obj.NoCorona)
 	{
 		Obj.Corona.Shape = vec4
@@ -1673,7 +1689,7 @@ Object GetSEObject(ISCStream istream, string name)
 	}
 
 	// Comet Tail
-	Obj.NoCometTail = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoCometTail");
+	Obj.NoCometTail = GetBool(istream.Catalogs[ObjectNum].BasicData, "NoCometTail") || istream.Catalogs[ObjectNum].CometTail.empty();
 	if (!Obj.NoCometTail)
 	{
 		Obj.CometTail.MaxLength = GetNumber(istream.Catalogs[ObjectNum].CometTail, "MaxLength");

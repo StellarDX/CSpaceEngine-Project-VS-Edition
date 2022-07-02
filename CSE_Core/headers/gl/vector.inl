@@ -1,5 +1,8 @@
 #include "gltypes.h"
 
+#ifndef __GLTYPES_INL_
+#define __GLTYPES_INL_
+
 _CSE_BEGIN
 
 template<typename genType>
@@ -152,19 +155,17 @@ bool all(bvec x)       // bvec can be bvec2, bvec3 or bvec4
 	return result;
 }
 
-bvec2 operator!(bvec2 x)
+template<typename bvec> requires vecBType<bvec>
+bvec operator!(bvec x)
 {
-	return bvec2(!x[0], !x[1]);
-}
-
-bvec3 operator!(bvec3 x)
-{
-	return bvec3(!x[0], !x[1], !x[2]);
-}
-
-bvec4 operator!(bvec4 x)
-{
-	return bvec4(!x[0], !x[1], !x[2], !x[4]);
+	bvec result;
+	for (size_t i = 0; i < x.size(); ++i)
+	{
+		result[i] = !x[i];
+	}
+	return result;
 }
 
 _CSE_END
+
+#endif

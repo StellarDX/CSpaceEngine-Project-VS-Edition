@@ -153,9 +153,8 @@ bool any(bvec x);
 template<typename bvec> requires vecBType<bvec>
 bool all(bvec x);
 
-bvec2 operator!(bvec2 x); // because of "not" is already exist as a operator and can't be overloaded, so use this substitusion.
-bvec3 operator!(bvec3 x);
-bvec4 operator!(bvec4 x);
+template<typename bvec> requires vecBType<bvec>
+bvec operator!(bvec x); // because of "not" is already exist as a operator and can't be overloaded, so use this substitusion.
 
 _CSE_END
 

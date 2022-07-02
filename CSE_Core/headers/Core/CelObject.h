@@ -63,6 +63,12 @@ public:
 class OrbitParam
 {
 public:
+	// Binary
+	bool Binary = false;
+	float64 Separation = NO_DATA_FLOAT_INF;
+	float64 PositionAngle = NO_DATA_FLOAT_INF;
+
+	// Non-Binary
 	std::string AnalyticModel = NO_DATA_STRING;
 	std::string RefPlane = NO_DATA_STRING;
 	float64 Epoch = NO_DATA_FLOAT_INF;

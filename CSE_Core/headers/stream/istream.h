@@ -67,6 +67,7 @@ public:
         _SC SCMap AccDisk;
         _SC SCMap Corona;
         _SC SCMap CometTail;
+        bool Binary = false;
         _SC SCMap Orbit;
     };
 private:

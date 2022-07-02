@@ -1,4 +1,4 @@
-/////////////////////////////////////////////////////////////
+ï»¿/////////////////////////////////////////////////////////////
 //                                                         //
 //              Math module for CSpaceEngine               //
 //                                                         //
@@ -231,15 +231,15 @@ float64 ln64f(float64 x);*/
 /// <param name="power">Specify the power to which to raise x.</param>
 float64 pow(float64 x, float64 power); // base functions
 /// <summary>
-/// Returns the square root of x, i.e. the value ¡Ìx.
+/// Returns the square root of x, i.e. the value âˆšx.
 /// </summary>
 float64 sqrt(float64 x);
 /// <summary>
-/// Returns the inverse of the square root of x, i.e. the value 1/¡Ìx
+/// Returns the inverse of the square root of x, i.e. the value 1/âˆšx
 /// </summary>
 float64 inversesqrt(float64 x);
 /// <summary>
-/// Returns the cube root of x, i.e. the value 3¡Ìx.
+/// Returns the cube root of x, i.e. the value 3âˆšx.
 /// </summary>
 float64 cbrt(float64 x);
 
@@ -354,7 +354,7 @@ int SolveQuartic(InputArray Coeffs, OutputArray& Roots, int64 p_Error = 10);
    can't be expressed as nth roots. In other words, there is no common solving 
    formulas for these equations. However, this doesn't mean that they are 
    completely unsolvable. Iterations maybe the best method to find numerical 
-   roots. Here use the Durand¨CKerner method to solve this problem.
+   roots. Here use the Durandâ€“Kerner method to solve this problem.
 \* ************************************************************************** */
 
 /// <summary>

@@ -126,7 +126,6 @@ void OSCStream::Write()
 		Optical(Catalog[i]);
 		Output << '\n';
 		Rotation(Catalog[i]);
-		Output << '\n';
 		if (!Catalog[i].NoLife) { Life(Catalog[i]); }
 		/*else
 		{
@@ -296,6 +295,7 @@ void OSCStream::Rotation(Object Obj)
 	if ((_Fmtfl & (1 << ControlKey1)) && (_Fmtfl & (1 << ControlKey2))){MoonDE();}
 
 	Output.precision(BasicDataPrecision);
+	Output << '\n';
 }
 
 void OSCStream::Orbit(Object Obj)
