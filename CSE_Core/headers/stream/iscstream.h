@@ -13,7 +13,7 @@
 // 0 - do not log
 // 1 - log errors and warnings only
 // 2 - log everything
-#define ILogLevel    1
+#define ILogLevel    2
 
 #include "..\Core\CSECore.h"
 #include "..\gl\gltypes.h"
