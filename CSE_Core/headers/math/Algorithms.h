@@ -173,6 +173,9 @@ float64 inverse_smoothstep(float64 x); // Inverse function of smoothstep
 
 template<typename genType> requires vecType<genType> genType smoothstep(genType edge0, genType edge1, genType x);
 
+float64 isinf(float64 x);
+float64 isnan(float64 x);
+
 _CSE_END
 
 #include "../../astromath/Algorithms.Template.inl"

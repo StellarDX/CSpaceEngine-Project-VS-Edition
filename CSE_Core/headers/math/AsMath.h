@@ -42,8 +42,8 @@ template<>struct floatType<complex64> { typedef complex64 type; };
 template<typename genType> // Only used in C++20
 concept floatType =
 (
-	is_same_v<genType, float64> ||
-	is_same_v<genType, complex64>
+	_STD is_same_v<genType, float64> ||
+	_STD is_same_v<genType, complex64>
 );
 
 class MathException : public std::runtime_error // output errors

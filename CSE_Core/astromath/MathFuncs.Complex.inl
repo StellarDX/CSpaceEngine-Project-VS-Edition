@@ -46,7 +46,7 @@ genType sec(genType radians)
 template<typename genType> requires floatType<genType>
 genType csc(genType radians)
 {
-	return typename floatType<genType>::type();
+	return 1.0 / sin<complex64>(radians);
 }
 
 ///////////////////////////////////// INVERSE ////////////////////////////////////

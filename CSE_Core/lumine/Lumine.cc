@@ -4,20 +4,15 @@
 
 #include "../headers/lumine/Lumine.h"
 
-// Basic luminosity functions
-
 _CSE_BEGIN
 
 CSELog LumineLog;
 
-float64 _Lum_Stefan_Boltzmann_Law(float64 _Radius, float64 _Eff_Temp)
-{
-	return 4. * CSE_PI * pow(_Radius, 2) * StBConstant * pow(_Eff_Temp, 4);
-}
+// Basic luminosity functions
 
 float64 GetLuminosity(float64 Radius, float64 Teff)
 {
-	return _Lum_Stefan_Boltzmann_Law(Radius, Teff);
+	return 4. * CSE_PI * pow(Radius, 2) * StBConstant * pow(Teff, 4);
 }
 
 void GetLuminosity(Object* Src)
@@ -35,7 +30,12 @@ void GetLuminosity(Object* Src)
 	}
 
 	float64 Radius = cbrt((Src->Dimensions.x / 2.) * (Src->Dimensions.y / 2.) * (Src->Dimensions.z / 2.));
-	Src->Luminosity = _Lum_Stefan_Boltzmann_Law(Radius, Src->Teff);
+	Src->Luminosity = GetLuminosity(Radius, Src->Teff);
+}
+
+float64 GetStarAbsMagn(float64 _AppMagn, float64 _Dist, float64 _Extinction)
+{
+	return _AppMagn - 5. * log(_Dist * Parsec - 1.) - _Extinction;
 }
 
 _CSE_END

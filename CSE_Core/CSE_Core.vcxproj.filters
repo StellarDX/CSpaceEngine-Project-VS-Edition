@@ -48,12 +48,6 @@
     <ClInclude Include="headers\math\AsMath.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\stream\istream.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\stream\ostream.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\stream\scstream.h">
       <Filter>Header files</Filter>
     </ClInclude>
@@ -73,6 +67,12 @@
       <Filter>GLSL</Filter>
     </ClInclude>
     <ClInclude Include="headers\math\Algorithms.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\stream\iscstream.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\stream\oscstream.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -107,12 +107,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="scstream\istream.cc">
-      <Filter>SC Stream</Filter>
-    </ClCompile>
-    <ClCompile Include="scstream\ostream.cc">
-      <Filter>SC Stream</Filter>
-    </ClCompile>
     <ClCompile Include="datetime\Date_Time.cpp">
       <Filter>DateTime</Filter>
     </ClCompile>
@@ -124,6 +118,18 @@
     </ClCompile>
     <ClCompile Include="astromath\Algorithms.cc">
       <Filter>Math Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="lumine\SpTypes.cc">
+      <Filter>Lumine</Filter>
+    </ClCompile>
+    <ClCompile Include="scstream\iscstream.cc">
+      <Filter>SC Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="scstream\oscstream.cc">
+      <Filter>SC Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="scstream\object.cc">
+      <Filter>SC Stream</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

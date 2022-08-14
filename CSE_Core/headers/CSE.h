@@ -18,13 +18,15 @@
 #define __CSE__
 
 #include "Core/CSECore.h"
-#include "Core/ConstLists.h"
 #include "Core/CelObject.h"
 
 #include "gl/gltypes.h"
-#include "stream/scstream.h"
 #include "math/AsMath.h"
+#include "Core/ConstLists.h"
+
 #include "date/Date_Time.h"
+
+#include "stream/scstream.h"
 
 #include "lumine/Lumine.h"
 #include "lumine/SpTypes.h"

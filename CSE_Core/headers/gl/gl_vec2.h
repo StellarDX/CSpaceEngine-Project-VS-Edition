@@ -3,6 +3,7 @@
 #ifndef __GLVECTOR2__
 #define __GLVECTOR2__
 
+#include <array>
 #include <ostream>
 #include "..\Core\CSECore.h"
 
@@ -44,6 +45,19 @@ public:
 	constexpr gl_vec2& operator*=(const gl_vec2& v);
 	constexpr gl_vec2& operator/=(const genType& scalar);
 	constexpr gl_vec2& operator/=(const gl_vec2& v);
+
+	// --STL Compatbility--
+
+	constexpr explicit gl_vec2(std::array<genType, 2> _xy)
+	{
+		x = _xy[0];
+		y = _xy[1];
+	}
+
+	operator std::array<genType, 2>()
+	{
+		return std::array<genType, 2>(x, y);
+	}
 };
 
 // -- Unary operators --

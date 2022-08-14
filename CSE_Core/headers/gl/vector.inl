@@ -1,5 +1,7 @@
 #include "gltypes.h"
 
+#include <cmath>
+
 #ifndef __GLTYPES_INL_
 #define __GLTYPES_INL_
 
@@ -164,6 +166,48 @@ bvec operator!(bvec x)
 		result[i] = !x[i];
 	}
 	return result;
+}
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec2 isinf(_GL gl_vec2<genType> x)
+{
+	return bvec2(_STD isinf(x.x), _STD isinf(x.y));
+}
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec3 isinf(_GL gl_vec3<genType> x)
+{
+	return bvec3(_STD isinf(x.x), _STD isinf(x.y), _STD isinf(x.z));
+}
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec4 isinf(_GL gl_vec4<genType> x)
+{
+	return bvec4(_STD isinf(x.x), _STD isinf(x.y), _STD isinf(x.z), _STD isinf(x.w));
+}
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec2 isnan(_GL gl_vec2<genType> x)
+{
+	return bvec2(_STD isnan(x.x), _STD isnan(x.y));
+}
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec3 isnan(_GL gl_vec3<genType> x)
+{
+	return bvec3(_STD isnan(x.x), _STD isnan(x.y), _STD isnan(x.z));
+}
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec4 isnan(_GL gl_vec4<genType> x)
+{
+	return bvec4(_STD isnan(x.x), _STD isnan(x.y), _STD isnan(x.z), _STD isnan(x.w));
 }
 
 _CSE_END

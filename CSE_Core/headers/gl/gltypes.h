@@ -39,38 +39,36 @@ template<>struct vecType<vec3> { typedef vec3 type; };
 template<>struct vecType<vec4> { typedef vec4 type; };
 #endif
 
-using std::is_same_v;
-
 template<typename genType> // Only used in C++20
 concept vecType =
 (
-	is_same_v<genType, vec2> ||
-	is_same_v<genType, vec3> ||
-	is_same_v<genType, vec4>
+	_STD is_same_v<genType, vec2> ||
+	_STD is_same_v<genType, vec3> ||
+	_STD is_same_v<genType, vec4>
 );
 
 template<typename genIType> // Only used in C++20
 concept vecIType =
 (
-	is_same_v<genIType, ivec2> ||
-	is_same_v<genIType, ivec3> ||
-	is_same_v<genIType, ivec4>
+	_STD is_same_v<genIType, ivec2> ||
+	_STD is_same_v<genIType, ivec3> ||
+	_STD is_same_v<genIType, ivec4>
 );
 
 template<typename genUType> // Only used in C++20
 concept vecUType =
 (
-	is_same_v<genUType, uvec2> ||
-	is_same_v<genUType, uvec3> ||
-	is_same_v<genUType, uvec4>
+	_STD is_same_v<genUType, uvec2> ||
+	_STD is_same_v<genUType, uvec3> ||
+	_STD is_same_v<genUType, uvec4>
 );
 
 template<typename genBType> // Only used in C++20
 concept vecBType =
 (
-	is_same_v<genBType, bvec2> ||
-	is_same_v<genBType, bvec3> ||
-	is_same_v<genBType, bvec4>
+	_STD is_same_v<genBType, bvec2> ||
+	_STD is_same_v<genBType, bvec3> ||
+	_STD is_same_v<genBType, bvec4>
 );
 
 // ----------Vector Functions---------- //
@@ -155,6 +153,30 @@ bool all(bvec x);
 
 template<typename bvec> requires vecBType<bvec>
 bvec operator!(bvec x); // because of "not" is already exist as a operator and can't be overloaded, so use this substitusion.
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec2 isinf(_GL gl_vec2<genType> x);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec3 isinf(_GL gl_vec3<genType> x);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec4 isinf(_GL gl_vec4<genType> x);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec2 isnan(_GL gl_vec2<genType> x);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec3 isnan(_GL gl_vec3<genType> x);
+
+template<typename genType>
+requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
+bvec4 isnan(_GL gl_vec4<genType> x);
 
 _CSE_END
 

@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <iomanip>
-#include <cmath>
+#include <..\headers\math\AsMath.h>
 #include <.\date\Date_Time.h>
 
 using namespace std;
@@ -33,7 +33,7 @@ double ModifiedJD(double JD)
 
 int64 TruncatedJD(double JD)
 {
-    return (int64)floor(JD - 2440000.5);
+    return (int64)cse::floor(JD - 2440000.5);
 }
 
 double DublinJD(double JD)
@@ -53,12 +53,12 @@ double CCSDSJD(double JD) // https://en.wikipedia.org/wiki/Consultative_Committe
 
 int64 LilianDate(double JD) // https://en.wikipedia.org/wiki/Lilian_date
 {
-    return (long long)floor(JD - 2299159.5);
+    return (long long)cse::floor(JD - 2299159.5);
 }
 
 int64 RataDie(double JD) // https://en.wikipedia.org/wiki/Rata_Die
 {
-    return (int64)floor(JD - 1721424.5);
+    return (int64)cse::floor(JD - 1721424.5);
 }
 
 double MarsSolDate(double JD) // https://en.wikipedia.org/wiki/Timekeeping_on_Mars#Mars_Sol_Date

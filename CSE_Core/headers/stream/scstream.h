@@ -3,7 +3,7 @@
 #ifndef __SCSTREAM__
 #define __SCSTREAM__
 
-#include "istream.h"
-#include "ostream.h"
+#include "iscstream.h"
+#include "oscstream.h"
 
 #endif

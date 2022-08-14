@@ -9,6 +9,7 @@
 
 #include "CSECore.h"
 #include "..\gl\gltypes.h"
+#include "..\stream\iscstream.h"
 
 // Default rotation model:
 // 0 = Simple
@@ -121,22 +122,22 @@ struct Landscape // Many parameters were merged.
 	vec4    plantsParams1 = vec4(NO_DATA_FLOAT_INF);  // (climateGrassMin,  climateGrassMax,  climateForestMin,    climateForestMax)
 	vec4    plantsParams2 = vec4(NO_DATA_FLOAT_INF);  // (climateSteppeMin, climateSteppeMax, humidity,            plantsBiomeOffset)
 	vec4    mainParams = vec4(NO_DATA_FLOAT_INF);     // (mainFreq,         terraceProb,      oceanType,           tidalLock)
-	vec4    textureParams = vec4(NO_DATA_FLOAT_INF, 0.0, vec2(NO_DATA_FLOAT_INF));  // (texScale,         0.0,              venusMagn,           venusFreq)
+	vec4    textureParams = vec4(NO_DATA_FLOAT_INF);  // (texScale,         #NO_DATA,         venusMagn,           venusFreq)
 	vec4    mareParams = vec4(NO_DATA_FLOAT_INF);     // (seaLevel,         mareFreq,         sqrt(mareDensity),   icecapHeight)
 	vec4    montesParams = vec4(NO_DATA_FLOAT_INF);   // (montesMagn,       montesFreq,       montesFraction,      montesSpiky)
 	vec4    dunesParams = vec4(NO_DATA_FLOAT_INF);    // (dunesMagn,        dunesFreq,        dunesDensity,        drivenDarkening)
 	vec4    hillsParams = vec4(NO_DATA_FLOAT_INF);    // (hillsMagn,        hillsFreq,        hillsDensity,        hills2Density)
 	vec4    riversParams = vec4(NO_DATA_FLOAT_INF);   // (riversMagn,       riversFreq,       riversSin,           beachWidth)
-	vec4    riftsParams = vec4(vec3(NO_DATA_FLOAT_INF), 0.0);    // (riftsMagn,        riftsFreq,        riftsSin,            0.0)
+	vec4    riftsParams = vec4(NO_DATA_FLOAT_INF);    // (riftsMagn,        riftsFreq,        riftsSin,            #NO_DATA)
 	vec4    canyonsParams = vec4(NO_DATA_FLOAT_INF);  // (canyonsMagn,      canyonsFreq,      canyonsFraction,     erosion)
 	vec4    cracksParams = vec4(NO_DATA_FLOAT_INF);   // (cracksMagn,       cracksFreq,       cracksOctaves,       craterRayedFactor)
 	vec4    craterParams = vec4(NO_DATA_FLOAT_INF);   // (craterMagn,       craterFreq,       sqrt(craterDensity), craterOctaves)
 	vec4    volcanoParams1 = vec4(NO_DATA_FLOAT_INF); // (volcanoMagn,      volcanoFreq,      volcanoDensity,      volcanoOctaves)
 	vec4    volcanoParams2 = vec4(NO_DATA_FLOAT_INF); // (volcanoActivity,  volcanoFlows,     volcanoRadius,       volcanoTemp)
 	vec4    lavaParams = vec4(NO_DATA_FLOAT_INF);     // (lavaCoverage,     snowLevel,        surfTemperature,     heightTempGrad)
-	vec3    lavaDetails = vec3(NO_DATA_FLOAT_INF);    // (Tidal,            Sun,              Young)
+	vec4    lavaDetails = vec4(NO_DATA_FLOAT_INF);    // (Tidal,            Sun,              Young,               #NO_DATA)
 	vec4    cycloneParams = vec4(NO_DATA_FLOAT_INF);  // (cycloneMagn,      cycloneFreq,      cycloneDensity,      cycloneOctaves)
-	vec4    cycloneParams2 = vec4(NO_DATA_FLOAT_INF);  // (cycloneMagn2,      cycloneFreq2,      cycloneDensity2,      cycloneOctaves2)
+	vec4    cycloneParams2 = vec4(NO_DATA_FLOAT_INF); // (cycloneMagn2,     cycloneFreq2,     cycloneDensity2,     cycloneOctaves2)
 
 	// Non-procedural
 	std::string DiffMap = NO_DATA_STRING;
@@ -161,6 +162,8 @@ struct Landscape // Many parameters were merged.
 	vec4 HapkeParams = vec4(NO_DATA_FLOAT_INF); // Hapke spot bright, 1 / Hapke spot width, Hapke CB spot bright, 1 / Hapke CB spot width
 	float64 DayAmbient = NO_DATA_FLOAT_INF;
 	vec3 ModulateColor = vec3(NO_DATA_FLOAT_INF);
+
+	float64 RingsWinter = NO_DATA_FLOAT_INF;
 };
 
 /*-------------------------------------------------------------------------*\
@@ -185,20 +188,19 @@ struct CloudsParam
 {
 	vec4 cloudsParams1 = vec4(NO_DATA_FLOAT_INF);  // (cloudsFreq,       cloudsOctaves,    stripeZones,         stripeTwist)
 	vec4 cloudsParams2 = vec4(NO_DATA_FLOAT_INF);  // (cloudsLayer,      cloudsNLayers,    stripeFluct,         cloudsCoverage)
-	float64 RingsWinter = NO_DATA_FLOAT_INF;
 	struct LayerDetails
 	{
-		std::string DiffMap;
-		std::string BumpMap;
-		float64 Height;
-		float64 Velocity;
-		float64 BumpHeight;
-		float64 BumpOffset;
-		float64 Hapke;
-		vec4 HapkeParams; // Hapke spot bright, 1 / Hapke spot width, Hapke CB spot bright, 1 / Hapke CB spot width
-		float64 DayAmbient;
-		vec4 ModulateColor; // Modulate color, opacity
-		float64 ModulateBright;
+		std::string DiffMap = NO_DATA_STRING;
+		std::string BumpMap = NO_DATA_STRING;
+		float64 Height = NO_DATA_FLOAT_INF;
+		float64 Velocity = NO_DATA_FLOAT_INF;
+		float64 BumpHeight = NO_DATA_FLOAT_INF;
+		float64 BumpOffset = NO_DATA_FLOAT_INF;
+		float64 Hapke = NO_DATA_FLOAT_INF;
+		vec4 HapkeParams = vec4(NO_DATA_FLOAT_INF); // Hapke spot bright, 1 / Hapke spot width, Hapke CB spot bright, 1 / Hapke CB spot width
+		float64 DayAmbient = NO_DATA_FLOAT_INF;
+		vec4 ModulateColor = vec4(NO_DATA_FLOAT_INF); // Modulate color, opacity
+		float64 ModulateBright = NO_DATA_FLOAT_INF;
 	};
 	std::vector<LayerDetails> Layer;
 };
@@ -212,6 +214,7 @@ struct AtmParam
 	std::string Model = NO_DATA_STRING;
 	float64 Height = NO_DATA_FLOAT_INF;
 	float64 Density = NO_DATA_FLOAT_INF;
+	float64 Adiabat = NO_DATA_FLOAT_INF;
 	float64 Pressure = NO_DATA_FLOAT_INF;
 	float64 Greenhouse = NO_DATA_FLOAT_INF;
 	float64 Bright = NO_DATA_FLOAT_INF;
@@ -341,6 +344,7 @@ public:
 	float64 Luminosity = NO_DATA_FLOAT_INF; // Visual Luminosity in Watts
 	float64 LumBol = NO_DATA_FLOAT_INF; // Bolometric Luminosity in Watts
 	float64 FeH = NO_DATA_FLOAT_INF;
+	float64 CtoO = NO_DATA_FLOAT_INF;
 	float64 Age = NO_DATA_FLOAT_INF; // Age in Years
 
 	// ------------------------------------------------------------ //
@@ -358,6 +362,11 @@ public:
 	// The following properties only used for star remnants
 	float64 KerrSpin = NO_DATA_FLOAT_INF;
 	float64 KerrCharge = NO_DATA_FLOAT_INF;
+
+	// Hack keys
+	float64 EndogenousHeating = NO_DATA_FLOAT_INF;
+	float64 ThermalLuminosity = NO_DATA_FLOAT_INF;
+	float64 ThermalLuminosityBol = NO_DATA_FLOAT_INF;
 
 	// ------------------------------------------------------------ //
 
@@ -384,7 +393,7 @@ public:
 
 	// Life parameters
 	bool NoLife = true;
-	int64 LifeCount = 0;
+	uint64 LifeCount = 0;
 	LifeParam Life[2];
 	// Interior
 	std::map<std::string, float64> Interior;
@@ -415,6 +424,13 @@ public:
 	bool NoCometTail = true;
 	CometTailParam CometTail;
 };
+
+/////////////////////////////////////////////////////////////////////////////////
+//                                  Functions                                  //
+/////////////////////////////////////////////////////////////////////////////////
+
+// Loading Object
+Object GetSEObject(ISCStream _Is, _STD string _Name);
 
 _CSE_END
 

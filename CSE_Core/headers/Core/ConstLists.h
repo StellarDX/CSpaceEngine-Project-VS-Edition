@@ -82,8 +82,9 @@ const long double Equation41 = (180.0 * 60.0 * 60.0 * AU) / CSE_PI;
 
 // List6: Units of Luminosity
 // -------------------------------------------------------------------------
-//      Name          Value        Note
-#define SolarLum      3.828E+26 // nominal solar luminosity defined by IAU
+//      Name          Value         Note
+#define SolarLum      3.828E+26  // nominal solar luminosity defined by IAU
+#define SolarLumBol   3.0128E+28 // zero points of the absolute and apparent bolometric magnitude scales
 
 
 // List7: Molar Masses

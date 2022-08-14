@@ -33,8 +33,8 @@
     <ClInclude Include="headers\math\Algorithms.h" />
     <ClInclude Include="headers\math\AsMath.h" />
     <ClInclude Include="headers\math\Geometry.h" />
-    <ClInclude Include="headers\stream\istream.h" />
-    <ClInclude Include="headers\stream\ostream.h" />
+    <ClInclude Include="headers\stream\iscstream.h" />
+    <ClInclude Include="headers\stream\oscstream.h" />
     <ClInclude Include="headers\stream\scstream.h" />
   </ItemGroup>
   <ItemGroup>
@@ -59,8 +59,10 @@
     <ClCompile Include="astromath\MathFuncs.cc" />
     <ClCompile Include="datetime\Date_Time.cpp" />
     <ClCompile Include="lumine\Lumine.cc" />
-    <ClCompile Include="scstream\istream.cc" />
-    <ClCompile Include="scstream\ostream.cc" />
+    <ClCompile Include="lumine\SpTypes.cc" />
+    <ClCompile Include="scstream\iscstream.cc" />
+    <ClCompile Include="scstream\object.cc" />
+    <ClCompile Include="scstream\oscstream.cc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -122,11 +124,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <TargetName>CSE</TargetName>
+    <TargetName>\Libraries\CSE</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>CSE</TargetName>
+    <TargetName>\Libraries\CSE</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

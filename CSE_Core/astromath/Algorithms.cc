@@ -284,4 +284,14 @@ float64 inverse_smoothstep(float64 x)
 	return 0.5 - std::sin(std::asin(1.0 - 2.0 * x) / 3.0);
 }
 
+float64 isinf(float64 x)
+{
+	return std::isinf(x);
+}
+
+float64 isnan(float64 x)
+{
+	return std::isnan(x);
+}
+
 _CSE_END

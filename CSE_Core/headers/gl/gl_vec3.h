@@ -57,6 +57,20 @@ public:
 	constexpr gl_vec3& operator*=(const gl_vec3& v);
 	constexpr gl_vec3& operator/=(const genType& scalar);
 	constexpr gl_vec3& operator/=(const gl_vec3& v);
+
+	// --STL Compatbility--
+
+	constexpr explicit gl_vec3(std::array<genType, 3> _xyz)
+	{
+		x = _xyz[0];
+		y = _xyz[1];
+		z = _xyz[2];
+	}
+
+	operator std::array<genType, 3>()
+	{
+		return std::array<genType, 3>(x, y, z);
+	}
 };
 
 // -- Unary operators --

@@ -88,6 +88,21 @@ public:
 	constexpr gl_vec4& operator*=(const gl_vec4& v);
 	constexpr gl_vec4& operator/=(const genType& scalar);
 	constexpr gl_vec4& operator/=(const gl_vec4& v);
+
+	// --STL Compatbility--
+
+	constexpr explicit gl_vec4(std::array<genType, 4> _xyzw)
+	{
+		x = _xyzw[0];
+		y = _xyzw[1];
+		z = _xyzw[2];
+		w = _xyzw[3];
+	}
+
+	operator std::array<genType, 4>()
+	{
+		return std::array<genType, 4>(x, y, z, w);
+	}
 };
 
 // -- Unary operators --

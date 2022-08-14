@@ -1,3 +1,23 @@
+/***
+*CSECore.h - definitions for internal modules and values
+*
+*       Copyright (C) StellarDX Astronomy.
+*
+*       This program is free software; you can redistribute it and/or modify
+*       it under the terms of the GNU General Public License as published by
+*       the Free Software Foundation; either version 2 of the License, or
+*       (at your option) any later version.
+*
+*       This program is distributed in the hope that it will be useful,
+*       but WITHOUT ANY WARRANTY; without even the implied warranty of
+*       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*       GNU General Public License for more details.
+*
+*       You should have received a copy of the GNU General Public License along
+*       with this program; If not, see <https://www.gnu.org/licenses/>.
+*
+****/
+
 #pragma once
 
 #ifndef __CSE_CORE__
@@ -8,7 +28,7 @@
 #include <ctime>
 #include <tchar.h>
 
-#define CSE_TITLE_STRING _T("StellarDX CSE Platform Binary")
+#define CSE_TITLE_STRING _T("StellarDX CSpaceEngine Runtime Platform Binary")
 
 #if defined _MSC_VER
 #define COMPILER_VERSION std::string("MSC " + std::to_string(_MSC_FULL_VER) + "(" + std::to_string(_MSC_BUILD) + ")")
@@ -49,6 +69,7 @@ _CSE_BEGIN
 typedef long long            int64;
 typedef double               float64;
 typedef unsigned long long   uint64;
+typedef std::u8string        stringu8;
 
 template<typename genTypeA = uint64, typename genTypeB = float64>
 inline constexpr genTypeB wrtval(genTypeA Value, uint64 Bits = sizeof(genTypeA))
@@ -69,6 +90,15 @@ inline constexpr genTypeB wrtval(genTypeA Value, uint64 Bits = sizeof(genTypeA))
 class CSELog
 {
 	std::ostream& Output = std::cout;
+
+	inline std::string gettime()
+	{
+		time_t _TVAL = time(nullptr);
+		tm Time;
+		gmtime_s(&Time, &_TVAL);
+		return std::to_string(Time.tm_hour) + ':' + std::to_string(Time.tm_min) + ':' + std::to_string(Time.tm_sec);
+	}
+
 public:
 	CSELog(){}
 	CSELog(std::ostream& os) : Output(os){}
@@ -90,30 +120,19 @@ public:
 	// 2 - log everything
 	#define SysLogLevel        1
 
-	inline std::string gettime()
+	inline void Out(std::string Thread, std::string Type, std::string LStr, int Level, bool Catalog = false)
 	{
-		time_t _TVAL = time(nullptr);
-		tm Time;
-		gmtime_s(&Time, &_TVAL);
-		return std::to_string(Time.tm_hour) + ':' + std::to_string(Time.tm_min) + ':' + std::to_string(Time.tm_sec);
-	}
+		#if SysLogLevel > 0
 
-	inline void Out(std::string Thread, std::string Type, std::string LStr, int Level)
-	{
-		#if CatalogLogLevel > 0
-
-		#ifdef _USE_CATALOG_LOG_LEVEL
-		#if CatalogLogLevel == 1 || CatalogLogLevel == 2
-		Level = Level < CatalogLogLevel ? Level : CatalogLogLevel;
-		#endif
-
-		#if CatalogLogLevel == 3 || CatalogLogLevel == 4
-		//#undef LogLevel
-		Level = CatalogLogLevel - 2;
-		#endif
-		#else
-		Level = SysLogLevel;
-		#endif
+		if (Catalog)
+		{
+			#if CatalogLogLevel == 1 || CatalogLogLevel == 2
+			Level = Level < CatalogLogLevel ? Level : CatalogLogLevel;
+			#elif CatalogLogLevel == 3 || CatalogLogLevel == 4
+			Level = CatalogLogLevel - 2;
+			#endif
+		}
+		else { Level = SysLogLevel; }
 
 		if (Level == 0) { return; }
 
@@ -123,7 +142,7 @@ public:
 			Output << '[' << gettime() << ']' << ' ';
 			#endif
 			#if LogThreadStamp == true
-			Output << "[" + Thread + "/" + Type + "]: ";
+			Output << "[" + Thread + "/" + Type + "] ";
 			#endif
 			Output << LStr << '\n';
 			return;
@@ -138,6 +157,16 @@ public:
 		#endif
 	}
 };
+
+// Report errors
+#define _CSE_LOG_ERROR(cond, except, returns)                        \
+        if (cond) { /* contextually convertible to bool paranoia */ }\
+		else {except; return returns;}                               \
+
+// Report fatal errors
+#define _CSE_VERIFY(cond, except)                                    \
+        if (cond) { /* contextually convertible to bool paranoia */ }\
+		else {throw except; exit(-1);}                          \
 
 _CSE_END
 
