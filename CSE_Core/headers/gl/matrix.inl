@@ -176,11 +176,86 @@ inline basic_matrix<_Ty, _Line, _Column> basic_matrix<_Ty, _Column, _Line>::Adju
 	return m0;
 }
 
+#if 0
 template<typename _Ty, size_t _Column, size_t _Line>
 inline basic_matrix<_Ty, _Line, _Column> basic_matrix<_Ty, _Column, _Line>::Inverse() const
 {
 	if (_Column != _Line) { return basic_matrix<_Ty, _Line, _Column>(wrtval(Q_NAN_DOUBLE)); }
 	return (1.0 / this->Determinant()) * this->Adjugate();
+}
+#endif
+
+template<typename _Ty, size_t _Column, size_t _Line>
+inline basic_matrix<_Ty, _Line, _Column> basic_matrix<_Ty, _Column, _Line>::Inverse() const
+{
+	if (_Column != _Line) { return basic_matrix<_Ty, _Line, _Column>(wrtval(Q_NAN_DOUBLE)); }
+	
+	// Matrix Inverse Using Gauss Jordan Method C++ Program
+	// Reference: https://www.codesansar.com/numerical-methods/matrix-inverse-using-gauss-jordan-cpp-output.htm
+	// This method is much faster than above because this doesn't need to calculate determinant value.
+
+	/* 1. Reading order of matrix */
+	/* 2. Reading Matrix */
+	basic_matrix<_Ty, _Column, _Line> _Cpy = *this;
+
+	/* Augmenting Identity Matrix of Order n */
+	basic_matrix<_Ty, _Column * 2, _Line> _Arg;
+	basic_matrix<_Ty, _Column, _Line> _Ident(1);
+	for (size_t i = 0;i < _Line;i++)
+	{
+		for (size_t j = 0;j < _Column;j++)
+		{
+			_Arg[j][i] = _Cpy[j][i];
+			_Arg[j + _Column][i] = _Ident[j][i];
+		}
+	}
+
+	/* Applying Gauss Jordan Elimination */
+	for (size_t i = 0;i < _Line;i++)
+	{
+		if (_Arg[i][i] == 0.0)
+		{
+			if (i == _Line - 1)
+			{
+				_STL_VERIFY(_Arg[i][i] != 0.0, "Matrix can't be inversed.");
+				return basic_matrix<_Ty, _Line, _Column>(wrtval(Q_NAN_DOUBLE));
+			}
+			_Arg = _Arg.swap(i + 1, i + 2, "Line");
+		}
+
+		for (size_t j = 0;j < _Column;j++)
+		{
+			if (i != j)
+			{
+				float64 ratio = _Arg[i][j] / _Arg[i][i];
+				for (size_t k = 1;k < 2 * _Column;k++)
+				{
+					_Arg[k][j] = _Arg[k][j] - ratio * _Arg[k][i];
+				}
+			}
+		}
+	}
+
+	/* Row Operation to Make Principal Diagonal to 1 */
+	for (size_t i = 0;i < _Line;i++)
+	{
+		for (size_t j = _Column;j < 2 * _Column;j++)
+		{
+			_Arg[j][i] = _Arg[j][i] / _Arg[i][i];
+		}
+	}
+
+	/* Exporting Inverse Matrix */
+	basic_matrix<_Ty, _Column, _Line> _Inv;
+	for (size_t i = 0;i < _Line;i++)
+	{
+		for (size_t j = 0;j < _Column;j++)
+		{
+			_Inv[j][i] = _Arg[j + _Column][i];
+		}
+	}
+
+	return _Inv;
 }
 
 template<typename _Ty, size_t _Column, size_t _Line>

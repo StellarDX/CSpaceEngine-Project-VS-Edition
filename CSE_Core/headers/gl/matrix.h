@@ -3,6 +3,8 @@
 // Reference:
 // [GLSL Document]https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.4.20.pdf
 // [GLM by G-Truc]https://glm.g-truc.net/0.9.4/api/a00142.html#gade0eb47c01f79384a6f38017ede17446
+// [Introduction to Linear Algebra(5th Edition) by Gilbert Strang]
+// https://github.com/Rumi381/All-Programming-E-Books-PDF/blob/master/Books/Introduction%20to%20Linear%20Algebra,%20Fifth%20Edition%20by%20Gilbert%20Strang%20(z-lib.org).pdf
 // Port by StellarDX, 2022.
 
 #pragma once
