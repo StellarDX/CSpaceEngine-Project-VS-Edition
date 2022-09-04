@@ -58,7 +58,7 @@ public:
 
 	void GetDate(int* year, int* month, int* day) const; // Extracts the date's year, month, and day, and assigns them to *year, *month, and *day. The pointers may be null.
 	bool setDate(int year, int month, int day);
-	std::string toString();
+	std::string toString(std::string _Fmt = "{}.{:02}.{:02}");
 
 	/// <summary>
 	/// Return a day number of week for date
@@ -111,7 +111,7 @@ public:
 	CSETime AddSecs(int s, int* AddDays = nullptr) const;
 
 	bool setHMS(int h, int m, int s, int ms = 0);
-	std::string toString();
+	std::string toString(std::string _Fmt = "{:02}:{:02}:{:02}.{:03}");
 
 	static bool IsValid(int h, int m, int s, int ms = 0);
 	static CSETime currentTime(); // Returns the current time as reported by the system clock.(Windows only)

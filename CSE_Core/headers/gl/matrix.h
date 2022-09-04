@@ -631,7 +631,10 @@ public:
     /// <summary>
     /// Returns the determinant value of the matrix.
     /// WARNING: This function is EXTREMELY INEFFICIENT for high-dimension matrices, with a time complexity in RIDICULOUS big O notation of O(n!)
-    /// Reference: https://www.tutorialspoint.com/cplusplus-program-to-compute-determinant-of-a-matrix
+    /// (But a new algorithm has found, the O notation has been reduced to O(n^3).)
+    /// Reference: 
+    /// https://www.tutorialspoint.com/cplusplus-program-to-compute-determinant-of-a-matrix
+    /// https://codereview.stackexchange.com/questions/204135/determinant-using-gauss-elimination
     /// </summary>
     float64 Determinant()const;
 

@@ -5,6 +5,7 @@
 #include <cassert>
 #include <ctime>
 #include <cmath>
+#include <format>
 #include <windows.h> // Windows only
 #include "..\headers\date\Date_Time.h"
 
@@ -354,9 +355,9 @@ bool CSEDate::setDate(int year, int month, int day)
 	}
 }
 
-std::string CSEDate::toString()
+std::string CSEDate::toString(std::string _Fmt)
 {
-	return std::to_string(years) + "." + std::to_string(months) + "." + std::to_string(days);
+	return std::vformat(_Fmt, std::make_format_args(years, months, days));
 }
 
 int CSEDate::dayOfWeek() const
@@ -742,13 +743,9 @@ bool CSETime::setHMS(int h, int m, int s, int ms)
 	}
 }
 
-std::string CSETime::toString()
+std::string CSETime::toString(std::string _Fmt)
 {
-	std::ostringstream newsec;
-	newsec.setf(std::ios::fixed);
-	newsec.precision(3);
-	newsec << seconds + msecs / 1000.0;
-	return std::to_string(hours) + ":" + std::to_string(minutes) + ":" + newsec.str();
+	return std::vformat(_Fmt, std::make_format_args(hours, minutes, seconds, msecs));
 }
 
 bool CSETime::IsValid(int h, int m, int s, int ms)

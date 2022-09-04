@@ -99,6 +99,8 @@ inline basic_matrix<_Ty, _Column - 1, _Line - 1> basic_matrix<_Ty, _Column, _Lin
 	return _Minor;
 }
 
+// Laplace Formula for finding determinant, very inefficient.
+#if 0
 template<typename _Ty, size_t _Size> requires (_Size == 1)
 inline constexpr _Ty _Determinent(const _STD array<_Ty, _Size>* _Elems, uint64 n = _Size)
 {
@@ -134,13 +136,52 @@ inline constexpr _Ty _Determinent(const _STD array<_Ty, _Size>* _Elems, uint64 n
 	}
 	return _Total;
 }
+#endif
+// A new algorithm based on gaussian elimination for determinants, more efficiency.
 
 template<typename _Ty, size_t _Column, size_t _Line>
 inline float64 basic_matrix<_Ty, _Column, _Line>::Determinant() const
 {
 	if (_Column != _Line) { return wrtval(Q_NAN_DOUBLE); }
 	if (this->length() == 1) { return _Elems[0][0]; }
-	else { return _Determinent<_Ty, _Line>(_Elems); }
+
+	basic_matrix<_Ty, _Column, _Line> matrix = *this;
+	uint64 N = static_cast<uint64>(_Line);
+	float64 det = 1;
+
+	for (uint64 i = 0; i < N; ++i) 
+	{
+		float64 pivotElement = matrix[i][i];
+		uint64 pivotRow = i;
+		for (uint64 row = i + 1; row < N; ++row)
+		{
+			if (std::abs(matrix[i][row]) > std::abs(pivotElement))
+			{
+				pivotElement = matrix[i][row];
+				pivotRow = row;
+			}
+		}
+		if (pivotElement == 0.0)
+		{
+			return 0.0;
+		}
+		if (pivotRow != i)
+		{
+			matrix = matrix.swap(i + 1, pivotRow + 1, "Line");
+			det *= -1.0;
+		}
+		det *= pivotElement;
+
+		for (uint64 row = i + 1; row < N; ++row)
+		{
+			for (uint64 col = i + 1; col < N; ++col)
+			{
+				matrix[col][row] -= matrix[i][row] * matrix[col][i] / pivotElement;
+			}
+		}
+	}
+
+	return det;
 }
 
 template<typename _Ty, size_t _Column, size_t _Line>
