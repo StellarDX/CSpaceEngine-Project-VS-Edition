@@ -1,4 +1,4 @@
-# SpaceEngine SDK(CSpaceEngine) static library for C++
+# CSpaceEngine static library for C++
 
 Using C++ to define, modify, complete Celestral Objects in SpaceEngine.
 
