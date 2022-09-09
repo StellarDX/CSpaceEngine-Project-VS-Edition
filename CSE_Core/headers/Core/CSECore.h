@@ -36,6 +36,10 @@
 #define COMPILER_VERSION std::string("GPP " + std::to_string(__GNUC__) + "." + std::to_string(__GNUC_MINOR__) + "." + std::to_string(__GNUC_PATCHLEVEL__))
 #endif
 
+//#define RC_INVOKED
+//#define NOWINRES
+#define NOMINMAX
+
 #define _CSE_BEGIN namespace cse {
 #define _CSE_END   }
 #define _CSE  cse::

@@ -1,5 +1,6 @@
 #include "../headers/lumine/SpTypes.h"
 #include <sstream>
+#include <format>
 
 using namespace std;
 
@@ -8,13 +9,76 @@ _CSE_BEGIN
 // Spectal type parser
 spectum::spectum(string _Str)
 {
-	if (_Str.find('/'))
+	if (_Str.find('/') != _Str.npos)
 	{
 		MultipleSpectumParse(_Str);
 	}
 	else
 	{
 		SingleSpectumParse(_Str, &Cls, &Cls2, &TyMax, &TyMin, &LumMax, &LumMin, &Data);
+	}
+}
+
+string spectum::str()
+{
+	if (this->empty()) { return ""; }
+	if (LumMax == WD) { return to_WDstr(&Cls, &Cls2, &TyMin, &TyMax, &LumMax, &LumMin, &Data); }
+
+	string _Str;
+
+	if (!empty(1))
+	{
+		_Str += to_str(&Cls, &TyMin, &TyMax, &LumMax, &LumMin, &Data);
+		if (!empty(2))
+		{
+			_Str += '/' + to_str(&Cls2, &Ty2Min, &Ty2Max, &Lum2Max, &Lum2Min, &Data2);
+		}
+	}
+
+	return _Str;
+}
+
+bool spectum::empty(uint8_t _Arg)
+{
+	auto Cls1Empty = Cls == static_cast<SpecClass>(-1);
+	auto TyMax1Empty = TyMax == static_cast<Type>(-1);
+	auto TyMin1Empty = TyMin == static_cast<Type>(-1);
+	auto LumMax1Empty = LumMax == static_cast<LumClass>(-1);
+	auto LumMin1Empty = LumMin == static_cast<LumClass>(-1);
+
+	auto Cls2Empty = Cls2 == static_cast<SpecClass>(-1);
+	auto TyMax2Empty = Ty2Max == static_cast<Type>(-1);
+	auto TyMin2Empty = Ty2Min == static_cast<Type>(-1);
+	auto LumMax2Empty = Lum2Max == static_cast<LumClass>(-1);
+	auto LumMin2Empty = Lum2Min == static_cast<LumClass>(-1);
+
+	auto Cls3Empty = Cls3 == static_cast<SpecClass>(-1);
+	auto TyMax3Empty = Ty3Max == static_cast<Type>(-1);
+	auto TyMin3Empty = Ty3Min == static_cast<Type>(-1);
+	auto LumMax3Empty = Lum3Max == static_cast<LumClass>(-1);
+	auto LumMin3Empty = Lum3Min == static_cast<LumClass>(-1);
+
+	auto _Empty1 = Cls1Empty && (TyMax1Empty && TyMin1Empty) && (LumMax1Empty && LumMin1Empty);
+	auto _Empty2 = Cls2Empty && (TyMax2Empty && TyMin2Empty) && (LumMax2Empty && LumMin2Empty);
+	auto _Empty3 = Cls3Empty && (TyMax3Empty && TyMin3Empty) && (LumMax3Empty && LumMin3Empty);
+
+	switch (_Arg)
+	{
+	case 0:
+		return _Empty1 && _Empty2 && _Empty3;
+		break;
+	case 1:
+		return _Empty1;
+		break;
+	case 2:
+		return _Empty2;
+		break;
+	case 3:
+		return _Empty3;
+		break;
+	default:
+		return false;
+		break;
 	}
 }
 
@@ -193,7 +257,7 @@ _CONSTEXPR20 void spectum::SingleSpectumParse(std::string _Str, SpecClass* _Cls,
 		auto AddWDClass = [&](SpecClass _Cl)
 		{
 			if (*_Cls == -1){*_Cls = _Cl;}
-			else { *_Cls = _Cl; }
+			else if (_Cls2) { *_Cls2 = _Cl; }
 		};
 
 		switch (_Str[it])
@@ -260,60 +324,102 @@ _CONSTEXPR20 void spectum::SingleSpectumParse(std::string _Str, SpecClass* _Cls,
 	SkipWhiteSpace(it, end);
 	SP_CHECK_OUT_OF_RANGE
 
-	switch (_Str[it])
+	if (*_Cls == WN)
 	{
-	case 'I':
-		if (_Str.substr(it, 2) == "IV") { *_LumMax = IV; it += 2; }
-		else if (_Str.substr(it, 3) == "III") { *_LumMax = III; it += 3; }
-		else if (_Str.substr(it, 2) == "II") { *_LumMax = II; it += 2; }
-		else if (_Str.substr(it, 2) == "Ib") { *_LumMax = Ib; it += 2; }
-		else if (_Str.substr(it, 3) == "Iab") { *_LumMax = Iab; it += 3; }
-		else if (_Str.substr(it, 3) == "Ia+") { *_LumMax = I0; it += 3; }
-		else if (_Str.substr(it, 2) == "Ia") { *_LumMax = Ia; it += 2; }
-		else { *_LumMax = Ia; ++it; }
-		break;
-
-	case 'V':
-		if (_Str.substr(it, 2) == "VI") { *_LumMax = sd; it += 2; }
-		else { *_LumMax = V; ++it; }
-
-	default:
-		break;
-	}
-
-	SP_CHECK_OUT_OF_RANGE
-
-	if (_Str[it] == '-')
-	{
-		++it;
 		switch (_Str[it])
 		{
-		case 'I':
-			if (_Str.substr(it, 2) == "IV") { *_LumMin = IV; it += 2; }
-			else if (_Str.substr(it, 3) == "III") { *_LumMin = III; it += 3; }
-			else if (_Str.substr(it, 2) == "II") { *_LumMin = II; it += 2; }
-			else if (_Str.substr(it, 2) == "Ib") { *_LumMin = Ib; it += 2; }
-			else if (_Str.substr(it, 3) == "Iab") { *_LumMin = Iab; it += 3; }
-			else if (_Str.substr(it, 3) == "Ia+") { *_LumMin = I0; it += 3; }
-			else if (_Str.substr(it, 2) == "Ia") { *_LumMin = Ia; it += 2; }
-			else { *_LumMin = Ia; ++it; }
+		case 'E':
+			*_Cls = WNE;
+			++it;
 			break;
-
-		case 'V':
-			if (_Str.substr(it, 2) == "VI") { *_LumMin = sd; it += 2; }
-			else { *_LumMin = V; ++it; }
-
+		case 'L':
+			*_Cls = WNL;
+			++it;
+			break;
+		case 'h':
+			if (_Str.substr(it, 2) == "ha") { *_Cls = WNha; it += 2; }
+			else { *_Cls = WNh; ++it; }
 		default:
 			break;
 		}
 	}
-
-	SP_CHECK_OUT_OF_RANGE
-
-	while (it < end && _Str[it] != '/')
+	else if (*_Cls == WC)
 	{
-		*_Data += _Str[it];
-		++it;
+		switch (_Str[it])
+		{
+		case 'E':
+			*_Cls = WCE;
+			++it;
+			break;
+		case 'L':
+			*_Cls = WCL;
+			++it;
+			break;
+		case 'd':
+			*_Cls = WCd;
+			++it;
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		switch (_Str[it])
+		{
+		case 'I':
+			if (_Str.substr(it, 2) == "IV") { *_LumMax = IV; it += 2; }
+			else if (_Str.substr(it, 3) == "III") { *_LumMax = III; it += 3; }
+			else if (_Str.substr(it, 2) == "II") { *_LumMax = II; it += 2; }
+			else if (_Str.substr(it, 2) == "Ib") { *_LumMax = Ib; it += 2; }
+			else if (_Str.substr(it, 3) == "Iab") { *_LumMax = Iab; it += 3; }
+			else if (_Str.substr(it, 3) == "Ia+") { *_LumMax = I0; it += 3; }
+			else if (_Str.substr(it, 2) == "Ia") { *_LumMax = Ia; it += 2; }
+			else { *_LumMax = Ia; ++it; }
+			break;
+
+		case 'V':
+			if (_Str.substr(it, 2) == "VI") { *_LumMax = sd; it += 2; }
+			else { *_LumMax = V; ++it; }
+
+		default:
+			break;
+		}
+
+		SP_CHECK_OUT_OF_RANGE
+
+		if (_Str[it] == '-')
+		{
+			++it;
+			switch (_Str[it])
+			{
+			case 'I':
+				if (_Str.substr(it, 2) == "IV") { *_LumMin = IV; it += 2; }
+				else if (_Str.substr(it, 3) == "III") { *_LumMin = III; it += 3; }
+				else if (_Str.substr(it, 2) == "II") { *_LumMin = II; it += 2; }
+				else if (_Str.substr(it, 2) == "Ib") { *_LumMin = Ib; it += 2; }
+				else if (_Str.substr(it, 3) == "Iab") { *_LumMin = Iab; it += 3; }
+				else if (_Str.substr(it, 3) == "Ia+") { *_LumMin = I0; it += 3; }
+				else if (_Str.substr(it, 2) == "Ia") { *_LumMin = Ia; it += 2; }
+				else { *_LumMin = Ia; ++it; }
+				break;
+
+			case 'V':
+				if (_Str.substr(it, 2) == "VI") { *_LumMin = sd; it += 2; }
+				else { *_LumMin = V; ++it; }
+
+			default:
+				break;
+			}
+		}
+
+		SP_CHECK_OUT_OF_RANGE
+
+		while (it < end && _Str[it] != '/')
+		{
+			*_Data += _Str[it];
+			++it;
+		}
 	}
 }
 
@@ -340,6 +446,53 @@ void spectum::MultipleSpectumParse(std::string _MultiStr)
 	{
 		SingleSpectumParse(_Sp[2], &Cls3, nullptr, &Ty3Max, &Ty3Min, &Lum3Max, &Lum3Min, &Data3);
 	}
+}
+
+string spectum::to_str(const SpecClass* _Spec, const Type* _Ty1, const Type* _Ty2, const LumClass* _Lum1, const LumClass* _Lum2, const ExtData* _Data)
+{
+	string _Str;
+	if (_Ty1 && *_Ty1 != -1)
+	{
+		string _FormatStr = _SpClassFmtStrings[*_Spec];
+		string _Ty;
+		if (_Ty2 && *_Ty2 != -1){_Ty = vformat("{:g}-{:g}", make_format_args(*_Ty1, *_Ty2));}
+		else{_Ty = vformat("{:g}", make_format_args(*_Ty1));}
+		_Str += vformat(_FormatStr, make_format_args(_Ty));
+	}
+	else { _Str += _SpClassNoFmtStrings[*_Spec]; }
+	
+	if (_Lum1 && *_Lum1 != -1)
+	{
+		if (_Lum2 && *_Lum2 != -1)
+		{
+			string _Lum = vformat("{}-{}", make_format_args(_LumClassStrings[*_Lum1], _LumClassStrings[*_Lum2]));
+			_Str += _Lum;
+		}
+		else
+		{
+			_Str += _LumClassStrings[*_Lum1];
+		}
+	}
+
+	if (!_Data->empty()) { _Str += *_Data; }
+	return _Str;
+}
+
+string spectum::to_WDstr(const SpecClass* _Spec, const SpecClass* _Spec2, const Type* _Ty1, const Type* _Ty2, const LumClass* _Lum1, const LumClass* _Lum2, const ExtData* _Data)
+{
+	string _Str = "D";
+	_Str += _SpClassNoFmtStrings[*_Spec];
+	if (_Spec2 && *_Spec2 != -1) { _Str += _SpClassNoFmtStrings[*_Spec2]; }
+	if (_Ty1 && *_Ty1 != -1)
+	{
+		string _FormatStr = "{}";
+		string _Ty;
+		if (_Ty2 && *_Ty2 != -1) { _Ty = vformat("{:g}-{:g}", make_format_args(*_Ty1, *_Ty2)); }
+		else { _Ty = vformat("{:g}", make_format_args(*_Ty1)); }
+		_Str += vformat(_FormatStr, make_format_args(_Ty));
+	}
+
+	return _Str;
 }
 
 _CSE_END

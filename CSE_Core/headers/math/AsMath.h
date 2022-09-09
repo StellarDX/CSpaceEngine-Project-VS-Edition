@@ -27,6 +27,13 @@
 #include "Algorithms.h"
 #include "Geometry.h"
 
+#pragma pack(push, _CRT_PACKING)
+#pragma warning(push, _STL_WARNING_LEVEL)
+#pragma warning(disable : _STL_DISABLED_WARNINGS)
+_STL_DISABLE_CLANG_WARNINGS
+#pragma push_macro("new")
+#undef new
+
 _CSE_BEGIN
 
 using std::complex;
@@ -376,5 +383,10 @@ _CSE_END
 
 // Reference:
 // OpenGL 4.x reference page - https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/
+
+#pragma pop_macro("new")
+_STL_RESTORE_CLANG_WARNINGS
+#pragma warning(pop)
+#pragma pack(pop)
 
 #endif

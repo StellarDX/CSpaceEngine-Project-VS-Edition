@@ -39,9 +39,9 @@ public:
     using iterator_category = _STD random_access_iterator_tag;
     using value_type        = _Ty;
     using difference_type   = ptrdiff_t;
-    using pointer           = _STD array<_Ty, _Line>*;
-    using pointer_Elem      = _Ty*;
-    using reference         = _Ty&;
+    using pointer           = const _STD array<_Ty, _Line>*;
+    using pointer_Elem      = const _Ty*;
+    using reference         = const _Ty&;
 
     enum _Option_Tag
     {
@@ -509,7 +509,7 @@ public:
     {
         return iterator(_Elems, 0, _Line, iterator::Line);
     }
-    /*
+    
     _NODISCARD _CONSTEXPR17 const_iterator cbegin()const noexcept
     {
         return const_iterator(_Elems, 0, 0, const_iterator::Column);
@@ -529,7 +529,7 @@ public:
     {
         return const_iterator(_Elems, 0, _Line, const_iterator::Line);
     }
-    */
+    
     _NODISCARD _CONSTEXPR17 iterator begin() noexcept
     {
         return cbegin();
@@ -539,7 +539,7 @@ public:
     {
         return cend();
     }
-    /*
+    
     _NODISCARD _CONSTEXPR17 const_iterator begin()const noexcept
     {
         return cbegin();
@@ -549,7 +549,7 @@ public:
     {
         return cend();
     }
-    */
+    
     // -- Elementary row operations --
 
     _NODISCARD constexpr basic_matrix<_Ty, _Column, _Line> swap(size_type _Pos1, size_type _Pos2, _STD string _Option = "Line")
@@ -708,6 +708,9 @@ using mat4x2 = _GL basic_matrix<float64, 4, 2>;
 using mat4x3 = _GL basic_matrix<float64, 4, 3>;
 using mat4   = _GL basic_matrix<float64, 4, 4>;
 using mat4x4 = _GL basic_matrix<float64, 4, 4>;
+
+template<typename _Ty, size_t _Column, size_t _Line>
+using matrix = _GL basic_matrix<_Ty, _Column, _Line>;
 
 _CSE_END
 

@@ -29,18 +29,29 @@ public:
 		WN, WNE, WNL, Ofpe, WNh, WNha, WNC, WC, WCE, WCL, WCd, WO, Of_p, // Hot blue emission star classes
 		L, T, Y, // Cool red and brown dwarf classes
 		C_R, C_N, C_J, C_H, C_Hd, S, MS, SC, // Late giant carbon-star classes
-		DA, DB, DO, DQ, DZ, DC, DX, // White dwarf classifications
+		DA, DB, DO, DQ, DZ, DC, DX, D,// White dwarf classifications
 		Q, X, // Stellar remnants
 		Exotic // Exotic stars
 	};
 
+	_STD array<_STD string, 42> _SpClassNoFmtStrings =
+	{
+		"O", "B", "A", "F", "G", "K", "M",
+		"WN", "WNE", "WNL", "Ofpe", "WNh", "WNha", "WNC", "WC", "WCE", "WCL", "WCd", "WO", "Of?p",
+		"L", "T", "Y",
+		"C", "N", "J", "H", "Hd", "S", "MS", "SC",
+		"A", "B", "O", "Q", "Z", "C", "X", "WD",
+		"Q", "X",
+		"Exotic"
+	};
+
 	_STD array<_STD string, 42> _SpClassFmtStrings =
 	{
-		"O{:.1g}", "B{:.1g}", "A{:.1g}", "F{:.1g}", "G{:.1g}", "K{:.1g}", "M{:.1g}",
-		"WN{:.0g}", "WN{:.0g}E", "WN{:.0g}L", "Ofpe", "WN{:.0g}h", "WN{:.0g}ha", "WNC{:.0g}", "WC{:.0g}", "WC{:.0g}E", "WC{:.0g}L", "WC{:.0g}d", "WO{:.0g}", "Of{:.0g}p",
-		"L{:.1g}", "T{:.1g}", "Y{:.1g}",
-		"C{:.1g}", "N{:.1g}", "J{:.1g}", "H{:.1g}", "Hd{:.1g}", "S{:.1g}", "MS{:.1g}", "SC{:.1g}",
-		"DA{:.1g}", "DB{:.1g}", "DO{:.1g}", "DQ{:.1g}", "DZ{:.1g}", "DC{:.1g}", "DX{:.1g}", "WD",
+		"O{}", "B{}", "A{}", "F{}", "G{}", "K{}", "M{}",
+		"WN{}", "WN{}E", "WN{}L", "Ofpe", "WN{}h", "WN{}ha", "WNC{}", "WC{}", "WC{}E", "WC{}L", "WC{}d", "WO{}", "Of{}p",
+		"L{}", "T{}", "Y{}",
+		"C{}", "N{}", "J{}", "H{}", "Hd{}", "S{}", "MS{}", "SC{}",
+		"DA{}", "DB{}", "DO{}", "DQ{}", "DZ{}", "DC{}", "DX{}", "WD",
 		"Q", "X",
 		"Exotic"
 	};
@@ -62,9 +73,9 @@ public:
 	{ 143, 536250, 2681250, 13000000, 33000000, 53625000, 326157357 };
 };
 
+using SPECSTR =
 class spectum : public _Stellar_Classification
 {
-public:
 	// Main Spectal Type
 	SpecClass Cls = static_cast<SpecClass>(-1);
 	Type TyMax = static_cast<Type>(-1);
@@ -129,63 +140,94 @@ public:
 
 	_STD string str();
 	operator _STD string() { return this->str(); }
+	bool empty(uint8_t _Arg = 0);
 
 private:
 	_CONSTEXPR20 void SingleSpectumParse(_STD string _SingleStr, SpecClass* _Cls, SpecClass* _Cls2, Type* _TyMax, Type* _TyMin, LumClass* _LumMax, LumClass* _LumMin, ExtData* _Data);
 	void MultipleSpectumParse(_STD string _MultiStr);
+	_STD string to_str(const SpecClass* _Spec, const Type* _Ty1, const Type* _Ty2, const LumClass* _Lum1, const LumClass* _Lum2, const ExtData* _Data);
+	_STD string to_WDstr(const SpecClass* _Spec, const SpecClass* _Spec2, const Type* _Ty1, const Type* _Ty2, const LumClass* _Lum1, const LumClass* _Lum2, const ExtData* _Data);
+
+public:
+	// Friend functions
+	friend bool IsGiant(spectum _Spec); // III, II, I, 0
+	friend bool IsNormalGiant(spectum _Spec); // III
+	friend bool IsBrightGiant(spectum _Spec); // II
+	friend bool IsSuperGiant(spectum _Spec); // I
+	friend bool IsHyperGiant(spectum _Spec); // 0
+	friend bool IsSubGiant(spectum _Spec); // IV
+	friend bool IsMainSequence(spectum _Spec); // V
+	friend bool IsSubDwarf(spectum _Spec); // VI
+	friend bool IsOType(spectum _Spec); // O
+	friend bool IsBType(spectum _Spec); // B
+	friend bool IsAType(spectum _Spec); // A
+	friend bool IsFType(spectum _Spec); // F
+	friend bool IsGType(spectum _Spec); // G
+	friend bool IsKType(spectum _Spec); // K
+	friend bool IsMType(spectum _Spec); // M
+	friend bool IsWolfRayet(spectum _Spec); // WR
+	friend bool IsBrownDwarf(spectum _Spec); // L, T, Y
+	friend bool IsLType(spectum _Spec); // L
+	friend bool IsTType(spectum _Spec); // T
+	friend bool IsYType(spectum _Spec); // Y
+	friend bool IsCarbonStar(spectum _Spec); // C, S, ...
+	friend bool IsWhiteDwarf(spectum _Spec);
+	friend bool IsNeutronStar(spectum _Spec);
+	friend bool IsBlackHole(spectum _Spec);
+	friend bool IsStarRemnant(spectum _Spec);
 };
 
 // ----------RED GIANTS---------- //
 
-bool IsGiant(spectum _Spec); // III, II, I, 0
-bool IsNormalGiant(spectum _Spec); // III
-bool IsBrightGiant(spectum _Spec); // II
-bool IsSuperGiant(spectum _Spec); // I
-bool IsHyperGiant(spectum _Spec); // 0
+bool IsGiant(SPECSTR _Spec); // III, II, I, 0
+bool IsNormalGiant(SPECSTR _Spec); // III
+bool IsBrightGiant(SPECSTR _Spec); // II
+bool IsSuperGiant(SPECSTR _Spec); // I
+bool IsHyperGiant(SPECSTR _Spec); // 0
 
 // ----------SUBGIANTS---------- //
 
-bool IsSubGiant(spectum _Spec); // IV
+bool IsSubGiant(SPECSTR _Spec); // IV
 
 // ----------MAIN SEQUENCES---------- //
 
-bool IsMainSequence(spectum _Spec); // V
+bool IsMainSequence(SPECSTR _Spec); // V
 
 // ----------SUBDWARFS---------- //
 
-bool IsSubDwarf(spectum _Spec); // VI
+bool IsSubDwarf(SPECSTR _Spec); // VI
 
 // ----------COLORS---------- //
 
-bool IsOType(spectum _Spec); // O
-bool IsBType(spectum _Spec); // B
-bool IsAType(spectum _Spec); // A
-bool IsFType(spectum _Spec); // F
-bool IsGType(spectum _Spec); // G
-bool IsKType(spectum _Spec); // K
-bool IsMType(spectum _Spec); // M
+bool IsOType(SPECSTR _Spec); // O
+bool IsBType(SPECSTR _Spec); // B
+bool IsAType(SPECSTR _Spec); // A
+bool IsFType(SPECSTR _Spec); // F
+bool IsGType(SPECSTR _Spec); // G
+bool IsKType(SPECSTR _Spec); // K
+bool IsMType(SPECSTR _Spec); // M
 
 // ----------WOLF RAYET---------- //
 
-bool IsWolfRayet(spectum _Spec); // WR
+bool IsWolfRayet(SPECSTR _Spec); // WR
 
 // ----------BROWN DWARFS---------- //
 
-bool IsBrownDwarf(spectum _Spec); // L, T, Y
-bool IsLType(spectum _Spec); // L
-bool IsTType(spectum _Spec); // T
-bool IsYType(spectum _Spec); // Y
+bool IsBrownDwarf(SPECSTR _Spec); // L, T, Y
+bool IsLType(SPECSTR _Spec); // L
+bool IsTType(SPECSTR _Spec); // T
+bool IsYType(SPECSTR _Spec); // Y
 
 // ----------CARBON STARS---------- //
 
-bool IsCarbonStar(spectum _Spec); // C, S, ...
+bool IsCarbonStar(SPECSTR _Spec); // C, S, ...
 
 // ----------STAR REMNANTS---------- //
 
-bool IsWhiteDwarf(spectum _Spec);
-bool IsNeutronStar(spectum _Spec);
-bool IsBlackHole(spectum _Spec);
-bool IsStarRemnant(spectum _Spec);
+bool IsWhiteDwarf(SPECSTR _Spec);
+bool IsNeutronStar(SPECSTR _Spec);
+bool IsBlackHole(SPECSTR _Spec);
+bool IsStarRemnant(SPECSTR _Spec);
 
 _CSE_END
 

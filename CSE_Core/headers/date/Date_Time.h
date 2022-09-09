@@ -19,7 +19,7 @@
 #define _USE_CSE_DEFINES
 #include "..\Core\CSECore.h"
 
-#define NOMINMAX // Solve the conflict problem of windows.h
+//#define NOMINMAX // Solve the conflict problem of windows.h
 #include <Windows.h>
 
 #define _TIME_BEGIN namespace epoch{

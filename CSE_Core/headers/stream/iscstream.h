@@ -22,6 +22,13 @@
 #include <sstream>
 #include <map>
 
+#pragma pack(push, _CRT_PACKING)
+#pragma warning(push, _STL_WARNING_LEVEL)
+#pragma warning(disable : _STL_DISABLED_WARNINGS)
+_STL_DISABLE_CLANG_WARNINGS
+#pragma push_macro("new")
+#undef new
+
 _CSE_BEGIN
 
 extern CSELog Log_IS;
@@ -410,5 +417,10 @@ using ISCStream = _STD shared_ptr<_SC table>;
 ISCStream ParseFile(_STD string FileName);
 
 _CSE_END
+
+#pragma pop_macro("new")
+_STL_RESTORE_CLANG_WARNINGS
+#pragma warning(pop)
+#pragma pack(pop)
 
 #endif
