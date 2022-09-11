@@ -7,17 +7,9 @@ using namespace std;
 _CSE_BEGIN
 
 // Spectal type parser
-spectum::spectum(string _Str)
-{
-	if (_Str.find('/') != _Str.npos)
-	{
-		MultipleSpectumParse(_Str);
-	}
-	else
-	{
-		SingleSpectumParse(_Str, &Cls, &Cls2, &TyMax, &TyMin, &LumMax, &LumMin, &Data);
-	}
-}
+spectum::spectum(string _Str){ Parser(_Str); }
+
+spectum::spectum(const char* _Str) { Parser(_Str); }
 
 string spectum::str()
 {
@@ -77,8 +69,55 @@ bool spectum::empty(uint8_t _Arg)
 		return _Empty3;
 		break;
 	default:
-		return false;
+		return true;
 		break;
+	}
+}
+
+bool spectum::NoLumClass(uint8_t _Arg)
+{
+	auto LumMax1Empty = LumMax == static_cast<LumClass>(-1);
+	auto LumMin1Empty = LumMin == static_cast<LumClass>(-1);
+
+	auto LumMax2Empty = Lum2Max == static_cast<LumClass>(-1);
+	auto LumMin2Empty = Lum2Min == static_cast<LumClass>(-1);
+
+	auto LumMax3Empty = Lum3Max == static_cast<LumClass>(-1);
+	auto LumMin3Empty = Lum3Min == static_cast<LumClass>(-1);
+
+	auto _Empty1 = (LumMax1Empty && LumMin1Empty);
+	auto _Empty2 = (LumMax2Empty && LumMin2Empty);
+	auto _Empty3 = (LumMax3Empty && LumMin3Empty);
+
+	switch (_Arg)
+	{
+	case 0:
+		return _Empty1 && _Empty2 && _Empty3;
+		break;
+	case 1:
+		return _Empty1;
+		break;
+	case 2:
+		return _Empty2;
+		break;
+	case 3:
+		return _Empty3;
+		break;
+	default:
+		return true;
+		break;
+	}
+}
+
+void spectum::Parser(string _Str)
+{
+	if (_Str.find('/') != _Str.npos)
+	{
+		MultipleSpectumParse(_Str);
+	}
+	else
+	{
+		SingleSpectumParse(_Str, &Cls, &Cls2, &TyMax, &TyMin, &LumMax, &LumMin, &Data);
 	}
 }
 
@@ -480,6 +519,11 @@ string spectum::to_str(const SpecClass* _Spec, const Type* _Ty1, const Type* _Ty
 
 string spectum::to_WDstr(const SpecClass* _Spec, const SpecClass* _Spec2, const Type* _Ty1, const Type* _Ty2, const LumClass* _Lum1, const LumClass* _Lum2, const ExtData* _Data)
 {
+	if (*_Spec == D)
+	{
+		return "WD";
+	}
+
 	string _Str = "D";
 	_Str += _SpClassNoFmtStrings[*_Spec];
 	if (_Spec2 && *_Spec2 != -1) { _Str += _SpClassNoFmtStrings[*_Spec2]; }
@@ -493,6 +537,281 @@ string spectum::to_WDstr(const SpecClass* _Spec, const SpecClass* _Spec2, const 
 	}
 
 	return _Str;
+}
+
+//-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+//
+// Stellar Classification Function Declarations
+//
+//-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+bool IsGiant(SPECSTR _Spec)
+{
+	auto _NLumClass = [&](SPECSTR::LumClass _Cl)
+	{
+		return _Cl >= 0 && _Cl <= 5;
+	};
+
+	return _NLumClass(_Spec.LumMax) || _NLumClass(_Spec.LumMin) ||
+		_NLumClass(_Spec.Lum2Max) || _NLumClass(_Spec.Lum2Min) ||
+		_NLumClass(_Spec.Lum3Max) || _NLumClass(_Spec.Lum3Min);
+}
+
+bool IsNormalGiant(SPECSTR _Spec)
+{
+	auto _NLumClass = [&](SPECSTR::LumClass _Cl)
+	{
+		return _Cl == 5;
+	};
+
+	return _NLumClass(_Spec.LumMax) || _NLumClass(_Spec.LumMin) ||
+		_NLumClass(_Spec.Lum2Max) || _NLumClass(_Spec.Lum2Min) ||
+		_NLumClass(_Spec.Lum3Max) || _NLumClass(_Spec.Lum3Min);
+}
+
+bool IsBrightGiant(SPECSTR _Spec)
+{
+	auto _NLumClass = [&](SPECSTR::LumClass _Cl)
+	{
+		return _Cl == 4;
+	};
+
+	return _NLumClass(_Spec.LumMax) || _NLumClass(_Spec.LumMin) ||
+		_NLumClass(_Spec.Lum2Max) || _NLumClass(_Spec.Lum2Min) ||
+		_NLumClass(_Spec.Lum3Max) || _NLumClass(_Spec.Lum3Min);
+}
+
+bool IsSuperGiant(SPECSTR _Spec)
+{
+	auto _NLumClass = [&](SPECSTR::LumClass _Cl)
+	{
+		return _Cl >= 1 && _Cl <= 3;
+	};
+
+	return _NLumClass(_Spec.LumMax) || _NLumClass(_Spec.LumMin) ||
+		_NLumClass(_Spec.Lum2Max) || _NLumClass(_Spec.Lum2Min) ||
+		_NLumClass(_Spec.Lum3Max) || _NLumClass(_Spec.Lum3Min);
+}
+
+bool IsHyperGiant(SPECSTR _Spec)
+{
+	auto _NLumClass = [&](SPECSTR::LumClass _Cl)
+	{
+		return _Cl == 0;
+	};
+
+	return _NLumClass(_Spec.LumMax) || _NLumClass(_Spec.LumMin) ||
+		_NLumClass(_Spec.Lum2Max) || _NLumClass(_Spec.Lum2Min) ||
+		_NLumClass(_Spec.Lum3Max) || _NLumClass(_Spec.Lum3Min);
+}
+
+bool IsSubGiant(SPECSTR _Spec)
+{
+	auto _NLumClass = [&](SPECSTR::LumClass _Cl)
+	{
+		return _Cl == 6;
+	};
+
+	return _NLumClass(_Spec.LumMax) || _NLumClass(_Spec.LumMin) ||
+		_NLumClass(_Spec.Lum2Max) || _NLumClass(_Spec.Lum2Min) ||
+		_NLumClass(_Spec.Lum3Max) || _NLumClass(_Spec.Lum3Min);
+}
+
+bool IsMainSequence(SPECSTR _Spec)
+{
+	auto _NLumClass = [&](SPECSTR::LumClass _Cl)
+	{
+		return _Cl == 7;
+	};
+
+	return _NLumClass(_Spec.LumMax) || _NLumClass(_Spec.LumMin) ||
+		_NLumClass(_Spec.Lum2Max) || _NLumClass(_Spec.Lum2Min) ||
+		_NLumClass(_Spec.Lum3Max) || _NLumClass(_Spec.Lum3Min);
+}
+
+bool IsSubDwarf(SPECSTR _Spec)
+{
+	auto _NLumClass = [&](SPECSTR::LumClass _Cl)
+	{
+		return _Cl == 8;
+	};
+
+	return _NLumClass(_Spec.LumMax) || _NLumClass(_Spec.LumMin) ||
+		_NLumClass(_Spec.Lum2Max) || _NLumClass(_Spec.Lum2Min) ||
+		_NLumClass(_Spec.Lum3Max) || _NLumClass(_Spec.Lum3Min);
+}
+
+bool IsOType(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl == 0;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) ||_NSpecClass(_Spec.Cls3);
+}
+
+bool IsBType(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl == 1;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsAType(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl == 2;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsFType(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl == 3;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsGType(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl == 4;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsKType(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl == 5;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsMType(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl == 6;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsWolfRayet(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl >= 7 && _Cl <= 19;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsBrownDwarf(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl >= 20 && _Cl <= 22;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsLType(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl == 20;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsTType(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl == 21;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsYType(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl == 22;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsCarbonStar(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl >= 23 && _Cl <= 30;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsWhiteDwarf(SPECSTR _Spec)
+{
+	auto _NLumClass = [&](SPECSTR::LumClass _Cl)
+	{
+		return _Cl == 9;
+	};
+
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl >= 31 && _Cl <= 38;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3) || 
+		_NLumClass(_Spec.LumMax) || _NLumClass(_Spec.LumMin) ||
+		_NLumClass(_Spec.Lum2Max) || _NLumClass(_Spec.Lum2Min) ||
+		_NLumClass(_Spec.Lum3Max) || _NLumClass(_Spec.Lum3Min);;
+}
+
+bool IsNeutronStar(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl == 39;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsBlackHole(SPECSTR _Spec)
+{
+	auto _NSpecClass = [&](SPECSTR::SpecClass _Cl)
+	{
+		return _Cl == 40;
+	};
+
+	return _NSpecClass(_Spec.Cls) || _NSpecClass(_Spec.Cls2) || _NSpecClass(_Spec.Cls3);
+}
+
+bool IsStarRemnant(SPECSTR _Spec)
+{
+	return IsWhiteDwarf(_Spec.Cls) || IsNeutronStar(_Spec.Cls2) || IsBlackHole(_Spec.Cls3);
 }
 
 _CSE_END

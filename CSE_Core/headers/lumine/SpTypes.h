@@ -5,6 +5,7 @@
 
 #include "../Core/CSECore.h"
 #include <array>
+#include <ctype.h>
 
 _CSE_BEGIN
 
@@ -103,6 +104,7 @@ class spectum : public _Stellar_Classification
 public:
 	spectum() = default;
 	spectum(_STD string _Str);
+	spectum(const char* _Str);
 	spectum
 	(
 		SpecClass _Cls1, 
@@ -141,8 +143,10 @@ public:
 	_STD string str();
 	operator _STD string() { return this->str(); }
 	bool empty(uint8_t _Arg = 0);
+	bool NoLumClass(uint8_t _Arg = 0);
 
 private:
+	void Parser(_STD string _SpStr);
 	_CONSTEXPR20 void SingleSpectumParse(_STD string _SingleStr, SpecClass* _Cls, SpecClass* _Cls2, Type* _TyMax, Type* _TyMin, LumClass* _LumMax, LumClass* _LumMin, ExtData* _Data);
 	void MultipleSpectumParse(_STD string _MultiStr);
 	_STD string to_str(const SpecClass* _Spec, const Type* _Ty1, const Type* _Ty2, const LumClass* _Lum1, const LumClass* _Lum2, const ExtData* _Data);
