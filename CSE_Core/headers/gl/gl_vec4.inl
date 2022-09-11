@@ -1,4 +1,4 @@
-#include <cassert>
+﻿#include <cassert>
 #include "..\Core\CSECore.h"
 #include "gl_vec4.h"
 

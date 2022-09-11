@@ -1,4 +1,4 @@
-/***
+﻿/***
 *CSECore.h - definitions for internal modules and values
 *
 *       Copyright (C) StellarDX Astronomy.
@@ -70,10 +70,10 @@
 
 _CSE_BEGIN
 
-typedef long long            int64;
-typedef double               float64;
-typedef unsigned long long   uint64;
-typedef std::u8string        stringu8;
+using int64              = long long;
+using float64            = double;
+using uint64             = unsigned long long;
+using stringu8           = std::u8string;
 
 template<typename genTypeA = uint64, typename genTypeB = float64>
 inline constexpr genTypeB wrtval(genTypeA Value, uint64 Bits = sizeof(genTypeA))
@@ -170,7 +170,7 @@ public:
 // Report fatal errors
 #define _CSE_VERIFY(cond, except)                                    \
         if (cond) { /* contextually convertible to bool paranoia */ }\
-		else {throw except; exit(-1);}                          \
+		else {throw except; exit(-1);}                               \
 
 _CSE_END
 

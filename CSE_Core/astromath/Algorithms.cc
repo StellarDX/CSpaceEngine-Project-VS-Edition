@@ -1,4 +1,4 @@
-#include <cstdarg>
+﻿#include <cstdarg>
 
 #include "..\headers\math\Algorithms.h"
 

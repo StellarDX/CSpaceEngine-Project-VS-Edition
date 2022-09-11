@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 // 3-component vector from glsl
 #ifndef __GLVECTOR4__
 #define __GLVECTOR4__

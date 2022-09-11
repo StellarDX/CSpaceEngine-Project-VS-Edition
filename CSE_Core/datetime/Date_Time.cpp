@@ -1,4 +1,4 @@
-// Time Module for CSpaceEngine.
+﻿// Time Module for CSpaceEngine.
 
 //#define NOMINMAX // Solve the conflict problem of windows.h
 #include <sstream>

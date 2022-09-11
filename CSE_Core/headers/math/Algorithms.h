@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef _CSE_MATH_ALGORITHMS
 #define _CSE_MATH_ALGORITHMS

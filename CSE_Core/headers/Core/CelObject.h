@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef __SEOBJECT__
 #define __SEOBJECT__

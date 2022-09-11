@@ -1,4 +1,4 @@
-// Math module for CSpaceEngine
+﻿// Math module for CSpaceEngine
 
 #define _USE_CSE_DEFINES
 

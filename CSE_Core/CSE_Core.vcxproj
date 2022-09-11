@@ -60,7 +60,7 @@
     <ClCompile Include="datetime\Date_Time.cpp" />
     <ClCompile Include="lumine\Lumine.cc" />
     <ClCompile Include="lumine\SpTypes.cc" />
-    <ClCompile Include="scstream\iscstream.cc" />
+    <ClCompile Include="scstream\iscstream.cpp" />
     <ClCompile Include="scstream\object.cc" />
     <ClCompile Include="scstream\oscstream.cc" />
   </ItemGroup>

@@ -1,4 +1,4 @@
-#ifndef __MATHFUNCS_COMP__
+﻿#ifndef __MATHFUNCS_COMP__
 #define __MATHFUNCS_COMP__
 
 #include "..\headers\math\AsMath.h"

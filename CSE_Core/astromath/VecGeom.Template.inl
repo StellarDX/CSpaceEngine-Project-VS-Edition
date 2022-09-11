@@ -1,4 +1,4 @@
-#ifndef __GEOMETRY_TEMP__
+﻿#ifndef __GEOMETRY_TEMP__
 #define __GEOMETRY_TEMP__
 
 #include "../headers/math/Geometry.h"

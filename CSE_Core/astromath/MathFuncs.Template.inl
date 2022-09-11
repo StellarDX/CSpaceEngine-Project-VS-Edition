@@ -1,4 +1,4 @@
-#ifndef __MATHFUNCS_TEMP__
+﻿#ifndef __MATHFUNCS_TEMP__
 #define __MATHFUNCS_TEMP__
 
 #include "..\headers\math\AsMath.h"

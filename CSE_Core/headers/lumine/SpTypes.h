@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef __CSE_SP_TYPES__
 #define __CSE_SP_TYPES__

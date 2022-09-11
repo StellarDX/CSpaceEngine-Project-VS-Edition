@@ -1,4 +1,4 @@
-#ifndef __ALGORITHMS_TEMP__
+﻿#ifndef __ALGORITHMS_TEMP__
 #define __ALGORITHMS_TEMP__
 
 #include "../headers/math/Algorithms.h"

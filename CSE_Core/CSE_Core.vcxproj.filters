@@ -122,7 +122,7 @@
     <ClCompile Include="lumine\SpTypes.cc">
       <Filter>Lumine</Filter>
     </ClCompile>
-    <ClCompile Include="scstream\iscstream.cc">
+    <ClCompile Include="scstream\iscstream.cpp">
       <Filter>SC Stream</Filter>
     </ClCompile>
     <ClCompile Include="scstream\oscstream.cc">

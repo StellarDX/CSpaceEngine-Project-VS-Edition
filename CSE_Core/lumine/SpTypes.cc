@@ -1,4 +1,4 @@
-#include "../headers/lumine/SpTypes.h"
+﻿#include "../headers/lumine/SpTypes.h"
 #include <sstream>
 #include <format>
 

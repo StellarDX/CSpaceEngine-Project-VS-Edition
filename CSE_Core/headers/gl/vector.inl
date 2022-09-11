@@ -1,4 +1,4 @@
-#include "gltypes.h"
+﻿#include "gltypes.h"
 
 #include <cmath>
 

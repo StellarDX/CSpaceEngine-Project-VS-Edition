@@ -1,4 +1,4 @@
-/////////////////////////////////////////////////////////////
+﻿/////////////////////////////////////////////////////////////
 //                                                         //
 //                  CSpaceEngine Library                   //
 //                                                         //
@@ -18,7 +18,6 @@
 #define __CSE__
 
 #include "Core/CSECore.h"
-#include "Core/CelObject.h"
 
 #include "gl/gltypes.h"
 #include "math/AsMath.h"
@@ -27,8 +26,9 @@
 #include "date/Date_Time.h"
 
 #include "stream/scstream.h"
+#include "Core/CelObject.h"
 
-#include "lumine/Lumine.h"
 #include "lumine/SpTypes.h"
+#include "lumine/Lumine.h"
 
 #endif
