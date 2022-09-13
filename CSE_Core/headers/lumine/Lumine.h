@@ -19,6 +19,12 @@ _CSE_BEGIN
 
 // Basic luminosity functions
 
+class LumineException : public _STD runtime_error
+{
+public:
+	LumineException(const std::string& Error) : std::runtime_error{ Error }{}
+};
+
 _EXTERN_C
 
 // Functions from earlier version of Star Luminosity and Magnitude calculator
@@ -75,6 +81,8 @@ float64 ToLuminosity1(float64 Radius, float64 Teff);
 float64 ToLuminosity3(float64 AbsMagnBol);
 
 _END_EXTERN_C
+
+void GetLumWithStBLaw(Object* _Obj);
 
 _CSE_END
 

@@ -168,6 +168,12 @@ bvec operator!(bvec x)
 	return result;
 }
 
+//template<typename bvec>
+//bvec operator not(bvec x)
+//{
+//	return !x;
+//}
+
 template<typename genType>
 requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>
 bvec2 isinf(_GL gl_vec2<genType> x)

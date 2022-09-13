@@ -48,9 +48,18 @@ float64 ToLuminosity1(float64 Radius, float64 Teff)
 
 float64 ToLuminosity3(float64 AbsMagnBol)
 {
-	return SolarLumBol * pow(10, (0 - 0.4 * AbsMagnBol));
+	return SolarLumBol * pow(10, (-0.4 * AbsMagnBol));
 }
 
 _END_EXTERN_C
+
+void GetLumWithStBLaw(Object* _Obj)
+{
+	if (isinf(_Obj->Radius()) || isinf(_Obj->Teff))
+	{
+		throw LumineException('[' + _Obj->Name[0] + ']' + " Can't calculate luminosity because radius or temperature is unknown.");
+	}
+	_Obj->Luminosity = ToLuminosity1(_Obj->Radius(), _Obj->Teff);
+}
 
 _CSE_END

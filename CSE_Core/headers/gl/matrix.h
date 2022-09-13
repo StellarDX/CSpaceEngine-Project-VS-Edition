@@ -231,7 +231,8 @@ public:
     }
 
     _CONSTEXPR17 void _Compat(const _Matrix_const_iterator& _Right) const noexcept
-    { // test for compatible iterator pair
+    {
+        // test for compatible iterator pair
         _STL_VERIFY(_Ptr == _Right._Ptr, "matrix iterators incompatible");
     }
 

@@ -168,9 +168,9 @@ public:
     (std::string)"// File created by CSpaceEngine\n" +      \
     "// A Open-sourced C++ static library by StellarDX\n" + \
     "// Compiler version : " + version + "\n" +             \
-    "// Date : " + date + "\n" +                            \
-    "// Format Flags : " + fmtfl + "\n" +                   \
-    "// Encoding : " + encod + "\n"                         \
+    "// Date :             " + date + "\n" +                \
+    "// Format Flags :     " + fmtfl + "\n" +               \
+    "// Encoding :         " + encod + "\n"                 \
 
     table _Buf;
 
@@ -440,7 +440,7 @@ inline OSCStream& __CLRCALL_OR_CDECL DisableAutoOrbit(OSCStream& _Os)
     return _Os;
 }
 
-inline OSCStream& __CLRCALL_OR_CDECL fixed(OSCStream& _Os)
+inline OSCStream& __CLRCALL_OR_CDECL Fixed(OSCStream& _Os)
 {
     _Os.setf(OSCStream::Fixed);
     return _Os;

@@ -38,14 +38,15 @@
 #define GravConstant   6.67430E-11       // (±0.00015)2018 CODATA Value, reference from NIST
 #define SpeedOfLight   299792458         // Exact value defined by 1983 17th CGPM
 #define PPM            0.0001            // by definition, Parts-per million to percent
-#define BoltzmannConst 1.380649E-23      // SI by definition, J/K = m2⋅kg/(s2⋅K) in SI base units.
-#define PlanckConst    6.62607015E-34    // 2018 CODATA Value
-#define StBConstant    Equation21        // by definition
 #define GasConstant    8.31446261815324  // 2018 CODATA Value
 #define AvogadroConst  6.02214076E+23    // 2018 CODATA Value
+#define BoltzmannConst Equation21        // SI by definition, J/K = m2⋅kg/(s2⋅K) in SI base units. Exactly 1.380649E-23
+#define PlanckConst    6.62607015E-34    // 2018 CODATA Value
+#define StBConstant    Equation22        // by definition
 #define Dalton         1.66053906660E-27 // (±0.0000000000050)
 // -------------------------------------------------------------------------
-const long double Equation21 = (2.0 * pow(CSE_PI, 5) * pow(BoltzmannConst, 4)) / (15.0 * pow(PlanckConst, 3) * pow(SpeedOfLight, 2));
+const long double Equation21 = GasConstant / AvogadroConst;
+const long double Equation22 = (2.0 * pow(CSE_PI, 5) * pow(BoltzmannConst, 4)) / (15.0 * pow(PlanckConst, 3) * pow(SpeedOfLight, 2));
 
 
 // List3: Units of mass

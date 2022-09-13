@@ -129,8 +129,8 @@ Object GetSEObject(ISCStream _Is, string _Name)
 
 	if (_Obj.Type == "Star")
 	{
-		_Obj.Luminosity = GetAs<float64>(it, "Luminosity");
-		_Obj.LumBol = GetAs<float64>(it, "LumBol");
+		_Obj.Luminosity = GetAs<float64>(it, "Luminosity") * SolarLum;
+		_Obj.LumBol = GetAs<float64>(it, "LumBol") * SolarLum;
 		_Obj.Teff = GetAs<float64>(it, "Teff");
 		_Obj.FeH = GetAs<float64>(it, "FeH");
 		_Obj.CtoO = GetAs<float64>(it, "CtoO");
@@ -914,7 +914,7 @@ void AddKeyValue(_SC table* _Table, string _Key, bool _Value, _SC object_ostream
 void AddPTMatrix(_SC table* _Table, string _Unit, vector<_STD array<float64, 6>> PT, _SC object_ostream::fmtflags _Fl, streamsize _Preci, uint64 _WSpace)
 {
 	ostringstream ValueStr;
-	if (_Fl & (1 << 15)) { ValueStr << fixed; }
+	if (_Fl & (1 << 15)) { ValueStr << _STD fixed; }
 	ValueStr << setprecision(_Preci);
 	Log_OS.Out("OSCStream", "INFO", "[Table] Adding Key : PeriodicTerms", OLogLevel);
 	if (!PT.empty())
@@ -1005,8 +1005,8 @@ table::KeyValue MakeTable(object_ostream& _Os, Object Obj)
 		AddKeyValue(&Data, "AbsMagn", Obj.AbsMagn, _Os.flags(), _Os.precision());
 		if (Obj.Type == "Star")
 		{
-			AddKeyValue(&Data, "Luminosity", Obj.Luminosity, _Os.flags(), _Os.precision());
-			AddKeyValue(&Data, "LumBol", Obj.LumBol, _Os.flags(), _Os.precision());
+			AddKeyValue(&Data, "Luminosity", Obj.Luminosity / SolarLum, _Os.flags(), _Os.precision());
+			AddKeyValue(&Data, "LumBol", Obj.LumBol / SolarLum, _Os.flags(), _Os.precision());
 			AddKeyValue(&Data, "Teff", Obj.Teff, _Os.flags(), _Os.precision());
 			AddKeyValue(&Data, "FeH", Obj.FeH, _Os.flags(), _Os.precision());
 			AddKeyValue(&Data, "CtoO", Obj.CtoO, _Os.flags(), _Os.precision());
