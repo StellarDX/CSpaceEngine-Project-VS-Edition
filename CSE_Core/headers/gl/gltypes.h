@@ -31,7 +31,7 @@ all copies or substantial portions of the Software.
 #include "matrix.h"
 
 _CSE_BEGIN
-
+/*
 // CG/HLSL/Unity style vecs and mats
 
 using fixed2 = _GL gl_vec2<lfixed>;
@@ -75,7 +75,7 @@ using float3x4 = _GL basic_matrix<lfloat, 3, 4>;
 using float4x2 = _GL basic_matrix<lfloat, 4, 2>;
 using float4x3 = _GL basic_matrix<lfloat, 4, 3>;
 using float4x4 = _GL basic_matrix<lfloat, 4, 4>;
-
+*/
 #if 0
 template<typename genType>struct vecType;
 template<>struct vecType<vec2> { typedef vec2 type; };

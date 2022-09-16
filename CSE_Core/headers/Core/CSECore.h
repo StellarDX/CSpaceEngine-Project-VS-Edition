@@ -76,12 +76,12 @@ using int64              = long long;
 using float64            = double;
 using uint64             = unsigned long long;
 using stringu8           = std::u8string;
-
+/*
 // CG/HLSL/Unity style types, but higher precision
 using lfixed             = float; // 32-bit Low precision float
 using lhalf              = double; // 64-bit Medium precision float, equal to float64
 using lfloat             = long double; // 96-bit High precision float
-
+*/
 template<typename genTypeA = uint64, typename genTypeB = float64>
 inline constexpr genTypeB wrtval(genTypeA Value, uint64 Bits = sizeof(genTypeA))
 {

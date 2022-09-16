@@ -19,6 +19,9 @@
     <Filter Include="Lumine">
       <UniqueIdentifier>{fb14f394-9ad5-4164-b74f-80895cafe520}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Random">
+      <UniqueIdentifier>{ef56bba2-dc85-4011-aa84-1840561be957}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\Core\CSECore.h">
@@ -73,6 +76,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="headers\stream\oscstream.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\random\random.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -130,6 +136,9 @@
     </ClCompile>
     <ClCompile Include="scstream\object.cc">
       <Filter>SC Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="random\Random.cc">
+      <Filter>Random</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

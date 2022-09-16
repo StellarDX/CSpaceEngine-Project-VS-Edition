@@ -659,6 +659,11 @@ public:
     /// Reference: https://cp-algorithms.com/linear_algebra/rank-matrix.html#implementation
     /// </summary>
     uint64 Rank()const;
+
+    /// <summary>
+    /// Returns the trace of a square matrix
+    /// </summary>
+    _Ty Trace()const;
 };
 
 // -- Unary operators --

@@ -31,4 +31,6 @@
 #include "lumine/SpTypes.h"
 #include "lumine/Lumine.h"
 
+#include "random/random.h"
+
 #endif

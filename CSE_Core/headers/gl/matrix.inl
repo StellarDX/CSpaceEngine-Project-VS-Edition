@@ -339,6 +339,20 @@ inline uint64 basic_matrix<_Ty, _Column, _Line>::Rank() const
 }
 
 template<typename _Ty, size_t _Column, size_t _Line>
+inline _Ty basic_matrix<_Ty, _Column, _Line>::Trace() const
+{
+	if (_Column != _Line) { return basic_matrix<_Ty, _Line, _Column>(wrtval(Q_NAN_DOUBLE)); }
+	_Ty _Trace = 0;
+
+	for (size_t i = 0; i < _Column; i++)
+	{
+		_Trace += _Elems[i][i];
+	}
+	
+	return _Trace;
+}
+
+template<typename _Ty, size_t _Column, size_t _Line>
 template<size_t _Column2, size_t _Line2>
 inline constexpr basic_matrix<_Ty, _Column, _Line>::basic_matrix(const basic_matrix<_Ty, _Column2, _Line2>& x)
 {
