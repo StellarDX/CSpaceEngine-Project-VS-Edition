@@ -743,16 +743,6 @@ Object GetSEObject(ISCStream _Is, string _Name)
 		if (FoundOutRadKm) { _Obj.AccretionDisk.Radiuses.y = 1000. * GetAs<float64>(AccDisk, "OuterRadiusKm"); }
 		else if (FoundOutRadAU) { _Obj.AccretionDisk.Radiuses.y = AU * GetAs<float64>(AccDisk, "OuterRadius"); }
 
-		auto FoundJetRadKm = AccDisk->SubTable->find("JetRadiusKm") != AccDisk->SubTable->end();
-		auto FoundJetRadAU = AccDisk->SubTable->find("JetRadius") != AccDisk->SubTable->end();
-		if (FoundJetRadKm) { _Obj.AccretionDisk.JetRadius = 1000. * GetAs<float64>(AccDisk, "JetRadiusKm"); }
-		else if (FoundJetRadAU) { _Obj.AccretionDisk.JetRadius = AU * GetAs<float64>(AccDisk, "JetRadius"); }
-
-		auto FoundJetLenKm = AccDisk->SubTable->find("JetLengthKm") != AccDisk->SubTable->end();
-		auto FoundJetLenAU = AccDisk->SubTable->find("JetLength") != AccDisk->SubTable->end();
-		if (FoundJetLenKm) { _Obj.AccretionDisk.JetLength = 1000. * GetAs<float64>(AccDisk, "JetLengthKm"); }
-		else if (FoundJetLenAU) { _Obj.AccretionDisk.JetLength = AU * GetAs<float64>(AccDisk, "JetLength"); }
-
 		_Obj.AccretionDisk.DiskParams1.x = GetAs<float64>(AccDisk, "Temperature");
 		_Obj.AccretionDisk.DiskParams1.y = GetAs<float64>(AccDisk, "TwistMagn");
 
@@ -776,6 +766,45 @@ Object GetSEObject(ISCStream _Is, string _Name)
 		_Obj.AccretionDisk.AccretionRate = GetAs<float64>(AccDisk, "AccretionRate");
 		_Obj.AccretionDisk.Density = GetAs<float64>(AccDisk, "Density");
 		_Obj.AccretionDisk.Luminosity = GetAs<float64>(AccDisk, "Luminosity");
+		_Obj.AccretionDisk.LumBol = GetAs<float64>(AccDisk, "LuminosityBol");
+
+		_Obj.AccretionDisk.Octave.x = GetAs<float64>(AccDisk, "OctaveDistortionX");
+		_Obj.AccretionDisk.Octave.y = GetAs<float64>(AccDisk, "OctaveDistortionY");
+		_Obj.AccretionDisk.Octave.z = GetAs<float64>(AccDisk, "OctaveDistortionZ");
+		_Obj.AccretionDisk.Octave.w = GetAs<float64>(AccDisk, "OctaveScale");
+
+		_Obj.AccretionDisk.DiskNoiseContrast = GetAs<float64>(AccDisk, "DiskNoiseContrast");
+		_Obj.AccretionDisk.DiskTempContrast = GetAs<float64>(AccDisk, "DiskTempContrast");
+		_Obj.AccretionDisk.DiskOuterSpin = GetAs<float64>(AccDisk, "DiskOuterSpin");
+
+		_Obj.AccretionDisk.LightingBright = GetAs<float64>(AccDisk, "LightingBright");
+		_Obj.AccretionDisk.ShadowContrast = GetAs<float64>(AccDisk, "ShadowContrast");
+		_Obj.AccretionDisk.ShadowLength = GetAs<float64>(AccDisk, "ShadowLength");
+
+		// ---------- Jet Params ---------- //
+
+		auto FoundJetRadSKm = AccDisk->SubTable->find("JetStartRadiusKm") != AccDisk->SubTable->end();
+		auto FoundJetRadSAU = AccDisk->SubTable->find("JetStartRadius") != AccDisk->SubTable->end();
+		if (FoundJetRadSKm) { _Obj.AccretionDisk.Jet.StartRadius = 1000. * GetAs<float64>(AccDisk, "JetStartRadiusKm"); }
+		else if (FoundJetRadSAU) { _Obj.AccretionDisk.Jet.StartRadius = AU * GetAs<float64>(AccDisk, "JetStartRadius"); }
+
+		auto FoundJetRadEKm = AccDisk->SubTable->find("JetEndRadiusKm") != AccDisk->SubTable->end();
+		auto FoundJetRadEAU = AccDisk->SubTable->find("JetEndRadius") != AccDisk->SubTable->end();
+		if (FoundJetRadEKm) { _Obj.AccretionDisk.Jet.EndRadius = 1000. * GetAs<float64>(AccDisk, "JetEndRadiusKm"); }
+		else if (FoundJetRadEAU) { _Obj.AccretionDisk.Jet.EndRadius = AU * GetAs<float64>(AccDisk, "JetEndRadiusKm"); }
+
+		auto FoundJetLenKm = AccDisk->SubTable->find("JetLengthKm") != AccDisk->SubTable->end();
+		auto FoundJetLenAU = AccDisk->SubTable->find("JetLength") != AccDisk->SubTable->end();
+		if (FoundJetLenKm) { _Obj.AccretionDisk.Jet.Length = 1000. * GetAs<float64>(AccDisk, "JetLengthKm"); }
+		else if (FoundJetLenAU) { _Obj.AccretionDisk.Jet.Length = AU * GetAs<float64>(AccDisk, "JetLength"); }
+
+		_Obj.AccretionDisk.Jet.StartTemp = GetAs<float64>(AccDisk, "JetStartTemp");
+		_Obj.AccretionDisk.Jet.EndTemp = GetAs<float64>(AccDisk, "JetEndTemp");
+		_Obj.AccretionDisk.Jet.Velocity = GetAs<float64>(AccDisk, "JetVelocity");
+		_Obj.AccretionDisk.Jet.Distortion = GetAs<float64>(AccDisk, "JetDistortion");
+		_Obj.AccretionDisk.Jet.Thickness = GetAs<float64>(AccDisk, "JetThickness");
+		_Obj.AccretionDisk.Jet.Density = GetAs<float64>(AccDisk, "JetDensity");
+		_Obj.AccretionDisk.Jet.Brightness = GetAs<float64>(AccDisk, "JetBrightness");
 	}
 
 	auto FoundCorona = it->SubTable->find("Corona") != it->SubTable->end();
@@ -1623,8 +1652,6 @@ table::KeyValue MakeTable(object_ostream& _Os, Object Obj)
 		AddKeyValue(&_AccretionDisk, "OuterRadiusKm", Obj.AccretionDisk.Radiuses.y / 1000., _Os.flags(), _Os.precision());
 		AddKeyValue(&_AccretionDisk, "BlackHoleRg", Obj.AccretionDisk.Radiuses.z, _Os.flags(), _Os.precision());
 		AddKeyValue(&_AccretionDisk, "GravLensScale", Obj.AccretionDisk.Radiuses.w, _Os.flags(), _Os.precision());
-		AddKeyValue(&_AccretionDisk, "JetRadiusKm", Obj.AccretionDisk.JetRadius / 1000., _Os.flags(), _Os.precision());
-		AddKeyValue(&_AccretionDisk, "JetLengthKm", Obj.AccretionDisk.JetLength / 1000., _Os.flags(), _Os.precision());
 		AddKeyValue(&_AccretionDisk, "Temperature", Obj.AccretionDisk.DiskParams1.x, _Os.flags(), _Os.precision());
 		AddKeyValue(&_AccretionDisk, "TwistMagn", Obj.AccretionDisk.DiskParams1.y, _Os.flags(), _Os.precision());
 		AddKeyValue(&_AccretionDisk, "StarAnimationTime", Obj.AccretionDisk.DiskParams1.z, _Os.flags(), _Os.precision());
@@ -1641,6 +1668,29 @@ table::KeyValue MakeTable(object_ostream& _Os, Object Obj)
 		AddKeyValue(&_AccretionDisk, "AccretionRate", Obj.AccretionDisk.AccretionRate, _Os.flags(), _Os.precision());
 		AddKeyValue(&_AccretionDisk, "Density", Obj.AccretionDisk.Density, _Os.flags(), _Os.precision());
 		AddKeyValue(&_AccretionDisk, "Luminosity", Obj.AccretionDisk.Luminosity, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "LuminosityBol", Obj.AccretionDisk.LumBol, _Os.flags(), _Os.precision());
+
+		AddKeyValue(&_AccretionDisk, "OctaveDistortionX", Obj.AccretionDisk.Octave.x, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "OctaveDistortionY", Obj.AccretionDisk.Octave.y, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "OctaveDistortionZ", Obj.AccretionDisk.Octave.z, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "OctaveScale", Obj.AccretionDisk.Octave.w, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "DiskNoiseContrast", Obj.AccretionDisk.DiskNoiseContrast, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "DiskTempContrast", Obj.AccretionDisk.DiskTempContrast, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "DiskOuterSpin", Obj.AccretionDisk.DiskOuterSpin, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "LightingBright", Obj.AccretionDisk.LightingBright, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "ShadowContrast", Obj.AccretionDisk.ShadowContrast, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "ShadowLength", Obj.AccretionDisk.ShadowLength, _Os.flags(), _Os.precision());
+
+		AddKeyValue(&_AccretionDisk, "JetLengthKm", Obj.AccretionDisk.Jet.Length / 1000., _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "JetStartRadiusKm", Obj.AccretionDisk.Jet.StartRadius / 1000., _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "JetEndRadiusKm", Obj.AccretionDisk.Jet.EndRadius / 1000., _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "JetStartTemp", Obj.AccretionDisk.Jet.StartTemp, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "JetEndTemp", Obj.AccretionDisk.Jet.EndTemp, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "JetVelocity", Obj.AccretionDisk.Jet.Velocity, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "JetDistortion", Obj.AccretionDisk.Jet.Distortion, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "JetThickness", Obj.AccretionDisk.Jet.Thickness, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "JetDensity", Obj.AccretionDisk.Jet.Density, _Os.flags(), _Os.precision());
+		AddKeyValue(&_AccretionDisk, "JetBrightness", Obj.AccretionDisk.Jet.Brightness, _Os.flags(), _Os.precision());
 
 		AccretionDisk.SubTable = make_shared<table>(_AccretionDisk);
 		Data.push(AccretionDisk);

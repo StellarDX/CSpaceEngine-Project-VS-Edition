@@ -2,6 +2,7 @@
 #define __MATHFUNCS_COMP__
 
 #include "..\headers\math\AsMath.h"
+
 #include <string>
 
 using std::complex;
@@ -104,7 +105,7 @@ genType exp(genType x)
 template<typename genType> requires floatType<genType>
 genType log(genType base, genType x)
 {
-	return std::log2(x) / std::log2(base);
+	return std::log(x) / std::log(base);
 }
 
 template<typename genType> requires floatType<genType>

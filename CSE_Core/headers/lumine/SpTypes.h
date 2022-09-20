@@ -21,6 +21,7 @@ struct _Star_Type_Probabilities
 	float64 ProbBrownDwarf        = 0.025;		// brown dwarf probability
 };
 
+using LSTARCLS =
 class _Stellar_Classification
 {
 public:

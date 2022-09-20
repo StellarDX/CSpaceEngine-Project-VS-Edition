@@ -32,5 +32,6 @@
 #include "lumine/Lumine.h"
 
 #include "random/random.h"
+#include "random/stars.h"
 
 #endif

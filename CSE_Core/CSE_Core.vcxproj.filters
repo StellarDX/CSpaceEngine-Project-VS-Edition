@@ -81,6 +81,9 @@
     <ClInclude Include="headers\random\random.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\random\stars.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -138,6 +141,9 @@
       <Filter>SC Stream</Filter>
     </ClCompile>
     <ClCompile Include="random\Random.cc">
+      <Filter>Random</Filter>
+    </ClCompile>
+    <ClCompile Include="random\stars\MainSequenceStarTables.cc">
       <Filter>Random</Filter>
     </ClCompile>
   </ItemGroup>

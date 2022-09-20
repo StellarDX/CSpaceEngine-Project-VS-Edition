@@ -37,7 +37,7 @@ _STL_DISABLE_CLANG_WARNINGS
 _CSE_BEGIN
 
 using std::complex;
-using complex64 = complex<float64>;
+using complex64 = std::complex<float64>;
 using std::literals::complex_literals::operator""i;
 
 #if 0

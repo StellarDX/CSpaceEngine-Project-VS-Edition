@@ -276,16 +276,37 @@ struct RingsParam
 
 struct AccDiskParam
 {
+	struct JetParams
+	{
+		float64 Length = NO_DATA_FLOAT_INF;
+		float64 StartRadius = NO_DATA_FLOAT_INF;
+		float64 EndRadius = NO_DATA_FLOAT_INF;
+		float64 StartTemp = NO_DATA_FLOAT_INF;
+		float64 EndTemp = NO_DATA_FLOAT_INF;
+		float64 Velocity = NO_DATA_FLOAT_INF;
+		float64 Distortion = NO_DATA_FLOAT_INF;
+		float64 Thickness = NO_DATA_FLOAT_INF;
+		float64 Density = NO_DATA_FLOAT_INF;
+		float64 Brightness = NO_DATA_FLOAT_INF;
+	};
+
 	vec4 Radiuses = vec4(NO_DATA_FLOAT_INF);       // (disk inner radius, disk outer radius, black hole Rg, grav lens scale)
-	float64 JetRadius = NO_DATA_FLOAT_INF;
-	float64 JetLength = NO_DATA_FLOAT_INF;
 	vec4 DiskParams1 = vec4(NO_DATA_FLOAT_INF);     // (disk max temperature, disk twist, star animation time, disk animation time)
 	vec4 DiskParams2 = vec4(NO_DATA_FLOAT_INF);     // (temperature shift, disk brightness, disk opacity, star rotation angle)
 	vec4 DiskParams3 = vec4(NO_DATA_FLOAT_INF);     // (disk inner thickness inner, disk outer thickness, disk radial detail scale, disk vertical detail scale)
+	vec4 Octave = vec4(NO_DATA_FLOAT_INF);          // (OctaveDistortionX, OctaveDistortionY, OctaveDistortionZ, OctaveScale)
 	float64 ThicknessPow = NO_DATA_FLOAT_INF;
 	float64 AccretionRate = NO_DATA_FLOAT_INF;
 	float64 Density = NO_DATA_FLOAT_INF;
 	float64 Luminosity = NO_DATA_FLOAT_INF;
+	float64 LumBol = NO_DATA_FLOAT_INF;
+	float64 DiskNoiseContrast = NO_DATA_FLOAT_INF;
+	float64 DiskTempContrast = NO_DATA_FLOAT_INF;
+	float64 DiskOuterSpin = NO_DATA_FLOAT_INF;
+	float64 LightingBright = NO_DATA_FLOAT_INF;
+	float64 ShadowContrast = NO_DATA_FLOAT_INF;
+	float64 ShadowLength = NO_DATA_FLOAT_INF;
+	JetParams Jet;
 };
 
 /*-------------------------------------------------------------------------*\

@@ -308,12 +308,10 @@ void SelectAppMagnMode()
     {
     case 1:
         ToAppMagn1(AbsMagn, Dist);
-        system("Pause>nul");
         break;
 
     case 2:
         ToAppMagn2(AppMagn1, AppMagn2);
-        system("Pause>nul");
         break;
 
     case 0:
@@ -321,7 +319,6 @@ void SelectAppMagnMode()
 
     default:
         ToAppMagn1(AbsMagn, Dist);
-        system("Pause>nul");
         break;
     }
 }
@@ -337,22 +334,18 @@ void SelectAbsMagnMode()
     {
     case 1:
         ToAbsMagn1(AppMagn, Dist);
-        system("Pause>nul");
         break;
 
     case 2:
         ToAbsMagn2(Parallax, AppMagn);
-        system("Pause>nul");
         break;
 
     case 3:
         ToAbsMagn3(AppMagn, DistModulus);
-        system("Pause>nul");
         break;
 
     case 4:
         ToAbsMagn4(LumBol);
-        system("Pause>nul");
         break;
 
     case 0:
@@ -360,7 +353,6 @@ void SelectAbsMagnMode()
 
     default:
         ToAbsMagn4(LumBol);
-        system("Pause>nul");
         break;
     }
 }
@@ -376,17 +368,14 @@ void SelectLuminosityMode()
     {
     case 1:
         ToLuminosity1(Radius, Teff);
-        system("Pause>nul");
         break;
 
     case 2:
         ToLuminosity2(Mass);
-        system("Pause>nul");
         break;
 
     case 3:
         ToLuminosity3(AbsMagn);
-        system("Pause>nul");
         break;
 
     case 0:
@@ -394,7 +383,6 @@ void SelectLuminosityMode()
 
     default:
         ToLuminosity1(Radius, Teff);
-        system("Pause>nul");
         break;
     }
 }

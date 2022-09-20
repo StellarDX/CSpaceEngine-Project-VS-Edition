@@ -34,6 +34,7 @@
     <ClInclude Include="headers\math\AsMath.h" />
     <ClInclude Include="headers\math\Geometry.h" />
     <ClInclude Include="headers\random\random.h" />
+    <ClInclude Include="headers\random\stars.h" />
     <ClInclude Include="headers\stream\iscstream.h" />
     <ClInclude Include="headers\stream\oscstream.h" />
     <ClInclude Include="headers\stream\scstream.h" />
@@ -62,6 +63,7 @@
     <ClCompile Include="lumine\Lumine.cc" />
     <ClCompile Include="lumine\SpTypes.cc" />
     <ClCompile Include="random\Random.cc" />
+    <ClCompile Include="random\stars\MainSequenceStarTables.cc" />
     <ClCompile Include="scstream\iscstream.cpp" />
     <ClCompile Include="scstream\object.cc" />
     <ClCompile Include="scstream\oscstream.cc" />
