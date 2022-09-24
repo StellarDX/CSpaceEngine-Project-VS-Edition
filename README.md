@@ -44,8 +44,8 @@ object_generator<_CSE_Random_Engine<mt19937_64>, MainSequenceStarModel> gen(Engi
 Object Obj = gen();
 ```
  * Support stars:
- ** Main sequence stars(Specified, Random)
- ** Wolf-Rayet star(Specified)
+  ** Main sequence stars(Specified, Random)
+  ** Wolf-Rayet star(Specified)
 
 ## TODO
  * Procedural planet generator
