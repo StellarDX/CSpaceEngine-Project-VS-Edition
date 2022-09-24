@@ -29,6 +29,22 @@ os.Write(); // export to file
  * Algorithms from GLSL
  * A basic matrix class and linear algebra functions
 
+**Star Luminosity calculations**
+ * A Star Luminosity and Magnitude calculator based on this library is provided, See [Here](https://github.com/StellarDX/CSpaceEngine-Project/blob/main/CSE_Core/lumine/StarMagLumCalculator.cpp) to get more info.
+
+**Random Number Generator**
+ * Based on std random, more easy to use.
+ * A default random engine "random" is provided.
+
+**Procedural Star generator**
+```asp
+_CSE_Random_Engine<mt19937_64> Engine;
+MainSequenceStarModel StarM("G2V");
+object_generator<_CSE_Random_Engine<mt19937_64>, MainSequenceStarModel> gen(Engine, StarM);
+Object Obj = gen();
+```
+
 ## TODO
- * Star Luminosity calculations
+ * Procedural planet generator
+ * Orbit calculator and generator
  * ...and more
