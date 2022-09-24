@@ -21,7 +21,7 @@ SPECSTR _Random_Main_Sequence_types()
 
 Object RandomMainSequenceStar()
 {
-	HRMainSequenceStarModel _Mdl(_Random_Main_Sequence_types());
+	HPMainSequenceStarModel _Mdl(_Random_Main_Sequence_types());
 	object_generator gen(random, _Mdl);
 	return gen();
 }
