@@ -182,18 +182,18 @@ public:
 	}
 };
 
-class HRMainSequenceStarModel : public StarModelBase
+class HPMainSequenceStarModel : public StarModelBase
 {
 public:
 	using _Mybase = StarModelBase;
 
-	HRMainSequenceStarModel() : _Mybase() {}
-	explicit HRMainSequenceStarModel(SPECSTR _Spec) : _Mybase(_Spec)
+	HPMainSequenceStarModel() : _Mybase() {}
+	explicit HPMainSequenceStarModel(SPECSTR _Spec) : _Mybase(_Spec)
 	{
 		_STL_ASSERT(IsMainSequence(_Spec), ("\"" + _Spec.str() + "\" is not a main-sequence star type."));
 	}
 
-	explicit HRMainSequenceStarModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
+	explicit HPMainSequenceStarModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
 
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
@@ -337,18 +337,18 @@ public:
 	}
 };
 
-class HRWolfRayetStarModel : public StarModelBase
+class HPWolfRayetStarModel : public StarModelBase
 {
 public:
 	using _Mybase = StarModelBase;
 
-	HRWolfRayetStarModel() : _Mybase() {}
-	explicit HRWolfRayetStarModel(SPECSTR _Spec) : _Mybase(_Spec)
+	HPWolfRayetStarModel() : _Mybase() {}
+	explicit HPWolfRayetStarModel(SPECSTR _Spec) : _Mybase(_Spec)
 	{
 		_STL_ASSERT(IsWolfRayet(_Spec), ("\"" + _Spec.str() + "\" is not a Wolf-Rayet star type."));
 	}
 
-	explicit HRWolfRayetStarModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
+	explicit HPWolfRayetStarModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
 
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)

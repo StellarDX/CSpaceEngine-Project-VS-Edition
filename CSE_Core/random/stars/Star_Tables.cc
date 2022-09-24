@@ -220,7 +220,9 @@ _M_type_main_sequence_star_Table[21]
 //                                                                           //
 //===========================================================================//
 // Reference:
-// https://en.wikipedia.org/wiki/Wolf%E2%80%93Rayet_star
+// Sander, A. A. C.; Hamann, W. -R.; Todt, H.; Hainich, R.; Shenar, T.; Ramachandran, V.; Oskinova, L. M. (2019). 
+// "The Galactic WC and WO stars. The impact of revised distances from Gaia DR2 and their role as massive black hole progenitors".
+// https://doi.org/10.1051%2F0004-6361%2F201833712
 // And luminosities are converted to BCv and MBol
 
 static const STPARS
