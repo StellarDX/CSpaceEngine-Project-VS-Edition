@@ -21,7 +21,10 @@
 
 #include "gl/gltypes.h"
 #include "math/AsMath.h"
+
+#ifdef _USE_CSE_DEFINES
 #include "Core/ConstLists.h"
+#endif
 
 #include "date/Date_Time.h"
 

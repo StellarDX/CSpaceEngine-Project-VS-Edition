@@ -13,3 +13,5 @@
 #define _TIME_BEGIN namespace epoch{
 #define _TIME_END }
 #define _TIME
+#define _RAND_BEGIN namespace randgen {
+#define _RAND_END }

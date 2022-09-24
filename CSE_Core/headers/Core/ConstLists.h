@@ -8,7 +8,7 @@
 
 // Define _USE_CSE_DEFINES before including "CSEConstants.h" to expose these definitions for constants.
 
-#if defined(_USE_CSE_DEFINES)
+//#if defined(_USE_CSE_DEFINES)
 
 #if !defined(_CSE_MATH_MODULE)
 #include <cmath> // Use STD math when CSE Math module is missing.
@@ -152,6 +152,6 @@ const long double Equation86 = (HubbleParam * 1000.0) / (1000000.0 * Parsec);
 const long double Equation87 = 3.0 * pow(HubbleParamSI / SpeedOfLight, 2) * CosmoDensityRatio;
 const long double Equation88 = SpeedOfLight / HubbleParamSI;
 
-#endif
+//#endif
 
 #endif

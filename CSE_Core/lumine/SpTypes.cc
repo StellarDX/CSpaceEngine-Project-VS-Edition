@@ -487,6 +487,12 @@ void spectum::MultipleSpectumParse(std::string _MultiStr)
 	}
 }
 
+string _GenTyFmtStr(spectum::Type _Ty)
+{
+	if (_Ty > 0 && _Ty < 1) { return "{:.1g}"; }
+	else { return "{:.2g}"; }
+}
+
 string spectum::to_str(const SpecClass* _Spec, const Type* _Ty1, const Type* _Ty2, const LumClass* _Lum1, const LumClass* _Lum2, const ExtData* _Data)
 {
 	string _Str;
@@ -494,8 +500,9 @@ string spectum::to_str(const SpecClass* _Spec, const Type* _Ty1, const Type* _Ty
 	{
 		string _FormatStr = _SpClassFmtStrings[*_Spec];
 		string _Ty;
-		if (_Ty2 && *_Ty2 != -1){_Ty = vformat("{:g}-{:g}", make_format_args(*_Ty1, *_Ty2));}
-		else{_Ty = vformat("{:g}", make_format_args(*_Ty1));}
+
+		if (_Ty2 && *_Ty2 != -1){_Ty = vformat(_GenTyFmtStr(*_Ty1) + '-' + _GenTyFmtStr(*_Ty2), make_format_args(*_Ty1, *_Ty2)); }
+		else{_Ty = vformat(_GenTyFmtStr(*_Ty1), make_format_args(*_Ty1));}
 		_Str += vformat(_FormatStr, make_format_args(_Ty));
 	}
 	else { _Str += _SpClassNoFmtStrings[*_Spec]; }
@@ -531,8 +538,8 @@ string spectum::to_WDstr(const SpecClass* _Spec, const SpecClass* _Spec2, const 
 	{
 		string _FormatStr = "{}";
 		string _Ty;
-		if (_Ty2 && *_Ty2 != -1) { _Ty = vformat("{:g}-{:g}", make_format_args(*_Ty1, *_Ty2)); }
-		else { _Ty = vformat("{:g}", make_format_args(*_Ty1)); }
+		if (_Ty2 && *_Ty2 != -1) { _Ty = vformat(_GenTyFmtStr(*_Ty1) + '-' + _GenTyFmtStr(*_Ty2), make_format_args(*_Ty1, *_Ty2)); }
+		else { _Ty = vformat(_GenTyFmtStr(*_Ty1), make_format_args(*_Ty1)); }
 		_Str += vformat(_FormatStr, make_format_args(_Ty));
 	}
 

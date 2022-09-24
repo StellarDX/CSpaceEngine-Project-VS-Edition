@@ -10,6 +10,8 @@
 #include <random> // Base on STD random.
 #include <vector>
 
+#include "../Core/CelObject.h"
+
 #pragma pack(push, _CRT_PACKING)
 #pragma warning(push, _STL_WARNING_LEVEL)
 #pragma warning(disable : _STL_DISABLED_WARNINGS)
@@ -17,9 +19,15 @@ _STL_DISABLE_CLANG_WARNINGS
 #pragma push_macro("new")
 #undef new
 
+#define _RAND_BEGIN namespace randgen {
+#define _RAND_END }
+#define _RAND randgen::
+
 _CSE_BEGIN
 
 // Additional Random models
+
+_RAND_BEGIN
 
 template<class _Ty = float64>
 class triangular_distribution : public _STD piecewise_linear_distribution<_Ty>
@@ -60,6 +68,8 @@ class pareto_distribution
 {
 	// Nothing...
 };*/
+
+_RAND_END
 
 // Random Engine
 // reference: https://docs.python.org/3/library/random.html
@@ -216,7 +226,7 @@ public:
 	/// <param name="_Peak">Peak, default is median of min and max</param>
 	float64 triangular(float64 _Min0, float64 _Max0, float64 _Peak)
 	{
-		triangular_distribution<float64> _Range(_Min0, _Max0, _Peak);
+		_RAND triangular_distribution<float64> _Range(_Min0, _Max0, _Peak);
 		return _Range(_Rd);
 	}
 
@@ -238,7 +248,7 @@ public:
 	/// <returns>Values range between 0 and 1.</returns>
 	float64 beta(float64 _Alf = 1., float64 _Bet = 1.)
 	{
-		beta_distribution<float64> _F(_Alf, _Bet);
+		_RAND beta_distribution<float64> _F(_Alf, _Bet);
 		return _F(_Rd);
 	}
 
@@ -323,11 +333,46 @@ public:
 		_STD weibull_distribution<float64> _F(_Lam, _k);
 		return _F(_Rd);
 	}
+
+	/// <summary>
+	/// Generate numbers in probilities
+	/// </summary>
+	uint64 probability(_STD initializer_list<float64> _Ilist)
+	{
+		_STD discrete_distribution<uint64> _Prob(_Ilist);
+		return _Prob(_Rd);
+	}
 };
 
 extern _CSE_Random_Engine<_STD mersenne_twister_engine
 	<unsigned long long, 64, 312, 156, 31, 0xB5026F5AA96619E9ULL, 29,
 	0x5555555555555555ULL, 17, 0x71D67FFFEDA60000ULL, 37, 0xFFF7EEE000000000ULL, 43, 0x5851F42D4C957F2DULL>> random;
+
+////////// Object Generator //////////
+
+template<typename Engine, typename Model>
+class object_generator
+{
+	Engine& _Eng;
+	Model& _Mdl;
+public:
+	// types
+	typedef Engine engine_type;
+	typedef Model  model_type;
+	typedef Object result_type;
+
+	// construct/copy/destruct
+	object_generator(Engine& e, Model& m) : _Eng(e), _Mdl(m){}
+
+	// public member functions
+	result_type operator()()
+	{
+		return _Mdl(_Eng);
+	}
+
+	engine_type& engine() { return _Eng; }
+	model_type& objmodel() { return _Mdl; }
+};
 
 _CSE_END
 

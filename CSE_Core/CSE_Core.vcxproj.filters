@@ -143,7 +143,10 @@
     <ClCompile Include="random\Random.cc">
       <Filter>Random</Filter>
     </ClCompile>
-    <ClCompile Include="random\stars\MainSequenceStarTables.cc">
+    <ClCompile Include="random\stars\Star_Tables.cc">
+      <Filter>Random</Filter>
+    </ClCompile>
+    <ClCompile Include="random\stars\Star_Models_Base.cc">
       <Filter>Random</Filter>
     </ClCompile>
   </ItemGroup>

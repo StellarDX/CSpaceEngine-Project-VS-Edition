@@ -38,7 +38,7 @@ public:
 
 	_STD array<_STD string, 42> _SpClassNoFmtStrings =
 	{
-		"O", "B", "A", "F", "G", "K", "M",
+		"O ", "B ", "A ", "F ", "G ", "K ", "M ",
 		"WN", "WNE", "WNL", "Ofpe", "WNh", "WNha", "WNC", "WC", "WCE", "WCL", "WCd", "WO", "Of?p",
 		"L", "T", "Y",
 		"C", "N", "J", "H", "Hd", "S", "MS", "SC",
@@ -69,10 +69,6 @@ public:
 	};
 
 	using ExtData = _STD string;
-
-	_STD array<uint64, 7> _MAIN_SEQUENCE_WEIGHTS = // Calculated among 3000000 stars and converted to integers
-   // O,   B,      A,       F,        G,        K,        M
-	{ 143, 536250, 2681250, 13000000, 33000000, 53625000, 326157357 };
 };
 
 using SPECSTR =
@@ -145,6 +141,101 @@ public:
 	operator _STD string() { return this->str(); }
 	bool empty(uint8_t _Arg = 0);
 	bool NoLumClass(uint8_t _Arg = 0);
+
+	SpecClass SClass(size_t _N = 1)const
+	{
+		switch (_N)
+		{
+		case 1:
+			return Cls;
+			break;
+		case 2:
+			return Cls2;
+			break;
+		case 3:
+			return Cls3;
+			break;
+		default:
+			return Cls;
+			break;
+		}
+	}
+
+	Type MaxType(size_t _N = 1)const
+	{
+		switch (_N)
+		{
+		case 1:
+			return TyMax;
+			break;
+		case 2:
+			return Ty2Max;
+			break;
+		case 3:
+			return Ty3Max;
+			break;
+		default:
+			return TyMax;
+			break;
+		}
+	}
+
+	Type MinType(size_t _N = 1)const
+	{
+		switch (_N)
+		{
+		case 1:
+			return TyMin;
+			break;
+		case 2:
+			return Ty2Min;
+			break;
+		case 3:
+			return Ty3Min;
+			break;
+		default:
+			return TyMin;
+			break;
+		}
+	}
+
+	LumClass MaxLClass(size_t _N = 1)const
+	{
+		switch (_N)
+		{
+		case 1:
+			return LumMax;
+			break;
+		case 2:
+			return Lum2Max;
+			break;
+		case 3:
+			return Lum3Max;
+			break;
+		default:
+			return LumMax;
+			break;
+		}
+	}
+
+	LumClass MinLClass(size_t _N = 1)const
+	{
+		switch (_N)
+		{
+		case 1:
+			return LumMin;
+			break;
+		case 2:
+			return Lum2Min;
+			break;
+		case 3:
+			return Lum3Min;
+			break;
+		default:
+			return LumMin;
+			break;
+		}
+	}
 
 private:
 	void Parser(_STD string _SpStr);

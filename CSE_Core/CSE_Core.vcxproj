@@ -63,7 +63,8 @@
     <ClCompile Include="lumine\Lumine.cc" />
     <ClCompile Include="lumine\SpTypes.cc" />
     <ClCompile Include="random\Random.cc" />
-    <ClCompile Include="random\stars\MainSequenceStarTables.cc" />
+    <ClCompile Include="random\stars\Star_Tables.cc" />
+    <ClCompile Include="random\stars\Star_Models_Base.cc" />
     <ClCompile Include="scstream\iscstream.cpp" />
     <ClCompile Include="scstream\object.cc" />
     <ClCompile Include="scstream\oscstream.cc" />

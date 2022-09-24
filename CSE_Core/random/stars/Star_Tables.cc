@@ -16,15 +16,7 @@ _CSE_BEGIN
 
 const float64 inf = NO_DATA_FLOAT_INF;
 
-enum StarTableCoeffs
-{
-	SpT,      // Subtype of Spectal Type
-	Teff,     // Effective Temperature
-	BCv,      // Bolometric Correction in V-band
-	Mbol,     // Absolute Bolometric Magnitude
-	R_RSun,   // Radius in Solar Radius
-	MSun      // Mass in Solar Mass
-};
+_RAND_BEGIN
 
 static const STPARS
 _O_type_main_sequence_star_Table[13]
@@ -195,7 +187,7 @@ _K_type_main_sequence_star_Table[10]
 );
 
 static const STPARS
-_M_type_main_sequence_star_Table[20]
+_M_type_main_sequence_star_Table[21]
 (
 //   SpT  Teff  BCv    Mbol   R_RSun MSun
 	{0.0, 3850, -1.15,  7.65, 0.588, 0.570},
@@ -217,7 +209,9 @@ _M_type_main_sequence_star_Table[20]
 	{8.0, 2570, -5.65, 12.95, 0.114, 0.085},
 	{8.5, 2420, -5.78, 13.42, 0.104, 0.080},
 	{9.0, 2380, -5.86, 13.54, 0.102, 0.079},
-	{9.5, 2350, -6.13, 13.67, 0.101, 0.078}
+	{9.5, 2350, -6.13, 13.67, 0.101, 0.078},
+	// Data of L0 star
+	{10.0, 2270, -6.25, 13.75, 0.102, 0.077}
 );
 
 //===========================================================================//
@@ -272,39 +266,41 @@ _WO_Wolf_Rayet_star_Table[1]
 	{2.0, 200000, -8.058, -9.758, 0.7, 22}
 );
 
+_RAND_END
 
-const STPARS* GetStarTable(LSTARCLS::SpecClass Class, int* Tyc)
+
+const STPARS* GetStarTable(LSTARCLS::SpecClass Class, size_t* Tyc)
 {
 	switch (Class)
 	{
 	case cse::LSTARCLS::O:
 	case cse::LSTARCLS::Of_p:
 		*Tyc = 13;
-		return _O_type_main_sequence_star_Table;
+		return _RAND _O_type_main_sequence_star_Table;
 		break;
 	case cse::LSTARCLS::B:
 		*Tyc = 14;
-		return _B_type_main_sequence_star_Table;
+		return _RAND _B_type_main_sequence_star_Table;
 		break;
 	case cse::LSTARCLS::A:
 		*Tyc = 10;
-		return _A_type_main_sequence_star_Table;
+		return _RAND _A_type_main_sequence_star_Table;
 		break;
 	case cse::LSTARCLS::F:
 		*Tyc = 11;
-		return _F_type_main_sequence_star_Table;
+		return _RAND _F_type_main_sequence_star_Table;
 		break;
 	case cse::LSTARCLS::G:
 		*Tyc = 10;
-		return _G_type_main_sequence_star_Table;
+		return _RAND _G_type_main_sequence_star_Table;
 		break;
 	case cse::LSTARCLS::K:
 		*Tyc = 10;
-		return _K_type_main_sequence_star_Table;
+		return _RAND _K_type_main_sequence_star_Table;
 		break;
 	case cse::LSTARCLS::M:
 		*Tyc = 20;
-		return _M_type_main_sequence_star_Table;
+		return _RAND _M_type_main_sequence_star_Table;
 		break;
 	case cse::LSTARCLS::WN:
 	case cse::LSTARCLS::WNE:
@@ -312,23 +308,23 @@ const STPARS* GetStarTable(LSTARCLS::SpecClass Class, int* Tyc)
 	case cse::LSTARCLS::Ofpe:
 	case cse::LSTARCLS::WNC:
 		*Tyc = 7;
-		return _WN_Wolf_Rayet_star_Table;
+		return _RAND _WN_Wolf_Rayet_star_Table;
 		break;
 	case cse::LSTARCLS::WNh:
 	case cse::LSTARCLS::WNha:
 		*Tyc = 5;
-		return _WN_Big_Wolf_Rayet_star_Table;
+		return _RAND _WN_Big_Wolf_Rayet_star_Table;
 		break;
 	case cse::LSTARCLS::WC:
 	case cse::LSTARCLS::WCE:
 	case cse::LSTARCLS::WCL:
 	case cse::LSTARCLS::WCd:
 		*Tyc = 6;
-		return _WC_Wolf_Rayet_star_Table;
+		return _RAND _WC_Wolf_Rayet_star_Table;
 		break;
 	case cse::LSTARCLS::WO:
 		*Tyc = 1;
-		return _WO_Wolf_Rayet_star_Table;
+		return _RAND _WO_Wolf_Rayet_star_Table;
 		break;
 	case cse::LSTARCLS::L:
 		break;
@@ -375,6 +371,7 @@ const STPARS* GetStarTable(LSTARCLS::SpecClass Class, int* Tyc)
 	case cse::LSTARCLS::Exotic:
 		break;
 	default:
+		*Tyc = 0;
 		return nullptr;
 		break;
 	}
