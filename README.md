@@ -36,13 +36,16 @@ os.Write(); // export to file
  * Based on std random, more easy to use.
  * A default random engine "random" is provided.
 
-**Procedural Star generator**
+**Generate a star**
 ```asp
 _CSE_Random_Engine<mt19937_64> Engine;
 MainSequenceStarModel StarM("G2V");
 object_generator<_CSE_Random_Engine<mt19937_64>, MainSequenceStarModel> gen(Engine, StarM);
 Object Obj = gen();
 ```
+ * Support stars:
+ ** Main sequence stars(Specified, Random)
+ ** Wolf-Rayet star(Specified)
 
 ## TODO
  * Procedural planet generator
