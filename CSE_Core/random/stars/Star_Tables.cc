@@ -268,6 +268,67 @@ _WO_Wolf_Rayet_star_Table[1]
 	{2.0, 200000, -8.058, -9.758, 0.7, 22}
 );
 
+//===========================================================================//
+//                                                                           //
+//                       Sub-stellar Object tables                           //
+//                                                                           //
+//===========================================================================//
+// Reference: Mamajek, Eric. "A Modern Mean Dwarf Stellar Color and Effective Temperature Sequence". 
+// University of Rochester, Department of Physics and Astronomy.
+// http://www.pas.rochester.edu/~emamajek/EEM_dwarf_UBVIJHK_colors_Teff.txt
+// Stars cooler than L5 has no bolometric corrections
+// Masses of stars cooler than L2 are calculated with universe sandbox simulation.
+
+static const STPARS
+_L_type_Star_Table[10]
+(
+//   SpT  Teff  BCv    Mbol   R_RSun  MSun
+	{0.0, 2270, -6.25, 13.75, 0.1020, 0.077000},
+	{1.0, 2160, -6.48, 14.02, 0.0995, 0.076000},
+	{2.0, 2060, -6.62, 14.28, 0.0970, 0.075000},
+	{3.0, 1920, -7.05, 14.65, 0.0942, 0.074430},
+	{4.0, 1870, -7.53, 14.77, 0.0940, 0.074065},
+	{5.0, 1710, -7.87, 15.23, 0.0909, 0.072825},
+	{6.0, 1550, inf  , 15.70, 0.0891, 0.071520},
+	{7.0, 1530, inf  , 15.77, 0.0886, 0.071356},
+	{8.0, 1420, inf  , 16.12, 0.0875, 0.070440},
+	{9.0, 1370, inf  , 16.27, 0.0877, 0.069980}
+);
+
+static const STPARS
+_T_type_Star_Table[15]
+(
+//   SpT  Teff  BCv  Mbol   R_RSun  MSun
+	{0.0, 1255, inf, 16.39, 0.0980, 0.06717},
+	{1.0, 1240, inf, 16.47, 0.1000, 0.06680},
+	{2.0, 1220, inf, 16.57, 0.1000, 0.06628},
+	{3.0, 1200, inf, 16.67, 0.1020, 0.06575},
+	{4.0, 1180, inf, 16.84, 0.1010, 0.06520},
+	{4.5, 1170, inf, 16.99, 0.0990, 0.06493},
+	{5.0, 1160, inf, 17.12, 0.1010, 0.06465},
+	{5.5, 1040, inf, 17.34, 0.0990, 0.06115},
+	{6.0,  950, inf, 17.54, 0.1000, 0.05715},
+	{7.0,  825, inf, 18.17, 0.0980, 0.04970},
+	{7.5,  750, inf, 18.59, 0.0950, 0.04503},
+	{8.0,  680, inf, 19.02, 0.0950, 0.04020},
+	{8.5,  600, inf, 19.57, 0.0970, 0.03460},
+	{9.0,  560, inf, 20.12, 0.1000, 0.03155},
+	{9.5,  510, inf, 20.51, 0.1020, 0.02773} // Universe sandbox gives the radius of 0.0899
+);
+
+static const STPARS
+_Sub_Brown_Dwarf_Table[6]
+(
+// These data are calculated by universe sandbox beacuse no real data for these stars except Y0-star.
+//   SpT  Teff BCv  Mbol   R_RSun  MSun
+	{0.0, 450, inf, 21.04, 0.1040, 0.0257},
+	{0.5, 400, inf, 21.51, 0.0925, 0.0210},
+	{1.0, 360, inf, 21.91, 0.0944, 0.0177},
+	{1.5, 325, inf, 22.32, 0.0963, 0.0146},
+	{2.0, 320, inf, 22.38, 0.0965, 0.0142},
+	{4.0, 250, inf, 23.42, 0.0977, 0.0124} // Lower limit of a substellar object is 13MJ(~0.0124MSun)
+);
+
 _RAND_END
 
 
@@ -329,11 +390,18 @@ const STPARS* GetStarTable(LSTARCLS::SpecClass Class, size_t* Tyc)
 		return _RAND _WO_Wolf_Rayet_star_Table;
 		break;
 	case cse::LSTARCLS::L:
+		*Tyc = 10;
+		return _RAND _L_type_Star_Table;
 		break;
 	case cse::LSTARCLS::T:
+		*Tyc = 15;
+		return _RAND _T_type_Star_Table;
 		break;
 	case cse::LSTARCLS::Y:
+		*Tyc = 5;
+		return _RAND _Sub_Brown_Dwarf_Table;
 		break;
+	/*
 	case cse::LSTARCLS::C_R:
 		break;
 	case cse::LSTARCLS::C_N:
@@ -351,17 +419,11 @@ const STPARS* GetStarTable(LSTARCLS::SpecClass Class, size_t* Tyc)
 	case cse::LSTARCLS::SC:
 		break;
 	case cse::LSTARCLS::DA:
-		break;
 	case cse::LSTARCLS::DB:
-		break;
 	case cse::LSTARCLS::DO:
-		break;
 	case cse::LSTARCLS::DQ:
-		break;
 	case cse::LSTARCLS::DZ:
-		break;
 	case cse::LSTARCLS::DC:
-		break;
 	case cse::LSTARCLS::DX:
 		break;
 	case cse::LSTARCLS::D:
@@ -372,6 +434,7 @@ const STPARS* GetStarTable(LSTARCLS::SpecClass Class, size_t* Tyc)
 		break;
 	case cse::LSTARCLS::Exotic:
 		break;
+	*/
 	default:
 		*Tyc = 0;
 		return nullptr;
