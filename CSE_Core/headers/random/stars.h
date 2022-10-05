@@ -591,6 +591,331 @@ public:
 	}
 };
 
+class SubgiantModelBase
+{
+public:
+	using result_type = Object;
+
+	struct param_type
+	{
+		using model_type = StarModelBase;
+		using mass_range = vec2;
+
+		mass_range _MassRange; // Subgiant models are based on mass instead of spectal-type.
+
+		void _Init(mass_range _MRng)
+		{
+			// set internal state
+			_STL_ASSERT(_MRng.x <= _MRng.y && 0 <= _MRng.x,
+				"invalid min and max masses for SubGiant Model");
+			_MassRange = _MRng;
+		}
+
+		_NODISCARD float64 a() const
+		{
+			return _MassRange.x;
+		}
+
+		_NODISCARD float64 b() const
+		{
+			return _MassRange.y;
+		}
+
+		param_type()
+		{
+			_Init(vec2(0.4, 0.9));
+		}
+
+		explicit param_type(float64 _Min0, float64 _Max0)
+		{
+			_Init(vec2(_Min0, _Max0));
+		}
+	}_Par;
+
+	SubgiantModelBase() : _Par(float64{ 0.4 }, float64{ 0.9 }) {}
+
+	explicit SubgiantModelBase(float64 _Min0, float64 _Max0) : _Par(_Min0, _Max0) {}
+
+	explicit SubgiantModelBase(const param_type& _Par0) : _Par(_Par0) {}
+};
+
+class LowMassSubgiantModel : public SubgiantModelBase
+{
+public:
+	using _Mybase = SubgiantModelBase;
+	using mass_type = float64;
+
+	mass_type _Mass = NO_DATA_FLOAT_INF;
+	_STD vector<STPARS> MSPars; // Reference Lists
+
+	LowMassSubgiantModel() : _Mybase(0.4, 0.9) { GetMSParams(); }
+
+	LowMassSubgiantModel(mass_type _Mass0) : _Mass(_Mass0)
+	{
+		_STL_ASSERT(_Mass0 >= 0.4 && _Mass0 <= 0.9, "Mass is out of range.");
+		GetMSParams();
+	}
+
+	LowMassSubgiantModel(mass_type _Min0, mass_type _Max0) : _Mybase(_Min0, _Max0)
+	{
+		_STL_ASSERT(_Min0 >= 0.4 && _Max0 <= 0.9, "Masses is out of range.");
+		GetMSParams();
+	}
+
+	void GetMSParams()
+	{
+		size_t GTableSize, KTableSize, MTableSize;
+		const STPARS* GTable = GetStarTable(LSTARCLS::G, &GTableSize);
+		const STPARS* KTable = GetStarTable(LSTARCLS::K, &KTableSize);
+		const STPARS* MTable = GetStarTable(LSTARCLS::M, &MTableSize);
+		for (size_t i = 0; i < GTableSize; i++)
+		{
+			if (GTable[i][StarTableCoeffs::MSun] >= 0.4 && GTable[i][StarTableCoeffs::MSun] <= 0.9)
+			{
+				MSPars.push_back(GTable[i]);
+			}
+		}
+
+		for (size_t i = 0; i < KTableSize; i++)
+		{
+			if (KTable[i][StarTableCoeffs::MSun] >= 0.4 && KTable[i][StarTableCoeffs::MSun] <= 0.9)
+			{
+				MSPars.push_back(KTable[i]);
+			}
+		}
+
+		for (size_t i = 0; i < MTableSize; i++)
+		{
+			if (MTable[i][StarTableCoeffs::MSun] >= 0.4 && MTable[i][StarTableCoeffs::MSun] <= 0.9)
+			{
+				MSPars.push_back(MTable[i]);
+			}
+		}
+	}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+
+		float64 BaseMass;
+		if (isinf(_Mass))
+		{
+			_Obj.Mass = _Eng.uniform(_Par.a() * MassSol, _Par.b() * MassSol);
+		}
+		else { _Obj.Mass = _Mass * MassSol; }
+		BaseMass = _Obj.Mass / MassSol;
+
+		/////////////////// Citation needed ///////////////////
+		//                                                   //
+		// This model has no references to reliable soueces. //
+		//                                                   //
+		///////////////////////////////////////////////////////
+
+		using ranges_type = _GL gl_vec2<STPARS>;
+		_STD vector<ranges_type> Ranges;
+		for (size_t i = 0; i < MSPars.size() - 1; i++)
+		{
+			if ((BaseMass <= MSPars[i][StarTableCoeffs::MSun] && BaseMass >= MSPars[i + 1][StarTableCoeffs::MSun]) ||
+				(BaseMass >= MSPars[i][StarTableCoeffs::MSun] && BaseMass <= MSPars[i + 1][StarTableCoeffs::MSun]))
+			{
+				Ranges.push_back(ranges_type(MSPars[i], MSPars[i + 1]));
+			}
+		}
+		ranges_type FinalRange = _Eng.choice<_STD vector<ranges_type>::iterator, ranges_type>(Ranges.begin(), Ranges.end());
+		float64 Offset = (BaseMass - FinalRange.x[StarTableCoeffs::MSun]) / (FinalRange.y[StarTableCoeffs::MSun] - FinalRange.x[StarTableCoeffs::MSun]);
+
+		// Generate base parameters as main-sequence stars
+		// Radius
+		float64 BaseRadius = FinalRange.x[StarTableCoeffs::R_RSun] +
+			(FinalRange.y[StarTableCoeffs::R_RSun] - FinalRange.x[StarTableCoeffs::R_RSun]) * Offset;
+
+		// Temperature
+		float64 BaseTEff = FinalRange.x[StarTableCoeffs::Teff] +
+			(FinalRange.y[StarTableCoeffs::Teff] - FinalRange.x[StarTableCoeffs::Teff]) * Offset;
+
+		// As this takes place the fusing hydrogen shell gradually expands outward which 
+		// increases the size of the outer shell of the star up to the subgiant size 
+		// from two to ten times the original radius of the star when it was on the main sequence.
+		_Obj.Dimensions = vec3(RadSol * 2. *
+			_Eng.uniform(BaseRadius * 2., BaseRadius * 10.));
+
+		// spectral class of the star to change very little in the lower end of this range of star mass.
+		// (But how much is unknown)
+		_Obj.Teff = BaseTEff - _Eng.uniform(10, 80);
+
+		// Giving Luminosity
+		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+
+		// Giving spectal type for this star
+		int _SType = SPECSTR::G;
+		size_t it = 0;
+		while (it < MSPars.size() - 1 && !(
+			(_Obj.Teff < MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff > MSPars[it + 1][StarTableCoeffs::Teff]) ||
+			(_Obj.Teff > MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff < MSPars[it + 1][StarTableCoeffs::Teff])))
+		{
+			++it;
+			if (MSPars[it][StarTableCoeffs::SpT] > MSPars[it + 1][StarTableCoeffs::SpT])
+			{
+				++_SType;
+			}
+		}
+		_Obj.SpecClass = SPECSTR(static_cast<SPECSTR::SpecClass>(_SType),
+			(SPECSTR::Type)MSPars[it][StarTableCoeffs::SpT], static_cast<SPECSTR::Type>(-1),
+			SPECSTR::IV);
+
+		return _Obj;
+	}
+};
+
+class MidSizedSubgiantModel : public SubgiantModelBase
+{
+public:
+	using _Mybase = SubgiantModelBase;
+	using mass_type = float64;
+
+	mass_type _Mass = NO_DATA_FLOAT_INF;
+	_STD vector<STPARS> MSPars; // Reference Lists
+
+	MidSizedSubgiantModel() : _Mybase(0.9, 8.0) { GetMSParams(); }
+
+	MidSizedSubgiantModel(mass_type _Mass0) : _Mass(_Mass0)
+	{
+		_STL_ASSERT(_Mass0 > 0.9 && _Mass0 <= 8.0, "Mass is out of range.");
+		GetMSParams();
+	}
+
+	MidSizedSubgiantModel(mass_type _Min0, mass_type _Max0) : _Mybase(_Min0, _Max0)
+	{
+		_STL_ASSERT(_Min0 > 0.9 && _Max0 <= 8.0, "Masses is out of range.");
+		GetMSParams();
+	}
+
+	void GetMSParams()
+	{
+		size_t BTableSize, ATableSize, FTableSize, GTableSize;
+		const STPARS* BTable = GetStarTable(LSTARCLS::B, &BTableSize);
+		const STPARS* ATable = GetStarTable(LSTARCLS::A, &ATableSize);
+		const STPARS* FTable = GetStarTable(LSTARCLS::F, &FTableSize);
+		const STPARS* GTable = GetStarTable(LSTARCLS::G, &GTableSize);
+
+		for (size_t i = 0; i < BTableSize; i++)
+		{
+			if ((BTable[i][StarTableCoeffs::MSun] >= 0.9 && BTable[i][StarTableCoeffs::MSun] <= 8.0) ||
+				(BTable[i][StarTableCoeffs::MSun] > 8.0 && 
+					(BTable[i + 1][StarTableCoeffs::MSun] >= 0.9 && BTable[i + 1][StarTableCoeffs::MSun] <= 8.0)))
+			{
+				MSPars.push_back(BTable[i]);
+			}
+		}
+
+		for (size_t i = 0; i < ATableSize; i++)
+		{
+			if (ATable[i][StarTableCoeffs::MSun] >= 0.9 && ATable[i][StarTableCoeffs::MSun] <= 8.0)
+			{
+				MSPars.push_back(ATable[i]);
+			}
+		}
+
+		for (size_t i = 0; i < FTableSize; i++)
+		{
+			if (FTable[i][StarTableCoeffs::MSun] >= 0.9 && FTable[i][StarTableCoeffs::MSun] <= 8.0)
+			{
+				MSPars.push_back(FTable[i]);
+			}
+		}
+
+		for (size_t i = 0; i < GTableSize; i++)
+		{
+			if (GTable[i][StarTableCoeffs::MSun] >= 0.9 && GTable[i][StarTableCoeffs::MSun] <= 8.0)
+			{
+				MSPars.push_back(GTable[i]);
+			}
+		}
+	}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+
+		float64 BaseMass;
+		if (isinf(_Mass))
+		{
+			_Obj.Mass = _Eng.uniform(_Par.a() * MassSol, _Par.b() * MassSol);
+		}
+		else { _Obj.Mass = _Mass * MassSol; }
+		BaseMass = _Obj.Mass / MassSol;
+
+		// This model is based on HR Diagram and stellar evolution.
+
+		STPARS _BsPars;
+		for (size_t i = 0; i < MSPars.size() - 1; i++)
+		{
+			if ((BaseMass < MSPars[i][StarTableCoeffs::MSun] && BaseMass > MSPars[i + 1][StarTableCoeffs::MSun]) ||
+				(BaseMass > MSPars[i][StarTableCoeffs::MSun] && BaseMass < MSPars[i + 1][StarTableCoeffs::MSun]))
+			{
+				_BsPars = MSPars[i + 1];
+				break;
+			}
+		}
+
+		const float64 TemperatureLowLimit = _Eng.normal(5000, 80);
+		const float64 MagnitudeLowLimit = _Eng.normal(2.4, 0.015);
+
+		float64 BaseTEff;
+		if ((_BsPars[StarTableCoeffs::Teff] - TemperatureLowLimit) <= 50)
+		{
+			BaseTEff = _BsPars[StarTableCoeffs::Teff] -
+				50 * (_Eng.exponential() / 5.);
+		}
+		else
+		{
+			BaseTEff = _BsPars[StarTableCoeffs::Teff] -
+				(_BsPars[StarTableCoeffs::Teff] - TemperatureLowLimit) *
+				(_Eng.exponential() / 5.);
+		}
+		_Obj.Teff = BaseTEff;
+
+		STPARS NextPars;
+		int _SType = SPECSTR::B;
+		size_t it = 0;
+		while (it < MSPars.size() - 1 && !(
+			(_Obj.Teff < MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff > MSPars[it + 1][StarTableCoeffs::Teff]) ||
+			(_Obj.Teff > MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff < MSPars[it + 1][StarTableCoeffs::Teff])))
+		{
+			if (MSPars[it][StarTableCoeffs::SpT] > MSPars[it + 1][StarTableCoeffs::SpT])
+			{
+				++_SType;
+			}
+			++it;
+		}
+		_Obj.SpecClass = SPECSTR(static_cast<SPECSTR::SpecClass>(_SType),
+			(SPECSTR::Type)MSPars[it][StarTableCoeffs::SpT], static_cast<SPECSTR::Type>(-1),
+			SPECSTR::IV);
+		NextPars = MSPars[it];
+
+		float64 BaseMag = NextPars[StarTableCoeffs::Mbol] - NextPars[StarTableCoeffs::BCv] * (_Eng.normal(0, 0.003));
+		if (BaseMag - 1 > MagnitudeLowLimit)
+		{
+			BaseMag = MagnitudeLowLimit;
+		}
+		else{BaseMag -= 1.;}
+
+		_Obj.AbsMagn = BaseMag;
+		_Obj.LumBol = ToLuminosity3(BaseMag + NextPars[StarTableCoeffs::BCv]);
+		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
+
+		return _Obj;
+	}
+};
+
 _CSE_END
 
 #pragma pop_macro("new")

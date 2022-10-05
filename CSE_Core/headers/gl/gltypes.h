@@ -2,10 +2,10 @@
 //                 Data types from GLSL                  //
 ///////////////////////////////////////////////////////////
 
-// some functions taken from GLM library by G-Truc(MIT Lic.)
-
 /*
-The MIT License
+* NOTE:
+* Classes and functions of these headers and inline files
+* are taken from GLM library by G-Truc under The MIT License
 --------------------------------------------------------------------------------
 Copyright (c) 2005 - 2014 G-Truc Creation
 
