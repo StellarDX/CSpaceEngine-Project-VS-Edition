@@ -754,8 +754,8 @@ public:
 		int _SType = SPECSTR::G;
 		size_t it = 0;
 		while (it < MSPars.size() - 1 && !(
-			(_Obj.Teff < MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff > MSPars[it + 1][StarTableCoeffs::Teff]) ||
-			(_Obj.Teff > MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff < MSPars[it + 1][StarTableCoeffs::Teff])))
+			(_Obj.Teff < MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff >= MSPars[it + 1][StarTableCoeffs::Teff]) ||
+			(_Obj.Teff > MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff <= MSPars[it + 1][StarTableCoeffs::Teff])))
 		{
 			++it;
 			if (MSPars[it][StarTableCoeffs::SpT] > MSPars[it + 1][StarTableCoeffs::SpT])
@@ -858,8 +858,9 @@ public:
 		STPARS _BsPars;
 		for (size_t i = 0; i < MSPars.size() - 1; i++)
 		{
-			if ((BaseMass < MSPars[i][StarTableCoeffs::MSun] && BaseMass > MSPars[i + 1][StarTableCoeffs::MSun]) ||
-				(BaseMass > MSPars[i][StarTableCoeffs::MSun] && BaseMass < MSPars[i + 1][StarTableCoeffs::MSun]))
+			std::cout << MSPars[i][StarTableCoeffs::MSun] << '\n';
+			if ((BaseMass < MSPars[i][StarTableCoeffs::MSun] && BaseMass >= MSPars[i + 1][StarTableCoeffs::MSun]) ||
+				(BaseMass > MSPars[i][StarTableCoeffs::MSun] && BaseMass <= MSPars[i + 1][StarTableCoeffs::MSun]))
 			{
 				_BsPars = MSPars[i + 1];
 				break;
@@ -887,8 +888,8 @@ public:
 		int _SType = SPECSTR::B;
 		size_t it = 0;
 		while (it < MSPars.size() - 1 && !(
-			(_Obj.Teff < MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff > MSPars[it + 1][StarTableCoeffs::Teff]) ||
-			(_Obj.Teff > MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff < MSPars[it + 1][StarTableCoeffs::Teff])))
+			(_Obj.Teff < MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff >= MSPars[it + 1][StarTableCoeffs::Teff]) ||
+			(_Obj.Teff > MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff <= MSPars[it + 1][StarTableCoeffs::Teff])))
 		{
 			if (MSPars[it][StarTableCoeffs::SpT] > MSPars[it + 1][StarTableCoeffs::SpT])
 			{
@@ -914,6 +915,12 @@ public:
 
 		return _Obj;
 	}
+};
+
+class MassiveSubgiantModel : public SubgiantModelBase
+{
+	using _Mybase = SubgiantModelBase;
+	using mass_type = float64;
 };
 
 _CSE_END
