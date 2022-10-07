@@ -858,7 +858,6 @@ public:
 		STPARS _BsPars;
 		for (size_t i = 0; i < MSPars.size() - 1; i++)
 		{
-			std::cout << MSPars[i][StarTableCoeffs::MSun] << '\n';
 			if ((BaseMass < MSPars[i][StarTableCoeffs::MSun] && BaseMass >= MSPars[i + 1][StarTableCoeffs::MSun]) ||
 				(BaseMass > MSPars[i][StarTableCoeffs::MSun] && BaseMass <= MSPars[i + 1][StarTableCoeffs::MSun]))
 			{
@@ -902,7 +901,7 @@ public:
 			SPECSTR::IV);
 		NextPars = MSPars[it];
 
-		float64 BaseMag = NextPars[StarTableCoeffs::Mbol] - NextPars[StarTableCoeffs::BCv] * (_Eng.normal(0, 0.003));
+		float64 BaseMag = (NextPars[StarTableCoeffs::Mbol] - NextPars[StarTableCoeffs::BCv]) + (_Eng.normal(0, 0.003));
 		if (BaseMag - 1 > MagnitudeLowLimit)
 		{
 			BaseMag = MagnitudeLowLimit;
@@ -919,8 +918,86 @@ public:
 
 class MassiveSubgiantModel : public SubgiantModelBase
 {
+public:
 	using _Mybase = SubgiantModelBase;
 	using mass_type = float64;
+
+	mass_type _Mass = NO_DATA_FLOAT_INF;
+	_STD vector<STPARS> MSPars; // Reference Lists
+
+	MassiveSubgiantModel() : _Mybase(8.0, 12.0) { GetMSParams(); }
+
+	MassiveSubgiantModel(mass_type _Mass0) : _Mass(_Mass0)
+	{
+		_STL_ASSERT(_Mass0 > 8.0 && _Mass0 <= 12.0, "Mass is out of range.");
+		GetMSParams();
+	}
+
+	MassiveSubgiantModel(mass_type _Min0, mass_type _Max0) : _Mybase(_Min0, _Max0)
+	{
+		_STL_ASSERT(_Min0 > 8.0 && _Max0 <= 12.0, "Masses is out of range.");
+		GetMSParams();
+	}
+
+	void GetMSParams()
+	{
+		size_t BTableSize;
+		const STPARS* BTable = GetStarTable(LSTARCLS::B, &BTableSize);
+
+		for (size_t i = 0; i < BTableSize; i++)
+		{
+			if ((BTable[i][StarTableCoeffs::MSun] >= 8.0 && BTable[i][StarTableCoeffs::MSun] <= 12.0) ||
+				(BTable[i][StarTableCoeffs::MSun] > 12.0 &&
+					(BTable[i + 1][StarTableCoeffs::MSun] >= 8.0 && BTable[i + 1][StarTableCoeffs::MSun] <= 12.0)) ||
+				(BTable[i - 1][StarTableCoeffs::MSun] >= 8.0 && BTable[i - 1][StarTableCoeffs::MSun] <= 12.0 && 
+					BTable[i][StarTableCoeffs::MSun] < 8.0))
+			{
+				MSPars.push_back(BTable[i]);
+			}
+		}
+	}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+
+		float64 BaseMass;
+		if (isinf(_Mass))
+		{
+			_Obj.Mass = _Eng.uniform(_Par.a() * MassSol, _Par.b() * MassSol);
+		}
+		else { _Obj.Mass = _Mass * MassSol; }
+		BaseMass = _Obj.Mass / MassSol;
+
+		STPARS _BsPars;
+		for (size_t i = 0; i < MSPars.size() - 1; i++)
+		{
+			if ((BaseMass < MSPars[i][StarTableCoeffs::MSun] && BaseMass >= MSPars[i + 1][StarTableCoeffs::MSun]) ||
+				(BaseMass > MSPars[i][StarTableCoeffs::MSun] && BaseMass <= MSPars[i + 1][StarTableCoeffs::MSun]))
+			{
+				_BsPars = MSPars[i + 1];
+				break;
+			}
+		}
+
+		_Obj.SpecClass = SPECSTR(static_cast<SPECSTR::SpecClass>(1),
+			(SPECSTR::Type)_BsPars[StarTableCoeffs::SpT], static_cast<SPECSTR::Type>(-1),
+			SPECSTR::IV);
+		float64 BaseTEff = _BsPars[StarTableCoeffs::Teff] + _Eng.normal(0, _BsPars[StarTableCoeffs::Teff] * 0.05);
+		_Obj.Teff = BaseTEff;
+
+		float64 BaseMag = (_BsPars[StarTableCoeffs::Mbol] - _BsPars[StarTableCoeffs::BCv]) + (_Eng.normal(0, 0.003));
+		std::cout << BaseMag << '\n';
+		_Obj.AbsMagn = BaseMag - 0.1;
+		_Obj.LumBol = ToLuminosity3(_Obj.AbsMagn + _BsPars[StarTableCoeffs::BCv]);
+		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
+
+		return _Obj;
+	}
 };
 
 _CSE_END

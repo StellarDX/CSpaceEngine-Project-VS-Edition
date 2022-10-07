@@ -39,13 +39,15 @@ os.Write(); // export to file
 **Generate a star**
 ```asp
 _CSE_Random_Engine<mt19937_64> Engine;
-MainSequenceStarModel StarM("G2V");
-object_generator<_CSE_Random_Engine<mt19937_64>, MainSequenceStarModel> gen(Engine, StarM);
+MainSequenceStarModel StarModel("G2V");
+object_generator<_CSE_Random_Engine<mt19937_64>, MainSequenceStarModel> gen(Engine, StarModel);
 Object Obj = gen();
 ```
  * Support stars:
  * - Main sequence stars(Specified, Random)
  * - Wolf-Rayet star(Specified)
+ * - Substellar Objects(Specified)
+ * - Subgiants(Based on Mass, 0.4 - 12MSun Supported)
 
 ## TODO
  * Procedural planet generator
