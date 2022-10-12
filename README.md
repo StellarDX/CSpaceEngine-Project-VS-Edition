@@ -1,10 +1,10 @@
 ﻿# CSpaceEngine - A static library and toolbox for SpeceEngine
 
-Using C++ to define, modify, complete Celestral Objects in SpaceEngine.
-
 [中文](README_CN.md)
 
-Astronomical calculations is also supported(in future...).
+Using C++ to define, modify, complete Celestral Objects in SpaceEngine.
+
+License: [GPLv2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 
 ## Examples
 **Loading a sc file**
