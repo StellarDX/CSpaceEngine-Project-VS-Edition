@@ -335,7 +335,7 @@ _RAND_END
 // Giant star parameters table reference:
 // https://ui.adsabs.harvard.edu/abs/1980ARA&A..18..115P
 // https://ui.adsabs.harvard.edu/abs/1984ApJ...284..565H
-std::map<float64, std::pair<SPECSTR, float64>> _Adopt_BC_Teff_Calib_For_Giants() // II, III, IV
+_STD map<float64, _STD pair<SPECSTR, float64>> _Adopt_BC_Teff_Calib_For_Giants() // II, III, IV
 {
 	using namespace std;
 	map<float64, pair<SPECSTR, float64>> _Par;
@@ -389,7 +389,7 @@ std::map<float64, std::pair<SPECSTR, float64>> _Adopt_BC_Teff_Calib_For_Giants()
 	return _Par;
 }
 
-static const std::map<float64, std::pair<SPECSTR, float64>> _Giant_Params =
+static const _STD map<float64, _STD pair<SPECSTR, float64>> _Giant_Params =
 _Adopt_BC_Teff_Calib_For_Giants();
 
 const STPARS* GetStarTable(LSTARCLS::SpecClass Class, size_t* Tyc)
@@ -507,8 +507,8 @@ __CRTDECL GetGiantParams(SPECSTR _Spec, vec2* _BC_Teff)
 {
 	auto it = _Giant_Params.rbegin();
 	auto end = _Giant_Params.rend();
-	std::pair<SPECSTR, float64> Base;
-	std::pair<SPECSTR, float64> Next;
+	_STD pair<SPECSTR, float64> Base;
+	_STD pair<SPECSTR, float64> Next;
 	float64 TeffBase = -1, TeffNext = -1;
 	while (it != end)
 	{
@@ -537,12 +537,12 @@ __CRTDECL GetGiantParams(SPECSTR _Spec, vec2* _BC_Teff)
 	return _Giant_Params.size();
 }
 
-void GetGiantParams(float64 _Teff, std::pair<SPECSTR, float64>* _Param)
+void GetGiantParams(float64 _Teff, _STD pair<SPECSTR, float64>* _Param)
 {
 	auto it = _Giant_Params.rbegin();
 	auto end = _Giant_Params.rend();
-	std::pair<SPECSTR, float64> _Begin;
-	std::pair<SPECSTR, float64> _Next;
+	_STD pair<SPECSTR, float64> _Begin;
+	_STD pair<SPECSTR, float64> _Next;
 	float64 TeffBase = -1, TeffNext = -1;
 	while (it != end)
 	{

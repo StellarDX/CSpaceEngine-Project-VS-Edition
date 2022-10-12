@@ -1131,6 +1131,50 @@ public:
 	}
 };
 
+class RedClumpGiantModel
+{
+public:
+	using result_type = Object;
+
+	struct param_type
+	{
+		// Nothing...
+	}_Par;
+
+	RedClumpGiantModel() : _Par() {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+
+		_Obj.Mass = _Eng.uniform(2 * MassSol, 3 * MassSol);
+		_Obj.Teff = _Eng.normal(5000, 120);
+		_Obj.AbsMagn = _Eng.normal(0.81, 0.5);
+		_Obj.FeH = _Eng.uniform(-0.6, 0.4);
+
+		std::pair<SPECSTR, float64> _SP_BC_Base;
+		GetGiantParams(_Obj.Teff, &_SP_BC_Base);
+		int Cls = _SP_BC_Base.first.SClass();
+		auto Ty = _SP_BC_Base.first.MinType();
+		Ty += 6;
+		if (Ty >= 10)
+		{
+			Ty -= 10;
+			++Cls;
+		}
+
+		_Obj.SpecClass = SPECSTR(static_cast<LSTARCLS::SpecClass>(Cls), Ty, -1.F, SPECSTR::III);
+		_Obj.LumBol = ToLuminosity3(_Obj.AbsMagn + _SP_BC_Base.second);
+		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
+
+		return _Obj;
+	}
+};
+
 _CSE_END
 
 #pragma pop_macro("new")
