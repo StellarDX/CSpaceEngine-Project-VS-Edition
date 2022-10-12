@@ -1,5 +1,6 @@
 ﻿[English](README.md)
 <div align = "center">
+
 # CSpaceEngine · 冥古显生
 
 开源的SpaceEngine静态库与工具箱，兼容SE0.990。(也是造星之法)
@@ -45,6 +46,7 @@ os.Write();
  - 基于真实数据的天体生成器
  - 支持的天体列表：
  - * 恒星
+
 | 模型名 | 类型 | 精度 | 基准值 |
 |:------|:-----|:----|:-----|
 | MainSequenceStarModel | 主序星 | 中高 | 光谱型 |
