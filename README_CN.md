@@ -40,8 +40,8 @@ os.Write();
 
 ### 时间计算 | 星等/光度计算
  - CSE提供了一些计算工具：
- - * [时间](https://github.com/StellarDX/CSpaceEngine-Project/blob/main/CSE_Core/datetime/JulianCalculator.cpp)
- - * [星等/光度](https://github.com/StellarDX/CSpaceEngine-Project/blob/main/CSE_Core/lumine/StarMagLumCalculator.cpp)
+ - * [时间](CSE_Core/datetime/JulianCalculator.cpp)
+ - * [星等/光度](CSE_Core/lumine/StarMagLumCalculator.cpp)
 
 ### 天体生成
  - 基于真实数据的天体生成器
