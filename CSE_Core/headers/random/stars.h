@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 //===========================================================================//
 //                                                                           //
@@ -1131,101 +1131,101 @@ public:
 	}
 };
 
-class HorizontalBrunch
-{
-public:
-	using result_type = Object;
-
-	struct param_type
-	{
-		enum param_mode
-		{
-			UNIFORM,
-			NORMAL
-		};
-		using param_args = vec2;
-
-		param_mode _MsMode;
-		param_mode _RadMode;
-		param_mode _MagMode;
-		param_mode _TeMode;
-
-		param_args _Masses = vec2(NO_DATA_FLOAT_INF);
-		param_args _Radiuses = vec2(NO_DATA_FLOAT_INF);
-		param_args _Mags = vec2(NO_DATA_FLOAT_INF);
-		param_args _Teffs = vec2(NO_DATA_FLOAT_INF);
-
-		void _Init() // Default profile
-		{
-			MassMode(UNIFORM);
-			MassRange(vec2(0.5, 8));
-			MagMode(UNIFORM);
-			MagRange(vec2(-0.26, 0.45));
-			TeffMode(UNIFORM);
-			TeffRange(vec2(4500, 9500));
-		}
-
-		param_mode MassMode(param_mode _New = static_cast<param_mode>(-1))
-		{
-			param_mode _Old = _MsMode;
-			if (_New >= 0) { _MsMode = _New; }
-			return _Old;
-		}
-
-		param_mode RadMode(param_mode _New = static_cast<param_mode>(-1))
-		{
-			param_mode _Old = _RadMode;
-			if (_New >= 0) { _RadMode = _New; }
-			return _Old;
-		}
-
-		param_mode MagMode(param_mode _New = static_cast<param_mode>(-1))
-		{
-			param_mode _Old = _MagMode;
-			if (_New >= 0) { _MagMode = _New; }
-			return _Old;
-		}
-
-		param_mode TeffMode(param_mode _New = static_cast<param_mode>(-1))
-		{
-			param_mode _Old = _TeMode;
-			if (_New >= 0) { _TeMode = _New; }
-			return _Old;
-		}
-
-		param_args MassRange(param_args _New = vec2(NO_DATA_FLOAT_INF))
-		{
-			param_args _Old = _Masses;
-			if (!any(isinf(_New))) { _Masses = _New; }
-			return _Old;
-		}
-
-		param_args RadRange(param_args _New = vec2(NO_DATA_FLOAT_INF))
-		{
-			param_args _Old = _Radiuses;
-			if (!any(isinf(_New))) { _Radiuses = _New; }
-			return _Old;
-		}
-
-		param_args MagRange(param_args _New = vec2(NO_DATA_FLOAT_INF))
-		{
-			param_args _Old = _Mags;
-			if (!any(isinf(_New))) { _Mags = _New; }
-			return _Old;
-		}
-
-		param_args TeffRange(param_args _New = vec2(NO_DATA_FLOAT_INF))
-		{
-			param_args _Old = _Teffs;
-			if (!any(isinf(_New))) { _Teffs = _New; }
-			return _Old;
-		}
-	}_Par;
-};
-
-class RedClumpGiantModel : public HorizontalBrunch
-{
-};
+//class HorizontalBrunch
+//{
+//public:
+//	using result_type = Object;
+//
+//	struct param_type
+//	{
+//		enum param_mode
+//		{
+//			UNIFORM,
+//			NORMAL
+//		};
+//		using param_args = vec2;
+//
+//		param_mode _MsMode;
+//		param_mode _RadMode;
+//		param_mode _MagMode;
+//		param_mode _TeMode;
+//
+//		param_args _Masses = vec2(NO_DATA_FLOAT_INF);
+//		param_args _Radiuses = vec2(NO_DATA_FLOAT_INF);
+//		param_args _Mags = vec2(NO_DATA_FLOAT_INF);
+//		param_args _Teffs = vec2(NO_DATA_FLOAT_INF);
+//
+//		void _Init() // Default profile
+//		{
+//			MassMode(UNIFORM);
+//			MassRange(vec2(0.5, 8));
+//			MagMode(UNIFORM);
+//			MagRange(vec2(-0.26, 0.45));
+//			TeffMode(UNIFORM);
+//			TeffRange(vec2(4500, 9500));
+//		}
+//
+//		param_mode MassMode(param_mode _New = static_cast<param_mode>(-1))
+//		{
+//			param_mode _Old = _MsMode;
+//			if (_New >= 0) { _MsMode = _New; }
+//			return _Old;
+//		}
+//
+//		param_mode RadMode(param_mode _New = static_cast<param_mode>(-1))
+//		{
+//			param_mode _Old = _RadMode;
+//			if (_New >= 0) { _RadMode = _New; }
+//			return _Old;
+//		}
+//
+//		param_mode MagMode(param_mode _New = static_cast<param_mode>(-1))
+//		{
+//			param_mode _Old = _MagMode;
+//			if (_New >= 0) { _MagMode = _New; }
+//			return _Old;
+//		}
+//
+//		param_mode TeffMode(param_mode _New = static_cast<param_mode>(-1))
+//		{
+//			param_mode _Old = _TeMode;
+//			if (_New >= 0) { _TeMode = _New; }
+//			return _Old;
+//		}
+//
+//		param_args MassRange(param_args _New = vec2(NO_DATA_FLOAT_INF))
+//		{
+//			param_args _Old = _Masses;
+//			if (!any(isinf(_New))) { _Masses = _New; }
+//			return _Old;
+//		}
+//
+//		param_args RadRange(param_args _New = vec2(NO_DATA_FLOAT_INF))
+//		{
+//			param_args _Old = _Radiuses;
+//			if (!any(isinf(_New))) { _Radiuses = _New; }
+//			return _Old;
+//		}
+//
+//		param_args MagRange(param_args _New = vec2(NO_DATA_FLOAT_INF))
+//		{
+//			param_args _Old = _Mags;
+//			if (!any(isinf(_New))) { _Mags = _New; }
+//			return _Old;
+//		}
+//
+//		param_args TeffRange(param_args _New = vec2(NO_DATA_FLOAT_INF))
+//		{
+//			param_args _Old = _Teffs;
+//			if (!any(isinf(_New))) { _Teffs = _New; }
+//			return _Old;
+//		}
+//	}_Par;
+//};
+//
+//class RedClumpGiantModel : public HorizontalBrunch
+//{
+//};
 
 _CSE_END
 
