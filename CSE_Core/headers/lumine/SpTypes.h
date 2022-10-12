@@ -271,6 +271,135 @@ public:
 	friend bool IsNeutronStar(spectum _Spec);
 	friend bool IsBlackHole(spectum _Spec);
 	friend bool IsStarRemnant(spectum _Spec);
+
+	// Comparing
+	bool EarlierThan(const spectum& _Right)const
+	{
+		// Main-Sequence
+		if
+		(
+			(IsWolfRayet(*this) && IsWolfRayet(_Right)) || 
+			(IsCarbonStar(*this) && IsCarbonStar(_Right)) || 
+			(IsWhiteDwarf(*this) && IsWhiteDwarf(_Right))
+		)
+		{
+			if (this->SClass() == _Right.SClass())
+			{
+				return this->MinType() < _Right.MinType();
+			}
+			return false;
+		}
+		else if (this->MaxLClass() == _Right.MaxLClass())
+		{
+			if (this->SClass() == _Right.SClass())
+			{
+				return this->MinType() < _Right.MinType();
+			}
+			else
+			{
+				return this->SClass() < _Right.SClass();
+			}
+		}
+		return false;
+	}
+
+	bool EarlierThanEqual(const spectum& _Right)const
+	{
+		// Main-Sequence
+		if
+		(
+			(IsWolfRayet(*this) && IsWolfRayet(_Right)) ||
+			(IsCarbonStar(*this) && IsCarbonStar(_Right)) ||
+			(IsWhiteDwarf(*this) && IsWhiteDwarf(_Right))
+		)
+		{
+			if (this->SClass() == _Right.SClass())
+			{
+				return this->MinType() <= _Right.MinType();
+			}
+			return false;
+		}
+		else if (this->MaxLClass() == _Right.MaxLClass())
+		{
+			if (this->SClass() == _Right.SClass())
+			{
+				return this->MinType() <= _Right.MinType();
+			}
+			else
+			{
+				return this->SClass() <= _Right.SClass();
+			}
+		}
+		return false;
+	}
+
+	bool LaterThan(const spectum& _Right)const
+	{
+		// Main-Sequence
+		if
+		(
+			(IsWolfRayet(*this) && IsWolfRayet(_Right)) || 
+			(IsCarbonStar(*this) && IsCarbonStar(_Right)) || 
+			(IsWhiteDwarf(*this) && IsWhiteDwarf(_Right))
+		)
+		{
+			if (this->SClass() == _Right.SClass())
+			{
+				return this->MinType() > _Right.MinType();
+			}
+			return false;
+		}
+		else if (this->MaxLClass() == _Right.MaxLClass())
+		{
+			if (this->SClass() == _Right.SClass())
+			{
+				return this->MinType() > _Right.MinType();
+			}
+			else
+			{
+				return this->SClass() > _Right.SClass();
+			}
+		}
+		return false;
+	}
+
+	bool LaterThanEqual(const spectum& _Right)const
+	{
+		// Main-Sequence
+		if
+		(
+			(IsWolfRayet(*this) && IsWolfRayet(_Right)) ||
+			(IsCarbonStar(*this) && IsCarbonStar(_Right)) ||
+			(IsWhiteDwarf(*this) && IsWhiteDwarf(_Right))
+		)
+		{
+			if (this->SClass() == _Right.SClass())
+			{
+				return this->MinType() >= _Right.MinType();
+			}
+			return false;
+		}
+		else if (this->MaxLClass() == _Right.MaxLClass())
+		{
+			if (this->SClass() == _Right.SClass())
+			{
+				return this->MinType() >= _Right.MinType();
+			}
+			else
+			{
+				return this->SClass() >= _Right.SClass();
+			}
+		}
+		return false;
+	}
+
+	bool Equal(const spectum& _Right)const
+	{
+		return
+			this->SClass() == _Right.SClass() &&
+			this->MinType() == _Right.MinType() &&
+			this->MaxLClass() == _Right.MaxLClass();
+	}
 };
 
 // ----------RED GIANTS---------- //

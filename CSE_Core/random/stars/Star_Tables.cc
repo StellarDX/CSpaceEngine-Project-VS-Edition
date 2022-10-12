@@ -1,4 +1,5 @@
 #include "../../headers/random/stars.h"
+#include <map>
 
 _CSE_BEGIN
 
@@ -331,6 +332,65 @@ _Sub_Brown_Dwarf_Table[6]
 
 _RAND_END
 
+// Giant star parameters table reference:
+// https://ui.adsabs.harvard.edu/abs/1980ARA&A..18..115P
+// https://ui.adsabs.harvard.edu/abs/1984ApJ...284..565H
+std::map<float64, std::pair<SPECSTR, float64>> _Adopt_BC_Teff_Calib_For_Giants() // II, III, IV
+{
+	using namespace std;
+	map<float64, pair<SPECSTR, float64>> _Par;
+	//           Teff                          Sp.Type B.C.
+	_Par.emplace(47000, pair<SPECSTR, float64>("O3"  , -4.2 ));
+	_Par.emplace(43500, pair<SPECSTR, float64>("O4"  , -3.9 ));
+	_Par.emplace(42000, pair<SPECSTR, float64>("O5"  , -3.8 ));
+	_Par.emplace(40200, pair<SPECSTR, float64>("O5.5", -3.7 ));
+	_Par.emplace(39300, pair<SPECSTR, float64>("O6"  , -3.5 ));
+	_Par.emplace(37400, pair<SPECSTR, float64>("O7"  , -3.4 ));
+	_Par.emplace(35400, pair<SPECSTR, float64>("O7.5", -3.25));
+	_Par.emplace(34500, pair<SPECSTR, float64>("O8"  , -3.2 ));
+	_Par.emplace(33600, pair<SPECSTR, float64>("O8.5", -3.1 ));
+	_Par.emplace(32800, pair<SPECSTR, float64>("O9"  , -3.05));
+	_Par.emplace(31900, pair<SPECSTR, float64>("O9.5", -3   ));
+	_Par.emplace(30300, pair<SPECSTR, float64>("B0"  , -2.9 ));
+	_Par.emplace(27300, pair<SPECSTR, float64>("B0.2", -2.6 ));
+	_Par.emplace(25900, pair<SPECSTR, float64>("B0.5", -2.5 ));
+	_Par.emplace(23400, pair<SPECSTR, float64>("B0.7", -2.2 ));
+	_Par.emplace(21100, pair<SPECSTR, float64>("B1"  , -2   ));
+	_Par.emplace(20000, pair<SPECSTR, float64>("B1.5", -1.8 ));
+	_Par.emplace(18000, pair<SPECSTR, float64>("B2"  , -1.6 ));
+	_Par.emplace(17100, pair<SPECSTR, float64>("B3"  , -1.5 ));
+	_Par.emplace(16700, pair<SPECSTR, float64>("B4"  , -1.4 ));
+	_Par.emplace(16300, pair<SPECSTR, float64>("B5"  , -1.3 ));
+	_Par.emplace(13200, pair<SPECSTR, float64>("B7"  , -1.07));
+	_Par.emplace(12550, pair<SPECSTR, float64>("B8"  , -0.72));
+	_Par.emplace(11400, pair<SPECSTR, float64>("B9"  , -0.46));
+	_Par.emplace(10550, pair<SPECSTR, float64>("B9.5", -0.32));
+	_Par.emplace(10000, pair<SPECSTR, float64>("A0"  , -0.24));
+	_Par.emplace( 9570, pair<SPECSTR, float64>("A1"  , -0.19));
+	_Par.emplace( 9000, pair<SPECSTR, float64>("A2"  , -0.09));
+	_Par.emplace( 8500, pair<SPECSTR, float64>("A3"  , -0.03));
+	_Par.emplace( 8200, pair<SPECSTR, float64>("A5"  , -0.02));
+	_Par.emplace( 7800, pair<SPECSTR, float64>("A8"  ,  0   ));
+	_Par.emplace( 7000, pair<SPECSTR, float64>("F0"  ,  0.01));
+	_Par.emplace( 6500, pair<SPECSTR, float64>("F5"  , -0.01));
+	_Par.emplace(pow(10, 3.763), pair<SPECSTR, float64>("G0", -0.13));
+	_Par.emplace(pow(10, 3.676), pair<SPECSTR, float64>("G5", -0.34));
+	_Par.emplace(pow(10, 3.662), pair<SPECSTR, float64>("G8", -0.38));
+	_Par.emplace(pow(10, 3.636), pair<SPECSTR, float64>("K0", -0.42));
+	_Par.emplace(pow(10, 3.629), pair<SPECSTR, float64>("K1", -0.48));
+	_Par.emplace(pow(10, 3.624), pair<SPECSTR, float64>("K2", -0.53));
+	_Par.emplace(pow(10, 3.593), pair<SPECSTR, float64>("K3", -0.6 ));
+	_Par.emplace(pow(10, 3.591), pair<SPECSTR, float64>("K4", -0.9 ));
+	_Par.emplace(pow(10, 3.575), pair<SPECSTR, float64>("K5", -1.19));
+	_Par.emplace(pow(10, 3.574), pair<SPECSTR, float64>("M0", -1.28));
+	_Par.emplace(pow(10, 3.566), pair<SPECSTR, float64>("M1", -1.36));
+	_Par.emplace(pow(10, 3.563), pair<SPECSTR, float64>("M2", -1.52));
+	_Par.emplace(_RGB_TABLE_TEFF_LOW_LIMIT, pair<SPECSTR, float64>("M7"  , -6.06)); // Using data from Mira Cet
+	return _Par;
+}
+
+static const std::map<float64, std::pair<SPECSTR, float64>> _Giant_Params =
+_Adopt_BC_Teff_Calib_For_Giants();
 
 const STPARS* GetStarTable(LSTARCLS::SpecClass Class, size_t* Tyc)
 {
@@ -440,6 +500,100 @@ const STPARS* GetStarTable(LSTARCLS::SpecClass Class, size_t* Tyc)
 		return nullptr;
 		break;
 	}
+}
+
+_Check_return_ uint64 
+__CRTDECL GetGiantParams(SPECSTR _Spec, vec2* _BC_Teff)
+{
+	auto it = _Giant_Params.rbegin();
+	auto end = _Giant_Params.rend();
+	std::pair<SPECSTR, float64> Base;
+	std::pair<SPECSTR, float64> Next;
+	float64 TeffBase = -1, TeffNext = -1;
+	while (it != end)
+	{
+		TeffBase = it->first;
+		Base = it->second;
+		++it;
+		if (it == end) { break; }
+		if (_Spec.LaterThanEqual(Base.first) && _Spec.EarlierThan(it->second.first))
+		{
+			Next = it->second;
+			TeffNext = it->first;
+			break;
+		}
+	}
+	_STL_ASSERT(TeffBase != -1 || TeffNext != -1, "Spectal-type value is out of range");
+	float64 Offset;
+	if (Base.first.SClass() != Next.first.SClass())
+	{
+		Offset = (_Spec.MinType() - Base.first.MinType()) / (10 - Base.first.MinType());
+	}
+	else
+	{
+		Offset = (_Spec.MinType() - Base.first.MinType()) / (Next.first.MinType() - Base.first.MinType());
+	}
+	*_BC_Teff = vec2(Base.second, TeffBase + ((TeffNext - TeffBase) * Offset));
+	return _Giant_Params.size();
+}
+
+void GetGiantParams(float64 _Teff, std::pair<SPECSTR, float64>* _Param)
+{
+	auto it = _Giant_Params.rbegin();
+	auto end = _Giant_Params.rend();
+	std::pair<SPECSTR, float64> _Begin;
+	std::pair<SPECSTR, float64> _Next;
+	float64 TeffBase = -1, TeffNext = -1;
+	while (it != end)
+	{
+		auto Base = it;
+		TeffBase = it->first;
+		++it;
+		if (it == end) { break; }
+		if (_Teff <= Base->first && _Teff > it->first)
+		{
+			_Begin = Base->second;
+			_Next = it->second;
+			TeffNext = it->first;
+			break;
+		}
+	}
+	_STL_ASSERT(TeffBase != -1 || TeffNext != -1, "Effective Temperature value is out of range");
+	float64 Offset = (_Teff - TeffBase) / (TeffNext - TeffBase);
+	float64 NextType = _Next.first.MinType();
+	if (_Begin.first.SClass() != _Next.first.SClass())
+	{
+		NextType = 10;
+	}
+	float64 MType = _Begin.first.MinType() + ((NextType - _Begin.first.MinType()) * Offset);
+	
+	auto FindSpec = [&](const SPECSTR& _Spec)
+	{
+		auto it = _Giant_Params.rbegin();
+		auto end = _Giant_Params.rend();
+		while (it != end)
+		{
+			if (_Spec.Equal(it->second.first))
+			{
+				return true;
+			}
+			++it;
+		}
+		return false;
+	};
+	int SCls = _Begin.first.SClass();
+	if (!FindSpec(SPECSTR(_Begin.first.SClass(), static_cast<float>(MType))))
+	{
+		MType = lround(MType);
+		if (MType >= 10)
+		{
+			++SCls;
+			MType -= 10;
+		}
+	}
+
+	_Param->first = SPECSTR(static_cast<LSTARCLS::SpecClass>(SCls), static_cast<float>(MType));
+	_Param->second = _Begin.second;
 }
 
 _CSE_END

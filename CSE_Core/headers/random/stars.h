@@ -1000,6 +1000,137 @@ public:
 	}
 };
 
+#define _RGB_TABLE_TEFF_LOW_LIMIT 2918
+
+_Check_return_ uint64
+__CRTDECL GetGiantParams(SPECSTR _Spec, vec2* _BC_Teff = nullptr);
+void GetGiantParams(float64 _Teff, std::pair<SPECSTR, float64>* _Param);
+
+class RedGiantBrunchModel
+{
+public:
+	using result_type = Object;
+
+	struct param_type
+	{
+		using mass_range = vec2;
+		using mass_type  = float64;
+
+		mass_range _MassRange;
+		mass_type _Mass = NO_DATA_FLOAT_INF;
+
+		void _Init(mass_type _Ms)
+		{
+			// set internal state
+			_STL_ASSERT(_Ms >= 0.4 && _Ms <= 12,
+				"invalid mass for RGB Model");
+			_Mass = _Ms;
+		}
+
+		void _Init(mass_range _MRng)
+		{
+			// set internal state
+			_STL_ASSERT(_MRng.x <= _MRng.y && 0 <= _MRng.x,
+				"invalid min and max masses for RGB Model");
+			_MassRange = _MRng;
+		}
+
+		_NODISCARD float64 a() const
+		{
+			return _MassRange.x;
+		}
+
+		_NODISCARD float64 b() const
+		{
+			return _MassRange.y;
+		}
+
+		param_type()
+		{
+			_Init(vec2(0.85, 8.0)); // max is 12
+		}
+
+		explicit param_type(float64 _Mx0)
+		{
+			_Init(_Mx0);
+		}
+
+		explicit param_type(float64 _Min0, float64 _Max0)
+		{
+			_Init(vec2(_Min0, _Max0));
+		}
+	}_Par;
+
+	RedGiantBrunchModel() : _Par() {}
+
+	RedGiantBrunchModel(float64 _Mx0) : _Par(_Mx0) {}
+
+	RedGiantBrunchModel(float64 _Min0, float64 _Max0) : _Par(_Min0, _Max0) {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+
+		float64 BaseMass;
+		if (isinf(_Par._Mass))
+		{
+			_Obj.Mass = _Par.a() * MassSol + (_Par.b() * MassSol - _Par.a() * MassSol) * 
+				(_Eng.exponential() / 5.);
+		}
+		else { _Obj.Mass = _Par._Mass * MassSol; }
+		BaseMass = _Obj.Mass / MassSol;
+
+		float64 _TemperatureHighLimit = _Eng.normal(5000, 120);
+		float64 _TemperatureLowLimit;
+		if (BaseMass > 2)
+		{
+			_TemperatureLowLimit = _Eng.normal(4000, 150);
+		}
+		else
+		{
+			_TemperatureLowLimit = _Eng.normal(3000, 50);
+		}
+		if (_RGB_TABLE_TEFF_LOW_LIMIT > _TemperatureLowLimit)
+		{
+			_TemperatureLowLimit = _RGB_TABLE_TEFF_LOW_LIMIT;
+		}
+		float64 BaseTEff = _Eng.uniform(_TemperatureLowLimit, _TemperatureHighLimit);
+		_Obj.Teff = BaseTEff;
+
+		std::pair<SPECSTR, float64> _SP_BC_Base;
+		GetGiantParams(BaseTEff, &_SP_BC_Base);
+
+		// Stars with mass between 2MSun and 3Msun will become red clump giants.
+		if (BaseMass >= 2 && BaseMass <= 3)
+		{
+			_Obj.LumBol = _Eng.uniform(SolarLum * 15, SolarLum * 200);
+			_Obj.AbsMagn = ToAbsMagn4(_Obj.LumBol) - _SP_BC_Base.second;
+		}
+		else
+		{
+			_Obj.AbsMagn = _Eng.uniform(-3, 1);
+			_Obj.LumBol = ToLuminosity3(_Obj.AbsMagn + _SP_BC_Base.second);
+		}
+
+		if (_Obj.AbsMagn < -1.8)
+		{
+			_Obj.SpecClass = SPECSTR(_SP_BC_Base.first.SClass(), _SP_BC_Base.first.MinType(), -1.F, SPECSTR::II);
+		}
+		else
+		{
+			_Obj.SpecClass = SPECSTR(_SP_BC_Base.first.SClass(), _SP_BC_Base.first.MinType(), -1.F, SPECSTR::III);
+		}
+
+		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
+
+		return _Obj;
+	}
+};
+
 _CSE_END
 
 #pragma pop_macro("new")

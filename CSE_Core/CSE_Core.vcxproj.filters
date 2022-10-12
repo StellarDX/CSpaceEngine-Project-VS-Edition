@@ -84,6 +84,9 @@
     <ClInclude Include="headers\random\stars.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\random\planets.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -147,6 +150,9 @@
       <Filter>Random</Filter>
     </ClCompile>
     <ClCompile Include="random\stars\Star_Models_Base.cc">
+      <Filter>Random</Filter>
+    </ClCompile>
+    <ClCompile Include="random\planets\Orbits.cc">
       <Filter>Random</Filter>
     </ClCompile>
   </ItemGroup>
