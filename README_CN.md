@@ -24,12 +24,14 @@
 
 ### 读写SpeceEngine的sc天体数据文件
  - 代码示例：
- - * 读取SC文件
+
+读取SC文件
 ```读取SC文件
 ISCStream is = ParseFile("Catalog.sc");
 Object obj = GetSEObject(is, "StarName");
 ```
- - * 写入SC文件，支持自定义编码
+
+写入SC文件，支持自定义编码
 ```写入SC文件
 ofstream fout("out.sc");
 OSCStream os(fout);
