@@ -1,7 +1,7 @@
-# CSpaceEngine - A static library and toolbox for SpeceEngine
+ï»¿# CSpaceEngine - A static library and toolbox for SpeceEngine
 
 Using C++ to define, modify, complete Celestral Objects in SpaceEngine.
-[ÖÐÎÄ](README_CN.md)
+[ä¸­æ–‡](README_CN.md)
 
 Astronomical calculations is also supported(in future...).
 

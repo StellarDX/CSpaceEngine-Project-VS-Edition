@@ -1,34 +1,34 @@
-[English](README.md)
+ï»¿[English](README.md)
 <div align = "center">
-# CSpaceEngine ¡¤ Ú¤¹ÅÏÔÉú
+# CSpaceEngine Â· å†¥å¤æ˜¾ç”Ÿ
 
-¿ªÔ´µÄSpaceEngine¾²Ì¬¿âÓë¹¤¾ßÏä£¬¼æÈÝSE0.990¡£(Ò²ÊÇÔìÐÇÖ®·¨)
+å¼€æºçš„SpaceEngineé™æ€åº“ä¸Žå·¥å…·ç®±ï¼Œå…¼å®¹SE0.990ã€‚(ä¹Ÿæ˜¯é€ æ˜Ÿä¹‹æ³•)
 
-Ð­Òé£º[GPLv2 License](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+åè®®ï¼š[GPLv2 License](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 
 </div>
-## ¹¦ÄÜ
- - À´×ÔGLSLµÄÊý¾ÝÀàÐÍ
- - ¶ÁÐ´SpeceEngineµÄscÌìÌåÊý¾ÝÎÄ¼þ
- - Ê±¼ä¼ÆËã
- - ÐÇµÈ/¹â¶È¼ÆËã
- - ÀàËÆÓÚPythonµÄËæ»úÊýÉú³ÉÆ÷
- - ÌìÌåÉú³É
- - ...¸ü¶àµÄ»¹ÔÚ¿ª·¢ÖÐ
+## åŠŸèƒ½
+ - æ¥è‡ªGLSLçš„æ•°æ®ç±»åž‹
+ - è¯»å†™SpeceEngineçš„scå¤©ä½“æ•°æ®æ–‡ä»¶
+ - æ—¶é—´è®¡ç®—
+ - æ˜Ÿç­‰/å…‰åº¦è®¡ç®—
+ - ç±»ä¼¼äºŽPythonçš„éšæœºæ•°ç”Ÿæˆå™¨
+ - å¤©ä½“ç”Ÿæˆ
+ - ...æ›´å¤šçš„è¿˜åœ¨å¼€å‘ä¸­
 
-### À´×ÔGLSLµÄÊý¾ÝÀàÐÍ
- - 2£¬3£¬4Î¬ÏòÁ¿Ä£°å
- - ¾ØÕó£¬ÀíÂÛÉÏ²»ÏÞ´óÐ¡£¬Ö§³ÖÏßÐÔ´úÊý¼ÆËã£¬¿ÉÒÔµ±ÈÝÆ÷Ê¹ÓÃ
+### æ¥è‡ªGLSLçš„æ•°æ®ç±»åž‹
+ - 2ï¼Œ3ï¼Œ4ç»´å‘é‡æ¨¡æ¿
+ - çŸ©é˜µï¼Œç†è®ºä¸Šä¸é™å¤§å°ï¼Œæ”¯æŒçº¿æ€§ä»£æ•°è®¡ç®—ï¼Œå¯ä»¥å½“å®¹å™¨ä½¿ç”¨
 
-### ¶ÁÐ´SpeceEngineµÄscÌìÌåÊý¾ÝÎÄ¼þ
- - ´úÂëÊ¾Àý£º
- - * ¶ÁÈ¡SCÎÄ¼þ
-```¶ÁÈ¡SCÎÄ¼þ
+### è¯»å†™SpeceEngineçš„scå¤©ä½“æ•°æ®æ–‡ä»¶
+ - ä»£ç ç¤ºä¾‹ï¼š
+ - * è¯»å–SCæ–‡ä»¶
+```è¯»å–SCæ–‡ä»¶
 ISCStream is = ParseFile("Catalog.sc");
 Object obj = GetSEObject(is, "StarName");
 ```
- - * Ð´ÈëSCÎÄ¼þ£¬Ö§³Ö×Ô¶¨Òå±àÂë
-```Ð´ÈëSCÎÄ¼þ
+ - * å†™å…¥SCæ–‡ä»¶ï¼Œæ”¯æŒè‡ªå®šä¹‰ç¼–ç 
+```å†™å…¥SCæ–‡ä»¶
 ofstream fout("out.sc");
 OSCStream os(fout);
 os << obj1 << obj2 << ...;
@@ -36,31 +36,31 @@ os << obj1 << obj2 << ...;
 os.Write();
 ```
 
-### Ê±¼ä¼ÆËã | ÐÇµÈ/¹â¶È¼ÆËã
- - CSEÌá¹©ÁËÒ»Ð©¼ÆËã¹¤¾ß£º
- - * [Ê±¼ä](https://github.com/StellarDX/CSpaceEngine-Project/blob/main/CSE_Core/datetime/JulianCalculator.cpp)
- - * [ÐÇµÈ/¹â¶È](https://github.com/StellarDX/CSpaceEngine-Project/blob/main/CSE_Core/lumine/StarMagLumCalculator.cpp)
+### æ—¶é—´è®¡ç®— | æ˜Ÿç­‰/å…‰åº¦è®¡ç®—
+ - CSEæä¾›äº†ä¸€äº›è®¡ç®—å·¥å…·ï¼š
+ - * [æ—¶é—´](https://github.com/StellarDX/CSpaceEngine-Project/blob/main/CSE_Core/datetime/JulianCalculator.cpp)
+ - * [æ˜Ÿç­‰/å…‰åº¦](https://github.com/StellarDX/CSpaceEngine-Project/blob/main/CSE_Core/lumine/StarMagLumCalculator.cpp)
 
-### ÌìÌåÉú³É
- - »ùÓÚÕæÊµÊý¾ÝµÄÌìÌåÉú³ÉÆ÷
- - Ö§³ÖµÄÌìÌåÁÐ±í£º
- - * ºãÐÇ
-| Ä£ÐÍÃû | ÀàÐÍ | ¾«¶È | »ù×¼Öµ |
+### å¤©ä½“ç”Ÿæˆ
+ - åŸºäºŽçœŸå®žæ•°æ®çš„å¤©ä½“ç”Ÿæˆå™¨
+ - æ”¯æŒçš„å¤©ä½“åˆ—è¡¨ï¼š
+ - * æ’æ˜Ÿ
+| æ¨¡åž‹å | ç±»åž‹ | ç²¾åº¦ | åŸºå‡†å€¼ |
 |:------|:-----|:----|:-----|
-| MainSequenceStarModel | Ö÷ÐòÐÇ | ÖÐ¸ß | ¹âÆ×ÐÍ |
-| HPMainSequenceStarModel | Ö÷ÐòÐÇ | ¸ß | ¹âÆ×ÐÍ |
-| WolfRayetStarModel | ÎÖ¶û·ò-À­Ò¶ÐÇ | ÖÐµÍ | ¹âÆ×ÐÍ |
-| HPWolfRayetStarModel | ÎÖ¶û·ò-À­Ò¶ÐÇ | ¸ß | ¹âÆ×ÐÍ |
-| BrownDwarfModel | ºÖ°«ÐÇ | ÖÐ | ¹âÆ×ÐÍ |
-| HPBrownDwarfModel | ºÖ°«ÐÇ | ÖÐ¸ß | ¹âÆ×ÐÍ |
-| LowMassSubgiantModel | Ð¡ÖÊÁ¿ÑÇ¾ÞÐÇ(0.4-0.9Ì«ÑôÖÊÁ¿) | µÍ | ÖÊÁ¿ |
-| MidSizedSubgiantModel | ÑÇ¾ÞÐÇ(0.9-8Ì«ÑôÖÊÁ¿) | µÍ | ÖÊÁ¿ |
-| MassiveSubgiantModel | ´óÖÊÁ¿ÑÇ¾ÞÐÇ(8-12Ì«ÑôÖÊÁ¿) | µÍ | ÖÊÁ¿ |
-| RedGiantBrunch | ºì¾ÞÐÇ·ÖÖ§ | µÍ | ÖÊÁ¿ |
-| HorizontalBrunch(Î´Íê³É) | Ë®Æ½·ÖÖ§ | µÍ | ¿É±ä |
-| RedClumpGiantModel(Î´Íê³É) | ºìÍÅ´Ø¾ÞÐÇ | µÍ | ÎÞ |
+| MainSequenceStarModel | ä¸»åºæ˜Ÿ | ä¸­é«˜ | å…‰è°±åž‹ |
+| HPMainSequenceStarModel | ä¸»åºæ˜Ÿ | é«˜ | å…‰è°±åž‹ |
+| WolfRayetStarModel | æ²ƒå°”å¤«-æ‹‰å¶æ˜Ÿ | ä¸­ä½Ž | å…‰è°±åž‹ |
+| HPWolfRayetStarModel | æ²ƒå°”å¤«-æ‹‰å¶æ˜Ÿ | é«˜ | å…‰è°±åž‹ |
+| BrownDwarfModel | è¤çŸ®æ˜Ÿ | ä¸­ | å…‰è°±åž‹ |
+| HPBrownDwarfModel | è¤çŸ®æ˜Ÿ | ä¸­é«˜ | å…‰è°±åž‹ |
+| LowMassSubgiantModel | å°è´¨é‡äºšå·¨æ˜Ÿ(0.4-0.9å¤ªé˜³è´¨é‡) | ä½Ž | è´¨é‡ |
+| MidSizedSubgiantModel | äºšå·¨æ˜Ÿ(0.9-8å¤ªé˜³è´¨é‡) | ä½Ž | è´¨é‡ |
+| MassiveSubgiantModel | å¤§è´¨é‡äºšå·¨æ˜Ÿ(8-12å¤ªé˜³è´¨é‡) | ä½Ž | è´¨é‡ |
+| RedGiantBrunch | çº¢å·¨æ˜Ÿåˆ†æ”¯ | ä½Ž | è´¨é‡ |
+| HorizontalBrunch(æœªå®Œæˆ) | æ°´å¹³åˆ†æ”¯ | ä½Ž | å¯å˜ |
+| RedClumpGiantModel(æœªå®Œæˆ) | çº¢å›¢ç°‡å·¨æ˜Ÿ | ä½Ž | æ—  |
 
- - ´úÂëÊ¾Àý£º
+ - ä»£ç ç¤ºä¾‹ï¼š
 ```generating
 _CSE_Random_Engine<mt19937_64> Engine;
 MainSequenceStarModel StarModel("G2V");
@@ -68,7 +68,7 @@ object_generator<_CSE_Random_Engine<mt19937_64>, MainSequenceStarModel> gen(Engi
 Object Obj = gen();
 ```
 
-_Ìì¶¯ÍòÏó£¬É½º£»¯ÐÎ¡£»ÄµØÉúÐÇ£¬è²ÈôÁÒÑô¡£_
+_å¤©åŠ¨ä¸‡è±¡ï¼Œå±±æµ·åŒ–å½¢ã€‚è’åœ°ç”Ÿæ˜Ÿï¼Œç’¨è‹¥çƒˆé˜³ã€‚_
 
-## Óöµ½ÎÊÌâ»òÏëÒªÐÂ¹¦ÄÜ£¿
- - Èç¹û·¢ÏÖÎÞ·¨½â¾öµÄÎÊÌâ»òÕßbug£¬ÔÚissues¸æËßÎÒ¡£
+## é‡åˆ°é—®é¢˜æˆ–æƒ³è¦æ–°åŠŸèƒ½ï¼Ÿ
+ - å¦‚æžœå‘çŽ°æ— æ³•è§£å†³çš„é—®é¢˜æˆ–è€…bugï¼Œåœ¨issueså‘Šè¯‰æˆ‘ã€‚
