@@ -1006,7 +1006,7 @@ _Check_return_ uint64
 __CRTDECL GetGiantParams(SPECSTR _Spec, vec2* _BC_Teff = nullptr);
 void GetGiantParams(float64 _Teff, std::pair<SPECSTR, float64>* _Param);
 
-class RedGiantBrunchModel
+class RedGiantBrunch
 {
 public:
 	using result_type = Object;
@@ -1061,11 +1061,11 @@ public:
 		}
 	}_Par;
 
-	RedGiantBrunchModel() : _Par() {}
+	RedGiantBrunch() : _Par() {}
 
-	RedGiantBrunchModel(float64 _Mx0) : _Par(_Mx0) {}
+	RedGiantBrunch(float64 _Mx0) : _Par(_Mx0) {}
 
-	RedGiantBrunchModel(float64 _Min0, float64 _Max0) : _Par(_Min0, _Max0) {}
+	RedGiantBrunch(float64 _Min0, float64 _Max0) : _Par(_Min0, _Max0) {}
 
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
@@ -1131,48 +1131,100 @@ public:
 	}
 };
 
-class RedClumpGiantModel
+class HorizontalBrunch
 {
 public:
 	using result_type = Object;
 
 	struct param_type
 	{
-		// Nothing...
-	}_Par;
-
-	RedClumpGiantModel() : _Par() {}
-
-	template <class _Engine> // Procedural star generator
-	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
-	{
-		result_type _Obj;
-		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
-
-		_Obj.Mass = _Eng.uniform(2 * MassSol, 3 * MassSol);
-		_Obj.Teff = _Eng.normal(5000, 120);
-		_Obj.AbsMagn = _Eng.normal(0.81, 0.5);
-		_Obj.FeH = _Eng.uniform(-0.6, 0.4);
-
-		std::pair<SPECSTR, float64> _SP_BC_Base;
-		GetGiantParams(_Obj.Teff, &_SP_BC_Base);
-		int Cls = _SP_BC_Base.first.SClass();
-		auto Ty = _SP_BC_Base.first.MinType();
-		Ty += 6;
-		if (Ty >= 10)
+		enum param_mode
 		{
-			Ty -= 10;
-			++Cls;
+			UNIFORM,
+			NORMAL
+		};
+		using param_args = vec2;
+
+		param_mode _MsMode;
+		param_mode _RadMode;
+		param_mode _MagMode;
+		param_mode _TeMode;
+
+		param_args _Masses = vec2(NO_DATA_FLOAT_INF);
+		param_args _Radiuses = vec2(NO_DATA_FLOAT_INF);
+		param_args _Mags = vec2(NO_DATA_FLOAT_INF);
+		param_args _Teffs = vec2(NO_DATA_FLOAT_INF);
+
+		void _Init() // Default profile
+		{
+			MassMode(UNIFORM);
+			MassRange(vec2(0.5, 8));
+			MagMode(UNIFORM);
+			MagRange(vec2(-0.26, 0.45));
+			TeffMode(UNIFORM);
+			TeffRange(vec2(4500, 9500));
 		}
 
-		_Obj.SpecClass = SPECSTR(static_cast<LSTARCLS::SpecClass>(Cls), Ty, -1.F, SPECSTR::III);
-		_Obj.LumBol = ToLuminosity3(_Obj.AbsMagn + _SP_BC_Base.second);
-		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
+		param_mode MassMode(param_mode _New = static_cast<param_mode>(-1))
+		{
+			param_mode _Old = _MsMode;
+			if (_New >= 0) { _MsMode = _New; }
+			return _Old;
+		}
 
-		return _Obj;
-	}
+		param_mode RadMode(param_mode _New = static_cast<param_mode>(-1))
+		{
+			param_mode _Old = _RadMode;
+			if (_New >= 0) { _RadMode = _New; }
+			return _Old;
+		}
+
+		param_mode MagMode(param_mode _New = static_cast<param_mode>(-1))
+		{
+			param_mode _Old = _MagMode;
+			if (_New >= 0) { _MagMode = _New; }
+			return _Old;
+		}
+
+		param_mode TeffMode(param_mode _New = static_cast<param_mode>(-1))
+		{
+			param_mode _Old = _TeMode;
+			if (_New >= 0) { _TeMode = _New; }
+			return _Old;
+		}
+
+		param_args MassRange(param_args _New = vec2(NO_DATA_FLOAT_INF))
+		{
+			param_args _Old = _Masses;
+			if (!any(isinf(_New))) { _Masses = _New; }
+			return _Old;
+		}
+
+		param_args RadRange(param_args _New = vec2(NO_DATA_FLOAT_INF))
+		{
+			param_args _Old = _Radiuses;
+			if (!any(isinf(_New))) { _Radiuses = _New; }
+			return _Old;
+		}
+
+		param_args MagRange(param_args _New = vec2(NO_DATA_FLOAT_INF))
+		{
+			param_args _Old = _Mags;
+			if (!any(isinf(_New))) { _Mags = _New; }
+			return _Old;
+		}
+
+		param_args TeffRange(param_args _New = vec2(NO_DATA_FLOAT_INF))
+		{
+			param_args _Old = _Teffs;
+			if (!any(isinf(_New))) { _Teffs = _New; }
+			return _Old;
+		}
+	}_Par;
+};
+
+class RedClumpGiantModel : public HorizontalBrunch
+{
 };
 
 _CSE_END
