@@ -1,18 +1,19 @@
-# CSpaceEngine static library for C++
+# CSpaceEngine - A static library and toolbox for SpeceEngine
 
 Using C++ to define, modify, complete Celestral Objects in SpaceEngine.
+[ÖÐÎÄ](README_CN.md)
 
 Astronomical calculations is also supported(in future...).
 
 ## Examples
 **Loading a sc file**
-```asp
+```loading file
 ISCStream is = ParseFile("Catalog.sc");
 Object obj = GetSEObject(is, "StarName");
 ```
 
 **Writing object to file**
-```asp
+```writing file
 ofstream fout("out.sc"); // Create a fstream. This will be used to construct sc file writer
 OSCStream os(fout);
 os << obj1 << obj2 << ...; // push objects
@@ -37,7 +38,7 @@ os.Write(); // export to file
  * A default random engine "random" is provided.
 
 **Generate a star**
-```asp
+```generating
 _CSE_Random_Engine<mt19937_64> Engine;
 MainSequenceStarModel StarModel("G2V");
 object_generator<_CSE_Random_Engine<mt19937_64>, MainSequenceStarModel> gen(Engine, StarModel);
