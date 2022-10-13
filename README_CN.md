@@ -52,20 +52,29 @@ os.Write();
 
  * 恒星
 
-| 模型名 | 类型 | 精度 | 基准值 |
+| 模型名 | 生成范围 | 精度 | 基准值 |
 |:------|:-----|:----|:-----|
 | MainSequenceStarModel | 主序星 | 中高 | 光谱型 |
 | HPMainSequenceStarModel | 主序星 | 高 | 光谱型 |
-| WolfRayetStarModel | 沃尔夫-拉叶星 | 中低 | 光谱型 |
-| HPWolfRayetStarModel | 沃尔夫-拉叶星 | 高 | 光谱型 |
-| BrownDwarfModel | 褐矮星 | 中 | 光谱型 |
-| HPBrownDwarfModel | 褐矮星 | 中高 | 光谱型 |
 | LowMassSubgiantModel | 小质量亚巨星(0.4-0.9太阳质量) | 低 | 质量 |
 | MidSizedSubgiantModel | 亚巨星(0.9-8太阳质量) | 低 | 质量 |
 | MassiveSubgiantModel | 大质量亚巨星(8-12太阳质量) | 低 | 质量 |
 | RedGiantBrunch | 红巨星分支 | 低 | 质量 |
 | HorizontalBrunch | 水平分支 | 低 | 可变 |
-| RedClumpGiantModel | 红团簇巨星 | 低 | 无 |
+| ExtremeHorizontalBrunch(规划) | 水平分支(O/B型次矮星) | ？ | ？ |
+| RedClumpGiantModel | 红团簇巨星 | 中 | 无 |
+| AsymptoticGiantBranch(规划) | 渐近巨星分支 | ？ | ？ |
+| SuperAsymptoticGiantBranch(规划) | 渐近巨星分支(大质量恒星) | ？ | ？ |
+| SuperGiantModel(规划) | 超巨星 | ？ | ？ |
+| WolfRayetStarModel | 沃尔夫-拉叶星 | 中低 | 光谱型 |
+| HPWolfRayetStarModel | 沃尔夫-拉叶星 | 高 | 光谱型 |
+| HyperGiantModel(规划) | 特超巨星 | ？ | ？ |
+| BrownDwarfModel | 褐矮星 | 中 | 光谱型 |
+| HPBrownDwarfModel | 褐矮星 | 中高 | 光谱型 |
+| CarbonStarModel(规划) | 碳星，S型恒星 | ？ | ？ |
+| WhiteDwarfModel(规划) | 白矮星 | ？ | ？ |
+| NeutronStarModel(规划) | 中子星 | ？ | ？ |
+| BlackHoleModel(规划) | 黑洞 | ？ | ？ |
 
  - 代码示例：
 ```generating
