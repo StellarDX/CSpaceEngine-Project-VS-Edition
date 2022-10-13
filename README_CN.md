@@ -52,7 +52,7 @@ os.Write();
 
  * 恒星
 
-| 模型名 | 生成范围 | 精度 | 基准值 |
+| 模型名 | 生成范围 | 精度 | 基准参数 |
 |:------|:-----|:----|:-----|
 | MainSequenceStarModel | 主序星 | 中高 | 光谱型 |
 | HPMainSequenceStarModel | 主序星 | 高 | 光谱型 |
