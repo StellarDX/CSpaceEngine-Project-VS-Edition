@@ -52,6 +52,7 @@ Object Obj = gen();
  * - Subgiants(Based on Mass, 0.4 - 12MSun Supported)
  * - Red Giant Brunch stars
  * - Horizontal Brunch stars
+ * - Red Clump Giants
 
 ## TODO
  * Procedural planet generator

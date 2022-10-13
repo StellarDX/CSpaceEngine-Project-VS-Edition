@@ -1221,13 +1221,43 @@ public:
 			return _Old;
 		}
 
-		param_type()
+		param_type() { _Init(); }
+
+		param_type
+		(
+			param_type::param_mode _Mm0, float64 _Mx0, float64 _Mx1,
+			param_type::param_mode _Rm0, float64 _Rx0, float64 _Rx1,
+			param_type::param_mode _Lm0, float64 _Lx0, float64 _Lx1,
+			param_type::param_mode _Tm0, float64 _Tx0, float64 _Tx1
+		)
 		{
-			_Init();
+			MassMode(_Mm0);
+			MassRange(vec2(_Mx0, _Mx1));
+			RadMode(_Rm0);
+			RadRange(vec2(_Rx0, _Rx1));
+			MagMode(_Lm0);
+			MagRange(vec2(_Lx0, _Lx1));
+			TeffMode(_Tm0);
+			TeffRange(vec2(_Tx0, _Tx1));
 		}
 	}_Par;
 
 	HorizontalBrunch() : _Par() {}
+
+	HorizontalBrunch
+	(
+		param_type::param_mode _Mm0, float64 _Mx0, float64 _Mx1,
+		param_type::param_mode _Rm0, float64 _Rx0, float64 _Rx1,
+		param_type::param_mode _Lm0, float64 _Lx0, float64 _Lx1,
+		param_type::param_mode _Tm0, float64 _Tx0, float64 _Tx1
+	)
+		: _Par
+		(
+			_Mm0, _Mx0, _Mx1,
+			_Rm0, _Rx0, _Rx1,
+			_Lm0, _Lx0, _Lx1,
+			_Tm0, _Tx0, _Tx1
+		) {}
 
 	template <class _Engine>
 	_Check_return_ float64 __CRTDECL GenMass(_CSE_Random_Engine<_Engine> _Eng, result_type& _Obj)
@@ -1312,7 +1342,7 @@ public:
 		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
 		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
 
-		float64 BaseMass = GenMass(_Eng, _Obj);
+		GenMass(_Eng, _Obj);
 		GenTeff(_Eng, _Obj);
 		float64 _BC = GetSpecType(_Obj);
 		_Obj.AbsMagn = GenMag(_Eng);
@@ -1324,6 +1354,58 @@ public:
 
 class RedClumpGiantModel : public HorizontalBrunch
 {
+public:
+	using _Mybase = HorizontalBrunch;
+
+	RedClumpGiantModel() : _Mybase
+	(
+		param_type::UNIFORM, 2, 3,
+		static_cast<param_type::param_mode>(-1), NO_DATA_FLOAT_INF, NO_DATA_FLOAT_INF, // Radiuses will be automatically calculated
+		param_type::NORMAL, 0.81, 0.05,
+		param_type::NORMAL, 5000, 80
+	) {}
+
+	_Check_return_ float64 __CRTDECL GetSpecType(result_type& _Obj)
+	{
+		float64 _Teff = _Obj.Teff;
+		_STD pair<SPECSTR, float64> _Params;
+		GetGiantParams(_Teff, &_Params);
+		int _SCls = _Params.first.SClass();
+		float _STy = _Params.first.MinType() + 6;
+		if (_STy >= 10)
+		{
+			_STy -= 10;
+			++_SCls;
+		}
+
+		if (_Obj.AbsMagn < -1.8)
+		{
+			_Obj.SpecClass = SPECSTR(static_cast<SPECSTR::SpecClass>(_SCls), _STy, -1.F, SPECSTR::II);
+		}
+		else
+		{
+			_Obj.SpecClass = SPECSTR(static_cast<SPECSTR::SpecClass>(_SCls), _STy, -1.F, SPECSTR::III);
+		}
+		return _Params.second;
+	}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+
+		GenMass(_Eng, _Obj);
+		GenTeff(_Eng, _Obj);
+		float64 _BC = GetSpecType(_Obj);
+		_Obj.AbsMagn = GenMag(_Eng);
+		_Obj.LumBol = ToLuminosity3(_Obj.AbsMagn + _BC);
+		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
+		_Obj.FeH = _Eng.uniform(-0.6, +0.4);
+		return _Obj;
+	}
 };
 
 _CSE_END
