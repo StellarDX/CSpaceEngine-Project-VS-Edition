@@ -64,7 +64,7 @@ os.Write();
 | MidSizedSubgiantModel | 亚巨星(0.9-8太阳质量) | 低 | 质量 |
 | MassiveSubgiantModel | 大质量亚巨星(8-12太阳质量) | 低 | 质量 |
 | RedGiantBrunch | 红巨星分支 | 低 | 质量 |
-| HorizontalBrunch(未完成) | 水平分支 | 低 | 可变 |
+| HorizontalBrunch | 水平分支 | 低 | 可变 |
 | RedClumpGiantModel(未完成) | 红团簇巨星 | 低 | 无 |
 
  - 代码示例：

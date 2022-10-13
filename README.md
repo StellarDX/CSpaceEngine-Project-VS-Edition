@@ -22,7 +22,7 @@ os.Write(); // export to file
 ```
 
 **Time Support(Windows only)**
- * A Julian epoch calculator based on this library is provided, See [Here](https://github.com/StellarDX/CSpaceEngine-Project/blob/main/CSE_Core/datetime/JulianCalculator.cpp) to get more info.
+ * A Julian epoch calculator based on this library is provided, See [Here](CSE_Core/datetime/JulianCalculator.cpp) to get more info.
 
 **Math functions(Based on STD Math)**
  * Expands of Trigonometric functions like chords, versines and exsecants.
@@ -32,7 +32,7 @@ os.Write(); // export to file
  * A basic matrix class and linear algebra functions
 
 **Star Luminosity calculations**
- * A Star Luminosity and Magnitude calculator based on this library is provided, See [Here](https://github.com/StellarDX/CSpaceEngine-Project/blob/main/CSE_Core/lumine/StarMagLumCalculator.cpp) to get more info.
+ * A Star Luminosity and Magnitude calculator based on this library is provided, See [Here](CSE_Core/lumine/StarMagLumCalculator.cpp) to get more info.
 
 **Random Number Generator**
  * Based on std random, more easy to use.
@@ -50,6 +50,8 @@ Object Obj = gen();
  * - Wolf-Rayet star(Specified)
  * - Substellar Objects(Specified)
  * - Subgiants(Based on Mass, 0.4 - 12MSun Supported)
+ * - Red Giant Brunch stars
+ * - Horizontal Brunch stars
 
 ## TODO
  * Procedural planet generator
