@@ -330,8 +330,6 @@ _Sub_Brown_Dwarf_Table[6]
 	{4.0, 250, inf, 23.42, 0.0977, 0.0124} // Lower limit of a substellar object is 13MJ(~0.0124MSun)
 );
 
-_RAND_END
-
 // Giant star parameters table reference:
 // https://ui.adsabs.harvard.edu/abs/1980ARA&A..18..115P
 // https://ui.adsabs.harvard.edu/abs/1984ApJ...284..565H
@@ -391,6 +389,8 @@ _STD map<float64, _STD pair<SPECSTR, float64>> _Adopt_BC_Teff_Calib_For_Giants()
 
 static const _STD map<float64, _STD pair<SPECSTR, float64>> _Giant_Params =
 _Adopt_BC_Teff_Calib_For_Giants();
+
+_RAND_END
 
 const STPARS* GetStarTable(LSTARCLS::SpecClass Class, size_t* Tyc)
 {
@@ -505,8 +505,8 @@ const STPARS* GetStarTable(LSTARCLS::SpecClass Class, size_t* Tyc)
 _Check_return_ uint64 
 __CRTDECL GetGiantParams(SPECSTR _Spec, vec2* _BC_Teff)
 {
-	auto it = _Giant_Params.rbegin();
-	auto end = _Giant_Params.rend();
+	auto it = _RAND _Giant_Params.rbegin();
+	auto end = _RAND _Giant_Params.rend();
 	_STD pair<SPECSTR, float64> Base;
 	_STD pair<SPECSTR, float64> Next;
 	float64 TeffBase = -1, TeffNext = -1;
@@ -534,13 +534,13 @@ __CRTDECL GetGiantParams(SPECSTR _Spec, vec2* _BC_Teff)
 		Offset = (_Spec.MinType() - Base.first.MinType()) / (Next.first.MinType() - Base.first.MinType());
 	}
 	*_BC_Teff = vec2(Base.second, TeffBase + ((TeffNext - TeffBase) * Offset));
-	return _Giant_Params.size();
+	return _RAND _Giant_Params.size();
 }
 
 void GetGiantParams(float64 _Teff, _STD pair<SPECSTR, float64>* _Param)
 {
-	auto it = _Giant_Params.rbegin();
-	auto end = _Giant_Params.rend();
+	auto it = _RAND _Giant_Params.rbegin();
+	auto end = _RAND _Giant_Params.rend();
 	_STD pair<SPECSTR, float64> _Begin;
 	_STD pair<SPECSTR, float64> _Next;
 	float64 TeffBase = -1, TeffNext = -1;
@@ -569,8 +569,8 @@ void GetGiantParams(float64 _Teff, _STD pair<SPECSTR, float64>* _Param)
 	
 	auto FindSpec = [&](const SPECSTR& _Spec)
 	{
-		auto it = _Giant_Params.rbegin();
-		auto end = _Giant_Params.rend();
+		auto it = _RAND _Giant_Params.rbegin();
+		auto end = _RAND _Giant_Params.rend();
 		while (it != end)
 		{
 			if (_Spec.Equal(it->second.first))
