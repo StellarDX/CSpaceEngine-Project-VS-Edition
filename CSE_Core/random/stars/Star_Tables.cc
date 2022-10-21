@@ -523,7 +523,7 @@ __CRTDECL GetGiantParams(SPECSTR _Spec, vec2* _BC_Teff)
 			break;
 		}
 	}
-	_STL_ASSERT(TeffBase != -1 || TeffNext != -1, "Spectal-type value is out of range");
+	_GENERATOR_ASSERT(TeffBase != -1 || TeffNext != -1, "Spectal-type value is out of range");
 	float64 Offset;
 	if (Base.first.SClass() != Next.first.SClass())
 	{
@@ -558,7 +558,7 @@ void GetGiantParams(float64 _Teff, _STD pair<SPECSTR, float64>* _Param)
 			break;
 		}
 	}
-	_STL_ASSERT(TeffBase != -1 || TeffNext != -1, "Effective Temperature value is out of range");
+	_GENERATOR_ASSERT(TeffBase != -1 || TeffNext != -1, "Effective Temperature value is out of range");
 	float64 Offset = (_Teff - TeffBase) / (TeffNext - TeffBase);
 	float64 NextType = _Next.first.MinType();
 	if (_Begin.first.SClass() != _Next.first.SClass())

@@ -29,6 +29,14 @@ _STL_DISABLE_CLANG_WARNINGS
 
 _CSE_BEGIN
 
+class ObjectGenerationException : public _STD runtime_error
+{
+public:
+	ObjectGenerationException(_STD string _Mesg) : _STD runtime_error(_Mesg) {};
+};
+
+#define _GENERATOR_ASSERT(cond, mesg) if (!(cond)) {throw ObjectGenerationException(mesg);}
+
 using STPARS = _STD array<float64, 6>;
 
 enum StarTableCoeffs
@@ -102,7 +110,7 @@ public:
 	MainSequenceStarModel() : _Mybase() {}
 	explicit MainSequenceStarModel(SPECSTR _Spec) : _Mybase(_Spec)
 	{
-		_STL_ASSERT(IsMainSequence(_Spec), ("\"" + _Spec.str() + "\" is not a main-sequence star type."));
+		_GENERATOR_ASSERT(IsMainSequence(_Spec), ("\"" + _Spec.str() + "\" is not a main-sequence star type."));
 	}
 
 	explicit MainSequenceStarModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
@@ -134,7 +142,7 @@ public:
 		{
 			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
 		}
-		_STL_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
+		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
 
 		size_t i = 0;
 		while
@@ -190,7 +198,7 @@ public:
 	HPMainSequenceStarModel() : _Mybase() {}
 	explicit HPMainSequenceStarModel(SPECSTR _Spec) : _Mybase(_Spec)
 	{
-		_STL_ASSERT(IsMainSequence(_Spec), ("\"" + _Spec.str() + "\" is not a main-sequence star type."));
+		_GENERATOR_ASSERT(IsMainSequence(_Spec), ("\"" + _Spec.str() + "\" is not a main-sequence star type."));
 	}
 
 	explicit HPMainSequenceStarModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
@@ -223,7 +231,7 @@ public:
 		{
 			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
 		}
-		_STL_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
+		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
 
 		size_t i = 0;
 		while
@@ -281,7 +289,7 @@ public:
 	WolfRayetStarModel() : _Mybase() {}
 	explicit WolfRayetStarModel(SPECSTR _Spec) : _Mybase(_Spec)
 	{
-		_STL_ASSERT(IsWolfRayet(_Spec), ("\"" + _Spec.str() + "\" is not a Wolf-Rayet star type."));
+		_GENERATOR_ASSERT(IsWolfRayet(_Spec), ("\"" + _Spec.str() + "\" is not a Wolf-Rayet star type."));
 	}
 
 	explicit WolfRayetStarModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
@@ -304,8 +312,8 @@ public:
 		{
 			SType = (float)_Eng.randint(_Par.param()[0][StarTableCoeffs::SpT], _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]);
 		}
-		_STL_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
-		_STL_ASSERT(SType <= _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
+		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
+		_GENERATOR_ASSERT(SType <= _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
 
 		size_t i = 0;
 		while
@@ -348,7 +356,7 @@ public:
 	HPWolfRayetStarModel() : _Mybase() {}
 	explicit HPWolfRayetStarModel(SPECSTR _Spec) : _Mybase(_Spec)
 	{
-		_STL_ASSERT(IsWolfRayet(_Spec), ("\"" + _Spec.str() + "\" is not a Wolf-Rayet star type."));
+		_GENERATOR_ASSERT(IsWolfRayet(_Spec), ("\"" + _Spec.str() + "\" is not a Wolf-Rayet star type."));
 	}
 
 	explicit HPWolfRayetStarModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
@@ -371,8 +379,8 @@ public:
 		{
 			SType = (float)_Eng.randint(_Par.param()[0][StarTableCoeffs::SpT], _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]);
 		}
-		_STL_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
-		_STL_ASSERT(SType <= _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
+		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
+		_GENERATOR_ASSERT(SType <= _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
 
 		size_t i = 0;
 		while
@@ -417,7 +425,7 @@ public:
 	BrownDwarfModel() : _Mybase() {}
 	explicit BrownDwarfModel(SPECSTR _Spec) : _Mybase(_Spec)
 	{
-		_STL_ASSERT(IsBrownDwarf(_Spec), ("\"" + _Spec.str() + "\" is not a substellar object."));
+		_GENERATOR_ASSERT(IsBrownDwarf(_Spec), ("\"" + _Spec.str() + "\" is not a substellar object."));
 	}
 
 	explicit BrownDwarfModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
@@ -449,7 +457,7 @@ public:
 		{
 			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
 		}
-		_STL_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
+		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
 
 		size_t i = 0;
 		while
@@ -466,7 +474,7 @@ public:
 		else
 		{
 			NextParams = _Par.param()[i + 1];
-			_STL_ASSERT(SType <= NextParams[StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
+			_GENERATOR_ASSERT(SType <= NextParams[StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
 		}
 
 		Offset = (SType - BaseParams[StarTableCoeffs::SpT]) / (NextParams[StarTableCoeffs::SpT] - BaseParams[StarTableCoeffs::SpT]);
@@ -508,7 +516,7 @@ public:
 	HPBrownDwarfModel() : _Mybase() {}
 	explicit HPBrownDwarfModel(SPECSTR _Spec) : _Mybase(_Spec)
 	{
-		_STL_ASSERT(IsBrownDwarf(_Spec), ("\"" + _Spec.str() + "\" is not a substellar object."));
+		_GENERATOR_ASSERT(IsBrownDwarf(_Spec), ("\"" + _Spec.str() + "\" is not a substellar object."));
 	}
 
 	explicit HPBrownDwarfModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
@@ -540,7 +548,7 @@ public:
 		{
 			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
 		}
-		_STL_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
+		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
 
 		size_t i = 0;
 		while
@@ -557,7 +565,7 @@ public:
 		else
 		{
 			NextParams = _Par.param()[i + 1];
-			_STL_ASSERT(SType <= NextParams[StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
+			_GENERATOR_ASSERT(SType <= NextParams[StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
 		}
 
 		Offset = (SType - BaseParams[StarTableCoeffs::SpT]) / (NextParams[StarTableCoeffs::SpT] - BaseParams[StarTableCoeffs::SpT]);
@@ -606,7 +614,7 @@ public:
 		void _Init(mass_range _MRng)
 		{
 			// set internal state
-			_STL_ASSERT(_MRng.x <= _MRng.y && 0 <= _MRng.x,
+			_GENERATOR_ASSERT(_MRng.x <= _MRng.y && 0 <= _MRng.x,
 				"invalid min and max masses for SubGiant Model");
 			_MassRange = _MRng;
 		}
@@ -652,13 +660,13 @@ public:
 
 	LowMassSubgiantModel(mass_type _Mass0) : _Mass(_Mass0)
 	{
-		_STL_ASSERT(_Mass0 >= 0.4 && _Mass0 <= 0.9, "Mass is out of range.");
+		_GENERATOR_ASSERT(_Mass0 >= 0.4 && _Mass0 <= 0.9, "Mass is out of range.");
 		GetMSParams();
 	}
 
 	LowMassSubgiantModel(mass_type _Min0, mass_type _Max0) : _Mybase(_Min0, _Max0)
 	{
-		_STL_ASSERT(_Min0 >= 0.4 && _Max0 <= 0.9, "Masses is out of range.");
+		_GENERATOR_ASSERT(_Min0 >= 0.4 && _Max0 <= 0.9, "Masses is out of range.");
 		GetMSParams();
 	}
 
@@ -670,26 +678,17 @@ public:
 		const STPARS* MTable = GetStarTable(LSTARCLS::M, &MTableSize);
 		for (size_t i = 0; i < GTableSize; i++)
 		{
-			if (GTable[i][StarTableCoeffs::MSun] >= 0.4 && GTable[i][StarTableCoeffs::MSun] <= 0.9)
-			{
-				MSPars.push_back(GTable[i]);
-			}
+			MSPars.push_back(GTable[i]);
 		}
 
 		for (size_t i = 0; i < KTableSize; i++)
 		{
-			if (KTable[i][StarTableCoeffs::MSun] >= 0.4 && KTable[i][StarTableCoeffs::MSun] <= 0.9)
-			{
-				MSPars.push_back(KTable[i]);
-			}
+			MSPars.push_back(KTable[i]);
 		}
 
 		for (size_t i = 0; i < MTableSize; i++)
 		{
-			if (MTable[i][StarTableCoeffs::MSun] >= 0.4 && MTable[i][StarTableCoeffs::MSun] <= 0.9)
-			{
-				MSPars.push_back(MTable[i]);
-			}
+			MSPars.push_back(MTable[i]);
 		}
 	}
 
@@ -757,11 +756,11 @@ public:
 			(_Obj.Teff < MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff >= MSPars[it + 1][StarTableCoeffs::Teff]) ||
 			(_Obj.Teff > MSPars[it][StarTableCoeffs::Teff] && _Obj.Teff <= MSPars[it + 1][StarTableCoeffs::Teff])))
 		{
-			++it;
 			if (MSPars[it][StarTableCoeffs::SpT] > MSPars[it + 1][StarTableCoeffs::SpT])
 			{
 				++_SType;
 			}
+			++it;
 		}
 		_Obj.SpecClass = SPECSTR(static_cast<SPECSTR::SpecClass>(_SType),
 			(SPECSTR::Type)MSPars[it][StarTableCoeffs::SpT], static_cast<SPECSTR::Type>(-1),
@@ -784,13 +783,13 @@ public:
 
 	MidSizedSubgiantModel(mass_type _Mass0) : _Mass(_Mass0)
 	{
-		_STL_ASSERT(_Mass0 > 0.9 && _Mass0 <= 8.0, "Mass is out of range.");
+		_GENERATOR_ASSERT(_Mass0 > 0.9 && _Mass0 <= 8.0, "Mass is out of range.");
 		GetMSParams();
 	}
 
 	MidSizedSubgiantModel(mass_type _Min0, mass_type _Max0) : _Mybase(_Min0, _Max0)
 	{
-		_STL_ASSERT(_Min0 > 0.9 && _Max0 <= 8.0, "Masses is out of range.");
+		_GENERATOR_ASSERT(_Min0 > 0.9 && _Max0 <= 8.0, "Masses is out of range.");
 		GetMSParams();
 	}
 
@@ -804,36 +803,22 @@ public:
 
 		for (size_t i = 0; i < BTableSize; i++)
 		{
-			if ((BTable[i][StarTableCoeffs::MSun] >= 0.9 && BTable[i][StarTableCoeffs::MSun] <= 8.0) ||
-				(BTable[i][StarTableCoeffs::MSun] > 8.0 && 
-					(BTable[i + 1][StarTableCoeffs::MSun] >= 0.9 && BTable[i + 1][StarTableCoeffs::MSun] <= 8.0)))
-			{
-				MSPars.push_back(BTable[i]);
-			}
+			MSPars.push_back(BTable[i]);
 		}
 
 		for (size_t i = 0; i < ATableSize; i++)
 		{
-			if (ATable[i][StarTableCoeffs::MSun] >= 0.9 && ATable[i][StarTableCoeffs::MSun] <= 8.0)
-			{
-				MSPars.push_back(ATable[i]);
-			}
+			MSPars.push_back(ATable[i]);
 		}
 
 		for (size_t i = 0; i < FTableSize; i++)
 		{
-			if (FTable[i][StarTableCoeffs::MSun] >= 0.9 && FTable[i][StarTableCoeffs::MSun] <= 8.0)
-			{
-				MSPars.push_back(FTable[i]);
-			}
+			MSPars.push_back(FTable[i]);
 		}
 
 		for (size_t i = 0; i < GTableSize; i++)
 		{
-			if (GTable[i][StarTableCoeffs::MSun] >= 0.9 && GTable[i][StarTableCoeffs::MSun] <= 8.0)
-			{
-				MSPars.push_back(GTable[i]);
-			}
+			MSPars.push_back(GTable[i]);
 		}
 	}
 
@@ -929,13 +914,13 @@ public:
 
 	MassiveSubgiantModel(mass_type _Mass0) : _Mass(_Mass0)
 	{
-		_STL_ASSERT(_Mass0 > 8.0 && _Mass0 <= 12.0, "Mass is out of range.");
+		_GENERATOR_ASSERT(_Mass0 > 8.0 && _Mass0 <= 12.0, "Mass is out of range.");
 		GetMSParams();
 	}
 
 	MassiveSubgiantModel(mass_type _Min0, mass_type _Max0) : _Mybase(_Min0, _Max0)
 	{
-		_STL_ASSERT(_Min0 > 8.0 && _Max0 <= 12.0, "Masses is out of range.");
+		_GENERATOR_ASSERT(_Min0 > 8.0 && _Max0 <= 12.0, "Masses is out of range.");
 		GetMSParams();
 	}
 
@@ -946,14 +931,7 @@ public:
 
 		for (size_t i = 0; i < BTableSize; i++)
 		{
-			if ((BTable[i][StarTableCoeffs::MSun] >= 8.0 && BTable[i][StarTableCoeffs::MSun] <= 12.0) ||
-				(BTable[i][StarTableCoeffs::MSun] > 12.0 &&
-					(BTable[i + 1][StarTableCoeffs::MSun] >= 8.0 && BTable[i + 1][StarTableCoeffs::MSun] <= 12.0)) ||
-				(BTable[i - 1][StarTableCoeffs::MSun] >= 8.0 && BTable[i - 1][StarTableCoeffs::MSun] <= 12.0 && 
-					BTable[i][StarTableCoeffs::MSun] < 8.0))
-			{
-				MSPars.push_back(BTable[i]);
-			}
+			MSPars.push_back(BTable[i]);
 		}
 	}
 
@@ -1022,7 +1000,7 @@ public:
 		void _Init(mass_type _Ms)
 		{
 			// set internal state
-			_STL_ASSERT(_Ms >= 0.4 && _Ms <= 12,
+			_GENERATOR_ASSERT(_Ms >= 0.4 && _Ms <= 12,
 				"invalid mass for RGB Model");
 			_Mass = _Ms;
 		}
@@ -1030,7 +1008,7 @@ public:
 		void _Init(mass_range _MRng)
 		{
 			// set internal state
-			_STL_ASSERT(_MRng.x <= _MRng.y && 0 <= _MRng.x,
+			_GENERATOR_ASSERT(_MRng.x <= _MRng.y && 0 <= _MRng.x,
 				"invalid min and max masses for RGB Model");
 			_MassRange = _MRng;
 		}
