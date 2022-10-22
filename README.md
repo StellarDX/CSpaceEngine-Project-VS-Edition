@@ -50,9 +50,10 @@ Object Obj = gen();
  * - Wolf-Rayet star(Specified)
  * - Substellar Objects(Specified)
  * - Subgiants(Based on Mass, 0.4 - 12MSun Supported)
- * - Red Giant Brunch stars
- * - Horizontal Brunch stars
+ * - Red Giant Branch stars
+ * - Horizontal Branch stars
  * - Red Clump Giants
+ * - Asymptotic giant branch stars
 
 ## TODO
  * Procedural planet generator

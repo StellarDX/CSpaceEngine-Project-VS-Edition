@@ -59,11 +59,11 @@ os.Write();
 | LowMassSubgiantModel | 小质量亚巨星(0.4-0.9太阳质量) | 低 | 质量 |
 | MidSizedSubgiantModel | 亚巨星(0.9-8太阳质量) | 低 | 质量 |
 | MassiveSubgiantModel | 大质量亚巨星(8-12太阳质量) | 低 | 质量 |
-| RedGiantBrunch | 红巨星分支 | 低 | 质量 |
-| HorizontalBrunch | 水平分支 | 低 | 可变 |
-| ExtremeHorizontalBrunch(规划) | 水平分支(O/B型次矮星) | ？ | ？ |
+| RedGiantBranch | 红巨星分支 | 低 | 质量 |
+| HorizontalBranch | 水平分支 | 低 | 可变 |
+| ExtremeHorizontalBranch(规划) | 水平分支(O/B型次矮星) | ？ | ？ |
 | RedClumpGiantModel | 红团簇巨星 | 中 | 无 |
-| AsymptoticGiantBranch(规划) | 渐近巨星分支 | ？ | ？ |
+| AsymptoticGiantBranch | 渐近巨星分支 | 中低 | 质量 |
 | SuperAsymptoticGiantBranch(规划) | 渐近巨星分支(大质量恒星) | ？ | ？ |
 | SuperGiantModel(规划) | 超巨星 | ？ | ？ |
 | WolfRayetStarModel | 沃尔夫-拉叶星 | 中低 | 光谱型 |

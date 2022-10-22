@@ -516,7 +516,7 @@ __CRTDECL GetGiantParams(SPECSTR _Spec, vec2* _BC_Teff)
 		Base = it->second;
 		++it;
 		if (it == end) { break; }
-		if (_Spec.LaterThanEqual(Base.first) && _Spec.EarlierThan(it->second.first))
+		if (_Spec.LaterThanEqual(Base.first) && _Spec.EarlierThanEqual(it->second.first))
 		{
 			Next = it->second;
 			TeffNext = it->first;
@@ -550,7 +550,7 @@ void GetGiantParams(float64 _Teff, _STD pair<SPECSTR, float64>* _Param)
 		TeffBase = it->first;
 		++it;
 		if (it == end) { break; }
-		if (_Teff <= Base->first && _Teff > it->first)
+		if (_Teff <= Base->first && _Teff >= it->first)
 		{
 			_Begin = Base->second;
 			_Next = it->second;

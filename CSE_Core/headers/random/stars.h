@@ -286,7 +286,7 @@ class WolfRayetStarModel : public StarModelBase
 public:
 	using _Mybase = StarModelBase;
 
-	WolfRayetStarModel() : _Mybase() {}
+	WolfRayetStarModel() : _Mybase("WN5h") {}
 	explicit WolfRayetStarModel(SPECSTR _Spec) : _Mybase(_Spec)
 	{
 		_GENERATOR_ASSERT(IsWolfRayet(_Spec), ("\"" + _Spec.str() + "\" is not a Wolf-Rayet star type."));
@@ -353,7 +353,7 @@ class HPWolfRayetStarModel : public StarModelBase
 public:
 	using _Mybase = StarModelBase;
 
-	HPWolfRayetStarModel() : _Mybase() {}
+	HPWolfRayetStarModel() : _Mybase("WN5h") {}
 	explicit HPWolfRayetStarModel(SPECSTR _Spec) : _Mybase(_Spec)
 	{
 		_GENERATOR_ASSERT(IsWolfRayet(_Spec), ("\"" + _Spec.str() + "\" is not a Wolf-Rayet star type."));
@@ -422,7 +422,7 @@ class BrownDwarfModel : public StarModelBase
 public:
 	using _Mybase = StarModelBase;
 
-	BrownDwarfModel() : _Mybase() {}
+	BrownDwarfModel() : _Mybase("L2.5V") {}
 	explicit BrownDwarfModel(SPECSTR _Spec) : _Mybase(_Spec)
 	{
 		_GENERATOR_ASSERT(IsBrownDwarf(_Spec), ("\"" + _Spec.str() + "\" is not a substellar object."));
@@ -513,7 +513,7 @@ class HPBrownDwarfModel : public StarModelBase
 public:
 	using _Mybase = StarModelBase;
 
-	HPBrownDwarfModel() : _Mybase() {}
+	HPBrownDwarfModel() : _Mybase("L2.5V") {}
 	explicit HPBrownDwarfModel(SPECSTR _Spec) : _Mybase(_Spec)
 	{
 		_GENERATOR_ASSERT(IsBrownDwarf(_Spec), ("\"" + _Spec.str() + "\" is not a substellar object."));
@@ -666,7 +666,7 @@ public:
 
 	LowMassSubgiantModel(mass_type _Min0, mass_type _Max0) : _Mybase(_Min0, _Max0)
 	{
-		_GENERATOR_ASSERT(_Min0 >= 0.4 && _Max0 <= 0.9, "Masses is out of range.");
+		_GENERATOR_ASSERT(_Min0 >= 0.4 && _Max0 <= 0.9 && _Min0 < _Max0, "Masses is out of range.");
 		GetMSParams();
 	}
 
@@ -789,7 +789,7 @@ public:
 
 	MidSizedSubgiantModel(mass_type _Min0, mass_type _Max0) : _Mybase(_Min0, _Max0)
 	{
-		_GENERATOR_ASSERT(_Min0 > 0.9 && _Max0 <= 8.0, "Masses is out of range.");
+		_GENERATOR_ASSERT(_Min0 > 0.9 && _Max0 <= 8.0 && _Min0 < _Max0, "Masses is out of range.");
 		GetMSParams();
 	}
 
@@ -920,7 +920,7 @@ public:
 
 	MassiveSubgiantModel(mass_type _Min0, mass_type _Max0) : _Mybase(_Min0, _Max0)
 	{
-		_GENERATOR_ASSERT(_Min0 > 8.0 && _Max0 <= 12.0, "Masses is out of range.");
+		_GENERATOR_ASSERT(_Min0 > 8.0 && _Max0 <= 12.0 && _Min0 < _Max0, "Masses is out of range.");
 		GetMSParams();
 	}
 
@@ -979,12 +979,13 @@ public:
 };
 
 #define _RGB_TABLE_TEFF_LOW_LIMIT 2918
+#define _BRIGHT_GIANT_MAG_THRESHOLD -1.8
 
 _Check_return_ uint64
 __CRTDECL GetGiantParams(SPECSTR _Spec, vec2* _BC_Teff = nullptr);
 void GetGiantParams(float64 _Teff, std::pair<SPECSTR, float64>* _Param);
 
-class RedGiantBrunch
+class RedGiantBranch
 {
 public:
 	using result_type = Object;
@@ -1008,7 +1009,7 @@ public:
 		void _Init(mass_range _MRng)
 		{
 			// set internal state
-			_GENERATOR_ASSERT(_MRng.x <= _MRng.y && 0 <= _MRng.x,
+			_GENERATOR_ASSERT(_MRng.x <= _MRng.y && 0.4 <= _MRng.x && 12 >= _MRng.y,
 				"invalid min and max masses for RGB Model");
 			_MassRange = _MRng;
 		}
@@ -1039,11 +1040,11 @@ public:
 		}
 	}_Par;
 
-	RedGiantBrunch() : _Par() {}
+	RedGiantBranch() : _Par() {}
 
-	RedGiantBrunch(float64 _Mx0) : _Par(_Mx0) {}
+	RedGiantBranch(float64 _Mx0) : _Par(_Mx0) {}
 
-	RedGiantBrunch(float64 _Min0, float64 _Max0) : _Par(_Min0, _Max0) {}
+	RedGiantBranch(float64 _Min0, float64 _Max0) : _Par(_Min0, _Max0) {}
 
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
@@ -1094,7 +1095,7 @@ public:
 			_Obj.LumBol = ToLuminosity3(_Obj.AbsMagn + _SP_BC_Base.second);
 		}
 
-		if (_Obj.AbsMagn < -1.8)
+		if (_Obj.AbsMagn < _BRIGHT_GIANT_MAG_THRESHOLD)
 		{
 			_Obj.SpecClass = SPECSTR(_SP_BC_Base.first.SClass(), _SP_BC_Base.first.MinType(), -1.F, SPECSTR::II);
 		}
@@ -1109,7 +1110,9 @@ public:
 	}
 };
 
-class HorizontalBrunch // A Hackable model
+//#undef _RGB_TABLE_TEFF_LOW_LIMIT
+
+class HorizontalBranch // A Hackable model
 {
 public:
 	using result_type = Object;
@@ -1132,7 +1135,7 @@ public:
 		param_args _Radiuses = vec2(NO_DATA_FLOAT_INF);
 		param_args _Mags = vec2(NO_DATA_FLOAT_INF);
 		param_args _Teffs = vec2(NO_DATA_FLOAT_INF);
-
+		
 		void _Init() // Default profile
 		{
 			MassMode(UNIFORM);
@@ -1220,9 +1223,9 @@ public:
 		}
 	}_Par;
 
-	HorizontalBrunch() : _Par() {}
+	HorizontalBranch() : _Par() {}
 
-	HorizontalBrunch
+	HorizontalBranch
 	(
 		param_type::param_mode _Mm0, float64 _Mx0, float64 _Mx1,
 		param_type::param_mode _Rm0, float64 _Rx0, float64 _Rx1,
@@ -1301,7 +1304,7 @@ public:
 		GetGiantParams(_Teff, &_Params);
 		int _SCls = _Params.first.SClass();
 		float _STy = _Params.first.MinType();
-		if (_Obj.AbsMagn < -1.8)
+		if (_Obj.AbsMagn < _BRIGHT_GIANT_MAG_THRESHOLD)
 		{
 			_Obj.SpecClass = SPECSTR(static_cast<SPECSTR::SpecClass>(_SCls), _STy, -1.F, SPECSTR::II);
 		}
@@ -1330,10 +1333,10 @@ public:
 	}
 };
 
-class RedClumpGiantModel : public HorizontalBrunch
+class RedClumpGiantModel : public HorizontalBranch
 {
 public:
-	using _Mybase = HorizontalBrunch;
+	using _Mybase = HorizontalBranch;
 
 	RedClumpGiantModel() : _Mybase
 	(
@@ -1385,6 +1388,91 @@ public:
 		return _Obj;
 	}
 };
+
+class AsymptoticGiantBranch : public RedGiantBranch
+{
+public:
+	using _Mybase = RedGiantBranch;
+
+	struct param_type : _Mybase::param_type
+	{
+		void _Init(mass_type _Ms)
+		{
+			// set internal state
+			_GENERATOR_ASSERT(_Ms >= 0.5 && _Ms <= 8,
+				"invalid mass for AGB Model");
+			_Mass = _Ms;
+		}
+
+		void _Init(mass_range _MRng)
+		{
+			// set internal state
+			_GENERATOR_ASSERT(_MRng.x <= _MRng.y && 0.5 <= _MRng.x && 8 >= _MRng.y,
+				"invalid min and max masses for AGB Model");
+			_MassRange = _MRng;
+		}
+
+		param_type()
+		{
+			_Init(vec2(0.85, 8.0));
+		}
+
+		explicit param_type(float64 _Mx0)
+		{
+			_Init(_Mx0);
+		}
+
+		explicit param_type(float64 _Min0, float64 _Max0)
+		{
+			_Init(vec2(_Min0, _Max0));
+		}
+	}_Par;
+
+	AsymptoticGiantBranch() : _Par() {}
+
+	AsymptoticGiantBranch(float64 _Mx0) : _Par(_Mx0) {}
+
+	AsymptoticGiantBranch(float64 _Min0, float64 _Max0) : _Par(_Min0, _Max0) {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+
+		float64 BaseMass;
+		if (isinf(_Par._Mass))
+		{
+			_Obj.Mass = _Par.a() * MassSol + (_Par.b() * MassSol - _Par.a() * MassSol) *
+				(_Eng.exponential() / 5.);
+		}
+		else { _Obj.Mass = _Par._Mass * MassSol; }
+		BaseMass = _Obj.Mass / MassSol;
+
+		_Obj.Dimensions = vec3(_Eng.uniform(40. * RadSol, 500. * RadSol)); // Average is 215
+		_Obj.Teff = _Eng.uniform(_RGB_TABLE_TEFF_LOW_LIMIT, 4200);
+
+		std::pair<SPECSTR, float64> _SP_BC_Base;
+		GetGiantParams(_Obj.Teff, &_SP_BC_Base);
+
+		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+		_Obj.AbsMagn = ToAbsMagn4(_Obj.LumBol) - _SP_BC_Base.second;
+		if (_Obj.AbsMagn < _BRIGHT_GIANT_MAG_THRESHOLD)
+		{
+			_Obj.SpecClass = SPECSTR(_SP_BC_Base.first.SClass(), _SP_BC_Base.first.MinType(), -1.F, SPECSTR::II);
+		}
+		else
+		{
+			_Obj.SpecClass = SPECSTR(_SP_BC_Base.first.SClass(), _SP_BC_Base.first.MinType(), -1.F, SPECSTR::III);
+		}
+
+		return _Obj;
+	}
+};
+
+#undef _BRIGHT_GIANT_MAG_THRESHOLD
 
 _CSE_END
 
