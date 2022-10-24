@@ -1259,11 +1259,11 @@ public:
 	{
 		if (_Par.RadMode() == param_type::UNIFORM)
 		{
-			_Obj.Dimensions = vec3(_Eng.uniform(RadSol * _Par.RadRange().x, RadSol * _Par.RadRange().y));
+			_Obj.Dimensions = vec3(_Eng.uniform(RadSol * _Par.RadRange().x, RadSol * _Par.RadRange().y) * 2.);
 		}
 		else if (_Par.RadMode() == param_type::NORMAL)
 		{
-			_Obj.Dimensions = vec3(_Eng.normal(RadSol * _Par.RadRange().x, RadSol * _Par.RadRange().y));
+			_Obj.Dimensions = vec3(_Eng.normal(RadSol * _Par.RadRange().x, RadSol * _Par.RadRange().y) * 2.);
 		}
 		return _Obj.Radius() / RadSol;
 	}
@@ -1385,6 +1385,37 @@ public:
 		_Obj.LumBol = ToLuminosity3(_Obj.AbsMagn + _BC);
 		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
 		_Obj.FeH = _Eng.uniform(-0.6, +0.4);
+		return _Obj;
+	}
+};
+
+using sdBStarModel =
+class ExtremeHorizontalBranch : public HorizontalBranch
+{
+public:
+	using _Mybase = HorizontalBranch;
+
+	ExtremeHorizontalBranch() : _Mybase
+	(
+		param_type::NORMAL, 0.5, 0.01,
+		param_type::UNIFORM, 0.15, 0.25,
+		static_cast<param_type::param_mode>(-1), NO_DATA_FLOAT_INF, NO_DATA_FLOAT_INF,
+		param_type::UNIFORM, 20000, 40000
+	) {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+
+		_Obj.SpecClass = "sdB";
+		GenMass(_Eng, _Obj);
+		GenRadius(_Eng, _Obj);
+		GenTeff(_Eng, _Obj);
+		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
 		return _Obj;
 	}
 };

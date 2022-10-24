@@ -61,7 +61,7 @@ os.Write();
 | MassiveSubgiantModel | 大质量亚巨星(8-12太阳质量) | 低 | 质量 |
 | RedGiantBranch | 红巨星分支 | 低 | 质量 |
 | HorizontalBranch | 水平分支 | 低 | 可变 |
-| ExtremeHorizontalBranch(规划) | 水平分支(O/B型次矮星) | ？ | ？ |
+| ExtremeHorizontalBranch | 水平分支(B型次矮星) | 中高 | 无 |
 | RedClumpGiantModel | 红团簇巨星 | 中 | 无 |
 | AsymptoticGiantBranch | 渐近巨星分支 | 中低 | 质量 |
 | SuperAsymptoticGiantBranch(规划) | 渐近巨星分支(大质量恒星) | ？ | ？ |
