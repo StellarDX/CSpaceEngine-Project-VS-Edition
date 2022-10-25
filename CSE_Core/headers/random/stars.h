@@ -1379,6 +1379,40 @@ public:
 #undef _STAR_RADIUS_LOW_LIMIT
 #undef _STAR_RADIUS_PROTECTION
 
+using SubdwarfOStarModel =
+class ExtendedHorizontalBranch : public HorizontalBranch
+{
+public:
+	using _Mybase = HorizontalBranch;
+
+	ExtendedHorizontalBranch() : _Mybase
+	(
+		param_type::NORMAL, 0.5, 0.01,
+		static_cast<param_type::param_mode>(-1), NO_DATA_FLOAT_INF, NO_DATA_FLOAT_INF,
+		static_cast<param_type::param_mode>(-1), NO_DATA_FLOAT_INF, NO_DATA_FLOAT_INF,
+		param_type::UNIFORM, 40000, 100000
+	) {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
+
+		_Obj.SpecClass = "sdO";
+		GenMass(_Eng, _Obj);
+		GenTeff(_Eng, _Obj);
+
+		float64 GravAccel = pow(10, _Eng.uniform(4, 6.5)) / 100; // convert to m/s^2
+		_Obj.Dimensions = vec3(sqrt((GravConstant * _Obj.Mass) / GravAccel) * 2.);
+		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+
+		return _Obj;
+	}
+};
+
 using SubdwarfBStarModel =
 class ExtremeHorizontalBranch : public HorizontalBranch
 {

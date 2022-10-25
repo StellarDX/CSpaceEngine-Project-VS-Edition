@@ -65,7 +65,8 @@ os.Write();
 | AsymptoticGiantBranch | 渐近巨星分支 | 中低 | 质量 |
 | SuperAsymptoticGiantBranch | 渐近巨星分支(大质量恒星) | 低 | 质量 |
 | CoolSubdwarfModel | 次矮星 | 中 | 光谱型 |
-| ExtremeHorizontalBranch | 水平分支(B型次矮星) | 中高 | 无 |
+| SubdwarfOStarModel | O型次矮星 | 中高 | 无 |
+| SubdwarfBStarModel | B型次矮星 | 中高 | 无 |
 | WolfRayetStarModel | 沃尔夫-拉叶星 | 中低 | 光谱型 |
 | HPWolfRayetStarModel | 沃尔夫-拉叶星 | 高 | 光谱型 |
 | SuperGiantModel(规划) | 超巨星 | ？ | ？ |
