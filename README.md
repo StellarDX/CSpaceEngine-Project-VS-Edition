@@ -46,14 +46,14 @@ object_generator<_CSE_Random_Engine<mt19937_64>, MainSequenceStarModel> gen(Engi
 Object Obj = gen();
 ```
  * Support stars:
- * - Main sequence stars(Specified, Random)
- * - Wolf-Rayet star(Specified)
- * - Substellar Objects(Specified)
- * - Subgiants(Based on Mass, 0.4 - 12MSun Supported)
- * - Red Giant Branch stars
- * - Horizontal Branch stars
- * - Red Clump Giants
- * - Asymptotic giant branch stars
+ * - Main sequence stars
+ * - Subgiants
+ * - Red Giant Branch
+ * - Horizontal Branch(Red Clump Giants)
+ * - Asymptotic giant branch(Super-AGB)
+ * - Subdwarfs(Cool, O, B)
+ * - Wolf-Rayet stars
+ * - Substellar Objects
 
 ## TODO
  * Procedural planet generator
