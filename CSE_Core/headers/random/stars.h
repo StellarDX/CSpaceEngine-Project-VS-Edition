@@ -53,7 +53,7 @@ const STPARS* GetStarTable(LSTARCLS::SpecClass Class, size_t* Tyc);
 
 //===========================================================================//
 //                                                                           //
-//                               Star Models                                 //
+//                       Evolution-based Star Model                          //
 //                                                                           //
 //===========================================================================//
 
@@ -102,6 +102,8 @@ public:
 	explicit StarModelBase(param_type _Par2) : _Par(_Par2) {}
 };
 
+// ---------- Main-sequence stars ---------- //
+
 class MainSequenceStarModel : public StarModelBase
 {
 public:
@@ -120,8 +122,8 @@ public:
 	{
 		result_type _Obj;
 		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 		_Obj.SpecClass = _Par.spec();
 		const STPARS* _NextTable;
 		size_t _NextTableSize;
@@ -208,8 +210,8 @@ public:
 	{
 		result_type _Obj;
 		_Obj.Type = "Star";
-		_Obj.Name.push_back("CSE-RS" + _STD vformat(" {}", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = "CSE-RS" + _STD vformat(" {}", _STD make_format_args(_Eng.seed()));
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 		_Obj.SpecClass = _Par.spec();
 		const STPARS* _NextTable;
 		size_t _NextTableSize;
@@ -281,323 +283,7 @@ public:
 
 Object RandomMainSequenceStar();
 
-class WolfRayetStarModel : public StarModelBase
-{
-public:
-	using _Mybase = StarModelBase;
-
-	WolfRayetStarModel() : _Mybase("WN5h") {}
-	explicit WolfRayetStarModel(SPECSTR _Spec) : _Mybase(_Spec)
-	{
-		_GENERATOR_ASSERT(IsWolfRayet(_Spec), ("\"" + _Spec.str() + "\" is not a Wolf-Rayet star type."));
-	}
-
-	explicit WolfRayetStarModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
-
-	template <class _Engine> // Procedural star generator
-	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
-	{
-		result_type _Obj;
-		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
-		_Obj.SpecClass = _Par.spec();
-
-		// Locating params
-		STPARS BaseParams;
-
-		auto SClass = _Par.spec().SClass();
-		auto SType = _Par.spec().MinType();
-		if (SType == -1)
-		{
-			SType = (float)_Eng.randint(_Par.param()[0][StarTableCoeffs::SpT], _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]);
-		}
-		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
-		_GENERATOR_ASSERT(SType <= _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
-
-		size_t i = 0;
-		while
-		(
-			i < _Par.tablesize() - 1 &&
-			!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
-		)
-		{++i;}
-		BaseParams = _Par.param()[i];
-
-		// Masses
-		float64 BaseMass = BaseParams[StarTableCoeffs::MSun];
-		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
-		_Obj.Mass = MassSol * _Eng.normal(BaseMass, BaseMass * 0.2 / 3.);
-
-		// Radius
-		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun];
-		_Obj.Dimensions = vec3(_Eng.normal(BaseRadius, BaseRadius * 0.15 / 3.) * 2. * RadSol);
-
-		// Temperature
-		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff];
-		_Obj.Teff = _Eng.normal(BaseTEff, BaseTEff * 0.2 / 3.);
-
-		// Luminosities
-
-		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol];
-		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv];
-		_Obj.AbsMagn = _Eng.normal(BaseMBol, 0.01) - BaseBCorr;
-		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
-
-		return _Obj;
-	}
-};
-
-class HPWolfRayetStarModel : public StarModelBase
-{
-public:
-	using _Mybase = StarModelBase;
-
-	HPWolfRayetStarModel() : _Mybase("WN5h") {}
-	explicit HPWolfRayetStarModel(SPECSTR _Spec) : _Mybase(_Spec)
-	{
-		_GENERATOR_ASSERT(IsWolfRayet(_Spec), ("\"" + _Spec.str() + "\" is not a Wolf-Rayet star type."));
-	}
-
-	explicit HPWolfRayetStarModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
-
-	template <class _Engine> // Procedural star generator
-	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
-	{
-		result_type _Obj;
-		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
-		_Obj.SpecClass = _Par.spec();
-
-		// Locating params
-		STPARS BaseParams;
-
-		auto SClass = _Par.spec().SClass();
-		auto SType = _Par.spec().MinType();
-		if (SType == -1)
-		{
-			SType = (float)_Eng.randint(_Par.param()[0][StarTableCoeffs::SpT], _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]);
-		}
-		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
-		_GENERATOR_ASSERT(SType <= _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
-
-		size_t i = 0;
-		while
-			(
-				i < _Par.tablesize() - 1 &&
-				!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
-				)
-		{
-			++i;
-		}
-		BaseParams = _Par.param()[i];
-
-		// Masses
-		float64 BaseMass = BaseParams[StarTableCoeffs::MSun];
-		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
-		_Obj.Mass = MassSol * BaseMass;
-
-		// Radius
-		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun];
-		_Obj.Dimensions = vec3(BaseRadius * 2. * RadSol);
-
-		// Temperature
-		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff];
-		_Obj.Teff = BaseTEff;
-
-		// Luminosities
-
-		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol];
-		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv];
-		_Obj.AbsMagn = BaseMBol - BaseBCorr;
-		_Obj.LumBol = ToLuminosity3(BaseMBol);
-
-		return _Obj;
-	}
-};
-
-class BrownDwarfModel : public StarModelBase
-{
-public:
-	using _Mybase = StarModelBase;
-
-	BrownDwarfModel() : _Mybase("L2.5V") {}
-	explicit BrownDwarfModel(SPECSTR _Spec) : _Mybase(_Spec)
-	{
-		_GENERATOR_ASSERT(IsBrownDwarf(_Spec), ("\"" + _Spec.str() + "\" is not a substellar object."));
-	}
-
-	explicit BrownDwarfModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
-
-	template <class _Engine> // Procedural star generator
-	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
-	{
-		result_type _Obj;
-		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} b", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
-		_Obj.SpecClass = _Par.spec();
-		const STPARS* _NextTable;
-		size_t _NextTableSize;
-		if (_Par.spec().SClass() >= 20 && _Par.spec().SClass() < 22)
-		{
-			_NextTable = GetStarTable(static_cast<LSTARCLS::SpecClass>(_Par.spec().SClass() + 1), &_NextTableSize);
-		}
-		else { _NextTable = nullptr; }
-
-		// Locating params
-		STPARS BaseParams;
-		STPARS NextParams;
-		float64 Offset;
-
-		auto SClass = _Par.spec().SClass();
-		auto SType = _Par.spec().MinType();
-		if (SType == -1)
-		{
-			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
-		}
-		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
-
-		size_t i = 0;
-		while
-		(
-			i < _Par.tablesize() - 1 &&
-			!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
-		){++i;}
-		BaseParams = _Par.param()[i];
-		if (i == _Par.tablesize() - 1 && _NextTable)
-		{
-			NextParams = _NextTable[0];
-			NextParams[StarTableCoeffs::SpT] = 10.0;
-		}
-		else
-		{
-			NextParams = _Par.param()[i + 1];
-			_GENERATOR_ASSERT(SType <= NextParams[StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
-		}
-
-		Offset = (SType - BaseParams[StarTableCoeffs::SpT]) / (NextParams[StarTableCoeffs::SpT] - BaseParams[StarTableCoeffs::SpT]);
-
-		// Masses
-		float64 BaseMass = BaseParams[StarTableCoeffs::MSun] +
-			(NextParams[StarTableCoeffs::MSun] - BaseParams[StarTableCoeffs::MSun]) * Offset;
-		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
-		_Obj.Mass = MassSol * _Eng.normal(BaseMass, 0.005);
-
-		// Radius
-		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun] +
-			(NextParams[StarTableCoeffs::R_RSun] - BaseParams[StarTableCoeffs::R_RSun]) * Offset;
-		_Obj.Dimensions = vec3(_Eng.normal(BaseRadius, 0.002) * 2. * RadSol);
-
-		// Temperature
-		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff] +
-			(NextParams[StarTableCoeffs::Teff] - BaseParams[StarTableCoeffs::Teff]) * Offset;
-		_Obj.Teff = BaseTEff;
-
-		// Luminosities
-
-		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol] +
-			(NextParams[StarTableCoeffs::Mbol] - BaseParams[StarTableCoeffs::Mbol]) * Offset;
-		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv] +
-			(NextParams[StarTableCoeffs::BCv] - BaseParams[StarTableCoeffs::BCv]) * Offset;
-		if (!isinf(BaseBCorr) && !isnan(BaseBCorr)) { _Obj.AbsMagn = BaseMBol - BaseBCorr; }
-		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
-
-		return _Obj;
-	}
-};
-
-class HPBrownDwarfModel : public StarModelBase
-{
-public:
-	using _Mybase = StarModelBase;
-
-	HPBrownDwarfModel() : _Mybase("L2.5V") {}
-	explicit HPBrownDwarfModel(SPECSTR _Spec) : _Mybase(_Spec)
-	{
-		_GENERATOR_ASSERT(IsBrownDwarf(_Spec), ("\"" + _Spec.str() + "\" is not a substellar object."));
-	}
-
-	explicit HPBrownDwarfModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
-
-	template <class _Engine> // Procedural star generator
-	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
-	{
-		result_type _Obj;
-		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} b", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
-		_Obj.SpecClass = _Par.spec();
-		const STPARS* _NextTable;
-		size_t _NextTableSize;
-		if (_Par.spec().SClass() >= 20 && _Par.spec().SClass() < 22)
-		{
-			_NextTable = GetStarTable(static_cast<LSTARCLS::SpecClass>(_Par.spec().SClass() + 1), &_NextTableSize);
-		}
-		else { _NextTable = nullptr; }
-
-		// Locating params
-		STPARS BaseParams;
-		STPARS NextParams;
-		float64 Offset;
-
-		auto SClass = _Par.spec().SClass();
-		auto SType = _Par.spec().MinType();
-		if (SType == -1)
-		{
-			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
-		}
-		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
-
-		size_t i = 0;
-		while
-		(
-			i < _Par.tablesize() - 1 &&
-			!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
-		){++i;}
-		BaseParams = _Par.param()[i];
-		if (i == _Par.tablesize() - 1 && _NextTable)
-		{
-			NextParams = _NextTable[0];
-			NextParams[StarTableCoeffs::SpT] = 10.0;
-		}
-		else
-		{
-			NextParams = _Par.param()[i + 1];
-			_GENERATOR_ASSERT(SType <= NextParams[StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
-		}
-
-		Offset = (SType - BaseParams[StarTableCoeffs::SpT]) / (NextParams[StarTableCoeffs::SpT] - BaseParams[StarTableCoeffs::SpT]);
-
-		// Masses
-		float64 BaseMass = BaseParams[StarTableCoeffs::MSun] +
-			(NextParams[StarTableCoeffs::MSun] - BaseParams[StarTableCoeffs::MSun]) * Offset;
-		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
-		_Obj.Mass = MassSol * BaseMass;
-
-		// Radius
-		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun] +
-			(NextParams[StarTableCoeffs::R_RSun] - BaseParams[StarTableCoeffs::R_RSun]) * Offset;
-		_Obj.Dimensions = vec3(BaseRadius * 2. * RadSol);
-
-		// Temperature
-		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff] +
-			(NextParams[StarTableCoeffs::Teff] - BaseParams[StarTableCoeffs::Teff]) * Offset;
-		_Obj.Teff = BaseTEff;
-
-		// Luminosities
-
-		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol] +
-			(NextParams[StarTableCoeffs::Mbol] - BaseParams[StarTableCoeffs::Mbol]) * Offset;
-		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv] +
-			(NextParams[StarTableCoeffs::BCv] - BaseParams[StarTableCoeffs::BCv]) * Offset;
-		if (!isinf(BaseBCorr) && !isnan(BaseBCorr)){ _Obj.AbsMagn = BaseMBol - BaseBCorr; }
-		_Obj.LumBol = ToLuminosity3(BaseMBol);
-
-		return _Obj;
-	}
-};
+// ---------- Subgiants ---------- //
 
 class SubgiantModelBase
 {
@@ -697,8 +383,8 @@ public:
 	{
 		result_type _Obj;
 		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
 		float64 BaseMass;
 		if (isinf(_Mass))
@@ -827,8 +513,8 @@ public:
 	{
 		result_type _Obj;
 		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
 		float64 BaseMass;
 		if (isinf(_Mass))
@@ -940,8 +626,8 @@ public:
 	{
 		result_type _Obj;
 		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
 		float64 BaseMass;
 		if (isinf(_Mass))
@@ -977,6 +663,8 @@ public:
 		return _Obj;
 	}
 };
+
+// ---------- Giants ---------- //
 
 #define _RGB_TABLE_TEFF_LOW_LIMIT 2918
 #define _BRIGHT_GIANT_MAG_THRESHOLD -1.8
@@ -1051,8 +739,8 @@ public:
 	{
 		result_type _Obj;
 		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
 		float64 BaseMass;
 		if (isinf(_Par._Mass))
@@ -1320,8 +1008,8 @@ public:
 	{
 		result_type _Obj;
 		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
 		GenMass(_Eng, _Obj);
 		GenTeff(_Eng, _Obj);
@@ -1375,8 +1063,8 @@ public:
 	{
 		result_type _Obj;
 		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
 		GenMass(_Eng, _Obj);
 		GenTeff(_Eng, _Obj);
@@ -1389,44 +1077,19 @@ public:
 	}
 };
 
-using sdBStarModel =
-class ExtremeHorizontalBranch : public HorizontalBranch
+class AsymptoticGiantBranch
 {
 public:
-	using _Mybase = HorizontalBranch;
+	using result_type = Object;
 
-	ExtremeHorizontalBranch() : _Mybase
-	(
-		param_type::NORMAL, 0.5, 0.01,
-		param_type::UNIFORM, 0.15, 0.25,
-		static_cast<param_type::param_mode>(-1), NO_DATA_FLOAT_INF, NO_DATA_FLOAT_INF,
-		param_type::UNIFORM, 20000, 40000
-	) {}
-
-	template <class _Engine> // Procedural star generator
-	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	struct param_type
 	{
-		result_type _Obj;
-		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+		using mass_range = vec2;
+		using mass_type = float64;
 
-		_Obj.SpecClass = "sdB";
-		GenMass(_Eng, _Obj);
-		GenRadius(_Eng, _Obj);
-		GenTeff(_Eng, _Obj);
-		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
-		return _Obj;
-	}
-};
+		mass_range _MassRange;
+		mass_type _Mass = NO_DATA_FLOAT_INF;
 
-class AsymptoticGiantBranch : public RedGiantBranch
-{
-public:
-	using _Mybase = RedGiantBranch;
-
-	struct param_type : _Mybase::param_type
-	{
 		void _Init(mass_type _Ms)
 		{
 			// set internal state
@@ -1441,6 +1104,16 @@ public:
 			_GENERATOR_ASSERT(_MRng.x <= _MRng.y && 0.5 <= _MRng.x && 8 >= _MRng.y,
 				"invalid min and max masses for AGB Model");
 			_MassRange = _MRng;
+		}
+
+		_NODISCARD float64 a() const
+		{
+			return _MassRange.x;
+		}
+
+		_NODISCARD float64 b() const
+		{
+			return _MassRange.y;
 		}
 
 		param_type()
@@ -1470,8 +1143,8 @@ public:
 	{
 		result_type _Obj;
 		_Obj.Type = "Star";
-		_Obj.Name.push_back(_STD vformat("CSE-RS {} A", _STD make_format_args(_Eng.seed())));
-		_Obj.ParentBody = _STD vformat("CSE-RS {}", _STD make_format_args(_Eng.seed()));
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
 		float64 BaseMass;
 		if (isinf(_Par._Mass))
@@ -1503,7 +1176,571 @@ public:
 	}
 };
 
+class SuperAsymptoticGiantBranch : public AsymptoticGiantBranch
+{
+public:
+	using _Mybase = AsymptoticGiantBranch;
+
+	struct param_type : _Mybase::param_type
+	{
+		void _Init(mass_type _Ms)
+		{
+			// set internal state
+			_GENERATOR_ASSERT(_Ms >= 7.5 && _Ms <= 9.25,
+				"invalid mass for SAGB Model");
+			_Mass = _Ms;
+		}
+
+		void _Init(mass_range _MRng)
+		{
+			// set internal state
+			_GENERATOR_ASSERT(_MRng.x <= _MRng.y && 7.5 <= _MRng.x && 9.25 >= _MRng.y,
+				"invalid min and max masses for AGB Model");
+			_MassRange = _MRng;
+		}
+
+		param_type()
+		{
+			_Init(vec2(7.5, 9.25));
+		}
+
+		explicit param_type(float64 _Mx0)
+		{
+			_Init(_Mx0);
+		}
+
+		explicit param_type(float64 _Min0, float64 _Max0)
+		{
+			_Init(vec2(_Min0, _Max0));
+		}
+	}_Par;
+
+	SuperAsymptoticGiantBranch() : _Par() {}
+
+	SuperAsymptoticGiantBranch(float64 _Mx0) : _Par(_Mx0) {}
+
+	SuperAsymptoticGiantBranch(float64 _Min0, float64 _Max0) : _Par(_Min0, _Max0) {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
+
+		float64 BaseMass;
+		if (isinf(_Par._Mass))
+		{
+			_Obj.Mass = _Eng.uniform(_Par.a() * MassSol, _Par.b() * MassSol);
+		}
+		else { _Obj.Mass = _Par._Mass * MassSol; }
+		BaseMass = _Obj.Mass / MassSol;
+
+		_Obj.Dimensions = vec3(_Eng.uniform(200. * RadSol, 750. * RadSol)); // [citation needed] maybe the upper limit is larger than 1000
+		_Obj.Teff = _Eng.uniform(3000, 4000);
+
+		std::pair<SPECSTR, float64> _SP_BC_Base;
+		GetGiantParams(_Obj.Teff, &_SP_BC_Base);
+
+		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+		_Obj.AbsMagn = ToAbsMagn4(_Obj.LumBol) - _SP_BC_Base.second;
+		if (_Obj.AbsMagn < _BRIGHT_GIANT_MAG_THRESHOLD)
+		{
+			_Obj.SpecClass = SPECSTR(_SP_BC_Base.first.SClass(), _SP_BC_Base.first.MinType(), -1.F, SPECSTR::II);
+		}
+		else
+		{
+			_Obj.SpecClass = SPECSTR(_SP_BC_Base.first.SClass(), _SP_BC_Base.first.MinType(), -1.F, SPECSTR::III);
+		}
+
+		return _Obj;
+	}
+};
+
 #undef _BRIGHT_GIANT_MAG_THRESHOLD
+
+//===========================================================================//
+//                                                                           //
+//                       Classification-based Models                         //
+//                                                                           //
+//===========================================================================//
+
+// ---------- Subswarfs ---------- //
+
+#define _STAR_RADIUS_LOW_LIMIT 0.84 * RadJupiter
+
+class CoolSubdwarfModel: public StarModelBase
+{
+public:
+	using _Mybase = StarModelBase;
+
+	// Radius - protection:
+	// If on, the star radius lower than the low limit of star radius will be force limited.
+	// Default is ttrue
+	#define _STAR_RADIUS_PROTECTION true
+
+	CoolSubdwarfModel() : _Mybase("sdM") {}
+	explicit CoolSubdwarfModel(SPECSTR _Spec) : _Mybase(_Spec)
+	{
+		_GENERATOR_ASSERT(IsSubDwarf(_Spec) && ((_Spec.SClass() >= 4 || _Spec.SClass() <= 6) || (_Spec.SClass() >= 20 || _Spec.SClass() <= 22)),
+			("Invalid type for subdwarf model \"" + _Spec.str() + "\""));
+	}
+
+	explicit CoolSubdwarfModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		// Generate a main-sequence star first
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
+		_Obj.SpecClass = _Par.spec();
+		const STPARS* _NextTable;
+		size_t _NextTableSize;
+		if (_Par.spec().SClass() < 6)
+		{
+			_NextTable = GetStarTable(static_cast<LSTARCLS::SpecClass>(_Par.spec().SClass() + 1), &_NextTableSize);
+		}
+		else if (_Par.spec().SClass() >= 20 && _Par.spec().SClass() < 22)
+		{
+			_NextTable = GetStarTable(static_cast<LSTARCLS::SpecClass>(_Par.spec().SClass() + 1), &_NextTableSize);
+		}
+		else { _NextTable = nullptr; }
+
+		// Locating params
+		STPARS BaseParams;
+		STPARS NextParams;
+		float64 Offset;
+
+		auto SClass = _Par.spec().SClass();
+		auto SType = _Par.spec().MinType();
+		if (SType == -1)
+		{
+			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
+		}
+		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
+
+		size_t i = 0;
+		while
+		(
+			i < _Par.tablesize() - 1 &&
+			!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
+		)
+		{
+			++i;
+		}
+		BaseParams = _Par.param()[i];
+		if (i == _Par.tablesize() - 1 && _NextTable)
+		{
+			NextParams = _NextTable[0];
+			NextParams[StarTableCoeffs::SpT] = 10.0;
+		}
+		else { NextParams = _Par.param()[i + 1]; }
+
+		Offset = (SType - BaseParams[StarTableCoeffs::SpT]) / (NextParams[StarTableCoeffs::SpT] - BaseParams[StarTableCoeffs::SpT]);
+
+		// Masses
+		float64 BaseMass = BaseParams[StarTableCoeffs::MSun] +
+			(NextParams[StarTableCoeffs::MSun] - BaseParams[StarTableCoeffs::MSun]) * Offset;
+		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
+		_Obj.Mass = MassSol * _Eng.normal(BaseMass, BaseMass * 0.2 / 3.);
+
+		// Temperature
+		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff] +
+			(NextParams[StarTableCoeffs::Teff] - BaseParams[StarTableCoeffs::Teff]) * Offset;
+		_Obj.Teff = _Eng.normal(BaseTEff, BaseTEff * 0.2 / 3.);
+
+		// Luminosities
+
+		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol] +
+			(NextParams[StarTableCoeffs::Mbol] - BaseParams[StarTableCoeffs::Mbol]) * Offset;
+		BaseMBol += _Eng.uniform(1.5, 2); // 1.5 to 2 magnitudes lower than that of main - sequence stars of the same spectral type.
+		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv] +
+			(NextParams[StarTableCoeffs::BCv] - BaseParams[StarTableCoeffs::BCv]) * Offset;
+		if (!isinf(BaseBCorr) && !isnan(BaseBCorr)) { _Obj.AbsMagn = _Eng.normal(BaseMBol, 0.01) - BaseBCorr; }
+		_Obj.LumBol = ToLuminosity3(BaseMBol);
+
+		// Radius
+		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
+		#if _STAR_RADIUS_PROTECTION
+		if (_Obj.Radius() < _STAR_RADIUS_LOW_LIMIT)
+		{
+			_Obj.Dimensions = vec3(_Eng.uniform(_STAR_RADIUS_LOW_LIMIT, 1.2 * RadJupiter) * 2.);
+		}
+		#endif
+
+		return _Obj;
+	}
+};
+
+#undef _STAR_RADIUS_LOW_LIMIT
+#undef _STAR_RADIUS_PROTECTION
+
+using SubdwarfBStarModel =
+class ExtremeHorizontalBranch : public HorizontalBranch
+{
+public:
+	using _Mybase = HorizontalBranch;
+
+	ExtremeHorizontalBranch() : _Mybase
+	(
+		param_type::NORMAL, 0.5, 0.01,
+		param_type::UNIFORM, 0.15, 0.25,
+		static_cast<param_type::param_mode>(-1), NO_DATA_FLOAT_INF, NO_DATA_FLOAT_INF,
+		param_type::UNIFORM, 20000, 40000
+	) {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
+
+		_Obj.SpecClass = "sdB";
+		GenMass(_Eng, _Obj);
+		GenRadius(_Eng, _Obj);
+		GenTeff(_Eng, _Obj);
+		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+		return _Obj;
+	}
+};
+
+// ---------- Wolf-Rayet stars ---------- //
+
+class WolfRayetStarModel : public StarModelBase
+{
+public:
+	using _Mybase = StarModelBase;
+
+	WolfRayetStarModel() : _Mybase("WN5h") {}
+	explicit WolfRayetStarModel(SPECSTR _Spec) : _Mybase(_Spec)
+	{
+		_GENERATOR_ASSERT(IsWolfRayet(_Spec), ("\"" + _Spec.str() + "\" is not a Wolf-Rayet star type."));
+	}
+
+	explicit WolfRayetStarModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
+		_Obj.SpecClass = _Par.spec();
+
+		// Locating params
+		STPARS BaseParams;
+
+		auto SClass = _Par.spec().SClass();
+		auto SType = _Par.spec().MinType();
+		if (SType == -1)
+		{
+			SType = (float)_Eng.randint(_Par.param()[0][StarTableCoeffs::SpT], _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]);
+		}
+		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
+		_GENERATOR_ASSERT(SType <= _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
+
+		size_t i = 0;
+		while
+			(
+				i < _Par.tablesize() - 1 &&
+				!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
+				)
+		{
+			++i;
+		}
+		BaseParams = _Par.param()[i];
+
+		// Masses
+		float64 BaseMass = BaseParams[StarTableCoeffs::MSun];
+		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
+		_Obj.Mass = MassSol * _Eng.normal(BaseMass, BaseMass * 0.2 / 3.);
+
+		// Radius
+		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun];
+		_Obj.Dimensions = vec3(_Eng.normal(BaseRadius, BaseRadius * 0.15 / 3.) * 2. * RadSol);
+
+		// Temperature
+		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff];
+		_Obj.Teff = _Eng.normal(BaseTEff, BaseTEff * 0.2 / 3.);
+
+		// Luminosities
+
+		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol];
+		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv];
+		_Obj.AbsMagn = _Eng.normal(BaseMBol, 0.01) - BaseBCorr;
+		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+
+		return _Obj;
+	}
+};
+
+class HPWolfRayetStarModel : public StarModelBase
+{
+public:
+	using _Mybase = StarModelBase;
+
+	HPWolfRayetStarModel() : _Mybase("WN5h") {}
+	explicit HPWolfRayetStarModel(SPECSTR _Spec) : _Mybase(_Spec)
+	{
+		_GENERATOR_ASSERT(IsWolfRayet(_Spec), ("\"" + _Spec.str() + "\" is not a Wolf-Rayet star type."));
+	}
+
+	explicit HPWolfRayetStarModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
+		_Obj.SpecClass = _Par.spec();
+
+		// Locating params
+		STPARS BaseParams;
+
+		auto SClass = _Par.spec().SClass();
+		auto SType = _Par.spec().MinType();
+		if (SType == -1)
+		{
+			SType = (float)_Eng.randint(_Par.param()[0][StarTableCoeffs::SpT], _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]);
+		}
+		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
+		_GENERATOR_ASSERT(SType <= _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
+
+		size_t i = 0;
+		while
+			(
+				i < _Par.tablesize() - 1 &&
+				!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
+				)
+		{
+			++i;
+		}
+		BaseParams = _Par.param()[i];
+
+		// Masses
+		float64 BaseMass = BaseParams[StarTableCoeffs::MSun];
+		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
+		_Obj.Mass = MassSol * BaseMass;
+
+		// Radius
+		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun];
+		_Obj.Dimensions = vec3(BaseRadius * 2. * RadSol);
+
+		// Temperature
+		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff];
+		_Obj.Teff = BaseTEff;
+
+		// Luminosities
+
+		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol];
+		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv];
+		_Obj.AbsMagn = BaseMBol - BaseBCorr;
+		_Obj.LumBol = ToLuminosity3(BaseMBol);
+
+		return _Obj;
+	}
+};
+
+//===========================================================================//
+//                                                                           //
+//                              Other Models                                 //
+//                                                                           //
+//===========================================================================//
+
+class BrownDwarfModel : public StarModelBase
+{
+public:
+	using _Mybase = StarModelBase;
+
+	BrownDwarfModel() : _Mybase("L2.5V") {}
+	explicit BrownDwarfModel(SPECSTR _Spec) : _Mybase(_Spec)
+	{
+		_GENERATOR_ASSERT(IsBrownDwarf(_Spec), ("\"" + _Spec.str() + "\" is not a substellar object."));
+	}
+
+	explicit BrownDwarfModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} b", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
+		_Obj.SpecClass = _Par.spec();
+		const STPARS* _NextTable;
+		size_t _NextTableSize;
+		if (_Par.spec().SClass() >= 20 && _Par.spec().SClass() < 22)
+		{
+			_NextTable = GetStarTable(static_cast<LSTARCLS::SpecClass>(_Par.spec().SClass() + 1), &_NextTableSize);
+		}
+		else { _NextTable = nullptr; }
+
+		// Locating params
+		STPARS BaseParams;
+		STPARS NextParams;
+		float64 Offset;
+
+		auto SClass = _Par.spec().SClass();
+		auto SType = _Par.spec().MinType();
+		if (SType == -1)
+		{
+			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
+		}
+		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
+
+		size_t i = 0;
+		while
+			(
+				i < _Par.tablesize() - 1 &&
+				!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
+				) {
+			++i;
+		}
+		BaseParams = _Par.param()[i];
+		if (i == _Par.tablesize() - 1 && _NextTable)
+		{
+			NextParams = _NextTable[0];
+			NextParams[StarTableCoeffs::SpT] = 10.0;
+		}
+		else
+		{
+			NextParams = _Par.param()[i + 1];
+			_GENERATOR_ASSERT(SType <= NextParams[StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
+		}
+
+		Offset = (SType - BaseParams[StarTableCoeffs::SpT]) / (NextParams[StarTableCoeffs::SpT] - BaseParams[StarTableCoeffs::SpT]);
+
+		// Masses
+		float64 BaseMass = BaseParams[StarTableCoeffs::MSun] +
+			(NextParams[StarTableCoeffs::MSun] - BaseParams[StarTableCoeffs::MSun]) * Offset;
+		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
+		_Obj.Mass = MassSol * _Eng.normal(BaseMass, 0.005);
+
+		// Radius
+		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun] +
+			(NextParams[StarTableCoeffs::R_RSun] - BaseParams[StarTableCoeffs::R_RSun]) * Offset;
+		_Obj.Dimensions = vec3(_Eng.normal(BaseRadius, 0.002) * 2. * RadSol);
+
+		// Temperature
+		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff] +
+			(NextParams[StarTableCoeffs::Teff] - BaseParams[StarTableCoeffs::Teff]) * Offset;
+		_Obj.Teff = BaseTEff;
+
+		// Luminosities
+
+		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol] +
+			(NextParams[StarTableCoeffs::Mbol] - BaseParams[StarTableCoeffs::Mbol]) * Offset;
+		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv] +
+			(NextParams[StarTableCoeffs::BCv] - BaseParams[StarTableCoeffs::BCv]) * Offset;
+		if (!isinf(BaseBCorr) && !isnan(BaseBCorr)) { _Obj.AbsMagn = BaseMBol - BaseBCorr; }
+		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+
+		return _Obj;
+	}
+};
+
+class HPBrownDwarfModel : public StarModelBase
+{
+public:
+	using _Mybase = StarModelBase;
+
+	HPBrownDwarfModel() : _Mybase("L2.5V") {}
+	explicit HPBrownDwarfModel(SPECSTR _Spec) : _Mybase(_Spec)
+	{
+		_GENERATOR_ASSERT(IsBrownDwarf(_Spec), ("\"" + _Spec.str() + "\" is not a substellar object."));
+	}
+
+	explicit HPBrownDwarfModel(_Mybase::param_type _Par2) : _Mybase(_Par2) {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} b", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
+		_Obj.SpecClass = _Par.spec();
+		const STPARS* _NextTable;
+		size_t _NextTableSize;
+		if (_Par.spec().SClass() >= 20 && _Par.spec().SClass() < 22)
+		{
+			_NextTable = GetStarTable(static_cast<LSTARCLS::SpecClass>(_Par.spec().SClass() + 1), &_NextTableSize);
+		}
+		else { _NextTable = nullptr; }
+
+		// Locating params
+		STPARS BaseParams;
+		STPARS NextParams;
+		float64 Offset;
+
+		auto SClass = _Par.spec().SClass();
+		auto SType = _Par.spec().MinType();
+		if (SType == -1)
+		{
+			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
+		}
+		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
+
+		size_t i = 0;
+		while
+			(
+				i < _Par.tablesize() - 1 &&
+				!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
+				) {
+			++i;
+		}
+		BaseParams = _Par.param()[i];
+		if (i == _Par.tablesize() - 1 && _NextTable)
+		{
+			NextParams = _NextTable[0];
+			NextParams[StarTableCoeffs::SpT] = 10.0;
+		}
+		else
+		{
+			NextParams = _Par.param()[i + 1];
+			_GENERATOR_ASSERT(SType <= NextParams[StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
+		}
+
+		Offset = (SType - BaseParams[StarTableCoeffs::SpT]) / (NextParams[StarTableCoeffs::SpT] - BaseParams[StarTableCoeffs::SpT]);
+
+		// Masses
+		float64 BaseMass = BaseParams[StarTableCoeffs::MSun] +
+			(NextParams[StarTableCoeffs::MSun] - BaseParams[StarTableCoeffs::MSun]) * Offset;
+		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
+		_Obj.Mass = MassSol * BaseMass;
+
+		// Radius
+		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun] +
+			(NextParams[StarTableCoeffs::R_RSun] - BaseParams[StarTableCoeffs::R_RSun]) * Offset;
+		_Obj.Dimensions = vec3(BaseRadius * 2. * RadSol);
+
+		// Temperature
+		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff] +
+			(NextParams[StarTableCoeffs::Teff] - BaseParams[StarTableCoeffs::Teff]) * Offset;
+		_Obj.Teff = BaseTEff;
+
+		// Luminosities
+
+		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol] +
+			(NextParams[StarTableCoeffs::Mbol] - BaseParams[StarTableCoeffs::Mbol]) * Offset;
+		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv] +
+			(NextParams[StarTableCoeffs::BCv] - BaseParams[StarTableCoeffs::BCv]) * Offset;
+		if (!isinf(BaseBCorr) && !isnan(BaseBCorr)) { _Obj.AbsMagn = BaseMBol - BaseBCorr; }
+		_Obj.LumBol = ToLuminosity3(BaseMBol);
+
+		return _Obj;
+	}
+};
 
 _CSE_END
 

@@ -61,20 +61,21 @@ os.Write();
 | MassiveSubgiantModel | 大质量亚巨星(8-12太阳质量) | 低 | 质量 |
 | RedGiantBranch | 红巨星分支 | 低 | 质量 |
 | HorizontalBranch | 水平分支 | 低 | 可变 |
-| ExtremeHorizontalBranch | 水平分支(B型次矮星) | 中高 | 无 |
 | RedClumpGiantModel | 红团簇巨星 | 中 | 无 |
 | AsymptoticGiantBranch | 渐近巨星分支 | 中低 | 质量 |
-| SuperAsymptoticGiantBranch(规划) | 渐近巨星分支(大质量恒星) | ？ | ？ |
-| SuperGiantModel(规划) | 超巨星 | ？ | ？ |
+| SuperAsymptoticGiantBranch | 渐近巨星分支(大质量恒星) | 低 | 质量 |
+| CoolSubdwarfModel | 次矮星 | 中 | 光谱型 |
+| ExtremeHorizontalBranch | 水平分支(B型次矮星) | 中高 | 无 |
 | WolfRayetStarModel | 沃尔夫-拉叶星 | 中低 | 光谱型 |
 | HPWolfRayetStarModel | 沃尔夫-拉叶星 | 高 | 光谱型 |
+| SuperGiantModel(规划) | 超巨星 | ？ | ？ |
 | HyperGiantModel(规划) | 特超巨星 | ？ | ？ |
-| BrownDwarfModel | 褐矮星 | 中 | 光谱型 |
-| HPBrownDwarfModel | 褐矮星 | 中高 | 光谱型 |
 | CarbonStarModel(规划) | 碳星，S型恒星 | ？ | ？ |
 | WhiteDwarfModel(规划) | 白矮星 | ？ | ？ |
 | NeutronStarModel(规划) | 中子星 | ？ | ？ |
 | BlackHoleModel(规划) | 黑洞 | ？ | ？ |
+| BrownDwarfModel | 褐矮星 | 中 | 光谱型 |
+| HPBrownDwarfModel | 褐矮星 | 中高 | 光谱型 |
 
 内置函数：
 

@@ -15,6 +15,7 @@ string spectum::str()
 {
 	if (this->empty()) { return ""; }
 	if (LumMax == WD) { return to_WDstr(&Cls, &Cls2, &TyMin, &TyMax, &LumMax, &LumMin, &Data); }
+	if (LumMax == sd) { return to_sdstr(&Cls, &TyMin, &TyMax, &Data); }
 
 	string _Str;
 
@@ -286,6 +287,18 @@ _CONSTEXPR20 void spectum::SingleSpectumParse(std::string _Str, SpecClass* _Cls,
 			*_Cls = M;
 			++it;
 			break;
+		case 'L':
+			*_Cls = L;
+			++it;
+			break;
+		case 'T':
+			*_Cls = T;
+			++it;
+			break;
+		case 'Y':
+			*_Cls = Y;
+			++it;
+			break;
 		}
 	}
 
@@ -543,6 +556,28 @@ string spectum::to_WDstr(const SpecClass* _Spec, const SpecClass* _Spec2, const 
 		_Str += vformat(_FormatStr, make_format_args(_Ty));
 	}
 
+	return _Str;
+}
+
+string spectum::to_sdstr(const SpecClass* _Spec, const Type* _Ty1, const Type* _Ty2, const ExtData* _Data)
+{
+	string _Str;
+	if (_Ty1 && *_Ty1 != -1)
+	{
+		string _FormatStr = "sd" + _SpClassFmtStrings[*_Spec];
+		string _Ty;
+
+		if (_Ty2 && *_Ty2 != -1) { _Ty = vformat(_GenTyFmtStr(*_Ty1) + '-' + _GenTyFmtStr(*_Ty2), make_format_args(*_Ty1, *_Ty2)); }
+		else { _Ty = vformat(_GenTyFmtStr(*_Ty1), make_format_args(*_Ty1)); }
+		_Str += vformat(_FormatStr, make_format_args(_Ty));
+	}
+	else
+	{
+		_Str = "sd" + _SpClassNoFmtStrings[*_Spec];
+		_Str.pop_back();
+	}
+
+	if (!_Data->empty()) { _Str += *_Data; }
 	return _Str;
 }
 

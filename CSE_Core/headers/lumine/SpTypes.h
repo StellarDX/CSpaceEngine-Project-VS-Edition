@@ -40,7 +40,7 @@ public:
 	{
 		"O ", "B ", "A ", "F ", "G ", "K ", "M ",
 		"WN", "WNE", "WNL", "Ofpe", "WNh", "WNha", "WNC", "WC", "WCE", "WCL", "WCd", "WO", "Of?p",
-		"L", "T", "Y",
+		"L ", "T ", "Y ",
 		"C", "N", "J", "H", "Hd", "S", "MS", "SC",
 		"A", "B", "O", "Q", "Z", "C", "X", "WD",
 		"Q", "X",
@@ -65,7 +65,7 @@ public:
 
 	_STD array<_STD string, 10> _LumClassStrings =
 	{
-		"0", "Ia", "Iab", "Ib", "II", "III", "IV", "V", "sd", "WD"
+		"0", "Ia", "Iab", "Ib", "II", "III", "IV", "V", "VI", "WD"
 	};
 
 	using ExtData = _STD string;
@@ -243,6 +243,7 @@ private:
 	void MultipleSpectumParse(_STD string _MultiStr);
 	_STD string to_str(const SpecClass* _Spec, const Type* _Ty1, const Type* _Ty2, const LumClass* _Lum1, const LumClass* _Lum2, const ExtData* _Data);
 	_STD string to_WDstr(const SpecClass* _Spec, const SpecClass* _Spec2, const Type* _Ty1, const Type* _Ty2, const LumClass* _Lum1, const LumClass* _Lum2, const ExtData* _Data);
+	_STD string to_sdstr(const SpecClass* _Spec, const Type* _Ty1, const Type* _Ty2, const ExtData* _Data);
 
 public:
 	// Friend functions
