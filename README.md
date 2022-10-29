@@ -47,12 +47,13 @@ Object Obj = gen();
 ```
  * Support stars:
  * - Main sequence stars
- * - Subgiants
  * - Red Giant Branch
  * - Horizontal Branch(Red Clump Giants)
  * - Asymptotic giant branch(Super-AGB)
  * - Subdwarfs(Cool, O, B)
  * - Wolf-Rayet stars
+ * - Subgiants
+ * - Blue Giants
  * - Substellar Objects
 
 ## TODO

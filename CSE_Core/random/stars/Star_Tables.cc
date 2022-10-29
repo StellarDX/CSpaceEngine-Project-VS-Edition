@@ -338,6 +338,7 @@ _STD map<float64, _STD pair<SPECSTR, float64>> _Adopt_BC_Teff_Calib_For_Giants()
 	using namespace std;
 	map<float64, pair<SPECSTR, float64>> _Par;
 	//           Teff                          Sp.Type B.C.
+	_Par.emplace(52500, pair<SPECSTR, float64>("O2"  , -4.5 ));
 	_Par.emplace(47000, pair<SPECSTR, float64>("O3"  , -4.2 ));
 	_Par.emplace(43500, pair<SPECSTR, float64>("O4"  , -3.9 ));
 	_Par.emplace(42000, pair<SPECSTR, float64>("O5"  , -3.8 ));
@@ -386,6 +387,39 @@ _STD map<float64, _STD pair<SPECSTR, float64>> _Adopt_BC_Teff_Calib_For_Giants()
 	_Par.emplace(_RGB_TABLE_TEFF_LOW_LIMIT, pair<SPECSTR, float64>("M7"  , -6.06)); // Using data from Mira Cet
 	return _Par;
 }
+
+// Masses and Absolute Visual Magnitudes for Blue giants(O and B-type)
+static const _STD array<float64, 4> _Mv_Calib_For_OB_Giants[]
+(
+//   C, T,   Mv,    MSun
+	{0, 2.0, -6.60, 130  }, // Ref.Star: HD 269810
+	{0, 3.0, -6.40, 100  }, // Ref.Star: Cl* NGC 3603 BLW A3 (Mass is unknown)
+	{0, 4.0, -6.28, 66   }, // Ref.Star: HD 319718 B
+	{0, 5.5, -6.00, 37.4 }, // Ref.Star: Schulte 8A
+	{0, 6.5, -6.00, 35   }, // Ref.Star: Schulte 8B
+	{0, 7.0, -5.50, 29   }, // Ref.Star: Schulte 4
+	{0, 7.5, -5.50, 28.5 }, // Ref.Star: GAM Vel B
+	{0, 8.0, -5.20, 27.9 }, // Ref.Star: Meissa
+	{0, 8.5, -5.20, 25.5 }, // Ref.Star: LY Aur Aa
+	{0, 9.0, -5.20, 23.1 }, // Ref.Star: IOT Ori Aa1
+	{0, 9.5, -5.20, 21   },
+	{1, 0.0, -5.00, 19   }, // Ref.Star: WR 86 B
+	{1, 0.5, -5.00, 16   }, // Ref.Star: Mimosa
+	{1, 1.0, -4.30, 12.02}, // Ref.Star: BET Cen
+	{1, 1.5, -3.90, 10.7 }, // Ref.Star: ALF Pyx
+	{1, 2.0, -3.70, 10.1 }, // Ref.Star: 35 Aqr
+	{1, 2.5, -3.50, 8.4  }, // Ref.Star: PI2 Cyg
+	{1, 3.0, -3.00, 7.6  }, // Ref.Star: DEL2 Tel
+	{1, 4.0, -2.60, 6    },
+	{1, 5.0, -2.41, 5.3  }, // Ref.Star: CH Cru
+	{1, 6.0, -2.03, 4.8  }, // Ref.Star: KAP Dra
+	{1, 7.0, -1.03, 3.91 }, // Ref.Star: HD 3240
+	{1, 8.0, -1.24, 3.76 }, // Ref.Star: 19 Lyr
+	{1, 9.0, -0.59, 3.36 }, // Ref.Star: BET Hya
+	{1, 9.5, -0.50, 3.3  },
+	{2, 0.0, -0.29, 2.96 }  // Ref.Star: ALF Sex
+);
+
 
 static const _STD map<float64, _STD pair<SPECSTR, float64>> _Giant_Params =
 _Adopt_BC_Teff_Calib_For_Giants();
@@ -527,7 +561,9 @@ __CRTDECL GetGiantParams(SPECSTR _Spec, vec2* _BC_Teff)
 	float64 Offset;
 	if (Base.first.SClass() != Next.first.SClass())
 	{
-		Offset = (_Spec.MinType() - Base.first.MinType()) / (10 - Base.first.MinType());
+		float64 _MTy = _Spec.MinType();
+		if (_MTy == Next.first.MinType()) {_MTy = 10; }
+		Offset = (_MTy - Base.first.MinType()) / (10 - Base.first.MinType());
 	}
 	else
 	{
@@ -594,6 +630,12 @@ void GetGiantParams(float64 _Teff, _STD pair<SPECSTR, float64>* _Param)
 
 	_Param->first = SPECSTR(static_cast<LSTARCLS::SpecClass>(SCls), static_cast<float>(MType));
 	_Param->second = _Begin.second;
+}
+
+const _STD array<float64, 4>* GetOBGiantsTable(size_t* Tyc)
+{
+	if (Tyc){*Tyc = 26;}
+	return _RAND _Mv_Calib_For_OB_Giants;
 }
 
 _CSE_END

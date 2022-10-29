@@ -56,9 +56,6 @@ os.Write();
 |:------|:-----|:----|:-----|
 | MainSequenceStarModel | 主序星 | 中高 | 光谱型 |
 | HPMainSequenceStarModel | 主序星 | 高 | 光谱型 |
-| LowMassSubgiantModel | 小质量亚巨星(0.4-0.9太阳质量) | 低 | 质量 |
-| MidSizedSubgiantModel | 亚巨星(0.9-8太阳质量) | 低 | 质量 |
-| MassiveSubgiantModel | 大质量亚巨星(8-12太阳质量) | 低 | 质量 |
 | RedGiantBranch | 红巨星分支 | 低 | 质量 |
 | HorizontalBranch | 水平分支 | 低 | 可变 |
 | RedClumpGiantModel | 红团簇巨星 | 中 | 无 |
@@ -69,6 +66,10 @@ os.Write();
 | SubdwarfBStarModel | B型次矮星 | 中高 | 无 |
 | WolfRayetStarModel | 沃尔夫-拉叶星 | 中低 | 光谱型 |
 | HPWolfRayetStarModel | 沃尔夫-拉叶星 | 高 | 光谱型 |
+| LowMassSubgiantModel | 小质量亚巨星(0.4-0.9太阳质量) | 低 | 质量 |
+| MidSizedSubgiantModel | 亚巨星(0.9-8太阳质量) | 低 | 质量 |
+| MassiveSubgiantModel | 大质量亚巨星(8-12太阳质量) | 低 | 质量 |
+| BlueGiantModel | 蓝巨星 | 中 | 光谱型 |
 | SuperGiantModel(规划) | 超巨星 | ？ | ？ |
 | HyperGiantModel(规划) | 特超巨星 | ？ | ？ |
 | CarbonStarModel(规划) | 碳星，S型恒星 | ？ | ？ |
