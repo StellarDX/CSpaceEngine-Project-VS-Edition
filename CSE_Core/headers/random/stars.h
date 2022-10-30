@@ -27,7 +27,11 @@ _STL_DISABLE_CLANG_WARNINGS
 #pragma push_macro("new")
 #undef new
 
+#define _CSE_GEN_LOG(type, mesg) Log_Generator.Out("Object Generator", type, '[' + ModelName + "] " + mesg, SysLogLevel)
+
 _CSE_BEGIN
+
+extern CSELog Log_Generator;
 
 class ObjectGenerationException : public _STD runtime_error
 {
@@ -104,6 +108,7 @@ class MainSequenceStarModel : public StarModelBase
 {
 public:
 	using _Mybase = StarModelBase;
+	_STD string ModelName = "Main Sequence Star Model";
 
 	MainSequenceStarModel() : _Mybase() {}
 	explicit MainSequenceStarModel(SPECSTR _Spec) : _Mybase(_Spec)
@@ -116,6 +121,8 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
@@ -130,6 +137,7 @@ public:
 		else { _NextTable = nullptr; }
 
 		// Locating params
+		_CSE_GEN_LOG("INFO", "Loading Parameters...");
 		STPARS BaseParams;
 		STPARS NextParams;
 		float64 Offset;
@@ -139,6 +147,7 @@ public:
 		if (SType == -1)
 		{
 			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
+			_CSE_GEN_LOG("WARNING", "Sub-type is unknown, suggesting \"" + SPECSTR(SClass, SType, -1, SPECSTR::V).str() + "\" instead of \"" + _Par.spec().str() + "\"");
 		}
 		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
 
@@ -158,31 +167,38 @@ public:
 		else { NextParams = _Par.param()[i + 1]; }
 
 		Offset = (SType - BaseParams[StarTableCoeffs::SpT]) / (NextParams[StarTableCoeffs::SpT] - BaseParams[StarTableCoeffs::SpT]);
+		_CSE_GEN_LOG("INFO", "DONE");
+
+		_CSE_GEN_LOG("INFO", "Generating data...");
 
 		// Masses
 		float64 BaseMass = BaseParams[StarTableCoeffs::MSun] + 
 			(NextParams[StarTableCoeffs::MSun] - BaseParams[StarTableCoeffs::MSun]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of mass: {}", _STD make_format_args(BaseMass)));
 		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
 		_Obj.Mass = MassSol * _Eng.normal(BaseMass, BaseMass * 0.2 / 3.);
 
 		// Radius
 		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun] +
 			(NextParams[StarTableCoeffs::R_RSun] - BaseParams[StarTableCoeffs::R_RSun]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of radius: {}", _STD make_format_args(BaseRadius)));
 		_Obj.Dimensions = vec3(_Eng.normal(BaseRadius, BaseRadius * 0.15 / 3.) * 2. * RadSol);
 
 		// Temperature
 		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff] +
 			(NextParams[StarTableCoeffs::Teff] - BaseParams[StarTableCoeffs::Teff]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of temperature: {}", _STD make_format_args(BaseTEff)));
 		_Obj.Teff = _Eng.normal(BaseTEff, BaseTEff * 0.2 / 3.);
 
 		// Luminosities
-
+		_CSE_GEN_LOG("INFO", "Calculating luminosities...");
 		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol] +
 			(NextParams[StarTableCoeffs::Mbol] - BaseParams[StarTableCoeffs::Mbol]) * Offset;
 		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv] +
 			(NextParams[StarTableCoeffs::BCv] - BaseParams[StarTableCoeffs::BCv]) * Offset;
 		_Obj.AbsMagn = _Eng.normal(BaseMBol, 0.01) - BaseBCorr;
 		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
@@ -192,6 +208,7 @@ class HPMainSequenceStarModel : public StarModelBase
 {
 public:
 	using _Mybase = StarModelBase;
+	_STD string ModelName = "High-Precision Main Sequence Star Model";
 
 	HPMainSequenceStarModel() : _Mybase() {}
 	explicit HPMainSequenceStarModel(SPECSTR _Spec) : _Mybase(_Spec)
@@ -204,6 +221,8 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
@@ -218,6 +237,7 @@ public:
 		else { _NextTable = nullptr; }
 
 		// Locating params
+		_CSE_GEN_LOG("INFO", "Loading Parameters...");
 		STPARS BaseParams;
 		STPARS NextParams;
 		float64 Offset;
@@ -228,6 +248,7 @@ public:
 		if (SType == -1)
 		{
 			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
+			_CSE_GEN_LOG("WARNING", "Sub-type is unknown, suggesting \"" + SPECSTR(SClass, SType, -1, SPECSTR::V).str() + "\" instead of \"" + _Par.spec().str() + "\"");
 		}
 		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
 
@@ -247,31 +268,38 @@ public:
 		else { NextParams = _Par.param()[i + 1]; }
 
 		Offset = (SType - BaseParams[StarTableCoeffs::SpT]) / (NextParams[StarTableCoeffs::SpT] - BaseParams[StarTableCoeffs::SpT]);
+		_CSE_GEN_LOG("INFO", "DONE");
+
+		_CSE_GEN_LOG("INFO", "Generating data...");
 
 		// Masses
 		float64 BaseMass = BaseParams[StarTableCoeffs::MSun] +
 			(NextParams[StarTableCoeffs::MSun] - BaseParams[StarTableCoeffs::MSun]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of mass: {}", _STD make_format_args(BaseMass)));
 		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
 		_Obj.Mass = MassSol * BaseMass;//_Eng.normal(BaseMass, BaseMass * 0.2 / 3.);
 
 		// Radius
 		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun] +
 			(NextParams[StarTableCoeffs::R_RSun] - BaseParams[StarTableCoeffs::R_RSun]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of radius: {}", _STD make_format_args(BaseRadius)));
 		_Obj.Dimensions = vec3(BaseRadius * 2. * RadSol);
 
 		// Temperature
 		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff] +
 			(NextParams[StarTableCoeffs::Teff] - BaseParams[StarTableCoeffs::Teff]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of temperature: {}", _STD make_format_args(BaseTEff)));
 		_Obj.Teff = BaseTEff;
 
 		// Luminosities
-
+		_CSE_GEN_LOG("INFO", "Calculating luminosities...");
 		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol] +
 			(NextParams[StarTableCoeffs::Mbol] - BaseParams[StarTableCoeffs::Mbol]) * Offset;
 		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv] +
 			(NextParams[StarTableCoeffs::BCv] - BaseParams[StarTableCoeffs::BCv]) * Offset;
 		_Obj.AbsMagn = BaseMBol - BaseBCorr;
 		_Obj.LumBol = ToLuminosity3(BaseMBol);
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
@@ -290,6 +318,7 @@ class RedGiantBranch
 {
 public:
 	using result_type = Object;
+	_STD string ModelName = "Red Giant Branch Model";
 
 	struct param_type
 	{
@@ -350,20 +379,26 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
 		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
+		_CSE_GEN_LOG("INFO", "Loading parameters...");
 		float64 BaseMass;
 		if (isinf(_Par._Mass))
 		{
+			_CSE_GEN_LOG("WARNING", "Mass is unknown, generating...");
 			_Obj.Mass = _Par.a() * MassSol + (_Par.b() * MassSol - _Par.a() * MassSol) * 
 				(_Eng.exponential() / 5.);
 		}
 		else { _Obj.Mass = _Par._Mass * MassSol; }
 		BaseMass = _Obj.Mass / MassSol;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base mass: {}", _STD make_format_args(BaseMass)));
 
+		_CSE_GEN_LOG("INFO", "Generating temperature...");
 		float64 _TemperatureHighLimit = _Eng.normal(5000, 120);
 		float64 _TemperatureLowLimit;
 		if (BaseMass > 2)
@@ -379,12 +414,15 @@ public:
 			_TemperatureLowLimit = _RGB_TABLE_TEFF_LOW_LIMIT;
 		}
 		float64 BaseTEff = _Eng.uniform(_TemperatureLowLimit, _TemperatureHighLimit);
+		_CSE_GEN_LOG("INFO", _STD vformat("Base temperature: {}", _STD make_format_args(BaseTEff)));
 		_Obj.Teff = BaseTEff;
 
+		_CSE_GEN_LOG("INFO", "Matching spectal type and bolometric correction...");
 		std::pair<SPECSTR, float64> _SP_BC_Base;
 		GetGiantParams(BaseTEff, &_SP_BC_Base);
 
 		// Stars with mass between 2MSun and 3Msun will become red clump giants.
+		_CSE_GEN_LOG("INFO", "Calculating luminosities...");
 		if (BaseMass >= 2 && BaseMass <= 3)
 		{
 			_Obj.LumBol = _Eng.uniform(SolarLum * 15, SolarLum * 200);
@@ -396,6 +434,7 @@ public:
 			_Obj.LumBol = ToLuminosity3(_Obj.AbsMagn + _SP_BC_Base.second);
 		}
 
+		_CSE_GEN_LOG("INFO", "Applying spectal type...");
 		if (_Obj.AbsMagn < _BRIGHT_GIANT_MAG_THRESHOLD)
 		{
 			_Obj.SpecClass = SPECSTR(_SP_BC_Base.first.SClass(), _SP_BC_Base.first.MinType(), -1.F, SPECSTR::II);
@@ -405,7 +444,9 @@ public:
 			_Obj.SpecClass = SPECSTR(_SP_BC_Base.first.SClass(), _SP_BC_Base.first.MinType(), -1.F, SPECSTR::III);
 		}
 
+		_CSE_GEN_LOG("INFO", "Calculating radius...");
 		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
@@ -417,6 +458,7 @@ class HorizontalBranch // A Hackable model
 {
 public:
 	using result_type = Object;
+	_STD string ModelName = "Horizontal Branch Model";
 
 	struct param_type
 	{
@@ -619,17 +661,21 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
 		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
+		_CSE_GEN_LOG("INFO", "Generating data...");
 		GenMass(_Eng, _Obj);
 		GenTeff(_Eng, _Obj);
 		float64 _BC = GetSpecType(_Obj);
 		_Obj.AbsMagn = GenMag(_Eng);
 		_Obj.LumBol = ToLuminosity3(_Obj.AbsMagn + _BC);
 		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
+		_CSE_GEN_LOG("INFO", "DONE");
 		return _Obj;
 	}
 };
@@ -638,6 +684,7 @@ class RedClumpGiantModel : public HorizontalBranch
 {
 public:
 	using _Mybase = HorizontalBranch;
+	_STD string ModelName = "Red Clump Giant Model";
 
 	RedClumpGiantModel() : _Mybase
 	(
@@ -674,11 +721,14 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
 		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
+		_CSE_GEN_LOG("INFO", "Generating data...");
 		GenMass(_Eng, _Obj);
 		GenTeff(_Eng, _Obj);
 		float64 _BC = GetSpecType(_Obj);
@@ -686,6 +736,7 @@ public:
 		_Obj.LumBol = ToLuminosity3(_Obj.AbsMagn + _BC);
 		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
 		_Obj.FeH = _Eng.uniform(-0.6, +0.4);
+		_CSE_GEN_LOG("INFO", "DONE");
 		return _Obj;
 	}
 };
@@ -694,6 +745,7 @@ class AsymptoticGiantBranch
 {
 public:
 	using result_type = Object;
+	_STD string ModelName = "Asymptotic Giant Branch Model";
 
 	struct param_type
 	{
@@ -754,26 +806,34 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
 		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
+		_CSE_GEN_LOG("INFO", "Loading parameters...");
 		float64 BaseMass;
 		if (isinf(_Par._Mass))
 		{
+			_CSE_GEN_LOG("WARNING", "Mass is unknown, generating...");
 			_Obj.Mass = _Par.a() * MassSol + (_Par.b() * MassSol - _Par.a() * MassSol) *
 				(_Eng.exponential() / 5.);
 		}
 		else { _Obj.Mass = _Par._Mass * MassSol; }
 		BaseMass = _Obj.Mass / MassSol;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base mass: {}", _STD make_format_args(BaseMass)));
 
+		_CSE_GEN_LOG("INFO", "Generating radius and temperature...");
 		_Obj.Dimensions = vec3(_Eng.uniform(40. * RadSol, 500. * RadSol)); // Average is 215
 		_Obj.Teff = _Eng.uniform(_RGB_TABLE_TEFF_LOW_LIMIT, 4200);
 
+		_CSE_GEN_LOG("INFO", "Matching spectal type and bolometric correction...");
 		std::pair<SPECSTR, float64> _SP_BC_Base;
 		GetGiantParams(_Obj.Teff, &_SP_BC_Base);
 
+		_CSE_GEN_LOG("INFO", "Caalculating luminosities...");
 		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
 		_Obj.AbsMagn = ToAbsMagn4(_Obj.LumBol) - _SP_BC_Base.second;
 		if (_Obj.AbsMagn < _BRIGHT_GIANT_MAG_THRESHOLD)
@@ -784,6 +844,7 @@ public:
 		{
 			_Obj.SpecClass = SPECSTR(_SP_BC_Base.first.SClass(), _SP_BC_Base.first.MinType(), -1.F, SPECSTR::III);
 		}
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
@@ -793,6 +854,7 @@ class SuperAsymptoticGiantBranch : public AsymptoticGiantBranch
 {
 public:
 	using _Mybase = AsymptoticGiantBranch;
+	_STD string ModelName = "Super Asymptotic Giant Branch Model";
 
 	struct param_type : _Mybase::param_type
 	{
@@ -837,25 +899,33 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
 		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
+		_CSE_GEN_LOG("INFO", "Loading parameters...");
 		float64 BaseMass;
 		if (isinf(_Par._Mass))
 		{
+			_CSE_GEN_LOG("WARNING", "Mass is unknown, generating...");
 			_Obj.Mass = _Eng.uniform(_Par.a() * MassSol, _Par.b() * MassSol);
 		}
 		else { _Obj.Mass = _Par._Mass * MassSol; }
 		BaseMass = _Obj.Mass / MassSol;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base mass: {}", _STD make_format_args(BaseMass)));
 
+		_CSE_GEN_LOG("INFO", "Generating radius and temperature...");
 		_Obj.Dimensions = vec3(_Eng.uniform(200. * RadSol, 750. * RadSol)); // [citation needed] maybe the upper limit is larger than 1000
 		_Obj.Teff = _Eng.uniform(3000, 4000);
 
+		_CSE_GEN_LOG("INFO", "Matching spectal type and bolometric correction...");
 		std::pair<SPECSTR, float64> _SP_BC_Base;
 		GetGiantParams(_Obj.Teff, &_SP_BC_Base);
 
+		_CSE_GEN_LOG("INFO", "Caalculating luminosities...");
 		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
 		_Obj.AbsMagn = ToAbsMagn4(_Obj.LumBol) - _SP_BC_Base.second;
 		if (_Obj.AbsMagn < _BRIGHT_GIANT_MAG_THRESHOLD)
@@ -866,6 +936,7 @@ public:
 		{
 			_Obj.SpecClass = SPECSTR(_SP_BC_Base.first.SClass(), _SP_BC_Base.first.MinType(), -1.F, SPECSTR::III);
 		}
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
@@ -894,6 +965,7 @@ class CoolSubdwarfModel: public StarModelBase
 {
 public:
 	using _Mybase = StarModelBase;
+	_STD string ModelName = "Cool Subdwarf Model";
 
 	// Radius - protection:
 	// If on, the star radius lower than the low limit of star radius will be force limited.
@@ -913,6 +985,8 @@ public:
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
 		// Generate a main-sequence star first
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
@@ -931,6 +1005,7 @@ public:
 		else { _NextTable = nullptr; }
 
 		// Locating params
+		_CSE_GEN_LOG("INFO", "Loading parameters...");
 		STPARS BaseParams;
 		STPARS NextParams;
 		float64 Offset;
@@ -940,6 +1015,8 @@ public:
 		if (SType == -1)
 		{
 			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
+			_CSE_GEN_LOG("WARNING", "Sub-type is unknown, suggesting \"" + SPECSTR(SClass, SType, -1, SPECSTR::sd).str() + "\" instead of \"" + _Par.spec().str() + "\"");
+
 		}
 		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
 
@@ -948,10 +1025,7 @@ public:
 		(
 			i < _Par.tablesize() - 1 &&
 			!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
-		)
-		{
-			++i;
-		}
+		){++i;}
 		BaseParams = _Par.param()[i];
 		if (i == _Par.tablesize() - 1 && _NextTable)
 		{
@@ -961,20 +1035,25 @@ public:
 		else { NextParams = _Par.param()[i + 1]; }
 
 		Offset = (SType - BaseParams[StarTableCoeffs::SpT]) / (NextParams[StarTableCoeffs::SpT] - BaseParams[StarTableCoeffs::SpT]);
+		_CSE_GEN_LOG("INFO", "DONE");
+
+		_CSE_GEN_LOG("INFO", "Generating data...");
 
 		// Masses
 		float64 BaseMass = BaseParams[StarTableCoeffs::MSun] +
 			(NextParams[StarTableCoeffs::MSun] - BaseParams[StarTableCoeffs::MSun]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of mass: {}", _STD make_format_args(BaseMass)));
 		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
 		_Obj.Mass = MassSol * _Eng.normal(BaseMass, BaseMass * 0.2 / 3.);
 
 		// Temperature
 		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff] +
 			(NextParams[StarTableCoeffs::Teff] - BaseParams[StarTableCoeffs::Teff]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of temperature: {}", _STD make_format_args(BaseTEff)));
 		_Obj.Teff = _Eng.normal(BaseTEff, BaseTEff * 0.2 / 3.);
 
 		// Luminosities
-
+		_CSE_GEN_LOG("INFO", "Calculating luminosities...");
 		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol] +
 			(NextParams[StarTableCoeffs::Mbol] - BaseParams[StarTableCoeffs::Mbol]) * Offset;
 		BaseMBol += _Eng.uniform(1.5, 2); // 1.5 to 2 magnitudes lower than that of main - sequence stars of the same spectral type.
@@ -984,13 +1063,16 @@ public:
 		_Obj.LumBol = ToLuminosity3(BaseMBol);
 
 		// Radius
+		_CSE_GEN_LOG("INFO", "Calculating radius...");
 		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
 		#if _STAR_RADIUS_PROTECTION
 		if (_Obj.Radius() < _STAR_RADIUS_LOW_LIMIT)
 		{
+			_CSE_GEN_LOG("WARNING", "Calculated radius is too small!");
 			_Obj.Dimensions = vec3(_Eng.uniform(_STAR_RADIUS_LOW_LIMIT, 1.2 * RadJupiter) * 2.);
 		}
 		#endif
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
@@ -1004,6 +1086,7 @@ class ExtendedHorizontalBranch : public HorizontalBranch
 {
 public:
 	using _Mybase = HorizontalBranch;
+	_STD string ModelName = "Extended Horizontal Brunch Model";
 
 	ExtendedHorizontalBranch() : _Mybase
 	(
@@ -1016,11 +1099,14 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
 		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
+		_CSE_GEN_LOG("INFO", "Generating data...");
 		_Obj.SpecClass = "sdO";
 		GenMass(_Eng, _Obj);
 		GenTeff(_Eng, _Obj);
@@ -1028,7 +1114,7 @@ public:
 		float64 GravAccel = pow(10, _Eng.uniform(4, 6.5)) / 100; // convert to m/s^2
 		_Obj.Dimensions = vec3(sqrt((GravConstant * _Obj.Mass) / GravAccel) * 2.);
 		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
-
+		_CSE_GEN_LOG("INFO", "DONE");
 		return _Obj;
 	}
 };
@@ -1038,6 +1124,7 @@ class ExtremeHorizontalBranch : public HorizontalBranch
 {
 public:
 	using _Mybase = HorizontalBranch;
+	_STD string ModelName = "Extreme Horizontal Brunch Model";
 
 	ExtremeHorizontalBranch() : _Mybase
 	(
@@ -1050,16 +1137,20 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
 		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
+		_CSE_GEN_LOG("INFO", "Generating data...");
 		_Obj.SpecClass = "sdB";
 		GenMass(_Eng, _Obj);
 		GenRadius(_Eng, _Obj);
 		GenTeff(_Eng, _Obj);
 		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+		_CSE_GEN_LOG("INFO", "DONE");
 		return _Obj;
 	}
 };
@@ -1070,6 +1161,7 @@ class WolfRayetStarModel : public StarModelBase
 {
 public:
 	using _Mybase = StarModelBase;
+	_STD string ModelName = "Wolf-Rayet Star Model";
 
 	WolfRayetStarModel() : _Mybase("WN5h") {}
 	explicit WolfRayetStarModel(SPECSTR _Spec) : _Mybase(_Spec)
@@ -1082,6 +1174,8 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
@@ -1089,6 +1183,7 @@ public:
 		_Obj.SpecClass = _Par.spec();
 
 		// Locating params
+		_CSE_GEN_LOG("INFO", "Loading parameters...");
 		STPARS BaseParams;
 
 		auto SClass = _Par.spec().SClass();
@@ -1096,40 +1191,46 @@ public:
 		if (SType == -1)
 		{
 			SType = (float)_Eng.randint(_Par.param()[0][StarTableCoeffs::SpT], _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]);
+			_CSE_GEN_LOG("WARNING", "Sub-type is unknown, suggesting \"" + SPECSTR(SClass, SType).str() + "\" instead of \"" + _Par.spec().str() + "\"");
 		}
 		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
 		_GENERATOR_ASSERT(SType <= _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
 
 		size_t i = 0;
 		while
-			(
-				i < _Par.tablesize() - 1 &&
-				!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
-				)
-		{
-			++i;
-		}
+		(
+			i < _Par.tablesize() - 1 &&
+			!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
+		)
+		{++i;}
 		BaseParams = _Par.param()[i];
+		_CSE_GEN_LOG("INFO", "DONE");
+
+		_CSE_GEN_LOG("INFO", "Generating data...");
 
 		// Masses
 		float64 BaseMass = BaseParams[StarTableCoeffs::MSun];
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of mass: {}", _STD make_format_args(BaseMass)));
 		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
 		_Obj.Mass = MassSol * _Eng.normal(BaseMass, BaseMass * 0.2 / 3.);
 
 		// Radius
 		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun];
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of radius: {}", _STD make_format_args(BaseRadius)));
 		_Obj.Dimensions = vec3(_Eng.normal(BaseRadius, BaseRadius * 0.15 / 3.) * 2. * RadSol);
 
 		// Temperature
 		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff];
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of temperature: {}", _STD make_format_args(BaseTEff)));
 		_Obj.Teff = _Eng.normal(BaseTEff, BaseTEff * 0.2 / 3.);
 
 		// Luminosities
-
+		_CSE_GEN_LOG("INFO", "Calculating luminosities...");
 		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol];
 		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv];
 		_Obj.AbsMagn = _Eng.normal(BaseMBol, 0.01) - BaseBCorr;
 		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
@@ -1139,6 +1240,7 @@ class HPWolfRayetStarModel : public StarModelBase
 {
 public:
 	using _Mybase = StarModelBase;
+	_STD string ModelName = "High-Precision Wolf-Rayet Star Model";
 
 	HPWolfRayetStarModel() : _Mybase("WN5h") {}
 	explicit HPWolfRayetStarModel(SPECSTR _Spec) : _Mybase(_Spec)
@@ -1151,6 +1253,8 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
@@ -1158,6 +1262,7 @@ public:
 		_Obj.SpecClass = _Par.spec();
 
 		// Locating params
+		_CSE_GEN_LOG("INFO", "Loading parameters...");
 		STPARS BaseParams;
 
 		auto SClass = _Par.spec().SClass();
@@ -1165,40 +1270,45 @@ public:
 		if (SType == -1)
 		{
 			SType = (float)_Eng.randint(_Par.param()[0][StarTableCoeffs::SpT], _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]);
+			_CSE_GEN_LOG("WARNING", "Sub-type is unknown, suggesting \"" + SPECSTR(SClass, SType).str() + "\" instead of \"" + _Par.spec().str() + "\"");
 		}
 		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
 		_GENERATOR_ASSERT(SType <= _Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT], "Sub-spectal type is too late for this main type.");
 
 		size_t i = 0;
 		while
-			(
-				i < _Par.tablesize() - 1 &&
-				!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
-				)
-		{
-			++i;
-		}
+		(
+			i < _Par.tablesize() - 1 &&
+			!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
+		){++i;}
 		BaseParams = _Par.param()[i];
+		_CSE_GEN_LOG("INFO", "DONE");
+
+		_CSE_GEN_LOG("INFO", "Generating data...");
 
 		// Masses
 		float64 BaseMass = BaseParams[StarTableCoeffs::MSun];
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of mass: {}", _STD make_format_args(BaseMass)));
 		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
 		_Obj.Mass = MassSol * BaseMass;
 
 		// Radius
 		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun];
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of radius: {}", _STD make_format_args(BaseRadius)));
 		_Obj.Dimensions = vec3(BaseRadius * 2. * RadSol);
 
 		// Temperature
 		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff];
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of temperature: {}", _STD make_format_args(BaseTEff)));
 		_Obj.Teff = BaseTEff;
 
 		// Luminosities
-
+		_CSE_GEN_LOG("INFO", "Calculating luminosities...");
 		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol];
 		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv];
 		_Obj.AbsMagn = BaseMBol - BaseBCorr;
 		_Obj.LumBol = ToLuminosity3(BaseMBol);
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
@@ -1263,6 +1373,7 @@ class LowMassSubgiantModel : public SubgiantModelBase
 public:
 	using _Mybase = SubgiantModelBase;
 	using mass_type = float64;
+	_STD string ModelName = "Low-mass Subgiant Model";
 
 	mass_type _Mass = NO_DATA_FLOAT_INF;
 	_STD vector<STPARS> MSPars; // Reference Lists
@@ -1306,18 +1417,23 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
 		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
+		_CSE_GEN_LOG("INFO", "Loading parameters...");
 		float64 BaseMass;
 		if (isinf(_Mass))
 		{
+			_CSE_GEN_LOG("WARNING", "Mass is unknown, generating...");
 			_Obj.Mass = _Eng.uniform(_Par.a() * MassSol, _Par.b() * MassSol);
 		}
 		else { _Obj.Mass = _Mass * MassSol; }
 		BaseMass = _Obj.Mass / MassSol;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base mass: {}", _STD make_format_args(BaseMass)));
 
 		/////////////////// Citation needed ///////////////////
 		//                                                   //
@@ -1325,6 +1441,7 @@ public:
 		//                                                   //
 		///////////////////////////////////////////////////////
 
+		_CSE_GEN_LOG("INFO", "Matching main-sequence parameters...");
 		using ranges_type = _GL gl_vec2<STPARS>;
 		_STD vector<ranges_type> Ranges;
 		for (size_t i = 0; i < MSPars.size() - 1; i++)
@@ -1337,30 +1454,37 @@ public:
 		}
 		ranges_type FinalRange = _Eng.choice<_STD vector<ranges_type>::iterator, ranges_type>(Ranges.begin(), Ranges.end());
 		float64 Offset = (BaseMass - FinalRange.x[StarTableCoeffs::MSun]) / (FinalRange.y[StarTableCoeffs::MSun] - FinalRange.x[StarTableCoeffs::MSun]);
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		// Generate base parameters as main-sequence stars
+		_CSE_GEN_LOG("INFO", "Generating data...");
 		// Radius
 		float64 BaseRadius = FinalRange.x[StarTableCoeffs::R_RSun] +
 			(FinalRange.y[StarTableCoeffs::R_RSun] - FinalRange.x[StarTableCoeffs::R_RSun]) * Offset;
-
+		_CSE_GEN_LOG("INFO", _STD vformat("Base radius: {}", _STD make_format_args(BaseRadius)));
 		// Temperature
 		float64 BaseTEff = FinalRange.x[StarTableCoeffs::Teff] +
 			(FinalRange.y[StarTableCoeffs::Teff] - FinalRange.x[StarTableCoeffs::Teff]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base temperature: {}", _STD make_format_args(BaseTEff)));
 
 		// As this takes place the fusing hydrogen shell gradually expands outward which 
 		// increases the size of the outer shell of the star up to the subgiant size 
 		// from two to ten times the original radius of the star when it was on the main sequence.
+		_CSE_GEN_LOG("INFO", "Calculating radius...");
 		_Obj.Dimensions = vec3(RadSol * 2. *
 			_Eng.uniform(BaseRadius * 2., BaseRadius * 10.));
 
 		// spectral class of the star to change very little in the lower end of this range of star mass.
 		// (But how much is unknown)
+		_CSE_GEN_LOG("INFO", "Calculating temperature...");
 		_Obj.Teff = BaseTEff - _Eng.uniform(10, 80);
 
 		// Giving Luminosity
+		_CSE_GEN_LOG("INFO", "Calculating luminosity...");
 		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
 
 		// Giving spectal type for this star
+		_CSE_GEN_LOG("INFO", "Matching spectal type...");
 		int _SType = SPECSTR::G;
 		size_t it = 0;
 		while (it < MSPars.size() - 1 && !(
@@ -1376,6 +1500,7 @@ public:
 		_Obj.SpecClass = SPECSTR(static_cast<SPECSTR::SpecClass>(_SType),
 			(SPECSTR::Type)MSPars[it][StarTableCoeffs::SpT], static_cast<SPECSTR::Type>(-1),
 			SPECSTR::IV);
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
@@ -1386,6 +1511,7 @@ class MidSizedSubgiantModel : public SubgiantModelBase
 public:
 	using _Mybase = SubgiantModelBase;
 	using mass_type = float64;
+	_STD string ModelName = "Mid-sized Subgiant Model";
 
 	mass_type _Mass = NO_DATA_FLOAT_INF;
 	_STD vector<STPARS> MSPars; // Reference Lists
@@ -1436,21 +1562,27 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
 		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
+		_CSE_GEN_LOG("INFO", "Loading parameters...");
 		float64 BaseMass;
 		if (isinf(_Mass))
 		{
+			_CSE_GEN_LOG("WARNING", "Mass is unknown, generating...");
 			_Obj.Mass = _Eng.uniform(_Par.a() * MassSol, _Par.b() * MassSol);
 		}
 		else { _Obj.Mass = _Mass * MassSol; }
 		BaseMass = _Obj.Mass / MassSol;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base mass: {}", _STD make_format_args(BaseMass)));
 
 		// This model is based on HR Diagram and stellar evolution.
 
+		_CSE_GEN_LOG("INFO", "Matching main-sequence parameters...");
 		STPARS _BsPars;
 		for (size_t i = 0; i < MSPars.size() - 1; i++)
 		{
@@ -1461,9 +1593,11 @@ public:
 				break;
 			}
 		}
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		const float64 TemperatureLowLimit = _Eng.normal(5000, 80);
 		const float64 MagnitudeLowLimit = _Eng.normal(2.4, 0.015);
+		_CSE_GEN_LOG("INFO", "Generating data...");
 
 		float64 BaseTEff;
 		if ((_BsPars[StarTableCoeffs::Teff] - TemperatureLowLimit) <= 50)
@@ -1478,7 +1612,9 @@ public:
 				(_Eng.exponential() / 5.);
 		}
 		_Obj.Teff = BaseTEff;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base temperature: {}", _STD make_format_args(BaseTEff)));
 
+		_CSE_GEN_LOG("INFO", "Matching spectal type...");
 		STPARS NextPars;
 		int _SType = SPECSTR::B;
 		size_t it = 0;
@@ -1496,7 +1632,9 @@ public:
 			(SPECSTR::Type)MSPars[it][StarTableCoeffs::SpT], static_cast<SPECSTR::Type>(-1),
 			SPECSTR::IV);
 		NextPars = MSPars[it];
+		_CSE_GEN_LOG("INFO", "DONE");
 
+		_CSE_GEN_LOG("INFO", "Calculating...");
 		float64 BaseMag = (NextPars[StarTableCoeffs::Mbol] - NextPars[StarTableCoeffs::BCv]) + (_Eng.normal(0, 0.003));
 		if (BaseMag - 1 > MagnitudeLowLimit)
 		{
@@ -1507,6 +1645,7 @@ public:
 		_Obj.AbsMagn = BaseMag;
 		_Obj.LumBol = ToLuminosity3(BaseMag + NextPars[StarTableCoeffs::BCv]);
 		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
@@ -1517,6 +1656,7 @@ class MassiveSubgiantModel : public SubgiantModelBase
 public:
 	using _Mybase = SubgiantModelBase;
 	using mass_type = float64;
+	_STD string ModelName = "Massive Subgiant Model";
 
 	mass_type _Mass = NO_DATA_FLOAT_INF;
 	_STD vector<STPARS> MSPars; // Reference Lists
@@ -1549,19 +1689,25 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
 		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 
+		_CSE_GEN_LOG("INFO", "Loading parameters...");
 		float64 BaseMass;
 		if (isinf(_Mass))
 		{
+			_CSE_GEN_LOG("WARNING", "Mass is unknown, generating...");
 			_Obj.Mass = _Eng.uniform(_Par.a() * MassSol, _Par.b() * MassSol);
 		}
 		else { _Obj.Mass = _Mass * MassSol; }
 		BaseMass = _Obj.Mass / MassSol;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base mass: {}", _STD make_format_args(BaseMass)));
 
+		_CSE_GEN_LOG("INFO", "Matching main-sequence parameters...");
 		STPARS _BsPars;
 		for (size_t i = 0; i < MSPars.size() - 1; i++)
 		{
@@ -1572,18 +1718,22 @@ public:
 				break;
 			}
 		}
+		_CSE_GEN_LOG("INFO", "DONE");
 
+		_CSE_GEN_LOG("INFO", "Matching spectal type...");
 		_Obj.SpecClass = SPECSTR(static_cast<SPECSTR::SpecClass>(1),
 			(SPECSTR::Type)_BsPars[StarTableCoeffs::SpT], static_cast<SPECSTR::Type>(-1),
 			SPECSTR::IV);
 		float64 BaseTEff = _BsPars[StarTableCoeffs::Teff] + _Eng.normal(0, _BsPars[StarTableCoeffs::Teff] * 0.05);
 		_Obj.Teff = BaseTEff;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base temperature: {}", _STD make_format_args(BaseTEff)));
 
+		_CSE_GEN_LOG("INFO", "Calculating...");
 		float64 BaseMag = (_BsPars[StarTableCoeffs::Mbol] - _BsPars[StarTableCoeffs::BCv]) + (_Eng.normal(0, 0.003));
-		std::cout << BaseMag << '\n';
 		_Obj.AbsMagn = BaseMag - 0.1;
 		_Obj.LumBol = ToLuminosity3(_Obj.AbsMagn + _BsPars[StarTableCoeffs::BCv]);
 		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
@@ -1597,6 +1747,7 @@ class BlueGiantModel
 {
 	public:
 	using result_type = Object;
+	_STD string ModelName = "Blue Giant Model";
 
 	struct param_type
 	{
@@ -1639,12 +1790,15 @@ class BlueGiantModel
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
 		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
 		_Obj.SpecClass = _Par.spec();
 
+		_CSE_GEN_LOG("INFO", "Loading Parameters...");
 		auto SClass = _Par.spec().SClass();
 		auto SType = _Par.spec().MinType();
 		float64 MaxTy = 10;
@@ -1660,9 +1814,12 @@ class BlueGiantModel
 		if (SType == -1)
 		{
 			SType = (float)_Eng.uniform(MaxTy, MinTy);
+			_CSE_GEN_LOG("WARNING", "Sub-type is unknown, suggesting \"" + SPECSTR(SClass, SType, -1, SPECSTR::III).str() + "\" instead of \"" + _Par.spec().str() + "\"");
 		}
 		_GENERATOR_ASSERT(SType >= MaxTy, "Sub-spectal type is too early for this main type.");
+		_CSE_GEN_LOG("INFO", "DONE");
 
+		_CSE_GEN_LOG("INFO", "Generating data...");
 		float64 BaseMass;
 		float64 BaseAbsMagn;
 		float64 Offset;
@@ -1694,8 +1851,11 @@ class BlueGiantModel
 		}
 
 		BaseMass = This[3] + (Next[3] - This[3]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base mass: {}", _STD make_format_args(BaseMass)));
 		BaseAbsMagn = This[2] + (Next[2] - This[2]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base absolute magnitude: {}", _STD make_format_args(BaseAbsMagn)));
 		
+		_CSE_GEN_LOG("INFO", "Matching temperature and bolometric correction...");
 		vec2 _BC_Teff;
 		GetGiantParams(SPECSTR(SClass, SType), &_BC_Teff);
 
@@ -1711,11 +1871,13 @@ class BlueGiantModel
 
 		BaseAbsMagn += _Eng.normal(0, 0.25);
 
+		_CSE_GEN_LOG("INFO", "Applyig...");
 		_Obj.Mass = BaseMass * MassSol;
 		_Obj.AbsMagn = BaseAbsMagn;
 		_Obj.Teff = _BC_Teff.y + _Eng.normal(0, 50);
 		_Obj.LumBol = ToLuminosity3(BaseAbsMagn + _BC_Teff.x);
 		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
@@ -1731,6 +1893,7 @@ class BrownDwarfModel : public StarModelBase
 {
 public:
 	using _Mybase = StarModelBase;
+	_STD string ModelName = "Brown Dwarf Model";
 
 	BrownDwarfModel() : _Mybase("L2.5V") {}
 	explicit BrownDwarfModel(SPECSTR _Spec) : _Mybase(_Spec)
@@ -1743,6 +1906,8 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} b", _STD make_format_args(_Eng.seed())));
@@ -1757,6 +1922,7 @@ public:
 		else { _NextTable = nullptr; }
 
 		// Locating params
+		_CSE_GEN_LOG("INFO", "Loading Parameters...");
 		STPARS BaseParams;
 		STPARS NextParams;
 		float64 Offset;
@@ -1766,17 +1932,16 @@ public:
 		if (SType == -1)
 		{
 			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
+			_CSE_GEN_LOG("WARNING", "Sub-type is unknown, suggesting \"" + SPECSTR(SClass, SType, -1, SPECSTR::V).str() + "\" instead of \"" + _Par.spec().str() + "\"");
 		}
 		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
 
 		size_t i = 0;
 		while
-			(
-				i < _Par.tablesize() - 1 &&
-				!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
-				) {
-			++i;
-		}
+		(
+			i < _Par.tablesize() - 1 &&
+			!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
+		){++i;}
 		BaseParams = _Par.param()[i];
 		if (i == _Par.tablesize() - 1 && _NextTable)
 		{
@@ -1790,31 +1955,38 @@ public:
 		}
 
 		Offset = (SType - BaseParams[StarTableCoeffs::SpT]) / (NextParams[StarTableCoeffs::SpT] - BaseParams[StarTableCoeffs::SpT]);
+		_CSE_GEN_LOG("INFO", "DONE");
+
+		_CSE_GEN_LOG("INFO", "Generating data...");
 
 		// Masses
 		float64 BaseMass = BaseParams[StarTableCoeffs::MSun] +
 			(NextParams[StarTableCoeffs::MSun] - BaseParams[StarTableCoeffs::MSun]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of mass: {}", _STD make_format_args(BaseMass)));
 		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
 		_Obj.Mass = MassSol * _Eng.normal(BaseMass, 0.005);
 
 		// Radius
 		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun] +
 			(NextParams[StarTableCoeffs::R_RSun] - BaseParams[StarTableCoeffs::R_RSun]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of radius: {}", _STD make_format_args(BaseRadius)));
 		_Obj.Dimensions = vec3(_Eng.normal(BaseRadius, 0.002) * 2. * RadSol);
 
 		// Temperature
 		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff] +
 			(NextParams[StarTableCoeffs::Teff] - BaseParams[StarTableCoeffs::Teff]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of temperature: {}", _STD make_format_args(BaseTEff)));
 		_Obj.Teff = BaseTEff;
 
 		// Luminosities
-
+		_CSE_GEN_LOG("INFO", "Calculating luminosities...");
 		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol] +
 			(NextParams[StarTableCoeffs::Mbol] - BaseParams[StarTableCoeffs::Mbol]) * Offset;
 		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv] +
 			(NextParams[StarTableCoeffs::BCv] - BaseParams[StarTableCoeffs::BCv]) * Offset;
 		if (!isinf(BaseBCorr) && !isnan(BaseBCorr)) { _Obj.AbsMagn = BaseMBol - BaseBCorr; }
 		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
@@ -1824,6 +1996,7 @@ class HPBrownDwarfModel : public StarModelBase
 {
 public:
 	using _Mybase = StarModelBase;
+	_STD string ModelName = "High-presision Brown Dwarf Model";
 
 	HPBrownDwarfModel() : _Mybase("L2.5V") {}
 	explicit HPBrownDwarfModel(SPECSTR _Spec) : _Mybase(_Spec)
@@ -1836,6 +2009,8 @@ public:
 	template <class _Engine> // Procedural star generator
 	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
 	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
 		result_type _Obj;
 		_Obj.Type = "Star";
 		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} b", _STD make_format_args(_Eng.seed())));
@@ -1850,6 +2025,7 @@ public:
 		else { _NextTable = nullptr; }
 
 		// Locating params
+		_CSE_GEN_LOG("INFO", "Loading Parameters...");
 		STPARS BaseParams;
 		STPARS NextParams;
 		float64 Offset;
@@ -1859,17 +2035,16 @@ public:
 		if (SType == -1)
 		{
 			SType = (float)_Eng.uniform(_Par.param()[0][StarTableCoeffs::SpT], lround(_Par.param()[_Par.tablesize() - 1][StarTableCoeffs::SpT]) + 0.9);
+			_CSE_GEN_LOG("WARNING", "Sub-type is unknown, suggesting \"" + SPECSTR(SClass, SType, -1, SPECSTR::V).str() + "\" instead of \"" + _Par.spec().str() + "\"");
 		}
 		_GENERATOR_ASSERT(SType >= _Par.param()[0][StarTableCoeffs::SpT], "Sub-spectal type is too early for this main type.");
 
 		size_t i = 0;
 		while
-			(
-				i < _Par.tablesize() - 1 &&
-				!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
-				) {
-			++i;
-		}
+		(
+			i < _Par.tablesize() - 1 &&
+			!(SType >= _Par.param()[i][StarTableCoeffs::SpT] && SType < _Par.param()[i + 1][StarTableCoeffs::SpT])
+		) {++i;}
 		BaseParams = _Par.param()[i];
 		if (i == _Par.tablesize() - 1 && _NextTable)
 		{
@@ -1883,35 +2058,44 @@ public:
 		}
 
 		Offset = (SType - BaseParams[StarTableCoeffs::SpT]) / (NextParams[StarTableCoeffs::SpT] - BaseParams[StarTableCoeffs::SpT]);
+		_CSE_GEN_LOG("INFO", "DONE");
+
+		_CSE_GEN_LOG("INFO", "Generating data...");
 
 		// Masses
 		float64 BaseMass = BaseParams[StarTableCoeffs::MSun] +
 			(NextParams[StarTableCoeffs::MSun] - BaseParams[StarTableCoeffs::MSun]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of mass: {}", _STD make_format_args(BaseMass)));
 		// The actual values for a star may vary by as much as 20-30% from the values listed in tables
 		_Obj.Mass = MassSol * BaseMass;
 
 		// Radius
 		float64 BaseRadius = BaseParams[StarTableCoeffs::R_RSun] +
 			(NextParams[StarTableCoeffs::R_RSun] - BaseParams[StarTableCoeffs::R_RSun]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of radius: {}", _STD make_format_args(BaseRadius)));
 		_Obj.Dimensions = vec3(BaseRadius * 2. * RadSol);
 
 		// Temperature
 		float64 BaseTEff = BaseParams[StarTableCoeffs::Teff] +
 			(NextParams[StarTableCoeffs::Teff] - BaseParams[StarTableCoeffs::Teff]) * Offset;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base value of temperature: {}", _STD make_format_args(BaseTEff)));
 		_Obj.Teff = BaseTEff;
 
 		// Luminosities
-
+		_CSE_GEN_LOG("INFO", "Calculating luminosities...");
 		float64 BaseMBol = BaseParams[StarTableCoeffs::Mbol] +
 			(NextParams[StarTableCoeffs::Mbol] - BaseParams[StarTableCoeffs::Mbol]) * Offset;
 		float64 BaseBCorr = BaseParams[StarTableCoeffs::BCv] +
 			(NextParams[StarTableCoeffs::BCv] - BaseParams[StarTableCoeffs::BCv]) * Offset;
 		if (!isinf(BaseBCorr) && !isnan(BaseBCorr)) { _Obj.AbsMagn = BaseMBol - BaseBCorr; }
 		_Obj.LumBol = ToLuminosity3(BaseMBol);
+		_CSE_GEN_LOG("INFO", "DONE");
 
 		return _Obj;
 	}
 };
+
+#undef _CSE_GEN_LOG
 
 _CSE_END
 

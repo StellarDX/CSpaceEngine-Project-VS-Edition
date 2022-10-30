@@ -2,6 +2,8 @@
 
 _CSE_BEGIN
 
+CSELog Log_Generator;
+
 SPECSTR _Random_Main_Sequence_types()
 {
 	LSTARCLS::SpecClass _Spec = static_cast<LSTARCLS::SpecClass>

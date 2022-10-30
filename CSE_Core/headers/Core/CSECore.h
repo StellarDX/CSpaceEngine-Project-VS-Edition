@@ -129,7 +129,7 @@ public:
 	// 0 - do not log
 	// 1 - log errors and warnings
 	// 2 - log everything
-	#define SysLogLevel        1
+	#define SysLogLevel        2
 
 	inline void Out(std::string Thread, std::string Type, std::string LStr, int Level, bool Catalog = false)
 	{
