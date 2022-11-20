@@ -1,4 +1,4 @@
-﻿# CSpaceEngine - A static library and toolbox for SpeceEngine
+﻿# CSpaceEngine - A static library and toolbox for SpaceEngine
 
 [中文](README_CN.md)
 
