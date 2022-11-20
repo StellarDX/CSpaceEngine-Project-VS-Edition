@@ -1,4 +1,6 @@
-﻿#include "../../headers/random/stars.h"
+﻿#include "Star_Models_Base.hpp"
+#include "Star_Models_Evolution.hpp"
+#include "Star_Models_Classification.hpp"
 
 _CSE_BEGIN
 

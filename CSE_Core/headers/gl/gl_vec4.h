@@ -3,6 +3,8 @@
 #ifndef __GLVECTOR4__
 #define __GLVECTOR4__
 
+#include <array>
+#include <vector>
 #include <ostream>
 #include "..\Core\CSECore.h"
 
@@ -102,6 +104,19 @@ public:
 	operator std::array<genType, 4>()
 	{
 		return std::array<genType, 4>(x, y, z, w);
+	}
+
+	constexpr explicit gl_vec4(std::vector<genType> _xyzw)
+	{
+		x = _xyzw[0];
+		y = _xyzw[1];
+		z = _xyzw[2];
+		w = _xyzw[3];
+	}
+
+	operator std::vector<genType>()
+	{
+		return std::vector<genType>({ x, y, z, w });
 	}
 };
 

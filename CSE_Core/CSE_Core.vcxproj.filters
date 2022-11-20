@@ -48,9 +48,6 @@
     <ClInclude Include="headers\Core\CelObject.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\math\AsMath.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\stream\scstream.h">
       <Filter>Header files</Filter>
     </ClInclude>
@@ -63,14 +60,8 @@
     <ClInclude Include="headers\lumine\SpTypes.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\math\Geometry.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\gl\matrix.h">
       <Filter>GLSL</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\math\Algorithms.h">
-      <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="headers\stream\iscstream.h">
       <Filter>Header files</Filter>
@@ -87,6 +78,30 @@
     <ClInclude Include="headers\random\planets.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="random\stars\Star_Models_Base.hpp">
+      <Filter>Random</Filter>
+    </ClInclude>
+    <ClInclude Include="random\stars\Star_Models_Classification.hpp">
+      <Filter>Random</Filter>
+    </ClInclude>
+    <ClInclude Include="random\stars\Star_Models_Evolution.hpp">
+      <Filter>Random</Filter>
+    </ClInclude>
+    <ClInclude Include="random\stars\Star_Models_Related.hpp">
+      <Filter>Random</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\math\CSEM_Func.h">
+      <Filter>Math Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\math\AsMath.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\math\CSEM_Algo.h">
+      <Filter>Math Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\math\CSEM_Geom.h">
+      <Filter>Math Functions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -99,37 +114,28 @@
     <None Include="headers\gl\gl_vec4.inl">
       <Filter>GLSL</Filter>
     </None>
-    <None Include="astromath\MathFuncs.Template.inl">
-      <Filter>Math Functions</Filter>
-    </None>
-    <None Include="astromath\MathFuncs.Complex.inl">
-      <Filter>Math Functions</Filter>
-    </None>
-    <None Include="astromath\Algorithms.Template.inl">
-      <Filter>Math Functions</Filter>
-    </None>
-    <None Include="astromath\VecGeom.Template.inl">
-      <Filter>Math Functions</Filter>
-    </None>
     <None Include="headers\gl\matrix.inl">
       <Filter>GLSL</Filter>
     </None>
     <None Include="headers\gl\vector.inl">
       <Filter>GLSL</Filter>
     </None>
+    <None Include="math\Algorithms.Template.inl">
+      <Filter>Math Functions</Filter>
+    </None>
+    <None Include="math\MathFuncs.Template.inl">
+      <Filter>Math Functions</Filter>
+    </None>
+    <None Include="math\VecGeom.Template.inl">
+      <Filter>Math Functions</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="datetime\Date_Time.cpp">
       <Filter>DateTime</Filter>
     </ClCompile>
-    <ClCompile Include="astromath\MathFuncs.cc">
-      <Filter>Math Functions</Filter>
-    </ClCompile>
     <ClCompile Include="lumine\Lumine.cc">
       <Filter>Lumine</Filter>
-    </ClCompile>
-    <ClCompile Include="astromath\Algorithms.cc">
-      <Filter>Math Functions</Filter>
     </ClCompile>
     <ClCompile Include="lumine\SpTypes.cc">
       <Filter>Lumine</Filter>
@@ -146,14 +152,35 @@
     <ClCompile Include="random\Random.cc">
       <Filter>Random</Filter>
     </ClCompile>
-    <ClCompile Include="random\stars\Star_Tables.cc">
+    <ClCompile Include="random\stars\Star_Tables.cpp">
       <Filter>Random</Filter>
     </ClCompile>
-    <ClCompile Include="random\stars\Star_Models_Base.cc">
+    <ClCompile Include="random\stars\Star_Models_Base.cpp">
       <Filter>Random</Filter>
     </ClCompile>
     <ClCompile Include="random\planets\Orbits.cc">
       <Filter>Random</Filter>
+    </ClCompile>
+    <ClCompile Include="math\CV_EXP.cc">
+      <Filter>Math Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="math\Algorithms.cc">
+      <Filter>Math Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="math\CV_LOG.cc">
+      <Filter>Math Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="math\IEEE754_POW.cc">
+      <Filter>Math Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="math\CV_SINCOS.cc">
+      <Filter>Math Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="math\_ATAN.cc">
+      <Filter>Math Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="math\SOLVEPOLY.cc">
+      <Filter>Math Functions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

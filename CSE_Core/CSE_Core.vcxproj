@@ -30,15 +30,20 @@
     <ClInclude Include="headers\gl\matrix.h" />
     <ClInclude Include="headers\lumine\Lumine.h" />
     <ClInclude Include="headers\lumine\SpTypes.h" />
-    <ClInclude Include="headers\math\Algorithms.h" />
     <ClInclude Include="headers\math\AsMath.h" />
-    <ClInclude Include="headers\math\Geometry.h" />
+    <ClInclude Include="headers\math\CSEM_Algo.h" />
+    <ClInclude Include="headers\math\CSEM_Func.h" />
+    <ClInclude Include="headers\math\CSEM_Geom.h" />
     <ClInclude Include="headers\random\planets.h" />
     <ClInclude Include="headers\random\random.h" />
     <ClInclude Include="headers\random\stars.h" />
     <ClInclude Include="headers\stream\iscstream.h" />
     <ClInclude Include="headers\stream\oscstream.h" />
     <ClInclude Include="headers\stream\scstream.h" />
+    <ClInclude Include="random\stars\Star_Models_Classification.hpp" />
+    <ClInclude Include="random\stars\Star_Models_Evolution.hpp" />
+    <ClInclude Include="random\stars\Star_Models_Base.hpp" />
+    <ClInclude Include="random\stars\Star_Models_Related.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\gl\gl_vec2.h">
@@ -46,30 +51,34 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="astromath\Algorithms.Template.inl" />
-    <None Include="astromath\MathFuncs.Complex.inl" />
-    <None Include="astromath\MathFuncs.Template.inl" />
-    <None Include="astromath\VecGeom.Template.inl" />
     <None Include="cpp.hint" />
     <None Include="headers\gl\gl_vec2.inl" />
     <None Include="headers\gl\gl_vec3.inl" />
     <None Include="headers\gl\gl_vec4.inl" />
     <None Include="headers\gl\matrix.inl" />
     <None Include="headers\gl\vector.inl" />
+    <None Include="math\Algorithms.Template.inl" />
+    <None Include="math\MathFuncs.Template.inl" />
+    <None Include="math\VecGeom.Template.inl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="astromath\Algorithms.cc" />
-    <ClCompile Include="astromath\MathFuncs.cc" />
     <ClCompile Include="datetime\Date_Time.cpp" />
     <ClCompile Include="lumine\Lumine.cc" />
     <ClCompile Include="lumine\SpTypes.cc" />
+    <ClCompile Include="math\Algorithms.cc" />
+    <ClCompile Include="math\CV_EXP.cc" />
+    <ClCompile Include="math\CV_LOG.cc" />
+    <ClCompile Include="math\CV_SINCOS.cc" />
+    <ClCompile Include="math\IEEE754_POW.cc" />
+    <ClCompile Include="math\SOLVEPOLY.cc" />
     <ClCompile Include="random\planets\Orbits.cc" />
     <ClCompile Include="random\Random.cc" />
-    <ClCompile Include="random\stars\Star_Tables.cc" />
-    <ClCompile Include="random\stars\Star_Models_Base.cc" />
+    <ClCompile Include="random\stars\Star_Tables.cpp" />
+    <ClCompile Include="random\stars\Star_Models_Base.cpp" />
     <ClCompile Include="scstream\iscstream.cpp" />
     <ClCompile Include="scstream\object.cc" />
     <ClCompile Include="scstream\oscstream.cc" />
+    <ClCompile Include="math\_ATAN.cc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

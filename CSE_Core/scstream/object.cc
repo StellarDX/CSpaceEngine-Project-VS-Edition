@@ -850,7 +850,7 @@ void AddEmptyTag(_SC table* _Table)
 void AddKeyValue(_SC table* _Table, string _Key, float64 _Value, _SC object_ostream::fmtflags _Fl, streamsize _Preci)
 {
 	Log_OS.Out("OSCStream", "INFO", "[Table] Adding Key : " + _Key, OLogLevel, true);
-	if (!_STD isinf(_Value))
+	if (!isinf(_Value))
 	{
 		_SC table::KeyValue _KV;
 		_KV.Key = _Key;

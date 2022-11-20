@@ -38,6 +38,13 @@
 #define COMPILER_VERSION std::string("GPP " + std::to_string(__GNUC__) + "." + std::to_string(__GNUC_MINOR__) + "." + std::to_string(__GNUC_PATCHLEVEL__))
 #endif
 
+#pragma pack(push, _CRT_PACKING)
+#pragma warning(push, _STL_WARNING_LEVEL)
+#pragma warning(disable : _STL_DISABLED_WARNINGS)
+_STL_DISABLE_CLANG_WARNINGS
+#pragma push_macro("new")
+#undef new
+
 //#define RC_INVOKED
 //#define NOWINRES
 #define NOMINMAX
@@ -83,15 +90,12 @@ using lhalf              = double; // 64-bit Medium precision float, equal to fl
 using lfloat             = long double; // 96-bit High precision float
 */
 template<typename genTypeA = uint64, typename genTypeB = float64>
-inline constexpr genTypeB wrtval(genTypeA Value, uint64 Bits = sizeof(genTypeA))
+inline constexpr genTypeB wrtval(genTypeA Value)
 {
-	if (Bits > sizeof(genTypeB))
-	{
-		throw std::runtime_error("Bytes of target is not enough.");
-	}
-	genTypeB Dst;
-	memcpy(&Dst, &Value, Bits);
-	return Dst;
+	union _Buf 
+	{genTypeA Src; genTypeB Dst;} _Buffer;
+	_Buffer.Src = Value;
+	return _Buffer.Dst;
 }
 
 #define NO_DATA_FLOAT_INF wrtval(POS_INF_DOUBLE)
@@ -180,5 +184,10 @@ public:
 		else {throw except; exit(-1);}                               \
 
 _CSE_END
+
+#pragma pop_macro("new")
+_STL_RESTORE_CLANG_WARNINGS
+#pragma warning(pop)
+#pragma pack(pop)
 
 #endif

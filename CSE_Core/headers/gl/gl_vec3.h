@@ -3,6 +3,8 @@
 #ifndef __GLVECTOR3__
 #define __GLVECTOR3__
 
+#include <array>
+#include <vector>
 #include <ostream>
 #include "..\Core\CSECore.h"
 
@@ -70,6 +72,18 @@ public:
 	operator std::array<genType, 3>()
 	{
 		return std::array<genType, 3>(x, y, z);
+	}
+
+	constexpr explicit gl_vec3(std::vector<genType> _xyz)
+	{
+		x = _xyz[0];
+		y = _xyz[1];
+		z = _xyz[2];
+	}
+
+	operator std::vector<genType>()
+	{
+		return std::vector<genType>({ x, y, z });
 	}
 };
 

@@ -70,7 +70,7 @@ os.Write();
 | MidSizedSubgiantModel | 亚巨星(0.9-8太阳质量) | 低 | 质量 |
 | MassiveSubgiantModel | 大质量亚巨星(8-12太阳质量) | 低 | 质量 |
 | BlueGiantModel | 蓝巨星 | 中 | 光谱型 |
-| SuperGiantModel(规划) | 超巨星 | ？ | ？ |
+| SuperGiantModel | 超巨星 | 中 | 光谱型 |
 | HyperGiantModel(规划) | 特超巨星 | ？ | ？ |
 | CarbonStarModel(规划) | 碳星，S型恒星 | ？ | ？ |
 | WhiteDwarfModel(规划) | 白矮星 | ？ | ？ |

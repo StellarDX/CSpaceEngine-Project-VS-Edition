@@ -30,27 +30,35 @@ _CSE_BEGIN
 /// </summary>
 /// <param name="_Primary">Primary Object</param>
 /// <param name="_Companion">Secondary Object</param>
-/// <param name="_RefSystem">Reference System</param>
-/// <param name="_Epoch">Epoch, default is 2451545 (2000.01.01)</param>
-/// <param name="_Separation">Distance between two objects. Generate randomly if zero or ignored</param>
-/// <param name="_PositionAngle">Position angle at epoch</param>
+/// <param name="_DefaultData">Default data</param>
 void
-__CRTDECL MakeOrbit(Object& _Primary, Object& _Companion,
-	std::string _RefSystem = "Extrasolar", float64 _Epoch = 2451545, float64 _Separation = 0, float64 _PositionAngle = 0);
+__CRTDECL MakeOrbit
+(
+	Object& _Primary, Object& _Companion,
+	OrbitParam _DefaultData = 
+	{
+		.RefPlane = "Extrasolar",
+		.Epoch = 2451545
+	}
+);
 
 /// <summary>
 /// Making binary orbit for two objects.
 /// </summary>
 /// <param name="_Primary">Primary Object</param>
 /// <param name="_Companion">Secondary Object</param>
-/// <param name="_RefSystem">Reference System</param>
-/// <param name="_Epoch">Epoch, default is 2451545 (2000.01.01)</param>
-/// <param name="_Separation">Distance between two objects. Generate randomly if zero or ignored</param>
-/// <param name="_PositionAngle">Position angle at epoch</param>
-/// <returns></returns>
+/// <param name="_DefaultData">Default data</param>
+/// <returns>The barycenter of system</returns>
 _Check_return_ Object
-__CRTDECL MakeBinary(Object& _Primary, Object& _Companion, 
-	std::string _RefSystem = "Extrasolar", float64 _Epoch = 2451545, float64 _Separation = 0, float64 _PositionAngle = 0);
+__CRTDECL MakeBinary
+(
+	Object& _Primary, Object& _Companion, 
+	OrbitParam _DefaultData =
+	{
+		.RefPlane = "Extrasolar",
+		.Epoch = 2451545
+	}
+);
 
 _CSE_END
 

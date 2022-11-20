@@ -4,6 +4,7 @@
 #define __GLVECTOR2__
 
 #include <array>
+#include <vector>
 #include <ostream>
 #include "..\Core\CSECore.h"
 
@@ -57,6 +58,17 @@ public:
 	operator std::array<genType, 2>()
 	{
 		return std::array<genType, 2>(x, y);
+	}
+
+	constexpr explicit gl_vec2(std::vector<genType> _xy)
+	{
+		x = _xy[0];
+		y = _xy[1];
+	}
+
+	operator std::vector<genType>()
+	{
+		return std::vector<genType>({ x, y });
 	}
 };
 

@@ -526,16 +526,4 @@ basic_matrix<_Ty, _Column, _Line> operator/(const basic_matrix<_Ty, _Size, _Line
 
 _GL_END
 
-template<typename _Ty, size_t _Size>
-_GL basic_matrix<_Ty, _Size, _Size> pow(_GL basic_matrix<_Ty, _Size, _Size> _A, uint64 _Power)
-{
-	_STL_VERIFY(_Power > 0, "matrix power can't be zero.");
-	_GL basic_matrix<_Ty, _Size, _Size> m0;
-	for (size_t i = 0; i < _Power; i++)
-	{
-		m0 = _A * _A;
-	}
-	return m0;
-}
-
 _CSE_END
