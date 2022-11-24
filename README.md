@@ -54,7 +54,7 @@ Object Obj = gen();
  * - Wolf-Rayet stars
  * - Subgiants
  * - Blue Giants
- * - Supergiants
+ * - Supergiants and hypergiants
  * - Substellar Objects
 
 ## TODO

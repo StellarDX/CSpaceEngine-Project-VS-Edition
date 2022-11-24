@@ -955,7 +955,7 @@ public:
 		// 8 - 15 MSun : B -> RSG -> SN II-P
 		// 15 - 20 MSun : O -> RSG -> YHG -> BSG(Blue-loop) -> YHG -> RSG -> SN II-L/IIb
 		// 20 - 45 MSun : O -> RSG -> WNE -> WC -> SN Ib
-		// 45 - 60 MSun : O -> WNh -> LBV/WNE -> WO -> SN Ib/Ic (Stars massive than 45 MSun will not produce red-supergiants)
+		// 45 - 60 MSun : O -> WNh -> LBV/WNE -> WO -> SN Ib/Ic
 		// 60 - 120 MSun : O -> Of -> WNh -> LBV -> WNL -> SN IIn
 		// 120 - 140 MSun : WNh(O0-O1 type stars) -> WN -> WC -> WO -> SN Ic
 		// 140 - 250 MSun : WNh(O0-O1 type stars) -> WNE -> WO -> SN Ic
@@ -970,21 +970,37 @@ public:
 		_Obj.SpecClass = _Par.spec();
 
 		_CSE_GEN_LOG("INFO", "Loading Parameters...");
+		float64 MinTy = _Par.spec().MinType();
+		if (MinTy == -1)
+		{
+			size_t MaxIndex;
+			if (_Par.spec().SClass() == 6) { MaxIndex = _Par.param().size() - 1; }
+			else { MaxIndex = _Par.param().size() - 2; }
+			MinTy = _Eng.uniform(_Par.param()[0][1], _Par.param()[MaxIndex][1]);
+			_CSE_GEN_LOG("WARNING", std::format("suggesting spectral class {} instead of {}", SPECSTR(_Par.spec().SClass(), (float)MinTy, -1, _Par.spec().MaxLClass()).str(), _Obj.SpecClass));
+		}
+
 		_STD array<float64, 8> BaseParams;
 		_STD array<float64, 8> NextParams;
 		for (size_t i = 0; i < _Par.param().size() - 1; i++)
 		{
-			if (_Par.spec().MinType() >= _Par.param()[i][1])
+			if (MinTy >= _Par.param()[i][1])
 			{
 				BaseParams = _Par.param()[i];
 				NextParams = _Par.param()[i + 1];
 			}
 		}
-		float64 Offset = (NextParams[1] - _Par.spec().MinType()) / (NextParams[1] - BaseParams[1]);
+		float64 Offset = (NextParams[1] - MinTy) / (NextParams[1] - BaseParams[1]);
 
 		_CSE_GEN_LOG("INFO", "Generating data...");
 
-		float64 BaseMass = BaseParams[7] + (BaseParams[7] - NextParams[7]) * Offset + 75 * (_Eng.exponential() / 7.5);
+		float64 BaseMass;
+		if (_Par.spec().SClass() > SPECSTR::G)
+		{
+			BaseMass = BaseParams[7] + (BaseParams[7] - NextParams[7]) * Offset;
+			BaseMass += (45 - BaseMass) * (_Eng.exponential() / 7.5); // Stars massive than 45 MSun will not produce red-supergiants
+		}
+		else { BaseMass = BaseParams[7] + (BaseParams[7] - NextParams[7]) * Offset + 75 * (_Eng.exponential() / 7.5); }
 		_CSE_GEN_LOG("INFO", _STD vformat("Base mass: {}", _STD make_format_args(BaseParams[7])));
 		_Obj.Mass = BaseMass * MassSol;
 
@@ -1009,6 +1025,118 @@ public:
 		}
 		_CSE_GEN_LOG("INFO", _STD vformat("Base magnitude: {}", _STD make_format_args(BaseMag)));
 		BaseMag += _Eng.uniform(0, 1);
+		_Obj.AbsMagn = BaseMag;
+		_Obj.LumBol = ToLuminosity3(BaseMag + BaseParams[3]);
+		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);
+		if (_Obj.Radius() / RadSol > 2500)
+		{
+			_Obj.Dimensions = vec3(_Eng.normal(2500, 50) * RadSol * 2.);
+		}
+		_CSE_GEN_LOG("INFO", "DONE");
+
+		return _Obj;
+	}
+};
+
+Object RandomBlueSupergiant();
+
+Object RandomRedSupergiant();
+
+Object RandomYellowSupergiant();
+
+class HypergiantModel
+{
+public:
+	using result_type = Object;
+	_STD string ModelName = "Hypergiant Model";
+
+	struct param_type
+	{
+		SPECSTR _Spectum;
+		_STD vector<_STD array<float64, 8>> _TableParams;
+
+		void _Init(SPECSTR _Spec)
+		{
+			_Spectum = _Spec;
+			_TableParams = GetSGTable(_Spec.SClass());
+		}
+
+		param_type()
+		{
+			_Init("A0 0");
+		}
+
+		param_type(SPECSTR _Spec)
+		{
+			_Init(_Spec);
+		}
+
+		SPECSTR spec()const { return _Spectum; }
+		const _STD vector<_STD array<float64, 8>> param()const { return _TableParams; }
+	}_Par;
+
+	HypergiantModel() : _Par() {}
+
+	explicit HypergiantModel(SPECSTR _Spec) : _Par(_Spec)
+	{
+		_GENERATOR_ASSERT(IsHyperGiant(_Spec), _Spec.str() + " is not a hypergiant spectum.");
+	}
+
+	explicit HypergiantModel(param_type _Par2) : _Par(_Par2) {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
+		_Obj.SpecClass = _Par.spec();
+
+		_CSE_GEN_LOG("INFO", "Loading Parameters...");
+		float64 MinTy = _Par.spec().MinType();
+		if (MinTy == -1)
+		{
+			size_t MaxIndex;
+			if (_Par.spec().SClass() == 6) { MaxIndex = _Par.param().size() - 1; }
+			else { MaxIndex = _Par.param().size() - 2; }
+			MinTy = _Eng.uniform(_Par.param()[0][1], _Par.param()[MaxIndex][1]);
+			_CSE_GEN_LOG("WARNING", std::format("suggesting spectral class {} instead of {}", SPECSTR(_Par.spec().SClass(), (float)MinTy, -1, _Par.spec().MaxLClass()).str(), _Obj.SpecClass));
+		}
+
+		_STD array<float64, 8> BaseParams;
+		_STD array<float64, 8> NextParams;
+		for (size_t i = 0; i < _Par.param().size() - 1; i++)
+		{
+			if (MinTy >= _Par.param()[i][1])
+			{
+				BaseParams = _Par.param()[i];
+				NextParams = _Par.param()[i + 1];
+			}
+		}
+		float64 Offset = (NextParams[1] - MinTy) / (NextParams[1] - BaseParams[1]);
+
+		_CSE_GEN_LOG("INFO", "Generating data...");
+
+		float64 BaseMass;
+		if (_Par.spec().SClass() > SPECSTR::G)
+		{
+			BaseMass = BaseParams[7] + (BaseParams[7] - NextParams[7]) * Offset;
+			BaseMass += (45 - BaseMass) * (_Eng.exponential() / 7.5); // Stars massive than 45 MSun will not produce red-supergiants
+		}
+		else { BaseMass = BaseParams[7] + (BaseParams[7] - NextParams[7]) * Offset + 75 * (_Eng.exponential() / 7.5); }
+		_CSE_GEN_LOG("INFO", _STD vformat("Base mass: {}", _STD make_format_args(BaseParams[7])));
+		_Obj.Mass = BaseMass * MassSol;
+
+		float64 BaseTeff = BaseParams[2] + (BaseParams[2] - NextParams[2]) * Offset + _Eng.normal(0, 160);
+		_CSE_GEN_LOG("INFO", _STD vformat("Base temperature: {}", _STD make_format_args(BaseParams[2])));
+		_Obj.Teff = BaseTeff;
+
+		float64 BaseMag = random.uniform(-10, -7);
+		_CSE_GEN_LOG("INFO", _STD vformat("Base magnitude: {}", _STD make_format_args(BaseMag)));
+		
 		_Obj.AbsMagn = BaseMag;
 		_Obj.LumBol = ToLuminosity3(BaseMag + BaseParams[3]);
 		_Obj.Dimensions = vec3(sqrt(_Obj.LumBol / (4. * CSE_PI * StBConstant * pow(_Obj.Teff, 4.))) * 2.);

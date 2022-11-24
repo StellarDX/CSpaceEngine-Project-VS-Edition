@@ -345,7 +345,7 @@ _CONSTEXPR20 void spectum::SingleSpectumParse(std::string _Str, SpecClass* _Cls,
 		}
 	}
 
-	SkipWhiteSpace(it, end);
+	//SkipWhiteSpace(it, end);
 	SP_CHECK_OUT_OF_RANGE
 
 	_STD string _NBuf;
@@ -433,6 +433,12 @@ _CONSTEXPR20 void spectum::SingleSpectumParse(std::string _Str, SpecClass* _Cls,
 		case 'V':
 			if (_Str.substr(it, 2) == "VI") { *_LumMax = sd; it += 2; }
 			else { *_LumMax = V; ++it; }
+			break;
+
+		case '0':
+			*_LumMax = I0;
+			++it;
+			break;
 
 		default:
 			break;

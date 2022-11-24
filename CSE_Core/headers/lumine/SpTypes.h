@@ -65,7 +65,7 @@ public:
 
 	_STD array<_STD string, 10> _LumClassStrings =
 	{
-		"0", "Ia", "Iab", "Ib", "II", "III", "IV", "V", "VI", "WD"
+		"Ia+", "Ia", "Iab", "Ib", "II", "III", "IV", "V", "VI", "WD"
 	};
 
 	using ExtData = _STD string;
