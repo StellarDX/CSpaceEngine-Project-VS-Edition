@@ -55,7 +55,13 @@ Object Obj = gen();
  * - Subgiants
  * - Blue Giants
  * - Supergiants and hypergiants
+ * - Carbon Stars
  * - Substellar Objects
+
+## Compile and Install
+Open the solution file and turn to the "ALL_BUILD" under "Targets", Run the project to complie.
+The compiled libraries are under the "Libraries" folder.
+If you want to merge all the module libraries into one library, Run "INSTALL" project.
 
 ## TODO
  * Procedural planet generator

@@ -72,7 +72,7 @@ os.Write();
 | BlueGiantModel | 蓝巨星 | 中 | 光谱型 |
 | SuperGiantModel | 超巨星 | 中 | 光谱型 |
 | HyperGiantModel | 特超巨星 | 中 | 光谱型 |
-| CarbonStarModel(规划) | 碳星，S型恒星 | ？ | ？ |
+| CarbonStarModel(规划) | 碳星，S型恒星 | 中 | 光谱型 |
 | WhiteDwarfModel(规划) | 白矮星 | ？ | ？ |
 | NeutronStarModel(规划) | 中子星 | ？ | ？ |
 | BlackHoleModel(规划) | 黑洞 | ？ | ？ |
@@ -97,6 +97,18 @@ Object RandomMainSequenceStar();
 | K | 0.9208187540 |
 | M | 0.1191864077 |
 
+```
+Object RandomOBStar();
+```
+由于随机主序星生成OB型恒星的概率极低，所以添加这个函数，必出OB恒星
+
+```
+Object RandomBlueSupergiant();
+Object RandomRedSupergiant();
+Object RandomYellowSupergiant();
+```
+随机生成对应分类的超巨星
+
  - 代码示例：
 ```generating
 _CSE_Random_Engine<mt19937_64> Engine;
@@ -106,6 +118,9 @@ Object Obj = gen();
 ```
 
 _天动万象，山海化形。荒地生星，璨若烈阳。_
+
+## 编译和安装
+打开工程以后在Target分类下找到ALL_BUILD项目，右键生成以编译。编译以后可以在Libraries目录下找到编译好的库。如果要把所有的库合并起来，找到INSTALL项目，生成即可。
 
 ## 遇到问题或想要新功能？
  - 如果发现无法解决的问题或者bug，在issues告诉我。
