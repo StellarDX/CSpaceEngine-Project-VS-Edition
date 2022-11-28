@@ -365,3 +365,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Modules/Core/Tests/Tests_CVMathFuncs/CSE_Tests_MathFuncs.dir
+/Modules/Core/Tests/Tests_GLTypes/CSE_Tests_GLTypes.dir
+/Modules/Core/Tests/Tests_DateTime/CSE_Tests_DateTime.dir
+/Modules/Lumine/Tests/Tests_SpType/CSE_Tests_SpType.dir
+/Modules/SCStream/Tests/Tests_Stream/CSE_Tests_Stream.dir
+/Modules/Stars/Tests/Tests_StarModels/CSE_Tests_StarModels.dir

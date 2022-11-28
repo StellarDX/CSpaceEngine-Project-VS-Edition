@@ -1,0 +1,664 @@
+// Star solver log level:
+// 0 - do not log
+// 1 - log errors and warnings only
+// 2 - log everything
+LogLevel    2
+
+Star	"Menu Star/Menu System"
+{
+	ParentBody "Menu Star"
+	Class "G2V"
+	RadSol 0.90412
+  Teff   5860
+	Hidden true
+}
+
+Barycenter	"Mini-Sky system"
+{
+	ParentBody "Mini-Sky system"
+}
+
+Planet	"Menu Planet 1"
+{
+	ParentBody     "Menu Star"
+	Class          "Jupiter"
+	Hidden          true
+
+	Mass            392.42
+	Radius          73894
+
+	Oblateness      (0.000001, 0.082977, 0.0)
+	RotationPeriod  7.4516
+	RotationOffset  250
+	Obliquity       107.18
+	EqAscendNode    162.14
+
+	AlbedoBond      0.3
+	AlbedoGeom      0.36
+	Brightness      1.5
+	BrightnessReal  1.5
+
+	Surface
+	{
+		SurfStyle       0.16031
+		Randomize      (0.677, -0.965, -0.808)
+		tropicLatitude  0.38408
+		stripeZones     2.9156
+		stripeFluct     0.44312
+		stripeTwist     8.3928
+		cycloneMagn     10.137
+		cycloneFreq     0.56695
+		cycloneDensity  0.36636
+		cycloneOctaves  5
+		ModulateBright  0
+	}
+
+	Clouds
+	{
+		Height          31.992
+		Velocity        1138.8
+		BumpHeight      20.284
+		BumpOffset      0.01
+		DayAmbient      0.07
+		RingsWinter     0.83728
+		ModulateBright  1
+		mainFreq        0.84143
+		mainOctaves     12
+		Coverage        0.40727
+		stripeZones     2.9156
+		stripeFluct     0.44312
+		stripeTwist     8.3928
+	}
+
+	Atmosphere
+	{
+		Model          "Neptune"
+		Height          850
+		Density         1000
+		Pressure        1e+006
+		Bright          10
+		Opacity         1
+		SkyLight        1
+		Hue             0.027
+		Saturation      1.0
+	}
+
+	Aurora
+	{
+		Height         2284.4
+		NorthLat       84.268
+		NorthLon       -137.53
+		NorthRadius    37311
+		NorthWidth     10627
+		NorthRings     2
+		NorthBright    1
+		NorthFlashFreq 50
+		NorthMoveSpeed 2
+		NorthParticles 1000
+		SouthLat       -84.627
+		SouthLon       37.366
+		SouthRadius    38076
+		SouthWidth     8708.6
+		SouthRings     2
+		SouthBright    1
+		SouthFlashFreq 50
+		SouthMoveSpeed 2
+		SouthParticles 2000
+		TopColor    (1.000 1.000 1.000)
+		BottomColor (1.000 0.000 0.500)
+	}
+
+	Rings
+	{
+		InnerRadius     1.1774e+005
+		OuterRadius     3.9485e+005
+		EdgeRadius      1.3547e+005
+		MeanRadius      1.2364e+005
+		ChartRadius     1.3547e+005
+		RotationPeriod  6.2864
+		FrontBright     5
+		BackBright      2.5
+		Density         2
+		Opacity         1
+		Brightness      4
+		frequency       569.8
+		densityScale    2.0611
+		densityOffset   -1.9084
+		densityPower    0.28709
+		colorContrast   0
+		FrontColor      (0.700 0.700 0.700)
+		BackThickColor  (0.800 0.600 0.400)
+		BackIceColor    (0.300 0.700 1.000)
+		BackDustColor   (1.000 0.980 0.880)
+	}
+
+	NoCometTail     true
+
+	Orbit
+	{
+		RefPlane        "Extrasolar"
+		Period          2.95575046
+		SemiMajorAxis   1.67149603
+		Eccentricity    0.0145624766
+		Inclination     105.5
+		AscendingNode   162.137405
+		ArgOfPericenter 250.076336
+		MeanAnomaly     0
+	}
+}
+/*
+Moon	"Menu Moon 1.1"
+{
+	ParentBody     "Menu Planet 1"
+	Class          "Terra"
+	Hidden          true
+
+	Mass            0.02749
+	Radius          2130.2
+
+	TidalLocked     true
+
+	// Hack: make the moon glowing hot despite on actual tidal heating,
+	// and make it not emit any thermal light
+	EndogenousHeating   1500
+	ThermalLuminosity      0
+	ThermalLuminosityBol   0
+
+	AlbedoBond      0.07
+	AlbedoGeom      0.36
+	Brightness      1
+	BrightnessReal  1
+	Luminosity      0
+
+	Surface
+	{
+		SurfStyle       0.84672
+		Randomize      (-0.598, 0.262, -0.730)
+		colorDistMagn   0.069735
+		colorDistFreq   79.245
+		detailScale     2048
+		drivenDarkening 0
+		seaLevel        0.15146
+		snowLevel       1
+		tropicLatitude  0.4037
+		icecapLatitude  1
+		icecapHeight    0.1642
+		climatePole     0.4375
+		climateTropic   0.3125
+		climateEquator  0.6875
+		climateDesertMin 0
+		climateDesertMax 0
+		climateForestMin 0
+		climateForestMax 0
+		climateGrassMin  0
+		climateGrassMax  0
+		heightTempGrad  0.625
+		tropicWidth     0.07
+		mainFreq        1.6817
+		venusFreq       0.55174
+		venusMagn       0
+		mareFreq        0.001
+		mareDensity     0.14939
+		terraceProb     0.12655
+		erosion         0
+		montesMagn      0
+		montesFreq      46.239
+		montesSpiky     0.80015
+		montesFraction  0.87947
+		dunesMagn       0
+		dunesFreq       100
+		dunesFraction   0.13918
+		hillsMagn       0
+		hillsFreq       71.933
+		hillsFraction   0.11843
+		hills2Fraction  0
+		riversMagn      0
+		riversFreq      3.3045
+		riversSin       5.4685
+		riftsMagn       0
+		riftsFreq       1.8548
+		riftsSin        7.0993
+		canyonsMagn     0
+		canyonsFreq     0.22437
+		canyonsFraction 0.66058
+		cracksMagn      0
+		cracksFreq      0.42493
+		cracksOctaves   0
+		craterMagn      0
+		craterFreq      1.5673
+		craterDensity   0.4931
+		craterOctaves   6
+		craterRayedFactor 0.065915
+		volcanoMagn     0.19847
+		volcanoFreq     1.2672
+		volcanoDensity  0.67176
+		volcanoOctaves  3
+		volcanoActivity 0.73008
+		volcanoFlows    0.22588
+		volcanoRadius   0.16468
+		volcanoTemp     1328.2
+		lavaCoverTidal  0.28244
+		lavaCoverSun    0
+		lavaCoverYoung  0
+		stripeZones     0
+		stripeFluct     0
+		stripeTwist     0
+		cycloneMagn     0
+		cycloneFreq     0
+		cycloneDensity  0
+		cycloneOctaves  0
+		BumpHeight      20
+		SpecBrightWater 0
+		SpecBrightIce   0.03
+		SpecPowerWater  55
+		SpecPowerIce    180
+		SpecularScale   1
+		Hapke           1
+		SpotBright      2.5
+		SpotWidth       0.05
+		DayAmbient      0.07
+		RingsWinter     0
+	}
+
+	NoClouds        true
+	NoOcean         true
+	NoLava          true
+	NoAtmosphere    true
+	NoAurora        true
+	NoRings         true
+	NoCometTail     true
+
+	Orbit
+	{
+		RefPlane        "Equator"
+		PeriodDays      0.680859862
+		SemiMajorAxisKm 239356.593
+		Eccentricity    0.03
+		Inclination     0.39047331
+		AscendingNode   95.8506665
+		ArgOfPericenter 68.7022901
+		MeanAnomaly     0
+	}
+}
+*/
+
+Moon	"Menu Moon 1.1"
+{
+	ParentBody     "Menu Planet 1"
+	Class          "Ferria"
+	Hidden          true
+
+	//Mass            3.5041
+	Radius          3939 //9651.4
+
+	InertiaMoment   0.32867
+	RotationOffset  190
+	TidalLocked     true
+
+	// Hack: make the moon glowing hot despite on actual tidal heating,
+	// and make it not emit any thermal light
+	EndogenousHeating   1027
+	ThermalLuminosity      0
+	ThermalLuminosityBol   0
+
+	AlbedoBond      0.1501
+	AlbedoGeom      0.36
+	Brightness      1
+	BrightnessReal  1
+
+	RotationModel	"IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	269.9949	// degrees
+		PoleRARate  	0.0031		// degrees/century
+		PoleDec     	66.5392		// degrees
+		PoleDecRate 	0.0130		// degrees/century
+		PrimeMeridian	38.3213		// degrees
+		RotationRate	13.17635815	// degrees/day
+		RotationAccel	-0.0018677	// degrees/century^2 -- converted from -1.4e-12 degrees/day^2
+		PeriodicTermsDiurnal		// SUM [ amp[i] * sin(phase[i] + frequency[i] * t_days + freq_rate[i] * t_days^2) ]
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			-3.8787, +1.5419, +3.5610, 125.045, -0.05299210, 0,
+			-0.1204, +0.0239, +0.1208, 250.089, -0.10598420, 0,
+			+0.0700, -0.0278, -0.0642, 260.008, +13.0120009, 0,
+			-0.0172, +0.0068, +0.0158, 176.625, +13.3407154, 0,
+			 0.0000,  0.0000, +0.0252, 357.529, +0.98560030, 0,
+			+0.0072, -0.0029, -0.0066, 311.589, +26.4057084, 0,
+			 0.0000, +0.0009, -0.0047, 134.963, +13.0649930, 0,
+			 0.0000,  0.0000, -0.0046, 276.617, +0.32871460, 0,
+			 0.0000,  0.0000, +0.0028,  34.226, +1.74848770, 0,
+			-0.0052, +0.0008, +0.0052,  15.134, -0.15897630, 0,
+			 0.0000,  0.0000, +0.0040, 119.743, +0.00360960, 0,
+			 0.0000,  0.0000, +0.0019, 239.961, +0.16435730, 0,
+			+0.0043, -0.0009, -0.0044,  25.053, +12.9590088, 0,
+		}
+	}
+
+	Surface
+	{
+		SurfStyle       0.18074
+		Randomize      (0.801, 0.849, 0.949)
+		colorDistMagn   0.095986
+		colorDistFreq   924.27
+		detailScale     32768
+		seaLevel        0.085694
+		snowLevel       2
+		tropicLatitude  8.7423e-008
+		icecapLatitude  2
+		icecapHeight    0.20955
+		climatePole     0.5625
+		climateTropic   0.5625
+		climateEquator  0.5625
+		heightTempGrad  0.375
+		beachWidth      0.0015145
+		tropicWidth     0.5
+		mainFreq        1.3604
+		venusFreq       1.282
+		venusMagn       0
+		mareFreq        1.9446
+		mareDensity     0
+		terraceProb     0.12294
+		erosion         0
+		montesMagn      0.2226
+		montesFreq      382.63
+		montesSpiky     0.8593
+		montesFraction  0.39169
+		dunesMagn       0.054987
+		dunesFreq       91.159
+		dunesFraction   0.84716
+		hillsMagn       0.12873
+		hillsFreq       1237.4
+		hillsFraction   0
+		hills2Fraction  0
+		riversMagn      0
+		riversFreq      3.1107
+		riversSin       6.6181
+		riftsMagn       50.686
+		riftsFreq       3.9252
+		riftsSin        5.5083
+		canyonsMagn     0.031045
+		canyonsFreq     297.35
+		canyonsFraction 0
+		cracksMagn      0.099805
+		cracksFreq      1.0014
+		cracksOctaves   0
+		craterMagn      0.69467
+		craterFreq      24.816
+		craterDensity   0
+		craterOctaves   0
+		volcanoMagn     0.62584
+		volcanoFreq     0.75414
+		volcanoDensity  0.4
+		volcanoOctaves  3
+		volcanoActivity 2
+		volcanoFlows    0.88145
+		volcanoRadius   0.56012
+		volcanoTemp     1027.6
+		lavaCoverTidal  0.45
+		lavaCoverSun    0
+		lavaCoverYoung  0
+		stripeZones     3.5435
+		stripeTwist     0.24812
+		cycloneMagn     2.8908
+		cycloneFreq     0.58003
+		cycloneDensity  0.27419
+		cycloneOctaves  0
+		BumpHeight      16.185
+		DiffMapAlpha   "Ice"
+		SpecBrightWater 0.5
+		SpecBrightIce   0.5
+		SpecPowerWater  55
+		SpecPowerIce    180
+		SpecularScale   1
+		RoughnessBias   0.5
+		Hapke           0.7
+		SpotBright      1.6774
+		SpotWidth       0.05
+		DayAmbient      0.07
+	}
+
+	Clouds
+	{
+		Height          126.02
+		Velocity        194.751
+		BumpHeight      7.9387
+		Hapke           0.5
+		SpotBright      2
+		SpotWidth       0.03
+		DayAmbient      0.07
+		ModulateBright  1
+		mainFreq        0.75418
+		mainOctaves     10
+		Coverage        0.51145
+		stripeZones     3.5435
+		stripeTwist     0.24812
+	}
+
+	Atmosphere
+	{
+		Model          "Jupiter"
+		Height          413.35
+		Density         25.347
+		Pressure        122.71
+		Greenhouse      600
+		Bright          10
+		Opacity         1
+		SkyLight        3.3333
+		Hue             0
+		Saturation      1
+	}
+
+	NoOcean         true
+	NoLava          true
+	NoAurora        true
+	NoRings         true
+	NoAccretionDisk true
+	NoCometTail     true
+
+	Orbit
+	{
+		RefPlane        "Equator"
+		PeriodDays      0.680859862
+		SemiMajorAxisKm 239356.593
+		Eccentricity    0.03
+		Inclination     0.39047331
+		AscendingNode   95.8506665
+		ArgOfPericenter 68.7022901
+		MeanAnomaly     0
+	}
+}
+
+Moon	"Menu Moon 1.2"
+{
+	ParentBody     "Menu Planet 1"
+	Class          "Terra"
+	Hidden          true
+
+	Mass            0.95
+	Radius          6300
+
+	Oblateness      0.0028231
+	RotationOffset  96.183
+	TidalLocked     true
+
+	AlbedoBond      0.15
+	AlbedoGeom      0.36
+	Brightness      1
+	BrightnessReal  1
+
+	Surface
+	{
+		SurfStyle       0.58015
+		Randomize      (-0.594, 0.140, -0.018)
+		colorDistMagn   0.0547
+		colorDistFreq   252.66
+		detailScale     8192
+		drivenDarkening -1
+		seaLevel        0.12251
+		snowLevel       1
+		tropicLatitude  0.43342
+		icecapLatitude  0.87832
+		icecapHeight    0.13272
+		climatePole     0.9375
+		climateTropic   0.3125
+		climateEquator  0.6875
+		climateDesertMin 0
+		climateDesertMax 0
+		climateForestMin 0
+		climateForestMax 0
+		climateGrassMin  0
+		climateGrassMax  0
+		heightTempGrad  0.625
+		tropicWidth     0.07
+		mainFreq        1.0069
+		venusFreq       1.2377
+		venusMagn       0
+		mareFreq        1.2262
+		mareDensity     0.20107
+		terraceProb     0.43313
+		erosion         0
+		montesMagn      0.12985
+		montesFreq      83.754
+		montesSpiky     0.95366
+		montesFraction  0.27022
+		dunesMagn       0.053473
+		dunesFreq       17.888
+		dunesFraction   0.55077
+		hillsMagn       0.17143
+		hillsFreq       303.96
+		hillsFraction   0
+		hills2Fraction  0
+		riversMagn      0
+		riversFreq      3.379
+		riversSin       5.5835
+		riftsMagn       60.466
+		riftsFreq       3.3343
+		riftsSin        8.0123
+		canyonsMagn     0.049999
+		canyonsFreq     59.582
+		canyonsFraction 0
+		cracksMagn      0.12814
+		cracksFreq      0.19463
+		cracksOctaves   0
+		craterMagn      0.5515
+		craterFreq      6.0793
+		craterDensity   0.98933
+		craterOctaves   11
+		craterRayedFactor 0
+		volcanoMagn     0.4755
+		volcanoFreq     0.45895
+		volcanoDensity  0.4
+		volcanoOctaves  0 // 3
+		volcanoActivity 0 // 1.775	// disable thermal maps
+		volcanoFlows    0.65055
+		volcanoRadius   0.31099
+		volcanoTemp     1063.6
+		lavaCoverTidal  0
+		lavaCoverSun    0
+		lavaCoverYoung  0
+		stripeZones     0
+		stripeFluct     0
+		stripeTwist     0
+		cycloneMagn     0
+		cycloneFreq     0
+		cycloneDensity  0
+		cycloneOctaves  0
+		BumpHeight      20
+		DiffMapAlpha   "Ice"
+		SpecBrightWater 0.5
+		SpecBrightIce   0.5
+		SpecPowerWater  55
+		SpecPowerIce    180
+		SpecularScale   1
+		Hapke           0.99881
+		SpotBright      2.4998
+		SpotWidth       0.05
+		DayAmbient      0.07
+		RingsWinter     0
+	}
+
+	NoClouds        true
+	NoOcean         true
+	NoLava          true
+
+	Atmosphere
+	{
+		Model          "Neptune"
+		Height          60
+		Pressure        0.5
+		Bright          10
+		Opacity         1
+		SkyLight        3.0
+		Hue            -0.02
+		Saturation      1.0
+	}
+
+	Aurora
+	{
+		Height         120
+		NorthLat       53.951
+		NorthLon       82.815
+		NorthRadius    1414.9
+		NorthWidth     453.31
+		NorthRings     5
+		NorthBright    0.15
+		NorthFlashFreq 20
+		NorthMoveSpeed 2
+		NorthParticles 40000
+		SouthLat       -59.897
+		SouthLon       180
+		SouthRadius    1742.7
+		SouthWidth     381.08
+		SouthRings     5
+		SouthBright    0.15
+		SouthFlashFreq 20
+		SouthMoveSpeed 2
+		SouthParticles 40000
+		TopColor    (1.000 1.000 1.000)
+		BottomColor (0.000 1.000 0.000)
+	}
+
+	NoRings         true
+	NoCometTail     true
+
+	Orbit
+	{
+		RefPlane        "Equator"
+		PeriodDays      1.09648307
+		SemiMajorAxisKm 329115.316
+		Eccentricity    0
+		Inclination     0.575364107
+		AscendingNode   -172.226857
+		ArgOfPericenter 96.1832061
+		MeanAnomaly     0
+	}
+}
+
+// Skylias tribute system
+
+Star	"Mini-Sky"
+{
+	ParentBody     "Mini-Sky system"
+	Class          "X"
+	Luminosity      1e-10
+	LumBol          1e-10
+	MassSol         10.016
+	RadSol          2.7037e-05
+
+	RotationPeriod  5.5232e-05
+	Obliquity       104.67
+	EqAscendNode    350.45
+
+	AccretionDisk
+	{
+		InnerRadius     1.2036e-07
+		OuterRadius     2.4510e-05
+		AccretionRate   6.2589e-37
+		Temperature     7800
+		Density         30
+		Luminosity      3.7197e-08
+		TwistMagn       42
+		Brightness      0.5
+	}
+}

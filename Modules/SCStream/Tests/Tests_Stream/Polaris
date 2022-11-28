@@ -1,0 +1,73 @@
+Barycenter	"HIP 11767 A"
+{
+	ParentBody	"HIP 11767"
+	BinaryOrbit // Position relative to ALF UMi Aa
+	{
+    Epoch           2453585.50680489 // B2005.5880
+		Separation      1803.48 // 18.217"
+		PositionAngle   50.540 // Position Angle
+	}
+}
+
+Star	"HIP 11767 Aa"
+{
+	ParentBody	"HIP 11767 A"
+	Class	    	"F7Ib"
+  MassSol     5.4
+  RadSol      37.5
+  LumBol      1260
+	Teff        6015
+  FeH         0.05 // 112% solar
+  RotationPeriod 2856
+  Age         0.07
+
+	Orbit
+	{
+		Period		    	29.59
+		Eccentricity  	0.608
+		Inclination		  146.2
+		AscendingNode	  191.4
+    Epoch           2447037.44466514
+		ArgOfPericenter 303.01
+		MeanAnomaly     0
+    //SemiAmplitude   3.72
+	}
+}
+
+Star	"HIP 11767 Ab"
+{
+	ParentBody	"HIP 11767 A"
+	Class	    	"F6V"
+  MassSol     1.26
+  RadSol      1.04
+  LumBol      3
+	Age         0.07
+
+	Orbit
+	{
+    Period		    	29.59
+		Eccentricity  	0.608
+		Inclination		  146.2
+		AscendingNode	  191.4
+    Epoch           2447037.44466514
+		ArgOfPericenter 123.01
+		MeanAnomaly     0
+	}
+}
+
+Star	"HIP 11767 B"
+{
+	ParentBody	"HIP 11767"
+	Class	    	"F3V"
+	MassSol     1.39
+  RadSol      1.38
+  LumBol      3.9
+	Teff        6900
+
+  /*BinaryOrbit // Position relative to ALF UMi Aa
+	{
+    Epoch           2453585.50680489 // B2005.5880
+		Separation      1803.48 // 18.217"
+		PositionAngle   50.540 // Position Angle
+	}*/
+}

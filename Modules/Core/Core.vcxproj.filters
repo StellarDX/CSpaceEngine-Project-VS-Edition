@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Inline Files">
+      <UniqueIdentifier>{72547a94-172c-4363-bbe9-5d2a8ca5dd33}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\_ATAN.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Algorithms.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\CV_EXP.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\CV_LOG.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\CV_SINCOS.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754_POW.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\SOLVEPOLY.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\DateTime.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Headers\CSE\Core\AsMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\ConstLists.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\CSECore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Algo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Func.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Geom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\DateTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\gltypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\gl_vec2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\gl_vec3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\gl_vec4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Headers\CSE\Core\Inline\vector.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="..\..\Headers\CSE\Core\Inline\VecGeom.Template.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="..\..\Headers\CSE\Core\Inline\matrix.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="..\..\Headers\CSE\Core\Inline\MathFuncs.Template.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="..\..\Headers\CSE\Core\Inline\gl_vec2.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="..\..\Headers\CSE\Core\Inline\gl_vec3.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="..\..\Headers\CSE\Core\Inline\gl_vec4.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="..\..\Headers\CSE\Core\Inline\Algorithms.Template.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

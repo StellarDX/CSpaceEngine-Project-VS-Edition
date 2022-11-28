@@ -1,0 +1,99 @@
+Star	"BA"
+{
+	ParentBody     "B"
+	Class          "DC7.7"
+	Luminosity      0.54954
+	LumBol          0.4712
+	MassSol         0.75924
+	RadSol          0.013702
+	Teff            66155
+
+	Age             7.326
+
+	InertiaMoment   0.18912
+	KerrSpin        0.003104
+	KerrCharge      0
+	Obliquity       1.4945
+	EqAscendNode    0
+	TidalLocked     true
+
+	AlbedoBond      0.3
+	AlbedoGeom      0.36
+	Brightness      1
+	BrightnessReal  1
+	Color          (0.323 0.462 1.000)
+
+	NoOcean         true
+
+	NoClouds        true
+
+	NoLava          true
+
+	NoAtmosphere    true
+
+	NoAurora        true
+
+	NoRings         true
+
+	AccretionDisk
+	{
+		InnerRadiusKm     9627.8
+		OuterRadiusKm     2.8883e+05
+		InnerThicknessKm  5719.5
+		OuterThicknessKm  1.1439e+05
+		ThicknessPow      3
+		DetailScaleR      6
+		DetailScaleV      1
+		OctaveDistortionX 0.5
+		OctaveDistortionY 0.35
+		OctaveDistortionZ 0.2
+		OctaveScale       0.5
+		DiskNoiseContrast 1
+		DiskTempContrast  0.15
+		DiskOuterSpin     0.04
+		TwistMagn         2500
+		AccretionRate     1.0188e-10
+		Temperature       66155
+		Density           1.6531e-06
+		Luminosity        0.74613
+		LuminosityBol     36.043
+		Brightness        1
+		JetLengthKm       8.5792e+05
+		JetStartRadiusKm  28597
+		JetEndRadiusKm    71494
+		JetStartTemp      66155
+		JetEndTemp        49617
+		JetVelocity       0.85
+		JetDistortion     0.4
+		JetThickness      0.3
+		JetDensity        1.6531e-10
+		JetBrightness     1
+		LightingBright    1
+		ShadowContrast    1
+		ShadowLength      0.5
+	}
+
+	Corona
+	{
+		Radius      55038
+		Period      2.9934e-05
+		Brightness  0.5
+		RayDensity  37.164
+		RayCurv     144.12
+	}
+
+	NoCometTail     true
+
+	Orbit
+	{
+		RefPlane        "Equator"
+		Period          0.0594691664
+		SemiMajorAxis   0.0422023503
+		Eccentricity    0.00108242186
+		Inclination     1.4944948
+		AscendingNode   0
+		ArgOfPericenter 173.258806
+		MeanAnomaly     -57.9924914
+	}
+}
+

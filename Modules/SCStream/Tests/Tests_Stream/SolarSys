@@ -1,0 +1,3534 @@
+////////////////////////////////////////////////////////////
+//                                                        //
+//  Catalog of the Solar system objects for SpaceEngine   //
+//                                                        //
+// Data and textures from various sources and authors     //
+// (look for the comments in the code for reference)      //
+// Latest revision:  13 August 2017                       //
+//                                                        //
+// This catalog contains the most big or famous objects   //
+// in the Solar system: planets, dwarf planets, moons,    //
+// and 5 largest asteroids.                               //
+//                                                        //
+// Rotational elements are taken from:                    //
+// Report of the IAU Working Group on Cartographic        //
+// Coordinates and Rotational Elements: 2009              //
+//                                                        //
+////////////////////////////////////////////////////////////
+
+// Star solver log level:
+// 0 - do not log
+// 1 - log errors and warnings only
+// 2 - log everything
+LogLevel    1
+
+Star	"Sun/Sol"
+{
+	ParentBody "Solar System"
+
+	Class      "G2V"
+	Luminosity  1.0
+	LumBol      1.0
+	Temperature 5778
+	Age         4.57
+	FeH         0.0
+
+	MassSol     1.0
+	RadSol      1.0
+	Oblateness  9e-6
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545	// J2000
+		PoleRA			286.13	// degrees
+		PoleDec			63.87	// degrees
+		PrimeMeridian	84.176	// degrees
+		RotationRate	14.1844	// degrees/day
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Sun-DE"
+		RefPlane       "Ecliptic"
+	}
+}
+
+Planet	"Mercury"
+{
+	ParentBody     "Sun"
+	Class          "Ferria"
+
+	Mass            0.05528
+	Radius          2440
+
+	AlbedoBond      0.088 // Mallama, 2017
+	AlbedoGeom	    0.142
+	Brightness      1.0
+	BrightnessReal  0.45 // J. Veverka et al., 1988
+
+	RotationPeriod  1407.509405
+	RotationOffset  291.2
+	Obliquity       7.01
+	EqAscendNode    48.42
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	281.0097	// degrees
+		PoleRARate  	-0.0328		// degrees/century
+		PoleDec     	61.4143		// degrees
+		PoleDecRate 	-0.0049		// degrees/century
+		PrimeMeridian	329.5469	// degrees
+		RotationRate	6.1385025	// degrees/day
+		PeriodicTermsDiurnal		// SUM [ amp[i] * sin(phase[i] + frequency[i] * t_days + freq_rate[i] * t_days^2) ]
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			0, 0, +0.00993822, 174.791086,  4.092335, 0,
+			0, 0, -0.00104581, 349.582171,  8.184670, 0,
+			0, 0, -0.00010280, 164.373257, 12.277005, 0,
+			0, 0, -0.00002364, 339.164343, 16.369340, 0,
+			0, 0, -0.00000532, 153.955429, 20.461675, 0,
+		}
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Silicates	40
+			Metals		60
+		}
+	}
+
+	Surface
+	{
+		// Surface map authors: Sean Young "HarbingerDawn", "FarGetaNik"
+		DiffMap        "Mercury/Surface-HD"
+		DiffMapAlpha   "None"
+
+		// Elevation map author: Sean Young "HarbingerDawn"
+		BumpMap        "Mercury/Bump-HD"
+		BumpHeight      10.289
+		BumpOffset		5.889
+
+		Hapke           1.0
+		SpotWidth       0.09 // J. Veverka et al., 1988
+		SpotBright      2.5 // J. Veverka et al., 1988
+	}
+
+	NoAtmosphere    true
+	NoAurora        true
+	NoRings         true
+
+	Orbit
+	{
+		AnalyticModel  "Mercury-DE"
+		RefPlane       "Ecliptic"
+		Period          0.2408
+		SemiMajorAxis   0.3871
+		Eccentricity    0.2056
+		Inclination     7.0049
+		AscendingNode   48.33167
+		LongOfPericen   77.456
+		MeanLongitude   252.251
+		ArgOfPeriPreces 227000 // period of precession in years
+	}
+}
+
+Planet	"Venus"
+{
+	ParentBody     "Sun"
+	Class          "Terra"
+
+	Mass            0.815
+	Radius          6052
+
+	AlbedoBond      0.76
+	AlbedoGeom      0.689
+	Brightness      0.8
+	BrightnessReal  0.8
+
+	RotationPeriod  5832.479839
+	RotationOffset  137.45
+	Obliquity       178.78
+	EqAscendNode    300.22
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA			272.76		// degrees
+		PoleDec			67.16		// degrees
+		PrimeMeridian	160.20		// degrees
+		RotationRate	-1.4813688	// degrees/day
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Silicates	75
+			Metals		25
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: John van Vliet
+		DiffMap        "Venus/Surface-JVV"
+		DiffMapAlpha   "None"
+
+		// Elevation map author: Vladimir Romanyuk "SpaceEngineer"
+		BumpMap        "Venus/Bump-SE"
+		BumpHeight      13.7
+		BumpOffset      2.9
+
+		ModulateColor  (1.0 0.84 0.70)
+	}
+
+	Clouds
+	{
+		// Surface map author: "Snowfall"
+		DiffMap        "Venus/Clouds-SF"
+		DiffMapAlpha   "None"
+		Height          50
+		Velocity       -264 // km/h
+		ModulateColor  (1.0 1.0 1.0)
+		Hapke         0
+	}
+
+	Atmosphere
+	{
+		Height      200		// km
+		Greenhouse  560		// degrees K
+		Pressure    92		// atm
+		Density     71.4	// kg/m^3
+		Model      "Venus"
+		Bright      10.0
+		Opacity     1.0
+		SkyLight    3.0
+
+		Composition // values in percent
+		{
+			CO2 96.5
+			N2  3.5
+			SO2 0.015
+			Ar  0.007
+			H2O 0.002
+			CO  0.0017
+			He  0.0012
+			Ne  0.0007
+		}
+	}
+
+	NoAurora    true
+	NoRings		true
+/*
+	Orbit
+	{
+		RefPlane "Ecliptic"
+		GravParam 324859.347e9
+		Time      2459079.92
+		Position (1.05510445e+11 -5.74727328e+09 -2.4873819e+10)
+		Velocity (-8162.20613 936.604936 -33928.0863)
+	}
+/**/
+	Orbit
+	{
+		AnalyticModel  "Venus-DE"
+		RefPlane       "Ecliptic"
+		Period          0.6152
+		SemiMajorAxis   0.7233
+		Eccentricity    0.0068
+		Inclination     3.3947
+		AscendingNode   76.681
+		LongOfPericen   131.533
+		MeanLongitude   181.979
+	}
+/**/
+}
+
+Barycenter	"Earth-Moon"
+{
+	ParentBody     "Sun"
+	Orbit
+	{
+		AnalyticModel "EMB-DE"
+		RefPlane      "Ecliptic"
+		Period         1.0          // years
+		SemiMajorAxis  1.0000010178 // a.u.
+		Eccentricity   0.0167086342
+		Inclination    0.0          // degrees
+		AscendingNode  348.739      // degrees
+		LongOfPericen  102.93734808 // degrees
+		MeanLongitude  100.46645683 // degrees
+	}
+}
+
+Planet	"Earth"
+{
+	ParentBody     "Earth-Moon"
+	Class          "Terra"
+
+	Mass            1.0			// Earth's masses
+	Radius          6378.14     // km, IAU 2015 value used in SE internally
+	Oblateness      0.00335
+	OblatenessX     0.1
+
+	Age	            4.54        // billions years
+
+	Color         ( 0.850 0.850 1.000 )
+	AlbedoBond      0.306
+	AlbedoGeom      0.367
+	Brightness      1.0
+	BrightnessReal  1.0
+
+	// Simply uniform rotation parameters, used only if RotationModel is missing
+	RotationPeriod  23.9344694  // hours
+	Precession      25592       // period of precession in years
+	Obliquity       23.4392911  // degrees
+	EqAscendNode    180.0		// degrees
+	RotationOffset -23.9        // degrees
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA			0			// degrees
+		PoleRARate		-0.641		// degrees/century
+		PoleDec			90			// degrees
+		PoleDecRate		-0.557		// degrees/century
+		PrimeMeridian	190.147		// degrees
+		RotationRate	360.9856235	// degrees/day
+	}
+
+	Life
+	{
+		Class   "Organic"
+		Type    "Multicellular"
+		Biome   "Marine/Terrestrial"
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Ices        2.444e-4
+			Silicates	68
+			Metals		32
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: Robert Skuridin "PBC"
+		DiffMap        "Earth/Surface-PBC"
+		DiffMapAlpha   "Water"
+
+		// Elevation map author: Robert Skuridin "PBC"
+		BumpMap        "Earth/Bump-PBC"
+		BumpHeight      19.475 // = 10896 + 8579 meters of total elevation span
+		BumpOffset      10.896 // = 10896 meters below sea level
+
+		// City lights map author: Sean Young "HarbingerDawn", based on John van Vliet's map
+		GlowMap        "Earth/Lights-HD"
+		GlowMode       "Night"
+		GlowColor      (1.0 1.0 1.0)	// map itself is RGB
+		GlowBright      1.0
+
+		SpecBrightIce   0.0
+		SpecBrightWater 0.35
+		colorSea       (0.012 0.03 0.06 1.00)
+		colorShelf     (0.15 0.48 0.46 1.00)
+	}
+
+	Ocean
+	{
+		Height 10.896
+
+		Composition // values in percent
+		{
+			H2O  96.5
+			NaCl 3.5
+		}
+	}
+
+	Clouds
+	{
+		// Clouds map author: Vladimir Romanyuk "SpaceEngineer"
+		DiffMap        "Earth/Clouds-SE"
+
+		BumpMap        "Earth/Clouds-SE"
+		BumpHeight      0.5
+		BumpOffset      0.0
+
+		//DayAmbient      3.0
+		Hapke           0.2
+		Height          9.0 //3.5
+		Velocity        0.0 // km/h
+		ModulateColor  (1.0 1.0 1.0)
+		ModulateBright  1.333
+		Opacity         1.333
+	}
+
+	Atmosphere
+	{
+		Height      60		// km
+		Greenhouse  33		// degrees K
+		Pressure    1.0		// atm
+		Density     1.2929	// kg/m^3
+		Adiabat     0.28
+		Model      "Earth"
+		Bright      10.0
+		Opacity     1.0
+		SkyLight    3.0
+
+		Composition // values in percent
+		{
+			N2  77.7729
+			O2  20.8625
+			Ar  0.9303
+			H2O 0.4000
+			CO2 0.0398
+			Ne  0.00182
+			He  0.00046
+			CH4 0.00017
+			Kr  0.000114
+			H2  0.00005
+			Xe  0.0000087
+		}
+	}
+
+	Aurora
+	{
+		Height       100   // km
+        TopColor    (0.5 0.5 0.5)	// multiplier
+        BottomColor (0.0 1.0 0.0)	// color
+
+		NorthLat     82    // degrees
+		NorthLon    -113   // degrees
+		NorthRadius  2500  // km
+		NorthWidth   600   // km
+		NorthRings   3     // number of rings
+		NorthBright  0.3
+
+		SouthLat    -63    // degrees
+		SouthLon     138   // degrees
+		SouthRadius  2000  // km
+		SouthWidth   600   // km
+		SouthRings   3     // number of rings
+		SouthBright  0.3
+	}
+
+	NoRings     true
+
+	Orbit
+	{
+		AnalyticModel  "Earth-EMB-DE"
+		RefPlane       "Ecliptic"
+		Period          0.07480422854	// years
+		SemiMajorAxis   0.000031610219244232	// a.u.
+		Eccentricity    0.0549
+		Inclination     5.15		// deg
+		MeanAnomaly     135.27		// deg
+		AscendingNode   125.08		// deg
+		ArgOfPericen    138.15		// deg
+		//AscNodePreces   18.6		// years
+		//ArgOfPeriPreces 5.997		// years
+	}
+}
+
+Moon	"Moon/Earth I"
+{
+	ParentBody     "Earth-Moon"
+	Class          "Terra"
+
+	Mass            0.012302
+	Radius          1737.4
+	Oblateness      0.002
+
+	AlbedoBond      0.11
+	AlbedoGeom      0.12
+	Brightness      0.8
+	BrightnessReal  0.33
+
+	//Obliquity       5.15
+	//EqAscendNode    125.08
+	//RotationOffset -90
+
+	//RotationModel  "Moon-DE" { }
+
+	RotationModel	"IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	269.9949	// degrees
+		PoleRARate  	0.0031		// degrees/century
+		PoleDec     	66.5392		// degrees
+		PoleDecRate 	0.0130		// degrees/century
+		PrimeMeridian	38.3213		// degrees
+		RotationRate	13.17635815	// degrees/day
+		RotationAccel	-0.0018677	// degrees/century^2 -- converted from -1.4e-12 degrees/day^2
+		PeriodicTermsDiurnal		// SUM [ amp[i] * sin(phase[i] + frequency[i] * t_days + freq_rate[i] * t_days^2) ]
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			-3.8787, +1.5419, +3.5610, 125.045, -0.05299210, 0,
+			-0.1204, +0.0239, +0.1208, 250.089, -0.10598420, 0,
+			+0.0700, -0.0278, -0.0642, 260.008, +13.0120009, 0,
+			-0.0172, +0.0068, +0.0158, 176.625, +13.3407154, 0,
+			 0.0000,  0.0000, +0.0252, 357.529, +0.98560030, 0,
+			+0.0072, -0.0029, -0.0066, 311.589, +26.4057084, 0,
+			 0.0000, +0.0009, -0.0047, 134.963, +13.0649930, 0,
+			 0.0000,  0.0000, -0.0046, 276.617, +0.32871460, 0,
+			 0.0000,  0.0000, +0.0028,  34.226, +1.74848770, 0,
+			-0.0052, +0.0008, +0.0052,  15.134, -0.15897630, 0,
+			 0.0000,  0.0000, +0.0040, 119.743, +0.00360960, 0,
+			 0.0000,  0.0000, +0.0019, 239.961, +0.16435730, 0,
+			+0.0043, -0.0009, -0.0044,  25.053, +12.9590088, 0,
+		}
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Silicates	98
+			Metals		2
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: "Klud"
+		DiffMap        "Moon/Surface-KL"
+
+		// Elevation map author: "Klud"
+		BumpMap        "Moon/Bump-KL"
+		BumpHeight      19.91	// 9.129 + 10.781
+		BumpOffset      9.129
+
+		Hapke           1.0
+		SpotBright      1.75	// Sato et al., 2014
+		SpotWidth       0.06	// Sato et al., 2014
+	}
+
+	NoAtmosphere    true
+	NoAurora        true
+	NoRings         true
+
+	Orbit
+	{
+		AnalyticModel  "Moon-EMB-DE"
+		RefPlane       "Ecliptic"
+		Period          0.07480422854
+		SemiMajorAxis   0.002537908496755768
+		Eccentricity    0.0549
+		Inclination     5.15
+		MeanAnomaly     135.27
+		AscendingNode   125.08
+		ArgOfPericen    318.15
+		//AscNodePreces   18.6		// years
+		//ArgOfPeriPreces 5.997		// years
+	}
+}
+
+Planet	"Mars"
+{
+	ParentBody     "Sun"
+	Class          "Terra"
+
+	Mass            0.10747
+	Radius          3396.19
+	Oblateness      0.00589
+
+	Color         ( 1.000 0.750 0.700 )
+	AlbedoBond      0.25
+	AlbedoGeom      0.17
+	Brightness      1.0
+	BrightnessReal  0.7
+
+	RotationPeriod  24.622962
+	Obliquity       26.72
+	EqAscendNode    82.91
+	RotationOffset  -28.7
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA			317.68143	// degrees
+		PoleRARate		-0.1061		// degrees/century
+		PoleDec			52.88650	// degrees
+		PoleDecRate		-0.0609		// degrees/century
+		PrimeMeridian	176.630		// degrees
+		RotationRate	350.89198226// degrees/day
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Silicates	85
+			Metals		15
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: Robert Skuridin "PBC"
+		DiffMap        "Mars/Surface-PBC"
+		DiffMapAlpha   "None"
+
+		// Elevation map author: Robert Skuridin "PBC"
+		/*BumpMap        "Mars/Bump-PBC"
+		BumpHeight      29.457 // 2.1249 + 8.208
+		BumpOffset      8.208*/
+
+		// Elevation map author: Vladimir Romanyuk "SpaceEngineer"
+		BumpMap        "Mars/Bump-SE"
+		BumpHeight      29.755 // 21.226 + 8.529
+		BumpOffset      8.529
+
+		Hapke           1.0
+		SpotBright      1.0		// Vincendon, 2013
+		SpotWidth       0.05	// Vincendon, 2013
+	}
+
+	Clouds
+	{
+		// Clouds map author: Sean Young "HarbingerDawn"
+		DiffMap        "Mars/Clouds-water-HD"
+		ModulateColor  (1.0 1.0 1.0)
+		Opacity         0.2
+		Hapke           0.2
+		SpotBright      0.0
+		Height          22
+		Velocity        0.0 // km/h
+	}
+
+	Clouds
+	{
+		// Clouds map author: Sean Young "HarbingerDawn"
+		DiffMap        "Mars/Clouds-dust-HD"
+		ModulateColor  (0.50 0.38 0.27)
+		Opacity         1.0
+		Hapke           0.2
+		SpotBright      0.0
+		Height          15
+		Velocity        0.0 // km/h
+	}
+
+	Clouds // high-altitude water-ice clouds
+	{
+		ModulateColor  (1.0 1.0 1.0)
+		Opacity         0.15
+		Hapke           0.2
+		SpotBright      0.0
+		Height          80
+		mainFreq        0.4122
+		mainOctaves     6
+		cycloneDensity  0
+		cycloneOctaves  0
+		cycloneFreq     0
+		cycloneMagn     0
+		Coverage        0.08
+		stripeZones     0.0
+		stripeTwist     0.0
+		Velocity        50.0 // km/h
+	}
+
+	Atmosphere
+	{
+		Height      132		// km
+		Greenhouse  5		// degrees K
+		Pressure    0.012	// 0.012 atm at lowest surface point
+		Density     0.01	// kg/m^3
+		Model      "Mars"
+		Bright      4.0
+		Opacity     1.0
+		SkyLight    2.0
+
+		Composition // values in percent
+		{
+			CO2 95.97
+			Ar  1.93
+			N2  1.89
+			O2  0.146
+			CO  0.0557
+		}
+	}
+
+	NoAurora    true
+	NoRings     true
+
+	Orbit
+	{
+		AnalyticModel  "Mars-DE"
+		RefPlane       "Ecliptic"
+		Period          1.8809
+		SemiMajorAxis   1.5237
+		Eccentricity    0.0934
+		Inclination     1.8506
+		AscendingNode   49.479
+		LongOfPericen   336.041
+		MeanLongitude   355.453
+	}
+}
+
+DwarfMoon	"Phobos/Mars I"
+{
+	ParentBody     "Mars"
+	Class          "Asteroid"
+
+	RadiusInfo      11.1
+	Radius          8.102745 // bump map is zero-based
+	Mass            1.79E-9
+
+	AlbedoBond      0.02
+	AlbedoGeom      0.07
+	Brightness      0.4
+	BrightnessReal  0.15
+
+	// Precise data taken from:
+	// ftp://ssd.jpl.nasa.gov/pub/eph/satellites/orientation/iom.392R-17-004.pdf
+	RotationModel "IAU"
+	{
+		Epoch			2451545			// J2000
+		PoleRA      	317.670722		// degrees
+		PoleRARate  	-0.1084132486	// degrees/century
+		PoleDec     	52.886261		// degrees
+		PoleDecRate 	-0.0613383599	// degrees/century
+		PrimeMeridian	35.187741		// degrees
+		RotationRate	1128.8447592753	// degrees/day
+		RotationAccel	12.722			// degrees/century^2
+		PeriodicTermsSecular			// SUM { amp[i] * sin(phase[i] + frequency[i] * t_centuries + freq_rate[i] * t_centuries^2) }
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			-1.784328, -1.075191,  1.424227, 190.752833, 15917.1197346, 0
+			 0.022113,  0.006656, -0.022751,  21.510735, 31834.5296590, 0
+		}
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Silicates	100
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: Phil Stooke
+		DiffMap        "Phobos/Surface-PS"
+
+		ModulateColor  (1.0 0.88 0.76)
+
+		// Elevation map author: Vladimir Romanyuk "SpaceEngineer"
+		BumpMap        "Phobos/Bump-SE"
+		BumpHeight      5.8051
+		BumpOffset      0.0
+
+		Hapke           1.0
+		SpotBright      5.7		// Simonelli et al., 1998
+		SpotWidth       0.072	// Simonelli et al., 1998
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Phobos-NOE-4"
+		RefPlane       "Equator"
+		Period          0.0008731466408
+		SemiMajorAxis   6.268181817e-005
+		Eccentricity    0.0151
+		Inclination     1.075
+		AscendingNode   128.694
+		ArgOfPericen    213.804
+		MeanAnomaly     191.771
+	}
+}
+
+DwarfMoon	"Deimos/Mars II"
+{
+	ParentBody     "Mars"
+	Class          "Asteroid"
+
+	RadiusInfo      6
+	Radius          3.582205 // bump map is zero-based
+	MassKg          1.4762e15
+
+	AlbedoBond      0.02
+	AlbedoGeom      0.08
+	Brightness      0.4
+	BrightnessReal  0.15
+
+	// Precise data taken from:
+	// ftp://ssd.jpl.nasa.gov/pub/eph/satellites/orientation/iom.392R-17-004.pdf
+	RotationModel "IAU"
+	{
+		Epoch			2451545			// J2000
+		PoleRA      	316.656987		// degrees
+		PoleRARate  	-0.104675002	// degrees/century
+		PoleDec     	53.509843		// degrees
+		PoleDecRate 	-0.0599874462	// degrees/century
+		PrimeMeridian	79.399489		// degrees
+		RotationRate	285.1618889679	// degrees/day
+		//RotationAccel	-0.520			// degrees/century^2
+		PeriodicTermsSecular			// SUM { amp[i] * sin(phase[i] + frequency[i] * t_centuries + freq_rate[i] * t_centuries^2) }
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			+0.007782, +0.001912, +0.016999, 196.381549, 19139.7201379, 0,
+			+0.025076, -0.014719, -0.029333, 214.896971, 38279.9940271, 0,
+			+3.022942, +1.796415, -2.626250, 125.675097,   660.2084573, 0,
+			+0.064064, +0.019065, -0.065368, 251.350194,  1320.4169146, 0,
+			-0.005241, +0.003205, -0.184398, 215.675097,   660.2084573, 0,
+		}
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Silicates	100
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: Robert Skuridin "PBC"
+		DiffMap        "Deimos/Surface-PBC"
+
+		// Elevation map author: Vladimir Romanyuk "SpaceEngineer"
+		BumpMap        "Deimos/Bump-SE"
+		BumpHeight      4.82475
+		BumpOffset      0.0
+
+		Hapke           1.0
+		SpotBright      1.65		// Thomas et al., 1996
+		SpotWidth       0.068		// Thomas et al., 1996
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Deimos-NOE-4"
+		RefPlane       "Equator"
+		Period          0.003456448899
+		SemiMajorAxis   0.0001568395722
+		Eccentricity    0.00033
+		Inclination     1.793
+		AscendingNode   25.229
+		ArgOfPericen    208.213
+		MeanAnomaly     344.128
+	}
+}
+
+DwarfPlanet	"Ceres/(1) Ceres"
+{
+	ParentBody     "Sun"
+	Class          "Terra"
+
+	Mass            0.0001579
+
+	Radius          470     // Bump-HD: elevation map is relative to a sphere
+	Oblateness      0.0     // elevation map is relative to a sphere
+
+	RadiusInfo      481.5   // radius value for interface
+	OblatenessInfo  0.074766// oblateness value for interface
+
+	RotationPeriod  9.075
+	RotationOffset  339.85
+	Obliquity       11
+	EqAscendNode    29
+
+	AlbedoBond      0.14 // fake
+	AlbedoGeom      0.09
+	Brightness      1.5
+	BrightnessReal  0.5
+	AbsMagn         3.34
+	SlopeParam      0.12
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Silicates	75
+			Ices        25
+		}
+	}
+
+	Surface
+	{
+		// Surface map authors: "FarGetaNik", Sean Young "HarbingerDawn"
+		DiffMap        "Ceres/Surface-FGN"
+		DiffMapAlpha   "None"
+
+		// Elevation map author: Sean Young "HarbingerDawn"
+		BumpMap        "Ceres/Bump-HD"
+		BumpHeight      45.009
+		BumpOffset      27.951
+
+		Hapke           1.0
+		SpotBright      1.35  // Schrцder et al., 2017
+		SpotWidth       0.072 // Schrцder et al., 2017
+	}
+
+	NoRings true
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Epoch           2456401
+		MeanMotion      0.214021
+		SemiMajorAxis   2.76799
+		Eccentricity    0.0761669
+		Inclination     10.5942
+		AscendingNode   80.3301
+		ArgOfPericenter 72.1671
+		MeanAnomaly     327.854
+	}
+}
+
+Asteroid	"Pallas/(2) Pallas"
+{
+	ParentBody     "Sun"
+	Class          "Asteroid"
+
+	Mass            0.0000345
+	Radius          263
+
+	RotationPeriod  7.81323264
+	RotationOffset  352.77
+	Obliquity       102
+	EqAscendNode    162
+
+	AlbedoBond      0.22 // fake
+	AlbedoGeom      0.159
+	AbsMagn         4.13
+	SlopeParam      0.11
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Epoch           2456401
+		MeanMotion      0.213555
+		SemiMajorAxis   2.77202
+		Eccentricity    0.2315
+		Inclination     34.8368
+		AscendingNode   173.12
+		ArgOfPericenter 309.954
+		MeanAnomaly     310.045
+	}
+}
+
+Asteroid	"Juno/(3) Juno"
+{
+	ParentBody     "Sun"
+	Class          "Asteroid"
+
+	Mass            4.722e-6
+	Radius          130
+
+	RotationPeriod  7.811
+	Obliquity       56
+	EqAscendNode    196
+
+	AlbedoBond      0.29 // fake
+	AlbedoGeom      0.238
+	AbsMagn         5.33
+	SlopeParam      0.32
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Epoch           2456401
+		MeanMotion      0.225818
+		SemiMajorAxis   2.67073
+		Eccentricity    0.255305
+		Inclination     12.9794
+		AscendingNode   169.883
+		ArgOfPericenter 248.31
+		MeanAnomaly     257.639
+	}
+}
+
+Asteroid	"Vesta/(4) Vesta"
+{
+	ParentBody     "Sun"
+	Class          "Asteroid"
+
+	Mass            4.337e-5
+
+	Radius          211.946	// elevation map is relative to sphere
+	Oblateness      0		// elevation map is relative to sphere
+
+	RadiusInfo      285		// radius value for interface
+	OblatenessInfo  0.19649	// oblateness value for interface
+
+	RotationPeriod  5.342
+	RotationOffset  325.77
+	Obliquity       40
+	EqAscendNode    91
+
+	AlbedoBond      0.18 // arXiv:1310.4165v1 [astro-ph.EP]
+	AlbedoGeom      0.38 // arXiv:1310.4165v1 [astro-ph.EP]
+	AbsMagn         3.2
+	SlopeParam      0.32
+	Brightness      0.6
+	BrightnessReal  0.35
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Silicates	78.3
+			Metals      21.7
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: Sean Young "HarbingerDawn"
+		DiffMap        "Vesta/Surface-HD"
+
+		// Elevation map author: Vladimir Romanyuk "SpaceEngineer"
+		// 16 bit elevation map
+		BumpMap        "Vesta/Bump-SE"
+		BumpHeight      81.064
+		BumpOffset      0
+
+		Hapke           1.0
+		SpotWidth       0.07 // Li et al., 2015 (arXiv:1502.06302)
+		SpotBright      1.7  // Li et al., 2015 (arXiv:1502.06302)
+	}
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Epoch           2456401
+		MeanMotion      0.271432
+		SemiMajorAxis   2.36245
+		Eccentricity    0.0882571
+		Inclination     7.13991
+		AscendingNode   103.85
+		ArgOfPericenter 150.94
+		MeanAnomaly     218.172
+	}
+}
+
+Asteroid	"Hygiea/(10) Hygiea"
+{
+	ParentBody     "Sun"
+	Class          "Asteroid"
+
+	Radius          215.5
+	Mass            1.45124e-5
+	RotationPeriod  27.623
+	Albedo          0.0717
+	AbsMagn         5.43
+	SlopeParam      0.15
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Epoch           2456401
+		MeanMotion      0.177388
+		SemiMajorAxis   3.13703
+		Eccentricity    0.116109
+		Inclination     3.8419
+		AscendingNode   283.418
+		ArgOfPericenter 312.758
+		MeanAnomaly     121.957
+	}
+}
+
+Planet	"Jupiter"
+{
+	ParentBody     "Sun"
+	Class          "Jupiter"
+
+	Mass            317.832
+	Radius          71492
+	Oblateness      0.06487
+
+	RotationPeriod  9.92425
+	RotationOffset  305.4
+	Obliquity       2.222461
+	EqAscendNode   -22.203
+
+	AlbedoBond      0.503 // Li, Liming; et al. (2018)
+	AlbedoGeom      0.538 // Mallama et al., 2017
+	Brightness      0.75
+	BrightnessReal  0.9
+
+	EndogenousHeating 158.5 // for correct temperature at 1 bar
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	268.056595	// degrees
+		PoleRARate  	-0.006499	// degrees/century
+		PoleDec     	64.495303	// degrees
+		PoleDecRate 	0.002413	// degrees/century
+		PrimeMeridian	284.95		// degrees
+		RotationRate	870.536		// degrees/day
+		PeriodicTermsSecular		// SUM { amp[i] * sin(phase[i] + freq[i] * t_centuries + freq_rate[i] * t_centuries^2) }
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			+0.000117, +0.000050, 0,  99.360714, 4850.4046, 0,
+			+0.000938, +0.000404, 0, 175.895369, 1191.9605, 0,
+			+0.001432, +0.000617, 0, 300.323162,  262.5475, 0,
+			+0.000030, -0.000013, 0, 114.012305, 6070.2476, 0,
+			+0.002150, +0.000926, 0,  49.511251,   64.3000, 0,
+		}
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Hydrogen    87.42
+			Helium      9.44
+			Ices		3.0 // total mass of the rocky/water core: 10 Mearth = 3.14%
+			Silicates	0.1
+			Metals      0.04
+		}
+	}
+
+	Surface
+	{
+		// Surface map authors: "Bjorn Jonsson"
+		DiffMap        "Jupiter/Surface-BJ"
+		DayAmbient      0
+		RingsWinter     0 // disable "rings winter" effect
+	}
+
+	NoClouds true
+
+	Atmosphere
+	{
+		Height   300	// km
+		Model   "Earth"
+		Bright   2.0
+		Opacity  0.0
+		SkyLight 0.0
+
+		Composition // values in percent
+		{
+			H2   89.8
+			He   10.2
+			CH4  0.3
+			NH3  0.026
+			C2H6 0.0006
+		}
+	}
+
+	Aurora
+	{
+		Height       1000  // km
+		TopColor    (1.5 0.0 0.8)
+		BottomColor (1.0 0.1 0.0)
+
+		NorthLat     90    // degrees
+		NorthLon     0     // degrees
+		NorthRadius  15000 // km
+		NorthWidth   5000  // km
+		NorthRings   3     // number of rings
+		NorthBright  1.0
+
+		SouthLat    -90    // degrees
+		SouthLon     0     // degrees
+		SouthRadius  16000 // km
+		SouthWidth   5000  // km
+		SouthRings   3     // number of rings
+		SouthBright  1.0
+	}
+
+	Rings
+	{
+		Texture         "Jupiter-rings.*"
+		InnerRadius     102200
+		OuterRadius     227000
+		Thickness       10
+		RocksMaxSize    0.01
+		RocksSpacing    1000
+		Density         1e-4
+		Opacity         1e-4
+		SelfShadow      1e-4
+		PlanetShadow    1e-4
+		Brightness      1.0
+		FrontBright     1.0
+		BackBright      5.0
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Jupiter-DE"
+		RefPlane       "Ecliptic"
+		Period          11.8622
+		SemiMajorAxis   5.2034
+		Eccentricity    0.0484
+		Inclination     1.3053
+		AscendingNode   100.556
+		LongOfPericen   14.7539
+		MeanLongitude   34.404
+	}
+}
+
+DwarfMoon	"Amalthea/Jupiter V"
+{
+	ParentBody     "Jupiter"
+	Class          "Asteroid"
+
+	Mass            3.515E-7
+	Radius          83.5 // 51.861430 //134
+	Oblateness      0.0	// real shape is defined by heightmap texture
+	OblatenessInfo  0.488
+
+	Color         ( 0.514 0.322 0.251 )
+	AlbedoBond      0.02  // Veverka et al., 1981
+	AlbedoGeom	    0.157 // Kulyk and Jockers, 2004
+	Brightness      0.35
+	BrightnessReal  0.35
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	268.05		// degrees
+		PoleRARate  	-0.009		// degrees/century
+		PoleDec     	64.49		// degrees
+		PoleDecRate 	0.003		// degrees/century
+		PrimeMeridian	161.67		// degrees; original = 231.67, corrected to match SE texture/bump map
+		RotationRate	722.6314560	// degrees/day
+		PeriodicTermsSecular		// SUM [ amp[i] * sin(phase[i] + frequency[i] * t_days + freq_rate[i] * t_days^2) ]
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			-0.84, -0.36, +0.76,  73.32,  91472.9, 0,
+			+0.01,     0, -0.01, 146.64, 182945.8, 0,
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: Vladimir Romanyuk "SpaceEngineer"
+		DiffMap        "Amalthea/Surface-SE"
+
+		// Elevation map author: Vladimir Romanyuk "SpaceEngineer"
+		BumpMap        "Amalthea/Bump-SE"
+		BumpHeight      96.496507
+		BumpOffset      31.63857
+
+		Hapke           1.0
+		SpotWidth       0.041 // Kulyk and Jockers, 2004 -- Average of leading and trailing hemispheres
+		SpotBright      1.75  // Kulyk and Jockers, 2004 -- Average of leading and trailing hemispheres
+	}
+
+	Orbit
+	{
+		Epoch           2452583.763
+		Period          0.001363968895
+		SemiMajorAxis   0.001216542647
+		Eccentricity    0.0045045
+		Inclination     0.384285
+		AscendingNode   220.288958
+		ArgOfPericen    301.622765
+		MeanAnomaly     315.352094
+	}
+}
+
+Moon	"Io/Jupiter I"
+{
+	ParentBody     "Jupiter"
+	Class          "Terra"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1610.01.08"
+
+	Mass            0.01495
+	Radius          1821.6
+
+	Color         ( 0.569 0.471 0.388 )
+	AlbedoBond      0.52 // Simonelli et al., 2001
+	AlbedoGeom      0.61
+	Brightness      0.9
+	BrightnessReal  1.0
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	268.05		// degrees
+		PoleRARate  	-0.009		// degrees/century
+		PoleDec     	64.50		// degrees
+		PoleDecRate 	0.003		// degrees/century
+		PrimeMeridian	200.39		// degrees
+		RotationRate	203.4889538	// degrees/day
+		PeriodicTermsSecular		// SUM [ amp[i] * sin(phase[i] + frequency[i] * t_days + freq_rate[i] * t_days^2) ]
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			+0.094, +0.040, -0.085,  283.90,  4850.7, 0,
+			+0.024, +0.011, -0.022,  355.80,  1191.3, 0,
+		}
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Silicates	80
+			Metals      20
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: Robert Skuridin "PBC"
+		DiffMap        "Io/Surface-PBC"
+		DiffMapAlpha   "None"
+
+		// Elevation map author: Vladimir Romanyuk "SpaceEngineer"
+		BumpMap        "Io/Bump-SE"
+		BumpHeight      6.0
+		BumpOffset      3.0
+
+		// Lights map author: Vladimir Romanyuk "SpaceEngineer"
+		GlowMap        "Io/Lights-SE"
+		GlowMode       "Permanent"
+
+		Hapke           1.0
+		SpotBright      0.65  // Average of several visible wavelengths -- McEwen et al., 1988; 10.1016/0019-1035(88)90157-1
+		SpotWidth       0.028 // McEwen et al., 1988; 10.1016/0019-1035(88)90157-1
+	}
+
+	NoLava true
+
+	Atmosphere
+	{
+		Height      70		// km
+		Pressure    1e-9
+		Model      "Sun"
+		Bright      0.1
+		Opacity     0.0
+		SkyLight    0.0
+		Greenhouse  0
+
+		Composition // values in percent
+		{
+			SO2  90.66
+			SO   9.066
+			NaCl 0.274
+		}
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Io-L1"
+		Epoch          2443000
+		Period         0.004843739305
+		SemiMajorAxis  0.002818181818
+		Eccentricity   0.0041
+		Inclination    0.04
+		AscendingNode  312.981
+		LongOfPericen  97.735
+		MeanLongitude  106.724
+	}
+}
+
+Moon	"Europa/Jupiter II"
+{
+	ParentBody     "Jupiter"
+	Class          "Aquaria"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1610.01.08"
+
+	Mass            0.008035
+	Radius          1560.8
+
+	Color         ( 0.745 0.718 0.655 )
+	Albedo          0.64
+	Brightness      1.0
+	BrightnessReal  1.19
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	268.08		// degrees
+		PoleRARate  	-0.009		// degrees/century
+		PoleDec     	64.51		// degrees
+		PoleDecRate 	0.003		// degrees/century
+		PrimeMeridian	36.022		// degrees
+		RotationRate	101.3747235	// degrees/day
+		PeriodicTermsSecular		// SUM { amp[i] * sin(phase[i] + freq[i] * t_centuries + freq_rate[i] * t_centuries^2) }
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			1.086, 0.468, -0.980, 355.80, 1191.3, 0,
+			0.060, 0.026, -0.054, 119.90,  262.1, 0,
+			0.015, 0.007, -0.014, 229.80,   64.3, 0,
+			0.009, 0.002, -0.008, 352.25, 2382.6, 0,
+		}
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Ices        9
+			Silicates	88
+			Metals      3	// < 3%
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: Bjorn Jonsson
+		DiffMap        "Europa/Surface-BJ"
+		DiffMapAlpha   "Ice"
+
+		// Elevation map author: Vladimir Romanyuk "SpaceEngineer"
+		BumpMap        "Europa/Bump-BJ-SE"
+		BumpHeight		1.0
+		BumpOffset		0.5
+
+		Hapke           0.5 // phase curve is intermediate between a Lambert curve and a "fully Hapke" curve like Luna or Mercury
+		SpotBright      1.0 // (0.50 * 1/Hapke); Domingue & Verbiscer (1997) - 10.1006/icar.1997.5730
+		SpotWidth       0.016 // Authors give 0.0016, which must be false, as such a narrow opposition surge would not be detectable in any observations yet made -- Domingue & Verbiscer (1997) - 10.1006/icar.1997.5730
+	}
+
+	NoAtmosphere    true
+
+	Orbit
+	{
+		AnalyticModel  "Europa-L1"
+		Epoch          2443000
+		Period         0.009724533474
+		SemiMajorAxis  0.004484625668
+		Eccentricity   0.0101
+		Inclination    0.47
+		AscendingNode  101.087
+		LongOfPericen  155.512
+		MeanLongitude  176.377
+	}
+}
+
+Moon	"Ganymede/Jupiter III"
+{
+	ParentBody     "Jupiter"
+	Class          "Aquaria"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1610.01.08"
+
+	Mass            0.0248
+	Radius          2631.2
+
+	Color         ( 0.529 0.478 0.424 )
+	Albedo          0.42
+	Brightness      1.0
+	BrightnessReal  0.94
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	268.20		// degrees
+		PoleRARate  	-0.009		// degrees/century
+		PoleDec     	64.57		// degrees
+		PoleDecRate 	0.003		// degrees/century
+		PrimeMeridian	44.064		// degrees
+		RotationRate	50.3176081	// degrees/day
+		PeriodicTermsSecular		// SUM [ amp[i] * sin(phase[i] + frequency[i] * t_days + freq_rate[i] * t_days^2) ]
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			-0.037, -0.016, +0.033, 355.80,  1191.3, 0,
+			+0.431, +0.186, -0.389, 119.90,   262.1, 0,
+			+0.091, +0.039, -0.082, 229.80,    64.3, 0,
+		}
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Ices        40	// 1000 km thick water shell
+			Silicates	51.4
+			Metals      8.6	// R = 800 km, rho = 6 g/cm3
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: Robert Skuridin "PBC"
+		DiffMap        "Ganymede/Surface-PBC"
+		DiffMapAlpha   "None"
+
+		// Elevation map author: Vladimir Romanyuk "SpaceEngineer"
+		BumpMap        "Ganymede/Bump-PBC-SE"
+		BumpHeight      4.0
+		BumpOffset      2.0
+
+		Hapke           0.75 // phase curve is intermediate between a Lambert curve and a "fully Hapke" curve like Mercury and Luna, closer to Hapke by a factor of ~3
+		SpotBright      1.12 // (0.83 * 1/Hapke), avg value, minus outliers; Domingue & Verbiscer (1997) - 10.1006/icar.1997.5730
+		SpotWidth       0.074 // Trailing hemisphere (leading hemisphere values are nonsensical) -- Domingue & Verbiscer (1997) - 10.1006/icar.1997.5730
+	}
+
+	NoAtmosphere    true
+
+	Orbit
+	{
+		AnalyticModel  "Ganymede-L1"
+		Epoch          2443000
+		Period         0.01958851688
+		SemiMajorAxis  0.007152406416
+		Eccentricity   0.0015
+		Inclination    0.195
+		AscendingNode  119.841
+		LongOfPericen  188.831
+		MeanLongitude  121.206
+	}
+}
+
+Moon	"Callisto/Jupiter IV"
+{
+	ParentBody     "Jupiter"
+	Class          "Aquaria"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1610.01.08"
+
+	Mass            0.01801155
+	Radius          2410.3
+
+	Color         ( 0.369 0.322 0.271 )
+	Albedo          0.2
+	Brightness      1.0
+	BrightnessReal  0.6
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	268.72		// degrees
+		PoleRARate  	-0.009		// degrees/century
+		PoleDec     	64.83		// degrees
+		PoleDecRate 	0.003		// degrees/century
+		PrimeMeridian	259.51	// degrees
+		RotationRate	21.5710715	// degrees/day
+		PeriodicTermsSecular		// SUM [ amp[i] * sin(phase[i] + frequency[i] * t_days + freq_rate[i] * t_days^2) ]
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			-0.068, -0.029, +0.061,  119.90,  262.1, 0,
+			+0.590, +0.254, -0.533,  229.80,   64.3, 0,
+			+0.010, -0.004, -0.009,  113.35, 6070.0, 0,
+		}
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Ices        50
+			Silicates	50
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: John van Vliet
+		DiffMap        "Callisto/Surface-JVV"
+		DiffMapAlpha   "None"
+
+		// Elevation map author: "Kexitt"
+		BumpMap        "Callisto/Bump-KX"
+		BumpHeight      6.0
+		BumpOffset      2.0
+
+		Hapke           0.80 // phase curve is intermediate between a Lambert curve and a "fully Hapke" curve like Mercury and Luna, closer to Hapke by a factor of ~4
+		SpotBright      0.97 // (0.77 * 1/Hapke), avg value; Domingue & Verbiscer (1997) - 10.1006/icar.1997.5730
+		SpotWidth       0.029 // Avg of leading and trailing hemispheres; Domingue & Verbiscer (1997) - 10.1006/icar.1997.5730
+	}
+
+	Atmosphere
+	{
+		Height      36
+		Pressure    2e-10
+		Greenhouse  0
+		Model      "Sun"
+		Bright      0.4
+
+		Composition // values in percent
+		{
+			O2  96.25
+			CO2 3.75
+		}
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Callisto-L1"
+		Epoch          2443000
+		Period         0.04569301685
+		SemiMajorAxis  0.01258689839
+		Eccentricity   0.007
+		Inclination    0.281
+		AscendingNode  323.265
+		LongOfPericen  335.933
+		MeanLongitude  85.091
+	}
+}
+
+Planet	"Saturn"
+{
+	ParentBody     "Sun"
+	Class          "Jupiter"
+
+	Mass            95.162
+	Radius          60268
+	Oblateness      0.09796
+
+	Color         ( 1.000 1.000 0.850 )
+	Albedo          0.342
+	AlbedoBond      0.342
+	AlbedoGeom      0.47
+	Brightness      0.7
+	BrightnessReal  0.65
+
+	EndogenousHeating 130 // for correct temperature at 1 bar
+
+	RotationPeriod  10.65622
+	RotationOffset  358.922
+	Obliquity       28.049
+	EqAscendNode    169.53
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	40.589		// degrees
+		PoleRARate  	-0.036		// degrees/century
+		PoleDec     	83.537		// degrees
+		PoleDecRate 	-0.004		// degrees/century
+		PrimeMeridian	38.90		// degrees
+		RotationRate	810.7939024 // degrees/day
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Hydrogen    81.1
+			Helium      3.12
+			Ices		15.0 // total mass of the rocky/water core: 15 Mearth = 15.78%
+			Silicates	0.70
+			Metals      0.08
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: Solar System Scope under Attribution 4.0 International license
+		DiffMap        "Saturn/Surface-SSS"
+		DayAmbient      0
+		RingsWinter     1
+	}
+
+	NoClouds     true
+
+	Atmosphere
+	{
+		Height   250		// km
+		Model   "Earth"
+		Bright   5.0
+		Opacity  0.2
+		SkyLight 0.002
+
+		Composition // values in percent
+		{
+			H2   96.3
+			He   3.25
+			CH4  0.45
+			NH3  0.0125
+			C2H6 0.0007
+		}
+	}
+
+	Aurora
+	{
+		Height       1000   // km
+		TopColor    (1.5 0.0 0.8)
+		BottomColor (1.0 0.1 0.0)
+
+		NorthLat     90    // degrees
+		NorthLon     0     // degrees
+		NorthRadius  15000 // km
+		NorthWidth   5000  // km
+		NorthRings   3     // number of rings
+		NorthBright  1.0
+
+		SouthLat    -90    // degrees
+		SouthLon     0     // degrees
+		SouthRadius  16000 // km
+		SouthWidth   5000  // km
+		SouthRings   3     // number of rings
+		SouthBright  1.0
+	}
+
+	Rings
+	{
+		// Rings texture author: Sean Young "HarbingerDawn"
+		Texture        "Saturn-rings.*"
+		InnerRadius     64535
+		OuterRadius     318120
+		MeanRadius      106000	// radius of the most denser part for the "rings winter" effect
+		EdgeRadius      137000	// outer radius of the dense part of rings  (skipping the E ring)
+		ChartRadius     137000	// outer radius of rings for the chart mode (skipping the E ring)
+		Thickness       0.15	// km
+		RocksMaxSize    0.008	// km
+		Brightness      1.0
+		FrontBright     2.0
+		BackBright      5.0 // 0.15
+		Density         1.0
+		Opacity         1.0
+		SelfShadow      1.0
+		PlanetShadow    1.0
+		Hapke           1.0
+		SpotBright      0.45  // avg of A and B rings across visible wavelengths (SH only, no CB); French et al. (2007) - 10.1086/519982
+		SpotWidth       0.015 // avg of A and B rings across visible wavelengths (SH only, no CB); French et al. (2007) - 10.1086/519982
+		SpotBrightCB    1.95  // paper yields value of 0.39, but I had to multiply by 5 to match photos
+		SpotWidthCB     0.00245 // 0.00145, + 0.001 to account for angular width of Sun
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Saturn-DE"
+		RefPlane       "Ecliptic"
+		Period          29.4577
+		SemiMajorAxis   9.5371
+		Eccentricity    0.0542
+		Inclination     2.4845
+		AscendingNode   113.715
+		LongOfPericen   92.432
+		MeanLongitude   49.944
+	}
+}
+
+Moon	"Mimas/Saturn I"
+{
+	ParentBody     "Saturn"
+	Class          "Aquaria"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1789.09.17"
+
+	Mass            6.19e-6
+	Dimensions    ( 393.4, 381.2, 415.6 )
+
+	Color         ( 1.000 0.840 0.773 )
+	AlbedoBond      0.49 // Howett et al. (2010)
+	AlbedoGeom      0.962
+	Brightness      1.0
+	BrightnessReal  1.1
+
+	// Hack: override computed tidal heating
+	EndogenousHeating 0
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	40.58		// degrees
+		PoleRARate  	-0.036		// degrees/century
+		PoleDec     	83.52		// degrees
+		PoleDecRate 	-0.004		// degrees/century
+		PrimeMeridian	333.46		// degrees
+		RotationRate	381.994555	// degrees/day
+		PeriodicTermsSecular		// SUM { amp[i] * sin(phase[i] + frequency[i] * t_centuries + freq_rate[i] * t_centuries^2) }
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			+13.56, -1.53, -13.48, 177.40, -36505.5, 0
+			  0.00,  0.00, -44.85, 316.45,   +506.2, 0
+		}
+	}
+
+	Surface
+	{
+		// Elevation map author: "Kexitt"
+		DiffMap        "Mimas/Surface-KX"
+
+		// Elevation map author: "Kexitt"
+		BumpMap        "Mimas/Bump-KX"
+		BumpHeight      10.2914
+		BumpOffset		8.0
+
+		Gamma           2.5
+		Hapke           0.7
+		SpotBright      0.95 // 0.667 / Hapke -- Verbiscer & Veverka (1992); 10.1016/0019-1035(92)90171-3
+		SpotWidth       0.082 // Verbiscer & Veverka (1992); 10.1016/0019-1035(92)90171-3
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Ices		74.0 // Charnoz et al. (2011)
+			Silicates	26.0
+		}
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Mimas-TASS17"
+		Epoch          2451179.5
+		Period         0.002580265369
+		SemiMajorAxis  0.001240106952
+		Eccentricity   0.0206
+		Inclination    1.566
+		ArgOfPericen   332.864
+		AscendingNode  177.459
+		MeanAnomaly    100.173
+	}
+}
+
+Moon	"Enceladus/Saturn II"
+{
+	ParentBody     "Saturn"
+	Class          "Aquaria"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1789.08.28"
+
+	Mass            1.841E-5
+	Dimensions    ( 502.8, 496.6, 513.2 )
+
+	AlbedoBond      0.81 // Howett et al. (2010)
+	AlbedoGeom      1.4
+	Brightness      1.5
+	BrightnessReal  1.1
+
+	// Hack: override computed tidal heating
+	EndogenousHeating 0
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	40.66		// degrees
+		PoleRARate  	-0.036		// degrees/century
+		PoleDec     	83.52		// degrees
+		PoleDecRate 	-0.004		// degrees/century
+		PrimeMeridian	6.32		// degrees
+		RotationRate	262.7318996	// degrees/day
+	}
+
+	Surface
+	{
+		// Surface map author: Robert Skuridin "PBC"
+		DiffMap        "Enceladus/Surface-PBC"
+
+		// Elevation map author: "Kexitt"
+		BumpMap        "Enceladus/Bump-KX"
+		BumpHeight      6.0
+		BumpOffset		3.0
+
+		Hapke           0.5
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Ices		43.0 // Charnoz et al. (2011)
+			Silicates	57.0
+		}
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Enceladus-TASS17"
+		Epoch          2451179.5
+		Period         0.003751532545
+		SemiMajorAxis  0.001591042781
+		Eccentricity   0.0001
+		Inclination    0.01
+		ArgOfPericen   334.689
+		AscendingNode  137.077
+		MeanAnomaly    162.044
+	}
+}
+
+Moon	"Tethys/Saturn III"
+{
+	ParentBody     "Saturn"
+	Class          "Aquaria"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1684.03.21"
+
+	Mass            1.037E-4
+	Radius          529.9
+
+	AlbedoBond      0.67 // Howett et al. (2010)
+	AlbedoGeom      1.229
+	Brightness      1.5
+	BrightnessReal  2.0
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	40.66		// degrees
+		PoleRARate  	-0.036		// degrees/century
+		PoleDec     	83.52		// degrees
+		PoleDecRate 	-0.004		// degrees/century
+		PrimeMeridian	8.95		// degrees
+		RotationRate	190.6979085	// degrees/day
+		PeriodicTermsSecular		// SUM { amp[i] * sin(phase[i] + frequency[i] * t_centuries + freq_rate[i] * t_centuries^2) }
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			+9.66, -1.09, -9.60, 300.00, -7225.9, 0
+			 0.00,  0.00, +2.23, 316.45,  +506.2, 0
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: Robert Skuridin "PBC"
+		DiffMap        "Tethys/Surface-PBC"
+
+		// Elevation map author: "Kexitt"
+		BumpMap        "Tethys/Bump-KX"
+		BumpHeight      20.0
+		BumpOffset      10.0
+
+		Hapke           0.5
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Ices		94.0 // Charnoz et al. (2011)
+			Silicates	6.0
+		}
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Tethys-TASS17"
+		Epoch          2451179.5
+		Period         0.005168630569
+		SemiMajorAxis  0.001969652406
+		Eccentricity   0.0001
+		Inclination    0.168
+		ArgOfPericen   149.166
+		AscendingNode  149.174
+		MeanAnomaly    28.755
+	}
+}
+
+Moon	"Dione/Saturn IV"
+{
+	ParentBody     "Saturn"
+	Class          "Aquaria"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1684.03.21"
+
+	Mass            1.84E-4
+	Radius          559
+
+	Albedo          0.63 // Howett et al. (2010)
+	Brightness      1.25
+	BrightnessReal  1.5
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	40.66		// degrees
+		PoleRARate  	-0.036		// degrees/century
+		PoleDec     	83.52		// degrees
+		PoleDecRate 	-0.004		// degrees/century
+		PrimeMeridian	357.6		// degrees
+		RotationRate	131.5349316	// degrees/day
+	}
+
+	Surface
+	{
+		// Surface map author: Robert Skuridin "PBC"
+		DiffMap        "Dione/Surface-PBC"
+
+		// Elevation map author: "Kexitt"
+		BumpMap        "Dione/Bump-KX"
+		BumpHeight      20.0
+		BumpOffset		10.0
+
+		Hapke           1.0
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Ices		50.0 // Charnoz et al. (2011)
+			Silicates	50.0
+		}
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Dione-TASS17"
+		Epoch          2451179.5
+		Period         0.007493424911
+		SemiMajorAxis  0.002522727272
+		Eccentricity   0.0002
+		Inclination    0.002
+		AscendingNode  57.741
+		ArgOfPericen   173.999
+		MeanAnomaly    109.204
+	}
+}
+
+Moon	"Rhea/Saturn V"
+{
+	ParentBody     "Saturn"
+	Class          "Aquaria"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1672.12.23"
+
+	Mass            3.85E-4
+	Radius          764
+	IntertiaMoment  0.4 // Anderson (2008)
+
+	AlbedoBond      0.48 // Pitman et al. (2010)
+	AlbedoGeom      0.95 // Verbiscer et al. (2007)
+	Brightness      1.25
+	BrightnessReal  1.7
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	40.38		// degrees
+		PoleRARate  	-0.036		// degrees/century
+		PoleDec     	83.55		// degrees
+		PoleDecRate 	-0.004		// degrees/century
+		PrimeMeridian	235.16		// degrees
+		RotationRate	79.6900478	// degrees/day
+		PeriodicTermsSecular		// SUM { amp[i] * sin(phase[i] + frequency[i] * t_centuries + freq_rate[i] * t_centuries^2) }
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			+3.10, -0.35, -3.08, 345.20, -1016.3, 0
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: Robert Skuridin "PBC"
+		DiffMap        "Rhea/Surface-PBC"
+
+		// Elevation map author: "Kexitt"
+		BumpMap        "Rhea/Bump-KX"
+		BumpHeight      20.0
+		BumpOffset		10.0
+
+		Hapke           0.7
+		Gamma           0.7
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Ices		67.0 // Charnoz et al. (2011)
+			Silicates	33.0
+		}
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Rhea-TASS17"
+		Epoch          2451179.5
+		Period         0.01236850506
+		SemiMajorAxis  0.003522994652
+		Eccentricity   0.0009
+		Inclination    0.327
+		AscendingNode  1.095
+		ArgOfPericen   205.869
+		MeanAnomaly    109.204
+	}
+}
+
+Moon	"Titan/Saturn VI"
+{
+	ParentBody     "Saturn"
+	Class          "Aquaria"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1665.03.25"
+
+	Mass            0.02176
+	Radius          2574.91
+
+	Color         ( 0.960 0.805 0.461 )
+	Albedo          0.21
+	Brightness      1.5
+	BrightnessReal  1.0
+
+	// Hack: override computed tidal heating
+	EndogenousHeating 0
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	39.4827		// degrees
+		PoleDec     	83.4279		// degrees
+		PrimeMeridian	186.5855	// degrees
+		RotationRate	22.5769768	// degrees/day
+	}
+
+	NoLife          true
+
+	Surface
+	{
+		// Surface map author: Ian Regan and retro-visor
+		DiffMap        "Titan/Surface-RV"
+		DiffMapAlpha   "Water"
+
+		// Specular map author: retro-visor
+		SpecMap        "Titan/Ocean-RV"
+
+		// Surface map author: Ian Regan and retro-visor
+		BumpMap        "Titan/Bump-RV"
+
+		BumpHeight      2.100 // Titan average elevation // 1.9km + 200 meters below sea level
+		BumpOffset      0.200 // 200 meters below sea level // Ligeia Mare
+
+		Hapke           0.59
+		DayAmbient      1
+		SpecBrightWater 0.75
+		SpecularScale   1
+		RoughnessBias   0.4
+		RoughnessScale  0.45
+		ModulateColor  (0.600 0.480 0.240)
+		stripeZones     0
+		stripeFluct     0
+		stripeTwist     0
+		cycloneMagn     0
+		cycloneFreq     0
+		cycloneDensity  0
+		cycloneOctaves  0
+	}
+
+	Ocean
+	{
+		Height    0.2
+
+		Composition // values in percent
+		{
+			C2H6 76
+			C3H8 8
+			CH4  10
+			N2   4
+		}
+	}
+
+	Clouds
+	{
+		Height  20
+		Opacity 0.85
+		ModulateColor (0.220 0.173 0.094)
+		Hapke   0.0
+
+		Opacity         0.8
+		mainFreq        0.091603
+		mainOctaves     3
+		Coverage        1
+		stripeZones     0.83969
+		stripeFluct     0
+		stripeTwist     2.7481
+	}
+
+	Clouds
+	{
+		Height  30
+		Opacity 0.85
+		ModulateColor (0.220 0.173 0.094)
+		Hapke   0.0
+	}
+
+	Clouds
+	{
+		Height  50
+		Opacity 0.85
+		ModulateColor (0.220 0.173 0.094)
+		Hapke   0.0
+	}
+
+	Atmosphere
+	{
+		Height      200		// km
+		Greenhouse  12		// degrees K
+		Pressure    1.47	// atm
+		Density     4.8		// kg/m^3
+		Bright      5.0
+		SkyLight    1.667
+		Model      "Titan"
+
+		Composition // values in percent
+		{
+			N2  98.4
+			CH4 1.4
+			H2  0.2
+		}
+	}
+
+	NoAurora    true
+
+	Orbit
+	{
+		AnalyticModel  "Titan-TASS17"
+		Epoch          2451179.5
+		Period         0.04365711574
+		SemiMajorAxis  0.008167446523
+		Eccentricity   0.0288
+		Inclination    1.634
+		AscendingNode  44.046
+		ArgOfPericen   172.749
+		MeanAnomaly    192.132
+	}
+}
+
+DwarfMoon	"Hyperion/Saturn VII"
+{
+	ParentBody     "Saturn"
+	Class          "Asteroid"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1848.09.16"
+
+	// min radius = 96.8322
+	// max radius = 187.7578
+	// avg radius = 171
+	Radius          171
+	Mass            9.54E-7
+
+	RotationPeriod  120
+	Obliquity       61
+	EqAscendNode    145
+
+	AlbedoBond      0.2 // guess, based on geometric albedo of 0.3 and accounting for an assumed opposition effect
+	AlbedoGeom      0.3
+	Brightness      1.0
+	BrightnessReal  0.4
+
+	Surface
+	{
+		// Surface map author: John van Vliet
+		DiffMap        "Hyperion/Surface-JVV"
+
+		// Elevation map author: Vladimir Romanyuk "SpaceEngineer"
+		BumpMap        "Hyperion/Bump-SE"
+		BumpHeight      90.9256
+		BumpOffset      74.1678
+
+		Hapke           1.0
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Hyperion-TASS17"
+		Epoch          2451179.5
+		Period         0.05825342471
+		SemiMajorAxis  0.009900401068
+		Eccentricity   0.0175
+		Inclination    0.43
+		AscendingNode  273.863
+		ArgOfPericen   262.058
+		MeanAnomaly    59.956
+	}
+}
+
+Moon	"Iapetus/Saturn VIII"
+{
+	ParentBody     "Saturn"
+	Class          "Aquaria"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1671.10.25"
+
+	Mass            3.35E-4
+	Radius          718
+
+	AbsMagn         1.7
+	AlbedoGeom      0.20
+	AlbedoBond      0.153
+	Brightness      1.0
+	BrightnessReal  0.5
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	318.16		// degrees
+		PoleRARate  	-3.949		// degrees/century
+		PoleDec     	75.03		// degrees
+		PoleDecRate 	-1.143		// degrees/century
+		PrimeMeridian	355.2		// degrees
+		RotationRate	4.5379572	// degrees/day
+	}
+
+	Surface
+	{
+		// Surface map author: "Kexitt"
+		DiffMap        "Iapetus/Surface-KX"
+
+		// Elevation map author: "Kexitt"
+		BumpMap        "Iapetus/Bump-KX"
+		BumpHeight      45.0
+
+		Hapke           1.0
+		Gamma           0.7
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Iapetus-TASS17"
+		Epoch          2451179.5
+		Period         0.2171988423
+		SemiMajorAxis  0.02380548128
+		Eccentricity   0.0284
+		Inclination    7.57
+		AscendingNode  75.583
+		ArgOfPericen   275.85
+		MeanAnomaly    350.306
+	}
+}
+
+DwarfMoon	"Phoebe/Saturn IX"
+{
+	ParentBody     "Saturn"
+	Class          "Asteroid"
+
+	Mass            1.39E-6
+	Radius          110
+
+	RotationPeriod  9.282
+	RotationOffset  320.3
+	Obliquity       17.4
+	EqAscendNode    259.9
+
+	AbsMagn         6.6
+	Albedo          0.05
+	Brightness      0.25
+	BrightnessReal  1.0
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545	// J2000
+		PoleRA      	356.9	// degrees
+		PoleDec     	77.8	// degrees
+		PrimeMeridian	178.58	// degrees
+		RotationRate	931.639	// degrees/day
+	}
+
+	Surface
+	{
+		//DiffMap    "Phoebe.*"
+		Hapke       1.0
+	}
+
+	Orbit
+	{
+		Epoch          2451179.5
+		Period         1.500949233
+		SemiMajorAxis  0.08633363635
+		Eccentricity   0.1644
+		Inclination    174.751
+		AscendingNode  237.143
+		ArgOfPericen   337.537
+		MeanAnomaly    174.569
+	}
+}
+
+Planet	"Uranus"
+{
+	ParentBody     "Sun"
+	Class          "Neptune"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1781.03.13"
+
+	Mass            14.536
+	Radius          25559
+	Oblateness      0.02293
+
+	Color         ( 0.730 0.910 1.000 )
+	Brightness      0.45
+	BrightnessReal  0.6
+	AlbedoBond      0.30
+	AlbedoGeom      0.51
+
+	EndogenousHeating 69 // for correct temperature at 1 bar
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	257.311		// degrees
+		PoleDec     	-15.175		// degrees
+		PrimeMeridian	203.81		// degrees
+		RotationRate	-501.1600928// degrees/day
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Hydrogen    2.99 // total mass of the atmosphere: 0.5 Mearth = 3.6%
+			Helium      0.61
+			Ices		82.1 // total mass of the water core: 100% - 14.28% - 3.6%
+			Silicates	14.0 // total mass of the rocky/metal core: 2 Mearth = 14.3%
+			Metals      0.3
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: "Snowfall"
+		DiffMap        "Uranus/Surface-SF"
+		RingsWinter     0.0 // disable "rings winter" effect
+	}
+
+	NoClouds    true
+
+	Atmosphere
+	{
+		Model          "Earth"
+		Height          300
+		Bright          10
+		Opacity         0 // 0.2
+		SkyLight        2 // 0.002
+		Hue            -0.05
+		Saturation      1.0
+
+		Composition
+		{
+			H2    	82.5
+			He    	15.2
+			CH4   	2.3
+		}
+	}
+
+	Aurora
+	{
+		Height       600   // km
+		TopColor    (1.5 0.0 0.8)
+		BottomColor (1.0 0.1 0.0)
+
+		NorthLat     27    // degrees
+		NorthLon     0     // degrees
+		NorthRadius  8000  // km
+		NorthWidth   2500  // km
+		NorthRings   3     // number of rings
+		NorthBright  0.2
+
+		SouthLat    -50    // degrees
+		SouthLon     180   // degrees
+		SouthRadius  5000  // km
+		SouthWidth   1500  // km
+		SouthRings   3     // number of rings
+		SouthBright  0.3
+	}
+
+	Rings
+	{
+		Texture        "Uranus-rings.*"
+		InnerRadius     31059.23774
+		OuterRadius     123076.75626
+		Thickness       0.1
+		RocksMaxSize    0.01
+		Density         1.0
+		Opacity         1.0
+		SelfShadow      1.0
+		PlanetShadow    1.0
+		Brightness      1.0
+		FrontBright     1.0
+		BackBright      5.0
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Uranus-DE"
+		RefPlane       "Ecliptic"
+		Period          84.0139
+		SemiMajorAxis   19.1913
+		Eccentricity    0.0472
+		Inclination     0.7699
+		AscendingNode   74.23
+		LongOfPericen   170.964
+		MeanLongitude   313.232
+	}
+}
+
+Moon	"Miranda/Uranus V"
+{
+	ParentBody     "Uranus"
+	Class          "Aquaria"
+
+	Mass            1.1E-5
+	Radius          235.8
+
+	Albedo          0.32
+	Brightness      0.6
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	257.43		// degrees
+		PoleDec     	-15.08		// degrees
+		PrimeMeridian	30.70		// degrees
+		RotationRate	-254.6906892// degrees/day
+		PeriodicTermsSecular		// SUM [ amp[i] * sin(phase[i] + frequency[i] * t_days + freq_rate[i] * t_days^2) ]
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			+4.41, +4.25, +1.15,  102.23,  -2024.22, 0,
+			-0.04, -0.02, -0.09,  204.46,  -4048.44, 0,
+			 0.00,  0.00, -1.27,  316.41,   2863.96, 0,
+			 0.00,  0.00, +0.15,  632.82,   5727.92, 0,
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: "Snowfall"
+		DiffMap        "Miranda/Surface-SF"
+		DiffMapAlpha   "None"
+
+		// Bump map author: "Snowfall"
+		BumpMap        "Miranda/Bump-SF"
+		BumpHeight      40
+
+		Hapke           0.5
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Miranda-GUST86"
+		Period         0.003868665778
+		SemiMajorAxis  0.0008676470587
+		Eccentricity   0.0027
+		Inclination    4.22
+		MeanAnomaly    120
+	}
+}
+
+Moon	"Ariel/Uranus I"
+{
+	ParentBody     "Uranus"
+	Class          "Aquaria"
+
+	Mass            2.26E-4
+	Radius          578.9
+
+	Albedo          0.39
+	Brightness      1.125
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	257.43		// degrees
+		PoleDec     	-15.10		// degrees
+		PrimeMeridian	156.22		// degrees
+		RotationRate	-142.8356681// degrees/day
+		PeriodicTermsSecular		// SUM [ amp[i] * sin(phase[i] + frequency[i] * t_days + freq_rate[i] * t_days^2) ]
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			+0.29, +0.28, +0.08,  304.01,    -51.94, 0,
+			 0.00,  0.00, +0.05,  316.41,  +2863.96, 0,
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: "Snowfall"
+		DiffMap        "Ariel/Surface-SF"
+		DiffMapAlpha   "None"
+
+		// Bump map author: "Snowfall"
+		BumpMap        "Ariel/Bump-SF"
+		BumpHeight      9
+
+		Hapke           0.5
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Ariel-GUST86"
+		Period         0.006899531325
+		SemiMajorAxis  0.001278074866
+		Eccentricity   0.0034
+		Inclination    0.31
+		MeanAnomaly    56
+	}
+}
+
+Moon	"Umbriel/Uranus II"
+{
+	ParentBody     "Uranus"
+	Class          "Aquaria"
+
+	Mass            1.96E-4
+	Radius          584.7
+
+	Albedo          0.21
+	Brightness      0.625
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	257.43		// degrees
+		PoleDec     	-15.10		// degrees
+		PrimeMeridian	108.05		// degrees
+		RotationRate	-86.8688923	// degrees/day
+		PeriodicTermsSecular		// SUM [ amp[i] * sin(phase[i] + frequency[i] * t_days + freq_rate[i] * t_days^2) ]
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			+0.21, +0.20, +0.06,  308.71,    -93.17, 0,
+			 0.00,  0.00, -0.09,  316.41,  +2863.96, 0,
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: "Snowfall"
+		DiffMap        "Umbriel/Surface-SF"
+		DiffMapAlpha   "None"
+
+		// Bump map author: "Snowfall"
+		BumpMap        "Umbriel/Bump-SF"
+		BumpHeight      23
+
+		Hapke           0.5
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Umbriel-GUST86"
+		Period         0.01134589596
+		SemiMajorAxis  0.001778074866
+		Eccentricity   0.005
+		Inclination    0.36
+		MeanAnomaly    280
+	}
+}
+
+Moon	"Titania/Uranus III"
+{
+	ParentBody     "Uranus"
+	Class          "Aquaria"
+
+	Mass            5.91E-4
+	Radius          788.9
+
+	Albedo          0.27
+	Brightness      0.65
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	257.43		// degrees
+		PoleDec     	-15.10		// degrees
+		PrimeMeridian	77.74		// degrees
+		RotationRate	-41.3514316	// degrees/day
+		PeriodicTermsSecular		// SUM [ amp[i] * sin(phase[i] + frequency[i] * t_days + freq_rate[i] * t_days^2) ]
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			+0.29, +0.28, +0.08,  340.82,  -75.32, 0,
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: "Snowfall"
+		DiffMap        "Titania/Surface-SF"
+		DiffMapAlpha   "None"
+
+		// Bump map author: "Snowfall"
+		BumpMap        "Titania/Bump-SF"
+		BumpHeight      25
+
+		Hapke           0.5
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Titania-GUST86"
+		Period         0.02383623798
+		SemiMajorAxis  0.002913101604
+		Eccentricity   0.0022
+		Inclination    0.1
+		MeanAnomaly    30
+	}
+}
+
+Moon	"Oberon/Uranus IV"
+{
+	ParentBody     "Uranus"
+	Class          "Aquaria"
+
+	Mass            5.04E-4
+	Radius          761.4
+
+	Albedo          0.23
+	Brightness      0.75
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	257.43		// degrees
+		PoleDec     	-15.10		// degrees
+		PrimeMeridian	6.77		// degrees
+		RotationRate	-26.7394932	// degrees/day
+		PeriodicTermsSecular		// SUM [ amp[i] * sin(phase[i] + frequency[i] * t_days + freq_rate[i] * t_days^2) ]
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			+0.16, +0.16, +0.04,  259.14,  -504.81, 0,
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: "Snowfall"
+		DiffMap        "Oberon/Surface-SF"
+		DiffMapAlpha   "None"
+
+		// Bump map author: "Snowfall"
+		BumpMap        "Oberon/Bump-SF"
+		BumpHeight      23
+
+		Hapke           0.5
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Oberon-GUST86"
+		Period         0.03686047231
+		SemiMajorAxis  0.003901069518
+		Eccentricity   0.0008
+		Inclination    0.1
+		MeanAnomaly    150
+	}
+}
+
+Planet	"Neptune"
+{
+	ParentBody     "Sun"
+	Class          "Neptune"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1846.09.23"
+
+	Mass            17.147
+	Radius          24766
+	Oblateness      0.01708
+
+	EndogenousHeating 69 // for correct temperature at 1 bar
+
+	Color         ( 0.500 0.650 1.000 )
+	Brightness      0.5
+	BrightnessReal  0.7
+	AlbedoBond      0.29
+	AlbedoGeom      0.41
+
+	RotationPeriod  16.11
+	RotationOffset  228.65
+	Obliquity       28.03
+	EqAscendNode    49.235
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	299.36		// degrees
+		PoleDec     	43.36		// degrees
+		PrimeMeridian	253.18		// degrees
+		RotationRate	536.3128492	// degrees/day
+		PeriodicTermsSecular		// SUM { amp[i] * sin(phase[i] + frequency[i] * t_centuries + freq_rate[i] * t_centuries^2) }
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			+0.70, -0.51, -0.48, 357.85, 52.316, 0
+		}
+	}
+
+	Interior
+	{
+		Composition // mass fraction, values in percent
+		{
+			Hydrogen    12.0 // total mass of the atmosphere: 15% = 2.55 Mearth
+			Helium      3.0
+			Ices		78.0 // total mass of the water core: 100% - 15% - 7%
+			Silicates	5.6 // total mass of the rocky/metal core: 1.2 Mearth = 7%
+			Metals      1.4
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: "Snowfall"
+		DiffMap        "Neptune/Surface-SF"
+		RingsWinter     0.0 // disable "rings winter" effect
+	}
+
+	NoClouds    true
+
+	Atmosphere
+	{
+		Height     300 // km
+		Model     "Earth"
+		Bright     5.0
+		Opacity    0.0 // 0.2
+		SkyLight   0.2
+		Hue        0
+		Saturation 1.2
+
+		Composition // values in percent
+		{
+			H2   80
+			He   19
+			CH4  1.5
+			C2H6 0.00015
+		}
+	}
+
+	Aurora
+	{
+		Height       600   // km
+		TopColor    (1.5 0.0 0.8)
+		BottomColor (1.0 0.1 0.0)
+
+		NorthLat     45    // degrees
+		NorthLon     0     // degrees
+		NorthRadius  12000 // km
+		NorthWidth   3500  // km
+		NorthRings   3     // number of rings
+		NorthBright  0.1
+
+		SouthLat    -35    // degrees
+		SouthLon     180   // degrees
+		SouthRadius  4000  // km
+		SouthWidth   1500  // km
+		SouthRings   3     // number of rings
+		SouthBright  0.4
+	}
+
+	// Rings map author: "retro-visor"
+	Rings
+	{
+		Texture        "Neptune-rings.*"
+		InnerRadius     40501
+		OuterRadius     62996
+		Thickness       0.1
+		RocksMaxSize    0.01
+		Brightness      0.15
+		FrontBright     1.0
+		BackBright      0.15
+		Density         0.15
+		Opacity         0.15
+		SelfShadow      0.15
+		PlanetShadow    0.05
+	}
+
+	Orbit
+	{
+		AnalyticModel  "Neptune-DE"
+		RefPlane       "Ecliptic"
+		Period          164.793
+		SemiMajorAxis   30.069
+		Eccentricity    0.0086
+		Inclination     1.7692
+		AscendingNode   131.722
+		LongOfPericen   44.971
+		MeanLongitude   304.88
+	}
+}
+
+Moon	"Proteus/Neptune VIII/S|1989 N1"
+{
+	ParentBody     "Neptune"
+	Class          "Asteroid"
+
+	Radius          219
+	Mass            8.37E-6
+
+	Albedo          0.061
+	Brightness      1.75
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	299.27		// degrees
+		PoleDec     	42.91		// degrees
+		PrimeMeridian	93.38		// degrees
+		RotationRate	320.7654228	// degrees/day
+		PeriodicTermsSecular		// SUM { amp[i] * sin(phase[i] + frequency[i] * t_centuries + freq_rate[i] * t_centuries^2) }
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			+0.70, -0.51, -0.48, 357.85, 52.316, 0
+			-0.05, -0.04, +0.04, 142.61, 2824.6, 0
+		}
+	}
+
+	Surface
+	{
+		DiffMap        "Proteus/Surface-SF"
+
+		BumpMap        "Proteus/Bump-SF"
+		BumpHeight      110
+
+		Hapke           1.0
+	}
+
+	Orbit
+	{
+		Epoch          2450085.5
+		Period         0.003072796626
+		SemiMajorAxis  0.0007864104277
+		Eccentricity   0.0005
+		Inclination    1.09
+		AscendingNode  330.943
+		ArgOfPericen   267.246
+		MeanAnomaly    213.916
+	}
+}
+
+Moon	"Triton/Neptune I"
+{
+	ParentBody     "Neptune"
+	Class          "Aquaria"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1846.10.10"
+
+	Radius          1353.4
+	Mass            3.515E-3
+
+	Albedo          0.756 // geometric
+	Brightness      1.25
+
+	RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	299.36		// degrees
+		PoleDec     	41.17		// degrees
+		PrimeMeridian	296.53		// degrees
+		RotationRate	-61.2572637	// degrees/day
+		PeriodicTermsSecular		// SUM { amp[i] * sin(phase[i] + frequency[i] * t_centuries + freq_rate[i] * t_centuries^2) }
+		{
+			// PoleRA amp, PoleDec amp, PrimeMer amp, phase, freq, freq_rate
+			-32.35, 22.55, 22.25,  177.85,    52.316, 0
+			-06.28, 02.10, 06.73,   355.7,   104.632, 0
+			-02.08, 00.55, 02.05,   711.4,   209.264, 0
+			-00.74, 00.16, 00.74,  1422.8,   418.528, 0
+			-00.28, 00.05, 00.28,  2845.6,   837.056, 0
+			-00.11, 00.02, 00.11,  5691.2,  1674.112, 0
+			-00.07, 00.01, 00.05, 11382.4,  3348.224, 0
+			-00.02, 00.00, 00.02, 22764.8,  6696.448, 0
+			-00.01, 00.00, 00.01, 45529.6, 13392.896, 0
+		}
+	}
+
+	Surface
+	{
+		// Surface map author: Alexander Kiryushenko "Dizel777"
+		// Surface map author: Vladimir Romanyuk "SpaceEngineer"
+		DiffMap        "Triton/Surface-SE"
+
+		// Surface map author: Vladimir Romanyuk "SpaceEngineer"
+		BumpMap        "Triton/Bump-SE"
+		BumpHeight      3.5
+
+		Hapke           1.0
+	}
+
+	Clouds
+	{
+		Height          3
+		BumpHeight      0
+		Hapke           0.2
+		SpotBright      2
+		SpotWidth       0.15
+		//DayAmbient      2
+		ModulateColor  (5.0 5.0 5.0)
+		Opacity         0.05
+		mainFreq        1.5
+		mainOctaves     6
+		cycloneDensity  0
+		Coverage        0.02
+		stripeZones     1.0
+		stripeTwist     1.0
+	}
+
+	Atmosphere
+	{
+		Height      60  // km
+		Pressure    1.9e-5
+		Greenhouse  0
+		Model      "Pluto"
+		Bright      2.2
+		Opacity     0.2
+		SkyLight    0.01
+
+		Composition // values in percent
+		{
+			N2  99.82
+			CO  0.126
+			CH4 0.053
+		}
+	}
+
+	NoAurora true
+
+	Orbit
+	{
+		AnalyticModel  "Triton-Emelyanov"
+		Epoch          2447763.5
+		Period         0.01609029324
+		SemiMajorAxis  0.002371425708
+		Eccentricity   2.285e-005
+		Inclination    156.82624
+		AscendingNode  147.899288
+		ArgOfPericen   293.0924
+		MeanAnomaly    315.726316
+	}
+}
+
+DwarfMoon	"Nereid/Neptune II"
+{
+	ParentBody     "Neptune"
+	Class          "Asteroid"
+
+	Radius          170
+	Mass            5.19E-6
+
+	Albedo          0.155
+	Brightness      1.2
+
+	Surface
+	{
+		Hapke       1.0
+	}
+
+	Orbit
+	{
+		Epoch          2447763.5
+		Period         0.986020208
+		SemiMajorAxis  0.03685427807
+		Eccentricity   0.7512
+		Inclination    28.385
+		AscendingNode  190.678
+		ArgOfPericen   17.69
+		MeanAnomaly    36.056
+	}
+}
+
+Barycenter "Pluto-Charon"
+{
+	ParentBody     "Sun"
+	Orbit
+	{
+		AnalyticModel  "Pluto-DE"
+		RefPlane       "Ecliptic"
+		Period          248.54
+		SemiMajorAxis   39.48168677
+		Eccentricity    0.24880766
+		Inclination     17.14175
+		AscendingNode   110.30347
+		LongOfPericen   224.06776
+		MeanLongitude   238.92881
+	}
+}
+
+DwarfPlanet	"Pluto/(134340) Pluto"
+{
+	ParentBody     "Pluto-Charon"
+	Class          "Aquaria"
+	AsterType      "Plutino"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1930.02.18"
+
+	Mass            0.00218
+	Radius          1183.3	// base radius for the bump map
+	RadiusInfo      1187	// radius for interface
+
+	// Color          (0.580 0.435 0.333) // (0.443 0.392 0.310)
+	AlbedoBond      0.72 // Buratti et al. (2016) - 10.1016/j.icarus.2016.11.012
+	AlbedoGeom      0.62
+	Brightness      1.0
+	AbsMagn        -0.8
+	SlopeParam      0.15
+
+	//RotationPeriod  153.29389971661
+	//Obliquity       112.783
+	//EqAscendNode    223.0539
+    RotationOffset  45
+	TidalLocked     true
+
+	/*RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	132.993		// degrees
+		PoleDec     	-6.163		// degrees
+		PrimeMeridian	237.305		// degrees
+		RotationRate	56.3625225	// degrees/day
+	}*/
+
+	Surface
+	{
+		// Surface map author: Vladimir Romanyuk "FarGetaNik"
+		DiffMap        "Pluto/Surface-FGN"
+		DiffMapAlpha   "Ice"
+
+		// Elevation map author: Vladimir Romanyuk "SpaceEngineer"
+		BumpMap        "Pluto/Bump-SE"
+		BumpHeight      10
+		BumpOffset		3
+
+		Hapke           0.5  // phase curve is intermediate between a Lambert curve and a "fully Hapke" curve like Luna or Mercury
+		SpotBright      2.0  // (1.0 * 1/Hapke); Buie et al. (2016) - http://www.hou.usra.edu/meetings/lpsc2016/pdf/2927.pdf
+		SpotWidth       0.05 // Buie et al. (2016) - http://www.hou.usra.edu/meetings/lpsc2016/pdf/2927.pdf
+	}
+
+	Atmosphere
+	{
+		Height      300 // km
+		Pressure    1e-5
+		Greenhouse  0
+		Model      "Pluto"
+		Bright      0.5
+		Opacity     0.15
+		SkyLight    0.01
+
+		Composition // values in percent
+		{
+			N2   99.7
+			CH4  0.25
+			CO   0.05
+			C2H2 3e-6
+			C2H4 1e-6
+		}
+	}
+
+	NoAurora true
+	NoRings  true
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Period          0.01748769994
+		SemiMajorAxis   0.0000151732727282
+		Eccentricity    0.003484
+		Inclination     112.783 //96.1680
+		AscendingNode   223.0539
+		ArgOfPericen    337.92
+		MeanAnomaly     56.9861
+	}
+}
+
+Moon	"Charon/Pluto I"
+{
+	ParentBody     "Pluto-Charon"
+	Class          "Aquaria"
+
+	DiscMethod     "Imaging"
+	DiscDate       "1978.06.22"
+
+	Mass            2.54E-4
+	Radius          606	// base radius for the bump map
+	RadiusInfo      606	// radius for interface
+
+	// Color          (0.500 0.435 0.408) // (0.541 0.502 0.475)
+	Albedo          0.35
+	Brightness      1.0
+
+	//RotationPeriod  153.29389971661
+	//Obliquity       112.783
+	//EqAscendNode    223.0539
+    RotationOffset  0
+	TidalLocked     true
+
+	/*RotationModel "IAU"
+	{
+		Epoch			2451545		// J2000
+		PoleRA      	132.993		// degrees
+		PoleDec     	-6.163		// degrees
+		PrimeMeridian	237.305		// degrees
+		RotationRate	56.3625225	// degrees/day
+	}*/
+
+	Surface
+	{
+		// Surface map author: "Kexitt"
+		DiffMap        "Charon/Surface-KX"
+		DiffMapAlpha   "Ice"
+
+		// Surface map author: "Kexitt"
+		BumpMap        "Charon/Bump-KX"
+		BumpHeight      30
+		BumpOffset		15
+
+		Hapke           1.0
+	}
+
+	NoAurora true
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Period          0.01748769994
+		SemiMajorAxis   0.0001312566845
+		Eccentricity    0.003484
+		Inclination     112.783
+		AscendingNode   223.0539
+		ArgOfPericen    157.92
+		MeanAnomaly     56.9861
+	}
+}
+
+DwarfMoon	"Styx/Pluto V"
+{
+	ParentBody     "Pluto-Charon"
+	Class          "Asteroid"
+
+	Radius          3
+	RotationPeriod  495.1441681712142
+
+	Albedo          0.08
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Period          0.05530459
+		SemiMajorAxis   0.00028075
+		Eccentricity    0.00001
+		Inclination     112.783
+		AscendingNode   223.0539
+		ArgOfPericen    149.649
+		MeanAnomaly     336.760
+	}
+}
+
+DwarfMoon	"Nix/Pluto II"
+{
+	ParentBody     "Pluto-Charon"
+	Class          "Asteroid"
+
+	Radius          20
+	RotationPeriod  43.7761445326
+	Obliquity       132
+
+	Albedo          0.08
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Period          0.068064424
+		SemiMajorAxis   0.000325594
+		Eccentricity    0.003
+		Inclination     112.783
+		AscendingNode   223.0539
+		ArgOfPericen    270.877
+		MeanAnomaly     260.688
+	}
+}
+
+DwarfMoon	"Kerberos/Pluto IV"
+{
+	ParentBody     "Pluto-Charon"
+	Class          "Asteroid"
+
+	Radius          4.5
+	RotationPeriod  127.570721902
+
+	Albedo          0.08
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Period          0.08788689
+		SemiMajorAxis   0.00039439
+		Eccentricity    0.0
+		Inclination     112.783	// 0.4 deg to Pluto's equator
+		AscendingNode   223.0539
+		ArgOfPericen    149.649
+		MeanAnomaly     336.760
+	}
+}
+
+DwarfMoon	"Hydra/Pluto III"
+{
+	ParentBody     "Pluto-Charon"
+	Class          "Asteroid"
+
+	Radius          19
+	RotationPeriod  10.2798546073
+
+	Albedo          0.08
+
+	Orbit
+	{
+		Period         0.104588133
+		SemiMajorAxis  0.000432822
+		Eccentricity   0.00554
+		Inclination    112.995	// 0.3 deg to Pluto's equator
+		AscendingNode  223.0539
+		ArgOfPericen   149.649
+		MeanAnomaly    336.760
+		RefPlane      "Ecliptic"
+	}
+}
+
+DwarfPlanet	"Haumea/(136108) Haumea/2003 EL61"
+{
+	ParentBody     "Sun"
+	AsterType      "Cubewano"
+
+	Dimensions     (2322, 1138, 1704)
+	OblatenessInfo  0.434
+	Mass            0.00066
+
+	RotationPeriod  3.9155
+	Obliquity       126   // used Hi'iaka's orbit Inclination
+	EqAscendNode    26    // used Hi'iaka's orbit AscendingNode
+
+	AbsMagn         0.1
+	SlopeParam      0.15
+	Albedo          0.51
+	Brightness      1.0 // 3.0
+
+	Rings
+	{
+		//Texture        "Haumea-rings.*"
+		InnerRadius     2252
+		OuterRadius     2322
+	}
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Epoch           2456401
+		MeanMotion      0.00348839
+		SemiMajorAxis   43.0579
+		Eccentricity    0.195253
+		Inclination     28.1941
+		AscendingNode   121.819
+		ArgOfPericenter 240.678
+		MeanAnomaly     206.48
+	}
+
+}
+
+DwarfMoon	"Hi'iaka/Haumea I"
+{
+	ParentBody     "Haumea"
+	Class          "Asteroid"
+
+	Radius          155
+	Mass            2.9962e-6
+
+	Albedo          0.8
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Period          0.1344861026
+		SemiMajorAxis   0.0003308823529
+		Eccentricity    0.05
+		Inclination     126.356
+		AscendingNode   26.1
+		ArgOfPericen    278.6
+		MeanAnomaly     16.71
+	}
+}
+
+DwarfMoon	"Namaka/Haumea II"
+{
+	ParentBody     "Haumea"
+	Class          "Asteroid"
+
+	Radius          85
+	Mass            2.9962e-7
+
+	Albedo          0.8
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Period          0.09336270562
+		SemiMajorAxis   0.0002627005347
+		Eccentricity    0.23
+		Inclination     113.031
+		AscendingNode   25
+	}
+}
+
+DwarfPlanet	"Makemake/(136472) Makemake/2005 FY9"
+{
+	ParentBody     "Sun"
+	AsterType      "Cubewano"
+
+	Radius          750
+	MassKg          3.1e21
+
+	AbsMagn        -0.4
+	SlopeParam      0.15
+	Albedo          0.78
+	Brightness      0.25 // 2.5
+
+	RotationPeriod  7.771
+
+	NoRings true
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Epoch           2456401
+		MeanMotion      0.00320549
+		SemiMajorAxis   45.5554
+		Eccentricity    0.159941
+		Inclination     29.0131
+		AscendingNode   79.2872
+		ArgOfPericenter 297.077
+		MeanAnomaly     154.559
+	}
+}
+
+DwarfMoon	"S|2015 (136472) 1/MK 2"
+{
+	ParentBody     "Makemake"
+	Class          "Asteroid"
+
+	Radius          87.5
+
+	Albedo          0.07
+
+	Orbit
+	{
+		RefPlane       "Equator"
+		Period          0.03395
+		SemiMajorAxis   0.000141
+	}
+}
+
+Asteroid	"Gonggong/(225088) Gonggong/2007 OR10"
+{
+	ParentBody "Sol"
+	AsterType  "ResonantTNO"
+
+	DiscMethod "Imaging"
+	DiscDate   "2007.07.17"
+
+	AbsMagn     1.8
+	SlopeParam  0.15
+	AlbedoGeom  0.089
+
+	Radius         767.5	// http://www.johnstonsarchive.net/astro/astmoons/am-225088.html
+	MassKg         1.75e21	// total system mass
+    RotationPeriod 44.81
+
+	NoRings true
+
+	Orbit
+	{
+		Epoch			2457600.5
+		SemiMajorAxis	66.9901
+		Period			548.2971
+		MeanAnomaly		104.284
+		ArgOfPericenter	206.925
+		Eccentricity	0.506639
+		Inclination		30.92669
+		AscendingNode	336.81679
+		PericenterDist	33.0503
+		RefPlane		"Ecliptic"
+	}
+}
+
+DwarfMoon	"Xiangliu/S|2010 (225088) 1"
+{
+	ParentBody "(225088) Gonggong"
+
+	DiscDate   "2010.09.18"
+	DiscMethod "Imaging"
+
+	Radius      150
+
+	Orbit
+	{
+		PeriodDays      6
+		SemiMajorAxisKm 15000
+		Eccentricity    0.21
+		RefPlane		"Equator"
+	}
+}
+
+DwarfPlanet	"Eris/(136199) Eris/2003 UB313"
+{
+	ParentBody     "Sun"
+	Class          "Aquaria"
+
+	Radius          1163
+	Mass            0.0028
+
+	RotationPeriod  25.9
+	EqAscendNode    142  // used Dysnomia's orbit AscendingNode
+	Obliquity       139  // used Dysnomia's orbit Inclination
+
+	AbsMagn        -1.2
+	SlopeParam      0.15
+	Albedo          0.96
+	Brightness      0.25 // 5.9
+
+	Surface
+	{
+		Style		0.0
+		colorSea       (1.000 1.000 1.000 0.500)
+		colorShelf     (0.950 0.950 0.950 0.500)
+		colorBeach     (0.750 0.750 0.750 1.000)
+		colorDesert    (0.850 0.850 0.850 1.000)
+		colorLowland   (0.870 0.870 0.870 1.000)
+		colorUpland    (0.930 0.930 0.930 1.000)
+		colorRock      (1.000 1.000 1.000 1.000)
+		colorSnow      (1.000 1.000 1.000 1.000)
+		colorLowPlants (0.870 0.870 0.870 1.000)
+		colorUpPlants  (0.930 0.930 0.930 1.000)
+		//DayAmbient      0.2
+	}
+
+	NoRings true
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Epoch           2456401
+		MeanMotion      0.00175931
+		SemiMajorAxis   67.9581
+		Eccentricity    0.437079
+		Inclination     43.8851
+		AscendingNode   36.031
+		ArgOfPericenter 150.804
+		MeanAnomaly     203.207
+	}
+}
+
+Moon	"Dysnomia/Eris I"
+{
+	ParentBody     "Eris"
+
+	Radius          342
+
+	Color         ( 0.480 0.400 0.380 )
+	Brightness      1.0 // 4.0
+
+	Surface
+	{
+		venusMagn   0
+		hillsMagn	0
+		hillsFreq	0
+	}
+
+	Orbit
+	{
+		RefPlane       "Ecliptic"
+		Epoch           2453979.0 // 2006.08.31 12:00
+		Period          0.0431823
+		SemiMajorAxis   2.5021e-4
+		Inclination     142
+		AscendingNode   139 // unknown
+		MeanAnomaly     328.6
+	}
+}
