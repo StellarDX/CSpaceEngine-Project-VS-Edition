@@ -371,3 +371,4 @@ FodyWeavers.xsd
 /Modules/Lumine/Tests/Tests_SpType/CSE_Tests_SpType.dir
 /Modules/SCStream/Tests/Tests_Stream/CSE_Tests_Stream.dir
 /Modules/Stars/Tests/Tests_StarModels/CSE_Tests_StarModels.dir
+/Libraries/CSE.lib
