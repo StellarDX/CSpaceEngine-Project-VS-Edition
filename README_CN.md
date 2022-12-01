@@ -72,8 +72,8 @@ os.Write();
 | BlueGiantModel | 蓝巨星 | 中 | 光谱型 |
 | SuperGiantModel | 超巨星 | 中 | 光谱型 |
 | HyperGiantModel | 特超巨星 | 中 | 光谱型 |
-| CarbonStarModel(规划) | 碳星，S型恒星 | 中 | 光谱型 |
-| WhiteDwarfModel(规划) | 白矮星 | ？ | ？ |
+| CarbonStarModel | 碳星，S型恒星 | 中 | 光谱型 |
+| WhiteDwarfModel | 白矮星 | 中高 | 光谱型 |
 | NeutronStarModel(规划) | 中子星 | ？ | ？ |
 | BlackHoleModel(规划) | 黑洞 | ？ | ？ |
 | BrownDwarfModel | 褐矮星 | 中 | 光谱型 |

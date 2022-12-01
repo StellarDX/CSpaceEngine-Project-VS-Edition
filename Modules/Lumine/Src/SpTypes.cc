@@ -564,13 +564,8 @@ string spectum::to_str(const SpecClass* _Spec, const Type* _Ty1, const Type* _Ty
 
 string spectum::to_WDstr(const SpecClass* _Spec, const SpecClass* _Spec2, const Type* _Ty1, const Type* _Ty2, const LumClass* _Lum1, const LumClass* _Lum2, const ExtData* _Data)
 {
-	if (*_Spec == D)
-	{
-		return "WD";
-	}
-
 	string _Str = "D";
-	_Str += _SpClassNoFmtStrings[*_Spec];
+	if (_Spec && *_Spec != -1) { _Str += _SpClassNoFmtStrings[*_Spec]; }
 	if (_Spec2 && *_Spec2 != -1) { _Str += _SpClassNoFmtStrings[*_Spec2]; }
 	if (_Ty1 && *_Ty1 != -1)
 	{
@@ -580,6 +575,7 @@ string spectum::to_WDstr(const SpecClass* _Spec, const SpecClass* _Spec2, const 
 		else { _Ty = vformat(_GenTyFmtStr(*_Ty1), make_format_args(*_Ty1)); }
 		_Str += vformat(_FormatStr, make_format_args(_Ty));
 	}
+	else { return "WD"; }
 
 	return _Str;
 }

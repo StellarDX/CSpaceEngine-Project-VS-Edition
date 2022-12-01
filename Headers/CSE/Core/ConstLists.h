@@ -52,10 +52,13 @@ const long double Equation22 = (2.0 * pow(CSE_PI, 5) * pow(BoltzmannConst, 4)) /
 // List3: Units of mass
 // Reference: https://ssd.jpl.nasa.gov/?planet_phys_par
 // -------------------------------------------------------------------------
-//      Name          Value          Note
-#define MassEarth     5.97217E+24  // (±0.00028)Estimated value from planetary ephemeris DE421
-#define MassJupiter   1.898125E+27 // (±0.000088)value from Jovian Satellite ephemeris JUP310
-#define MassSol       1.98847E+30  // (±0.00007)given by solving Kepler's third law
+//      Name          Value                Note
+#define ElectronMass  9.1093837015E-31  // (±0.0000000028)2018 CODATA Value
+#define ProtonMass    1.67262192369E-27 // (±0.00000000051)2018 CODATA Value
+#define NeutronMass   1.67492749804E-27 // (±0.00000000095)2018 CODATA Value
+#define MassEarth     5.97217E+24       // (±0.00028)Estimated value from planetary ephemeris DE421
+#define MassJupiter   1.898125E+27      // (±0.000088)value from Jovian Satellite ephemeris JUP310
+#define MassSol       1.98847E+30       // (±0.00007)given by solving Kepler's third law
 
 
 // List4: Units of length
@@ -135,7 +138,7 @@ const long double Equation41 = (180.0 * 60.0 * 60.0 * AU) / CSE_PI;
 #define CosmoDensityRatio 0.6889           // (±0.0056)ratio between the energy density due to the cosmological constant and the critical density of the universe, according to results published by the Planck Collaboration in 2018
 #define CosmoConstant     Equation87       // constant coefficient of a term Albert Einstein temporarily added to his field equations of general relativity
 #define StarLowMassLimit  1.4894586875E+29 // Dividing point between Brown dwarf and star, Result from Universe sandbox experiment(78.47MJ)
-#define ChandrasekharLim  2.765E+30        // maximum mass of a stable white dwarf star
+#define ChandrasekharLim  2.8633968E+30    // maximum mass of a stable white dwarf star (1.44MSun)
 #define StarWDUpLimExp    1.590776E+31     // Result from Universe sandbox experiment(8MSun)
 #define TOVLimit          4.7126739E+30    // an upper bound to the mass of cold, nonrotating neutron stars
 #define StarBHLowLimExp   7.2910566667E+31 // Result from Universe sandbox experiment(36.6667MSun)

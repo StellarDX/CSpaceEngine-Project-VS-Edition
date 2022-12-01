@@ -56,6 +56,7 @@ Object Obj = gen();
  * - Blue Giants
  * - Supergiants and hypergiants
  * - Carbon Stars
+ * - White Dwarfs
  * - Substellar Objects
 
 ## Compile and Install

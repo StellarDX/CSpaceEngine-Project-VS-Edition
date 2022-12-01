@@ -26,6 +26,9 @@
     <ClInclude Include="..\..\Headers\CSE\Stars\Star_Models_Related.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Stars\Star_Models_Remnants.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Star_Models_Base.cpp">

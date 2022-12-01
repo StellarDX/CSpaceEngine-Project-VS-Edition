@@ -13,6 +13,7 @@
 #include "CSE/Stars/Star_Models_Base.hpp"
 #include "CSE/Stars/Star_Models_Evolution.hpp"
 #include "CSE/Stars/Star_Models_Classification.hpp"
+#include "CSE/Stars/Star_Models_Remnants.hpp"
 #include "CSE/Stars/Star_Models_Related.hpp"
 
 #endif

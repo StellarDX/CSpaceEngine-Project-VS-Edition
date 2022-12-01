@@ -57,6 +57,8 @@ int main()
     CS.Name[0] = "CarbonStar";
     Object SS = CarbonStarModel("S")(random);
     SS.Name[0] = "STypeStar";
+    Object WD = WhiteDwarfModel("DZ8")(random);
+    WD.Name[0] = "WhiteDwarf";
     Object BD = BrownDwarfModel("L2.5V")(random);
     BD.Name[0] = "BrownDwarf";
     Object HBD = HPBrownDwarfModel("T1V")(random);
@@ -70,6 +72,6 @@ int main()
         << sdB << WR << HWR << OB << LSG
         << MSG << HSG << BG << SG << BSG
         << RSG << YSG << HG << CS << SS
-        << BD << HBD;
+        << WD << BD << HBD;
     fout.write();
 }
