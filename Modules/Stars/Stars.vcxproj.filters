@@ -29,12 +29,18 @@
     <ClInclude Include="..\..\Headers\CSE\Stars\Star_Models_Remnants.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Stars\BlackHole.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Star_Models_Base.cpp">
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\Star_Tables.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\BlackHole.cpp">
       <Filter>Src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -18,27 +18,13 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\Headers\CSE\Stars.h" />
-    <ClInclude Include="..\..\Headers\CSE\Stars\BlackHole.hpp" />
-    <ClInclude Include="..\..\Headers\CSE\Stars\Star_Models_Base.hpp" />
-    <ClInclude Include="..\..\Headers\CSE\Stars\Star_Models_Classification.hpp" />
-    <ClInclude Include="..\..\Headers\CSE\Stars\Star_Models_Evolution.hpp" />
-    <ClInclude Include="..\..\Headers\CSE\Stars\Star_Models_Related.hpp" />
-    <ClInclude Include="..\..\Headers\CSE\Stars\Star_Models_Remnants.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Src\BlackHole.cpp" />
-    <ClCompile Include="Src\Star_Models_Base.cpp" />
-    <ClCompile Include="Src\Star_Tables.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{4c6450fb-e6fd-451e-9815-dc75ce0ed747}</ProjectGuid>
-    <RootNamespace>Stars</RootNamespace>
+    <ProjectGuid>{e9c6c66d-e134-4b8f-8461-7c1551df84b4}</ProjectGuid>
+    <RootNamespace>Planets</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>CSE_Stars</ProjectName>
+    <ProjectName>CSE_Planets</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -131,11 +117,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Headers;</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -151,11 +134,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Headers;</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>

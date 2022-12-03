@@ -38,6 +38,9 @@
     <ClCompile Include="Src\DateTime.cpp">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="Src\ConstEquations.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Headers\CSE\Core\AsMath.h">

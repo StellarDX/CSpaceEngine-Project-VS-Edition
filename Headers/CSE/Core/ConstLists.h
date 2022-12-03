@@ -10,9 +10,14 @@
 
 //#if defined(_USE_CSE_DEFINES)
 
-#if !defined(_CSE_MATH_MODULE)
-#include <cmath> // Use STD math when CSE Math module is missing.
-#endif
+//#if !defined(_CSE_MATH_MODULE)
+//#include <cmath> // Use STD math when CSE Math module is missing.
+//#endif
+
+#define _CONSTS cse::consts::
+
+namespace cse{
+namespace consts{
 
 // List1: Math Defines
 // -------------------------------------------------------------------------
@@ -34,19 +39,25 @@
 
 // List2: Common physic constants
 // -------------------------------------------------------------------------
-//      Name           Value/Equation       Note
-#define GravConstant   6.67430E-11       // (±0.00015)2018 CODATA Value, reference from NIST
-#define SpeedOfLight   299792458         // Exact value defined by 1983 17th CGPM
-#define PPM            0.0001            // by definition, Parts-per million to percent
-#define GasConstant    8.31446261815324  // 2018 CODATA Value
-#define AvogadroConst  6.02214076E+23    // 2018 CODATA Value
-#define BoltzmannConst Equation21        // SI by definition, J/K = m2⋅kg/(s2⋅K) in SI base units. Exactly 1.380649E-23
-#define PlanckConst    6.62607015E-34    // 2018 CODATA Value
-#define StBConstant    Equation22        // by definition
-#define Dalton         1.66053906660E-27 // (±0.0000000000050)
+//      Name            Value/Equation        Note
+#define GravConstant    6.67430E-11        // (±0.00015)2018 CODATA Value, reference from NIST
+#define SpeedOfLight    299792458          // Exact value defined by 1983 17th CGPM
+#define PPM             0.0001             // by definition, Parts-per million to percent
+#define GasConstant     8.31446261815324   // 2018 CODATA Value
+#define AvogadroConst   6.02214076E+23     // SI redefinition of 2019
+#define BoltzmannConst  _CONSTS Equation21 // SI by definition, J/K = m2⋅kg/(s2⋅K) in SI base units. Exactly 1.380649E-23
+#define PlanckConst     6.62607015E-34     // 2018 CODATA Value
+#define StBConstant     _CONSTS Equation22 // by definition
+#define ElemCharge      1.602176634E-19    // the electric charge carried by a single proton
+#define FineStructConst 1. / 137.035999206 // Measured in 2020
+#define MagnetConstant  _CONSTS Equation23 // the magnetic permeability in a classical vacuum
+#define ElectricConst   _CONSTS Equation24 // the value of the absolute dielectric permittivity of classical vacuum
+#define Dalton          1.66053906660E-27  // (±0.0000000000050)
 // -------------------------------------------------------------------------
-const long double Equation21 = GasConstant / AvogadroConst;
-const long double Equation22 = (2.0 * pow(CSE_PI, 5) * pow(BoltzmannConst, 4)) / (15.0 * pow(PlanckConst, 3) * pow(SpeedOfLight, 2));
+extern const long double Equation21;
+extern const long double Equation22;
+extern const long double Equation23;
+extern const long double Equation24;
 
 
 // List3: Units of mass
@@ -56,6 +67,7 @@ const long double Equation22 = (2.0 * pow(CSE_PI, 5) * pow(BoltzmannConst, 4)) /
 #define ElectronMass  9.1093837015E-31  // (±0.0000000028)2018 CODATA Value
 #define ProtonMass    1.67262192369E-27 // (±0.00000000051)2018 CODATA Value
 #define NeutronMass   1.67492749804E-27 // (±0.00000000095)2018 CODATA Value
+#define MassMoon      7.342E+22         // 
 #define MassEarth     5.97217E+24       // (±0.00028)Estimated value from planetary ephemeris DE421
 #define MassJupiter   1.898125E+27      // (±0.000088)value from Jovian Satellite ephemeris JUP310
 #define MassSol       1.98847E+30       // (±0.00007)given by solving Kepler's third law
@@ -63,15 +75,16 @@ const long double Equation22 = (2.0 * pow(CSE_PI, 5) * pow(BoltzmannConst, 4)) /
 
 // List4: Units of length
 // -------------------------------------------------------------------------
-//      Name          Value/Equation      Note
-#define RadEarth      6378137          // equatorial radius provided by IUGG
-#define RadJupiter    71492000         // IAU 2015 definition
-#define RadSol        695700000        // IAU 2015 definition
-#define AU            149597870700     // IAU 2012 definition
-#define LightYear     9460730472580800 // IAU 1976 System of Astronomical Constants
-#define Parsec        Equation41       // exact by the 2015 definition
+//      Name          Value/Equation        Note
+#define RadMoon       1738100            // 
+#define RadEarth      6378137            // equatorial radius provided by IUGG
+#define RadJupiter    71492000           // IAU 2015 definition
+#define RadSol        695700000          // IAU 2015 definition
+#define AU            149597870700       // IAU 2012 definition
+#define LightYear     9460730472580800   // IAU 1976 System of Astronomical Constants
+#define Parsec        _CONSTS Equation41 // exact by the 2015 definition
 // -------------------------------------------------------------------------
-const long double Equation41 = (180.0 * 60.0 * 60.0 * AU) / CSE_PI;
+extern const long double Equation41;
 
 
 // List5: Units of Time
@@ -107,7 +120,7 @@ const long double Equation41 = (180.0 * 60.0 * 60.0 * AU) / CSE_PI;
 #define CSEM_CO2      44.009    // 43.989829239
 #define CSEM_SO       48.07     // 47.96698579
 #define CSEM_SO2      64.07     // 63.96190041
-#define CSEM_Cl2      70.90     // 69.9377054 (35Cl only?)
+#define CSEM_Cl2      70.90     // 69.9377054(35Cl2), 73.931805(37Cl2)
 #define CSEM_H2S      34.08     // 33.98772124
 #define CSEM_H2O      18.015    // 18.010564683
 #define CSEM_NH3      17.031    // 17.026549100
@@ -128,33 +141,35 @@ const long double Equation41 = (180.0 * 60.0 * 60.0 * AU) / CSE_PI;
 // https://en.wikipedia.org/wiki/Hubble%27s_law
 // -------------------------------------------------------------------------
 //      Name              Value              Note
-#define ReducedPlkConst   Equation81       // reduced Planck constant(Format: eV/s)
-#define PlanckLength      Equation82       // shortest measurable distance, approximately the size of a black hole where quantum and gravitational effects are at the same scale
-#define PlanckMass        Equation83       // The dividing point between macro scale and micro scale
-#define PlanckTime        Equation84       // the time it takes for a photon to travel a distance equal to the Planck length, and is the shortest possible time interval that can be measured.
-#define PlanckTemp        Equation85       // At this temperature, the wavelength of light emitted by thermal radiation reaches the Planck length
-#define HubbleParam       73.4             // (+0.99, −1.22 | Format: (Km/s)/Mpc)Value by Pantheon+, 2022-02-08, SN Ia distance ladder (+SH0ES) (preprint)
-#define HubbleParamSI     Equation86       // Hubble Parameter in SI (Format: 1/s)
-#define CosmoDensityRatio 0.6889           // (±0.0056)ratio between the energy density due to the cosmological constant and the critical density of the universe, according to results published by the Planck Collaboration in 2018
-#define CosmoConstant     Equation87       // constant coefficient of a term Albert Einstein temporarily added to his field equations of general relativity
-#define StarLowMassLimit  1.4894586875E+29 // Dividing point between Brown dwarf and star, Result from Universe sandbox experiment(78.47MJ)
-#define ChandrasekharLim  2.8633968E+30    // maximum mass of a stable white dwarf star (1.44MSun)
-#define StarWDUpLimExp    1.590776E+31     // Result from Universe sandbox experiment(8MSun)
-#define TOVLimit          4.7126739E+30    // an upper bound to the mass of cold, nonrotating neutron stars
-#define StarBHLowLimExp   7.2910566667E+31 // Result from Universe sandbox experiment(36.6667MSun)
-#define UpMassGapBH       8.948115E+31     // Stars more massive than this value will remain nothing after supernova explotion.
-#define RadObsUniverse    8.8E+26          // Radius of Observable universe(in meters)
-#define HubbleLength      Equation88       // The proper radius of a Hubble sphere
+#define DiracConstant     _CONSTS Equation81 // reduced Planck constant
+#define PlanckLength      _CONSTS Equation82 // shortest measurable distance, approximately the size of a black hole where quantum and gravitational effects are at the same scale
+#define PlanckMass        _CONSTS Equation83 // The dividing point between macro scale and micro scale
+#define PlanckTime        _CONSTS Equation84 // the time it takes for a photon to travel a distance equal to the Planck length, and is the shortest possible time interval that can be measured.
+#define PlanckTemp        _CONSTS Equation85 // At this temperature, the wavelength of light emitted by thermal radiation reaches the Planck length
+#define HubbleParam       73.4               // (+0.99, −1.22 | Format: (Km/s)/Mpc)Value by Pantheon+, 2022-02-08, SN Ia distance ladder (+SH0ES) (preprint)
+#define HubbleParamSI     _CONSTS Equation86 // Hubble Parameter in SI (Format: 1/s)
+#define CosmoDensityRatio 0.6889             // (±0.0056)ratio between the energy density due to the cosmological constant and the critical density of the universe, according to results published by the Planck Collaboration in 2018
+#define CosmoConstant     _CONSTS Equation87 // constant coefficient of a term Albert Einstein temporarily added to his field equations of general relativity
+#define StarLowMassLimit  1.4894586875E+29   // Dividing point between Brown dwarf and star, Result from Universe sandbox experiment(78.47MJ)
+#define ChandrasekharLim  2.8633968E+30      // maximum mass of a stable white dwarf star (1.44MSun)
+#define StarWDUpLimExp    1.590776E+31       // Result from Universe sandbox experiment(8MSun)
+#define TOVLimit          4.7126739E+30      // an upper bound to the mass of cold, nonrotating neutron stars
+#define StarBHLowLimExp   7.2910566667E+31   // Result from Universe sandbox experiment(36.6667MSun)
+#define UpMassGapBH       8.948115E+31       // Stars more massive than this value will remain nothing after supernova explotion.
+#define RadObsUniverse    8.8E+26            // Radius of Observable universe(in meters)
+#define HubbleLength      _CONSTS Equation88 // The proper radius of a Hubble sphere
 // -------------------------------------------------------------------------
-const long double Equation81 = PlanckConst / (2.0 * CSE_PI);
-const long double Equation82 = sqrt((ReducedPlkConst * GravConstant) / pow(SpeedOfLight, 3));
-const long double Equation83 = sqrt((ReducedPlkConst * SpeedOfLight) / GravConstant);
-const long double Equation84 = sqrt((ReducedPlkConst * GravConstant) / pow(SpeedOfLight, 5));
-const long double Equation85 = sqrt((ReducedPlkConst * pow(SpeedOfLight, 5)) / (GravConstant * pow(BoltzmannConst, 2)));
-const long double Equation86 = (HubbleParam * 1000.0) / (1000000.0 * Parsec);
-const long double Equation87 = 3.0 * pow(HubbleParamSI / SpeedOfLight, 2) * CosmoDensityRatio;
-const long double Equation88 = SpeedOfLight / HubbleParamSI;
+extern const long double Equation81;
+extern const long double Equation82;
+extern const long double Equation83;
+extern const long double Equation84;
+extern const long double Equation85;
+extern const long double Equation86;
+extern const long double Equation87;
+extern const long double Equation88;
 
 //#endif
+
+}}
 
 #endif

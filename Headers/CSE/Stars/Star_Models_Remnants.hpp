@@ -73,12 +73,15 @@ public:
 		// Mass Range is 0.17 - 1.33, average is 0.6
 		// Majority between 0.5 - 0.7
 		_Obj.Mass = _Eng.normal(0.6, 0.14) * MassSol;
+		if (_Obj.Mass > ChandrasekharLim) { _Obj.Mass = ChandrasekharLim; }
 		float64 Density = _Eng.normal(1E+9, 2.5E+8);
 		_Obj.Dimensions = vec3(2. * cbrt((_Obj.Mass / Density) / ((4. / 3.) * CSE_PI)));
 		float64 LIndex = _Par.spec().MinType();
 		if (LIndex == -1){ _Obj.Teff = _Eng.uniform(4000, 150000); }
 		else { _Obj.Teff = 50400. / LIndex; }
 		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+		_Obj.KerrSpin = 0;
+		_Obj.KerrCharge = 0;
 		return _Obj;
 	}
 };
@@ -122,11 +125,42 @@ public:
 };
 #endif
 
+class NeutronStarModel
+{
+public:
+	using result_type = Object;
+	_STD string ModelName = "Density-Based White Dwarf Model";
+
+	NeutronStarModel() {}
+
+	template <class _Engine> // Procedural star generator
+	result_type operator()(_CSE_Random_Engine<_Engine> _Eng)
+	{
+		_CSE_GEN_LOG("INFO", "Starting generation...");
+		_CSE_GEN_LOG("INFO", _STD vformat("Generator Seed: 0x{:X}", _STD make_format_args(_Eng.seed())));
+		result_type _Obj;
+		_Obj.Type = "Star";
+		_Obj.Name.push_back(_STD vformat("CSE-RS {:X} A", _STD make_format_args(_Eng.seed())));
+		_Obj.ParentBody = _STD vformat("CSE-RS {:X}", _STD make_format_args(_Eng.seed()));
+		_Obj.SpecClass = "Q";
+		_Obj.Mass = _Eng.uniform(1.1 * MassSol, TOVLimit);
+		float64 Density = _Eng.uniform(3.7E+17, 5.9E+17);
+		_Obj.Dimensions = vec3(2. * cbrt((_Obj.Mass / Density) / ((4. / 3.) * CSE_PI)));
+		_Obj.Teff = 1E+12 - 9.99999E+11 * (_Eng.exponential() / 5.);
+		//_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+		_Obj.KerrSpin = 0;
+		_Obj.KerrCharge = 0;
+		return _Obj;
+	}
+};
+
 _CSE_END
 
 #pragma pop_macro("new")
 _STL_RESTORE_CLANG_WARNINGS
 #pragma warning(pop)
 #pragma pack(pop)
+
+#include "CSE/Stars/BlackHole.hpp"
 
 #endif

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Algorithms.cc" />
+    <ClCompile Include="Src\ConstEquations.cc" />
     <ClCompile Include="Src\CV_EXP.cc" />
     <ClCompile Include="Src\CV_LOG.cc" />
     <ClCompile Include="Src\CV_SINCOS.cc" />
