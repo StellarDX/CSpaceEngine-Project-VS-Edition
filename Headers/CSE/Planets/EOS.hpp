@@ -133,7 +133,7 @@ private:
 // Fast exponential EOS model
 // Reference: S. Seager, M. Kuchner, C. A. Hier-Majumder, and B. Militzer
 // "MASS-RADIUS RELATIONSHIPS FOR SOLID EXOPLANETS"
-// https://iopscience.iop.org/article/10.1086/521346
+// https://arxiv.org/abs/0707.2895
 struct FAST_POLYTROPIC_EOS
 {
     FAST_POLYTROPIC_EOS(float64 Rx0, float64 Cx0, float64 Px0) : _Rho0(Rx0), _Cx0(Cx0), _Power(Px0) {}
