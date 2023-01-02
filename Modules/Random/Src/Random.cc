@@ -2,6 +2,8 @@
 
 _CSE_BEGIN
 
+CSELog Log_Generator;
+
 _STD random_device _Rd;
 _CSE_Random_Engine<_STD mersenne_twister_engine
 	<unsigned long long, 64, 312, 156, 31, 0xB5026F5AA96619E9ULL, 29,

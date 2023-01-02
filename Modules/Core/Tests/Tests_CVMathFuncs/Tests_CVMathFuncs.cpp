@@ -8,10 +8,14 @@ using namespace cse;
 
 CSELog CoreLog;
 
+float64 func(float64 x) {return cse::pow(x, 2);}
+
 int main()
 {
 	ofstream Report("TestReport_CVMathFuncs.txt");
 	#if !defined(_USE_CV_FUNCTIONS) && ((defined _MSC_VER && _MSC_VER >= 1900) || defined(__EMSCRIPTEN__))
+	cout.precision(15);
+	Report.precision(15);
 	cout << "CSpaceEngine is now using STD math, so it doesn't need to test math functions.\n";
 	#else
 	Report << "Testing: EXP" << '\n';
@@ -198,4 +202,8 @@ int main()
 	}
 	cout << '\n';
 	Report << '\n';
+
+	float64 Integ = cse::integral(func, 0, 1, 5);
+	cout << Integ << '\n';
+	Report << Integ << '\n';
 }

@@ -18,11 +18,7 @@ _STL_DISABLE_CLANG_WARNINGS
 #pragma push_macro("new")
 #undef new
 
-#define _CSE_GEN_LOG(type, mesg) Log_Generator.Out("Object Generator", type, '[' + ModelName + "] " + mesg, SysLogLevel)
-
 _CSE_BEGIN
-
-extern CSELog Log_Generator;
 
 class ObjectGenerationException : public _STD runtime_error
 {

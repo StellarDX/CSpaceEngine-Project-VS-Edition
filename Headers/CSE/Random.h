@@ -24,6 +24,9 @@ _STL_DISABLE_CLANG_WARNINGS
 
 _CSE_BEGIN
 
+extern CSELog Log_Generator;
+#define _CSE_GEN_LOG(type, mesg) Log_Generator.Out("Object Generator", type, '[' + ModelName + "] " + mesg, SysLogLevel)
+
 // Additional Random models
 
 _RAND_BEGIN

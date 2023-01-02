@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Advanced_Math.cc" />
     <ClCompile Include="Src\Algorithms.cc" />
     <ClCompile Include="Src\ConstEquations.cc" />
     <ClCompile Include="Src\CV_EXP.cc" />
@@ -34,6 +35,7 @@
     <ClInclude Include="..\..\Headers\CSE\Core\AsMath.h" />
     <ClInclude Include="..\..\Headers\CSE\Core\ConstLists.h" />
     <ClInclude Include="..\..\Headers\CSE\Core\CSECore.h" />
+    <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Adv.h" />
     <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Algo.h" />
     <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Func.h" />
     <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Geom.h" />

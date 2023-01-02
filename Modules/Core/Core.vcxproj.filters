@@ -41,6 +41,9 @@
     <ClCompile Include="Src\ConstEquations.cc">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Advanced_Math.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Headers\CSE\Core\AsMath.h">
@@ -80,6 +83,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Headers\CSE\Core.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Adv.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

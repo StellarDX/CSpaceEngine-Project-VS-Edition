@@ -372,3 +372,4 @@ FodyWeavers.xsd
 /Modules/SCStream/Tests/Tests_Stream/CSE_Tests_Stream.dir
 /Modules/Stars/Tests/Tests_StarModels/CSE_Tests_StarModels.dir
 /Libraries/CSE.lib
+/Modules/Planets/Tests/Tests_PlanetModels/CSE_Tests_PlanetModels.dir

@@ -31,51 +31,7 @@ all copies or substantial portions of the Software.
 #include "CSE/Core/matrix.h"
 
 _CSE_BEGIN
-/*
-// CG/HLSL/Unity style vecs and mats
 
-using fixed2 = _GL gl_vec2<lfixed>;
-using fixed3 = _GL gl_vec3<lfixed>;
-using fixed4 = _GL gl_vec4<lfixed>;
-
-using half2 = _GL gl_vec2<lhalf>;
-using half3 = _GL gl_vec3<lhalf>;
-using half4 = _GL gl_vec4<lhalf>;
-
-using float2 = _GL gl_vec2<lfloat>;
-using float3 = _GL gl_vec3<lfloat>;
-using float4 = _GL gl_vec4<lfloat>;
-
-using fixed2x2 = _GL basic_matrix<lfixed, 2, 2>;
-using fixed2x3 = _GL basic_matrix<lfixed, 2, 3>;
-using fixed2x4 = _GL basic_matrix<lfixed, 2, 4>;
-using fixed3x2 = _GL basic_matrix<lfixed, 3, 2>;
-using fixed3x3 = _GL basic_matrix<lfixed, 3, 3>;
-using fixed3x4 = _GL basic_matrix<lfixed, 3, 4>;
-using fixed4x2 = _GL basic_matrix<lfixed, 4, 2>;
-using fixed4x3 = _GL basic_matrix<lfixed, 4, 3>;
-using fixed4x4 = _GL basic_matrix<lfixed, 4, 4>;
-
-using half2x2 = _GL basic_matrix<lhalf, 2, 2>;
-using half2x3 = _GL basic_matrix<lhalf, 2, 3>;
-using half2x4 = _GL basic_matrix<lhalf, 2, 4>;
-using half3x2 = _GL basic_matrix<lhalf, 3, 2>;
-using half3x3 = _GL basic_matrix<lhalf, 3, 3>;
-using half3x4 = _GL basic_matrix<lhalf, 3, 4>;
-using half4x2 = _GL basic_matrix<lhalf, 4, 2>;
-using half4x3 = _GL basic_matrix<lhalf, 4, 3>;
-using half4x4 = _GL basic_matrix<lhalf, 4, 4>;
-
-using float2x2 = _GL basic_matrix<lfloat, 2, 2>;
-using float2x3 = _GL basic_matrix<lfloat, 2, 3>;
-using float2x4 = _GL basic_matrix<lfloat, 2, 4>;
-using float3x2 = _GL basic_matrix<lfloat, 3, 2>;
-using float3x3 = _GL basic_matrix<lfloat, 3, 3>;
-using float3x4 = _GL basic_matrix<lfloat, 3, 4>;
-using float4x2 = _GL basic_matrix<lfloat, 4, 2>;
-using float4x3 = _GL basic_matrix<lfloat, 4, 3>;
-using float4x4 = _GL basic_matrix<lfloat, 4, 4>;
-*/
 #if 0
 template<typename genType>struct vecType;
 template<>struct vecType<vec2> { typedef vec2 type; };

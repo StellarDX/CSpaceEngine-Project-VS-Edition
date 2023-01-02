@@ -7,7 +7,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Tests_StarModels.cpp">
+    <ClCompile Include="Tests_PlanetModels.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

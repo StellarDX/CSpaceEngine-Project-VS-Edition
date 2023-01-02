@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -127,7 +127,7 @@
       </AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
-      <Command>lib.exe /OUT:$(SolutionDir)\Libraries\CSE.lib "CSE_Core.lib" "CSE_Lumine.lib" "CSE_Object.lib" "CSE_Random.lib" "CSE_SCStream.lib" "CSE_Stars.lib" /LIBPATH:"$(SolutionDir)\Libraries\$(Configuration)"  /MACHINE:X64 /NOLOGO</Command>
+      <Command>lib.exe /OUT:$(SolutionDir)\Libraries\CSE.lib "CSE_Core.lib" "CSE_Lumine.lib" "CSE_Object.lib" "CSE_Random.lib" "CSE_SCStream.lib" "CSE_Stars.lib" "CSE_Planets.lib" /LIBPATH:"$(SolutionDir)\Libraries\$(Configuration)"  /MACHINE:X64 /NOLOGO</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -157,7 +157,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>lib.exe /OUT:$(SolutionDir)\Libraries\CSE.lib "CSE_Core.lib" "CSE_Lumine.lib" "CSE_Object.lib" "CSE_Random.lib" "CSE_SCStream.lib" "CSE_Stars.lib" /LIBPATH:"$(SolutionDir)\Libraries\$(Configuration)"  /LTCG /MACHINE:X64 /NOLOGO</Command>
+      <Command>lib.exe /OUT:$(SolutionDir)\Libraries\CSE.lib "CSE_Core.lib" "CSE_Lumine.lib" "CSE_Object.lib" "CSE_Random.lib" "CSE_SCStream.lib" "CSE_Stars.lib" "CSE_Planets.lib" /LIBPATH:"$(SolutionDir)\Libraries\$(Configuration)"  /LTCG /MACHINE:X64 /NOLOGO</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

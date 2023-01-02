@@ -40,7 +40,7 @@ namespace consts{
 // List2: Common physic constants
 // -------------------------------------------------------------------------
 //      Name            Value/Equation        Note
-#define GravConstant    6.67430E-11        // (±0.00015)2018 CODATA Value, reference from NIST
+#define GravConstant    6.67430e-11        // (±0.00015)2018 CODATA Value, reference from NIST
 #define SpeedOfLight    299792458          // Exact value defined by 1983 17th CGPM
 #define PPM             0.0001             // by definition, Parts-per million to percent
 #define GasConstant     8.31446261815324   // 2018 CODATA Value
@@ -87,7 +87,16 @@ extern const long double Equation24;
 extern const long double Equation41;
 
 
-// List5: Units of Time
+// List5: Base densities of compositions
+// -------------------------------------------------------------------------
+//      Name            Value    Note
+#define MetalDensity    7874  // near room temperature
+#define SilicateDensity 2800  // Simulated by universe sandbox
+#define IceDensity      1000  // Simulated by universe sandbox, real value is 916.7Kg/m^3
+#define HydrogenDensity 82.5  // Simulated by universe sandbox, real value is 89.88Kg/m^3 in STP
+
+
+// List6: Units of Time
 // -------------------------------------------------------------------------
 //      Name          Value                Note
 #define SynodicDay    86400             // mean synodic day(Solar day) in seconds(Sunrise to Sunrise), is approx. 24 hours
@@ -97,14 +106,14 @@ extern const long double Equation41;
 #define J2000         2451545           // Julian day of 2000.01.01 12:00:00.00
 
 
-// List6: Units of Luminosity
+// List7: Units of Luminosity
 // -------------------------------------------------------------------------
 //      Name          Value         Note
 #define SolarLum      3.828E+26  // nominal solar luminosity defined by IAU
 #define SolarLumBol   3.0128E+28 // zero points of the absolute and apparent bolometric magnitude scales
 
 
-// List7: Molar Masses
+// List8: Molar Masses
 // Values computed by PubChem 2.1 (PubChem release 2021.05.07): https://pubchem.ncbi.nlm.nih.gov/
 // -------------------------------------------------------------------------
 //      Name          Value        Exact Value
@@ -132,7 +141,7 @@ extern const long double Equation41;
 #define CSEM_C8H18    114.23    // 114.140850574
 
 
-// List8: Cosmology
+// List9: Cosmology
 // Can't promise that these values are correct.
 // Because I don't know why I want to add these "meaningless" constants.
 // Reference:
