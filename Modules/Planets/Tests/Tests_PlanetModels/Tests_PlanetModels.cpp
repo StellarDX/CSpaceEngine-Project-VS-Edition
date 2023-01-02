@@ -9,8 +9,10 @@ int main()
 {
     Object RockyPlanet = TerrestrialPlanetBase()(random);
     RockyPlanet.Name[0] = "RockyPlanet";
+    Object GasGiant = GaseousPlanetBase()(random);
+    GasGiant.Name[0] = "GasGiant";
     ofstream Report("TestReport_PlanetGen.sc");
     OSCStream fout(Report);
-    fout << NoBooleans << RockyPlanet;
+    fout << NoBooleans << RockyPlanet << GasGiant;
     fout.write();
 }
