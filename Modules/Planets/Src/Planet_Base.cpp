@@ -49,4 +49,15 @@ _CONSTEXPR20 float64 UBox_PlanetBase_Composition::EscapeVelocity() const
 }
 #endif
 
+// ---------- Functions ---------- //
+
+Object RandomRockyPlanet()
+{
+	float64 MassScale = random.uniform(6.4, 7.6);
+	float64 RadScale = random.uniform(2.8, 4.4);
+	float64 BaseRadius = random.uniform(0.15, 2);
+	TerrestrialPlanetBase Model(BaseRadius, BaseRadius, MassScale, RadScale);
+	return Model(random);
+}
+
 _CSE_END

@@ -65,9 +65,11 @@ public:
 		// (StellarDX: I don't know why the base density of silicates provided by US2 is 2800.
 		// Value used in this function is 4100, 1300 larger than US2 value.)
 		float64 BaseRadius = _Eng.uniform(_Par.RadiusRange.x, _Par.RadiusRange.y);
+		_CSE_GEN_LOG("INFO", _STD vformat("Base Radius: {}", _STD make_format_args(BaseRadius)));
 		_Obj.Dimensions = vec3(BaseRadius * RadEarth * 2.);
 		if (_Par.PressurePow == 0) { _Par.PressurePow = _Eng.uniform(0.51, 0.55); } // n ranges typically from 0.5-0.6
 		float64 BaseMassScaled = MassScale(BaseRadius / _Par.RadScale, _Par.PressurePow) * _Par.MassScale;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base Mass: {}", _STD make_format_args(BaseMassScaled)));
 		_Obj.Mass = BaseMassScaled * MassEarth;
 		return _Obj;
 	};
@@ -93,6 +95,7 @@ public:
 	}_Par;
 
 	GaseousPlanetBase() : _Par((15 * MassEarth) / MassJupiter, 12) {}
+	GaseousPlanetBase(float64 Mass) : _Par(Mass, Mass) {}
 	GaseousPlanetBase(float64 MinMass, float64 MaxMass) : _Par(MinMass, MaxMass) {}
 
 	template <class _Engine> // Procedural planet generator
@@ -161,6 +164,10 @@ public:
 
 };
 #endif
+
+// ---------- Functions ---------- //
+
+Object RandomRockyPlanet();
 
 _CSE_END
 

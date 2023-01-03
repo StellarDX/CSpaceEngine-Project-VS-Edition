@@ -7,7 +7,8 @@ using namespace cse;
 
 int main()
 {
-    Object RockyPlanet = TerrestrialPlanetBase()(random);
+    //Object RockyPlanet = TerrestrialPlanetBase()(random);
+    Object RockyPlanet = RandomRockyPlanet();
     RockyPlanet.Name[0] = "RockyPlanet";
     Object GasGiant = GaseousPlanetBase()(random);
     GasGiant.Name[0] = "GasGiant";

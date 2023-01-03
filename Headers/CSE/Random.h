@@ -360,9 +360,9 @@ class object_generator
 	Model& _Mdl;
 public:
 	// types
-	typedef Engine engine_type;
-	typedef Model  model_type;
-	typedef Object result_type;
+	typedef Engine             engine_type;
+	typedef Model              model_type;
+	typedef Model::result_type result_type;
 
 	// construct/copy/destruct
 	object_generator(Engine& e, Model& m) : _Eng(e), _Mdl(m){}
