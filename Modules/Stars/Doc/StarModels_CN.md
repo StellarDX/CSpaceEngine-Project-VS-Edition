@@ -1,4 +1,4 @@
-# CSpaceEngine 恒星
+# CSpaceEngine · 恒星
 
 这一部分存放与恒星有关的一些实现
 

@@ -38,7 +38,7 @@ os.Write(); // export to file
  * Based on std random, more easy to use.
  * A default random engine "random" is provided.
 
-**Generate a star**
+**Creating a star**
 ```generating
 _CSE_Random_Engine<mt19937_64> Engine;
 MainSequenceStarModel StarModel("G2V");
@@ -58,6 +58,10 @@ Object Obj = gen();
  * - Carbon Stars
  * - White Dwarfs
  * - Substellar Objects
+
+**Creating a planet**
+
+Codes are almost same as above. Support rocky planets and gas giants.
 
 ## Compile and Install
 Open the solution file and turn to the "ALL_BUILD" under "Targets", Run the project to complie.

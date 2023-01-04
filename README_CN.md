@@ -1,7 +1,7 @@
 ﻿[English](README.md)
 <div align = "center">
 
-# CSpaceEngine · 冥古显生
+# CSpaceEngine · 见证伟业
 
 开源的SpaceEngine静态库与工具箱，兼容SE0.990。(也是造星之法)
 
@@ -16,6 +16,7 @@
  - 星等/光度计算
  - 类似于Python的随机数生成器
  - 天体生成
+ - 轨道计算
  - ...更多的还在开发中
 
 ### 来自GLSL的数据类型
@@ -48,6 +49,7 @@ os.Write();
 ### 天体生成
  - 基于真实数据的天体生成器，详见：
  - * 恒星库：[CSE_Stars](Modules/Stars/Doc/StarModels_CN.md)
+ - * 行星库：[CSE_Planets](Modules/Planets/Doc/PlanetModels_CN.md)
 
  - 代码示例：
 ```generating
@@ -56,8 +58,6 @@ MainSequenceStarModel StarModel("G2V");
 object_generator<_CSE_Random_Engine<mt19937_64>, MainSequenceStarModel> gen(Engine, StarModel);
 Object Obj = gen();
 ```
-
-_天动万象，山海化形。荒地生星，璨若烈阳。_
 
 ## 编译和安装
 打开工程以后在Target分类下找到ALL_BUILD项目，右键生成以编译。编译以后可以在Libraries目录下找到编译好的库。如果要把所有的库合并起来，找到INSTALL项目，生成即可。
