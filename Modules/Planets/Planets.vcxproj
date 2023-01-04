@@ -21,10 +21,12 @@
   <ItemGroup>
     <ClInclude Include="..\..\Headers\CSE\Planets.h" />
     <ClInclude Include="..\..\Headers\CSE\Planets\EOS.hpp" />
+    <ClInclude Include="..\..\Headers\CSE\Planets\Orbit.h" />
     <ClInclude Include="..\..\Headers\CSE\Planets\Planet_Base.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\EOS.cc" />
+    <ClCompile Include="Src\Orbit.cc" />
     <ClCompile Include="Src\Planet_Base.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

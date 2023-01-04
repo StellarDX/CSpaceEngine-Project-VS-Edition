@@ -333,8 +333,11 @@ public:
 	// Basic Info
 	std::string Type = NO_DATA_STRING;
 	std::vector<std::string> Name;
+	std::string DiscMethod = NO_DATA_STRING;
+	std::string DiscDate = NO_DATA_STRING;
 	std::string ParentBody = NO_DATA_STRING;
 	std::string Class = NO_DATA_STRING;
+	std::string AsterType = NO_DATA_STRING; // Only for asteroids
 
 	// The following properties only used when object type is "Star"
 	std::string SpecClass = NO_DATA_STRING;

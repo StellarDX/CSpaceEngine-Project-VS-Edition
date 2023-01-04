@@ -68,6 +68,9 @@ Object GetSEObject(ISCStream _Is, string _Name)
 
 	using _SC GetAs;
 
+	_Obj.DiscMethod = GetAs<string>(it, "DiscMethod");
+	_Obj.DiscDate = GetAs<string>(it, "DiscDate");
+
 	_Obj.ParentBody = GetAs<string>(it, "ParentBody");
 
 	if ("Star" == _Obj.Type)
@@ -75,7 +78,11 @@ Object GetSEObject(ISCStream _Is, string _Name)
 		_Obj.Class = "Sun";
 		_Obj.SpecClass = GetAs<string>(it, "Class");
 	}
-	else { _Obj.Class = GetAs<string>(it, "Class"); }
+	else 
+	{ 
+		_Obj.Class = GetAs<string>(it, "Class");
+		_Obj.AsterType = GetAs<string>(it, "AsterType");
+	}
 
 	Log_IS.Out("Object Loader", "INFO", "[" + _Obj.Name[0] + "] " + "Loading - Physical properties", ILogLevel, true);
 

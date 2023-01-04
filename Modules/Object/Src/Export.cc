@@ -157,12 +157,18 @@ table::KeyValue MakeTable(object_ostream& _Os, Object Obj)
 	_KV.Value += '\"';
 
 	table Data;
+	AddKeyValue(&Data, "DiscMethod", Obj.DiscMethod, _Os.flags(), _Os.precision());
+	AddKeyValue(&Data, "DiscDate", Obj.DiscDate, _Os.flags(), _Os.precision());
 	AddKeyValue(&Data, "ParentBody", Obj.ParentBody, _Os.flags(), _Os.precision());
 	if (Obj.Type == "Star")
 	{
 		AddKeyValue(&Data, "Class", Obj.SpecClass, _Os.flags(), _Os.precision());
 	}
-	else { AddKeyValue(&Data, "Class", Obj.Class, _Os.flags(), _Os.precision()); }
+	else
+	{ 
+		AddKeyValue(&Data, "Class", Obj.Class, _Os.flags(), _Os.precision());
+		AddKeyValue(&Data, "AsterType", Obj.AsterType, _Os.flags(), _Os.precision());
+	}
 
 	AddKeyValue(&Data, "MassKg", Obj.Mass, _Os.flags(), _Os.precision());
 

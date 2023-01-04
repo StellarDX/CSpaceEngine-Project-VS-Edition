@@ -20,12 +20,18 @@
     <ClInclude Include="..\..\Headers\CSE\Planets\EOS.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Planets\Orbit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Planet_Base.cpp">
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\EOS.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Orbit.cc">
       <Filter>Src</Filter>
     </ClCompile>
   </ItemGroup>

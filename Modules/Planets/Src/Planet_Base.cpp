@@ -60,4 +60,11 @@ Object RandomRockyPlanet()
 	return Model(random);
 }
 
+Object RandomGasGiant()
+{
+	float64 BaseMass = random.uniform((15 * MassEarth) / MassJupiter, 12);
+	GaseousPlanetBase Model(BaseMass);
+	return Model(random);
+}
+
 _CSE_END

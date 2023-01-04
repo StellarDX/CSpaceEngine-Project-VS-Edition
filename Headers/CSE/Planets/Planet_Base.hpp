@@ -60,7 +60,7 @@ public:
 
 		// Beacuse of materials provided by the paper is different from universe sandbox
 		// and the base densities are larger than real value.
-		// so the result of these calculations are oversized.
+		// the result of these calculations maybe oversized.
 
 		// (StellarDX: I don't know why the base density of silicates provided by US2 is 2800.
 		// Value used in this function is 4100, 1300 larger than US2 value.)
@@ -111,7 +111,9 @@ public:
 
 		float64 BaseMass = _Eng.uniform(_Par.MassRange.x, _Par.MassRange.y);
 		_Obj.Mass = BaseMass * MassJupiter;
+		_CSE_GEN_LOG("INFO", _STD vformat("Base Mass: {}", _STD make_format_args(BaseMass)));
 		float64 BaseRadius = CalculateRadius(BaseMass) + _Eng.uniform(-.12 * pow(BaseMass, -.215), +.12 * pow(BaseMass, -.215));
+		_CSE_GEN_LOG("INFO", _STD vformat("Base Radius: {}", _STD make_format_args(BaseRadius)));
 		_Obj.Dimensions = vec3(BaseRadius * RadJupiter * 2.);
 		return _Obj;
 	}
@@ -168,6 +170,7 @@ public:
 // ---------- Functions ---------- //
 
 Object RandomRockyPlanet();
+Object RandomGasGiant();
 
 _CSE_END
 
