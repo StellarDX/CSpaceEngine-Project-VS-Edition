@@ -17,7 +17,6 @@ int main()
     OSCStream fout(Report);
     fout << NoBooleans << RockyPlanet << GasGiant;
 
-    Report << '\n';
     Object Sun =
     {
         .Type = "Star",
@@ -117,9 +116,67 @@ int main()
 
     fout << Sun << Jupiter << Ganymede << PlutoCharonBarycen << Pluto << Charon;
     fout.write();
+    fout.clear();
+
+    Report << '\n';
 
     Report << "// Rigid Roche limit result: " << RocheLimit(&Sun, &Jupiter, 0) << '\n'
         << "// Fluid Roche limit result: " << RocheLimit(&Sun, &Jupiter, 1) << '\n';
 
     Report << "// Hill Sphere result: " << HillSphere(&Sun, &Jupiter) << '\n';
+
+    Report << "// Titus-Bode Law array: " << '[';
+    for (size_t i = 0; i <= 7; i++)
+    {
+        Report << SolarSys_TBL[i];
+        if (i < 7) { Report << ' '; }
+    }
+    Report << ']' << '\n';
+
+    Report << "// Blagg array: " << '[';
+    for (size_t i = 0; i <= 7; i++)
+    {
+        Report << SolarSys_BLF[i];
+        if (i < 7) { Report << ' '; }
+    }
+    Report << ']' << '\n';
+
+    Report << "// Dermott array: " << '[';
+    for (size_t i = 0; i <= 4; i++)
+    {
+        Report << Jovian_DML[i];
+        if (i < 4) { Report << ' '; }
+    }
+    Report << ']' << '\n';
+
+    Report << "// Exponential array: " << '[';
+    for (size_t i = 0; i <= 5; i++)
+    {
+        Report << Rho1Cnc_Exp[i];
+        if (i < 5) { Report << ' '; }
+    }
+    Report << ']' << '\n';
+
+    Report << '\n';
+
+    string TLEString = "CSS\n1 48274U 21035A   23003.00000000  .00011693  00000-0  14603-3 0  9991\n2 48274  41.4762  82.6384 0005848 257.3417 110.2495 15.60092594 96015";
+    TLE TLEData = TLE::ParseString(TLEString);
+    Report << "/*" << TLEString << "*/" << '\n';
+    Report << "// Valid: " << TLEData.isValid() << '\n';
+    Report << "/* TLE Basic Data: \n";
+    TLEData.PrintSpacecraftData(Report);
+    Report << "*/\n";
+
+    Object CSS =
+    {
+        .Type = "Spacecraft",
+        .Name = {"Chinese Space Station"},
+        .ParentBody = "Earth",
+
+        .Orbit = TLEData.Orbit()
+    };
+
+    fout.precision(15);
+    fout << NoWaterMarks << CSS;
+    fout.write();
 }

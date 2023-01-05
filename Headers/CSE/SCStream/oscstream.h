@@ -172,6 +172,8 @@ public:
 
     table _Buf;
 
+    void clear() { _Buf.clear(); }
+
     // Setting State
 
     _NODISCARD bool __CLR_OR_THIS_CALL normal() const 

@@ -63,12 +63,16 @@ Object Obj = gen();
 
 Codes are almost same as above. Support rocky planets and gas giants.
 
+**Orbit Calculating**
+ * Some engines to generate distance array, Support Titius-Bode law, Blagg Fomula, Dermott's law and exponential fit.
+ * TLE data parsing
+ * calcualte Roche limit and Hill sphere, and make orbital bond to two objects.
+
 ## Compile and Install
 Open the solution file and turn to the "ALL_BUILD" under "Targets", Run the project to complie.
 The compiled libraries are under the "Libraries" folder.
 If you want to merge all the module libraries into one library, Run "INSTALL" project.
 
 ## TODO
- * Procedural planet generator
- * Orbit calculator and generator
+ * Asteroid belt creator
  * ...and more

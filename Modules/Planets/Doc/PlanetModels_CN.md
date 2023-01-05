@@ -14,10 +14,28 @@ _天动万象，山海化形。荒地生星，璨如烈阳。 ——若陀_
 
 ## 轨道
 
-一些轨道相关的实现：
+ * 一些轨道相关的实现：
 ```
 float64 RocheLimit(const Object* Primary, const Object* Companion, int Mode); // 返回两个天体的洛希极限
 float64 HillSphere(const Object* Primary, const Object* Companion); // 返回第二个天体在第一个天体影响下的希尔球
 int MakeOrbit(Object* Primary, Object* Companion, Object* ThirdGravSourse, OrbitParam Args); // 创建轨道
 shared_ptr<Object> MakeBinary(Object* Primary, Object* Companion, Object* ThirdGravSourse, OrbitParam Args); // 创建双星系统
+```
+
+ * TLE数据分析
+
+CSE实现了一个叫TLE的类，用于分析TLE数据并转化为轨道。
+
+示例：
+```
+TLE TLEData = TLE::ParseString(TLEString); // 从string导入TLE数据
+
+Object Spacecraft =
+{
+    .Type = "Spacecraft",
+    .Name = {"Test Spacecraft"},
+    .ParentBody = "Earth",
+
+    .Orbit = TLEData.Orbit() // 将轨道数据赋值给Object
+};
 ```

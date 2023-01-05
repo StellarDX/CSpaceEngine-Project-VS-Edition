@@ -333,7 +333,9 @@ _Sub_Brown_Dwarf_Table[6]
 );
 
 // Giant star parameters table reference:
+// Daniel. M. Popper "Stellar Masses"
 // https://ui.adsabs.harvard.edu/abs/1980ARA&A..18..115P
+// Roberta M. Humphreys and Douglas B. McElroy "The initial mass function for massive stars in the galaxy and the Magellanic clouds."
 // https://ui.adsabs.harvard.edu/abs/1984ApJ...284..565H
 _STD map<float64, _STD pair<SPECSTR, float64>> _Adopt_BC_Teff_Calib_For_Giants() // II, III, IV
 {

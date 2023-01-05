@@ -28,6 +28,7 @@
     <ClCompile Include="Src\EOS.cc" />
     <ClCompile Include="Src\Orbit.cc" />
     <ClCompile Include="Src\Planet_Base.cpp" />
+    <ClCompile Include="Src\TLE.cc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

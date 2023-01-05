@@ -34,5 +34,8 @@
     <ClCompile Include="Src\Orbit.cc">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="Src\TLE.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
