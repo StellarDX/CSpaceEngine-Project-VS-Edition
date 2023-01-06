@@ -146,6 +146,7 @@ public:
 
 	bool isValid()const;
 
+	_STD string Title()const;
 	TLE_Spacecraft BasicData()const;
 	OrbitParam Orbit()const;
 

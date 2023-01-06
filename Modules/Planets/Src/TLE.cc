@@ -51,6 +51,11 @@ bool TLE::isValid()const
 	return Sum1 % 10 == Checksum1 && Sum2 % 10 == Checksum2;
 }
 
+_STD string TLE::Title()const
+{
+	return _STD string(Name);
+}
+
 typename TLE::TLE_Spacecraft TLE::BasicData() const
 {
 	using namespace std;
