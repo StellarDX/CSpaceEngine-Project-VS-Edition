@@ -177,6 +177,16 @@ float64 HillSphere(const Object* Primary, const Object* Companion);
 _Check_return_opt_ int __CRTDECL MakeOrbit(Object* Primary, Object* Companion, Object* ThirdGravSourse = nullptr, OrbitParam Args = { .RefPlane = "Extrasolar", .Epoch = J2000 });
 _Check_return_ _STD shared_ptr<Object> __CRTDECL MakeBinary(Object* Primary, Object* Companion, Object* ThirdGravSourse = nullptr, OrbitParam Args = { .RefPlane = "Extrasolar", .Epoch = J2000 });
 
+/// <summary>
+/// Calculate orbital period using Kepler's 3rd law.
+/// </summary>
+float64 GetPeriod(float64 CenterObjMass, float64 PericenterDist, float64 Eccentricity);
+
+/// <summary>
+/// Calculate Semi-Major Axis using Kepler's 3rd law.
+/// </summary>
+float64 GetSemiMajorAxis(float64 CenterObjMass, float64 Period);
+
 _CSE_END
 
 #endif

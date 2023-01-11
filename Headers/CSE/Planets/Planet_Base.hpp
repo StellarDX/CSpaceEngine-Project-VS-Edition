@@ -42,9 +42,9 @@ public:
 			RadiusRange(MinRadius, MaxRadius), MassScale(MScale), RadScale(RScale), PressurePow(PPow){}
 	}_Par;
 
-	TerrestrialPlanetBase() : _Par(0.15, 2, 6.41, 2.84, 0){}
-	TerrestrialPlanetBase(float64 Radius) : _Par(Radius, Radius, 6.41, 2.84, 0) {}
-	TerrestrialPlanetBase(float64 MinRadius, float64 MaxRadius, float64 MScale = 6.41, float64 RScale = 2.84, float64 PPow = 0) :
+	TerrestrialPlanetBase() : _Par(0.15, 2, 6.41, 3.26, 0){}
+	TerrestrialPlanetBase(float64 Radius) : _Par(Radius, Radius, 6.41, 3.26, 0) {}
+	TerrestrialPlanetBase(float64 MinRadius, float64 MaxRadius, float64 MScale = 6.41, float64 RScale = 3.26, float64 PPow = 0) :
 		_Par(MinRadius, MaxRadius, MScale, RScale, PPow) {}
 
 	template <class _Engine> // Procedural planet generator
@@ -71,6 +71,7 @@ public:
 		float64 BaseMassScaled = MassScale(BaseRadius / _Par.RadScale, _Par.PressurePow) * _Par.MassScale;
 		_CSE_GEN_LOG("INFO", _STD vformat("Base Mass: {}", _STD make_format_args(BaseMassScaled)));
 		_Obj.Mass = BaseMassScaled * MassEarth;
+		_CSE_GEN_LOG("INFO", "DONE");
 		return _Obj;
 	};
 

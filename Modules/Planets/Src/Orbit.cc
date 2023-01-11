@@ -237,8 +237,22 @@ _Check_return_ _STD shared_ptr<Object> __CRTDECL MakeBinary(Object* Primary, Obj
 	float64 CompanionSMA = SemiMajorAxis - PrimarySMA;
 	Primary->Orbit.PericenterDist = PrimarySMA - PrimarySMA * Eccentricity;
 	Companion->Orbit.PericenterDist = CompanionSMA - CompanionSMA * Eccentricity;
+	Primary->Orbit.Period = GetPeriod(Primary->Mass, Companion->Orbit.PericenterDist, Eccentricity);
+	Companion->Orbit.Period = Primary->Orbit.Period;
 
 	return _STD make_shared<Object>(Barycenter);
+}
+
+float64 GetPeriod(float64 CenterObjMass, float64 PericenterDist, float64 Eccentricity)
+{
+	if (Eccentricity >= 1) { return wrtval(POS_INF_DOUBLE); }
+	float64 SemiMajorAxis = PericenterDist / (1. - Eccentricity);
+	return sqrt((4. * pow(CSE_PI, 2) * pow(SemiMajorAxis, 3)) / (GravConstant * CenterObjMass));
+}
+
+float64 GetSemiMajorAxis(float64 CenterObjMass, float64 OrbitalPeriod)
+{
+	return cbrt((GravConstant * CenterObjMass * pow(OrbitalPeriod, 2)) / (4. * pow(CSE_PI, 2)));
 }
 
 _CSE_END

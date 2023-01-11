@@ -5,7 +5,6 @@
 #ifndef __CSE_RAND_ENGINE__
 #define __CSE_RAND_ENGINE__
 #include "CSE/Core.h"
-#include "CSE/Object.h"
 
 #include <array>
 #include <random> // Base on STD random.
@@ -352,7 +351,6 @@ extern _CSE_Random_Engine<_STD mersenne_twister_engine
 
 ////////// Object Generator //////////
 
-class Object;
 template<typename Engine, typename Model>
 class object_generator
 {

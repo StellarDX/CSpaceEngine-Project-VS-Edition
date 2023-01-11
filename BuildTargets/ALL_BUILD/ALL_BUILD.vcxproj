@@ -139,6 +139,9 @@
     <ProjectReference Include="..\..\Applications\StarMagLumCalculator\StarMagLumCalculator.vcxproj">
       <Project>{d753cbbb-7a95-4ea4-a992-f1def7dd8285}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\Applications\TLEDecoder\TLEDecoder.vcxproj">
+      <Project>{1915fdee-d946-47c7-8703-64b085dc8604}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Modules\Core\Core.vcxproj">
       <Project>{060323f5-a950-4055-8a2c-2a344e53fcad}</Project>
     </ProjectReference>

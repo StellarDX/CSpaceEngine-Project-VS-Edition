@@ -330,6 +330,7 @@ table::KeyValue MakeTable(object_ostream& _Os, Object Obj)
 				{
 					AddKeyValue(&_OrbitParams, "PericenterDist", Obj.Orbit.PericenterDist / AU, _Os.flags(), _Os.precision());
 				}
+				AddKeyValue(&_OrbitParams, "PeriodDays", Obj.Orbit.Period / SynodicDay, _Os.flags(), _Os.precision());
 				AddKeyValue(&_OrbitParams, "Inclination", Obj.Orbit.Inclination, _Os.flags(), _Os.precision());
 				AddKeyValue(&_OrbitParams, "AscendingNode", Obj.Orbit.AscendingNode, _Os.flags(), _Os.precision());
 				float64 LongOfPericen, MeanLongitude;
@@ -360,6 +361,7 @@ table::KeyValue MakeTable(object_ostream& _Os, Object Obj)
 				{
 					AddKeyValue(&_OrbitParams, "PericenterDist", Obj.Orbit.PericenterDist / AU, _Os.flags(), _Os.precision());
 				}
+				AddKeyValue(&_OrbitParams, "PeriodDays", Obj.Orbit.Period / SynodicDay, _Os.flags(), _Os.precision());
 				AddKeyValue(&_OrbitParams, "Inclination", Obj.Orbit.Inclination, _Os.flags(), _Os.precision());
 				AddKeyValue(&_OrbitParams, "AscendingNode", Obj.Orbit.AscendingNode, _Os.flags(), _Os.precision());
 				AddKeyValue(&_OrbitParams, "ArgOfPericenter", Obj.Orbit.ArgOfPericenter, _Os.flags(), _Os.precision());

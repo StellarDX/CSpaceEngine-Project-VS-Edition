@@ -6,5 +6,6 @@
 #include "CSE/Planets/EOS.hpp"
 #include "CSE/Planets/Planet_Base.hpp"
 #include "CSE/Planets/Orbit.h"
+#include "CSE/Planets/Rotation.h"
 
 #endif

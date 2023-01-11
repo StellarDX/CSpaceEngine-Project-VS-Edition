@@ -6,6 +6,7 @@
 #include "CSE/Core.h"
 #include "CSE/Lumine.h"
 #include "CSE/Random.h"
+#include "CSE/Object.h"
 
 #include <array>
 #include <format>

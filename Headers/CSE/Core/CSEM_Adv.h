@@ -7,6 +7,7 @@
 // But its accuracy maybe very low.
 
 #include "CSE/Core/CSECore.h"
+#include "CSE/Core/gltypes.h"
 
 #pragma pack(push, _CRT_PACKING)
 #pragma warning(push, _STL_WARNING_LEVEL)
@@ -16,6 +17,34 @@ _STL_DISABLE_CLANG_WARNINGS
 #undef new
 
 _CSE_BEGIN
+
+/****************************************************************************************\
+*                                     XYZ -> Polar                                       *
+\****************************************************************************************/
+
+/// <summary>
+/// Convert XY coordinate to polar coordinate, in format (r, Theta)
+/// </summary>
+_Check_return_ vec2 _cdecl XYToPolar(_In_ vec2 XY);
+
+/// <summary>
+/// Convert XYZ coordinate (Based on X-Z plane) to polar coordinate, in format (Lon, Lat, Dist)
+/// </summary>
+_Check_return_ vec3 _cdecl XYZToPolar(_In_ vec3 XYZ);
+
+/****************************************************************************************\
+*                                     Polar -> XYZ                                       *
+\****************************************************************************************/
+
+/// <summary>
+/// Convert polar coordinate in format (r, Theta) to XY coordinate
+/// </summary>
+_Check_return_ vec2 _cdecl PolarToXY(_In_ vec2 Polar);
+
+/// <summary>
+/// Convert polar coordinate in format (Lon, Lat, Dist) to XYZ coordinate (Based on X-Z plane)
+/// </summary>
+_Check_return_ vec3 _cdecl PolarToXYZ(_In_ vec3 Polar);
 
 _EXTERN_C
 
