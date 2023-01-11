@@ -76,5 +76,4 @@ The compiled libraries are under the "Libraries" folder.
 If you want to merge all the module libraries into one library, Run "INSTALL" project.
 
 ## TODO
- * Asteroid belt creator
- * ...and more
+ * ...and more?
