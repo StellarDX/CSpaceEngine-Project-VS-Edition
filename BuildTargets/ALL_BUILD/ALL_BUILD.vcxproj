@@ -133,6 +133,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Applications\AsterBeltCreator\AsterBeltCreator.vcxproj">
+      <Project>{511a8f50-1e97-4031-87a1-4d85b350fef5}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Applications\JulianConvert\JulianConvert.vcxproj">
       <Project>{83fcbde6-1edd-4504-83df-38e965d60637}</Project>
     </ProjectReference>

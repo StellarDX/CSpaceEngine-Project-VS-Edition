@@ -39,3 +39,10 @@ Object Spacecraft =
     .Orbit = TLEData.Orbit() // 将轨道数据赋值给Object
 };
 ```
+
+## 小行星带生成器C++版
+
+基于JackDole的Python版本转写，引入一些“真实”的数学模型。
+
+ * Python版本链接：[SE Forum](https://forum.spaceengine.org/viewtopic.php?f=3&t=114#p1126)
+ * 源码：[Here](Applications/AsterBeltCreator/AsterBeltCreator.cpp)

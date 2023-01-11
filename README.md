@@ -62,6 +62,7 @@ Object Obj = gen();
 **Creating a planet**
 
 Codes are almost same as above. Support rocky planets and gas giants.
+An Asteroid belt creator C++ version is provided: [AsterBeltCreator](Applications/AsterBeltCreator/AsterBeltCreator.cpp)
 
 **Orbit Calculating**
  * Some engines to generate distance array, Support Titius-Bode law, Blagg Fomula, Dermott's law and exponential fit.

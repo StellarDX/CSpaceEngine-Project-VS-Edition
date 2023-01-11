@@ -6,7 +6,8 @@
 
 // AsterBeltCreator C++ Edition based on CSpaceEngine
 // By StellarDX Astronomy.
-// Python edition by JackDole, 2016
+// Original Python version by JackDole, 2016
+// https://forum.spaceengine.org/viewtopic.php?f=3&t=114#p1126
 
 // Default english strings is taken from python version
 // Object and orbit generation will use "realistic" models from CSE Library
@@ -537,7 +538,7 @@ void gen(const AsterBeltSettings& Config, OSCStream& fout)
 
 int main()
 {
-    //_WHILE_TRUE
+    _WHILE_TRUE
     SetConsoleTitle(CSE_TITLE_STRING);
     CSEDateTime DateTime = CSEDateTime::currentDateTimeUTC();
     cout.precision(15);
@@ -636,5 +637,5 @@ int main()
     File.write();
     fout.close();
 
-    //_END_WHILE_TRUE
+    _END_WHILE_TRUE
 }
