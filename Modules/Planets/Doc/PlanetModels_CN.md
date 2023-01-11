@@ -45,4 +45,4 @@ Object Spacecraft =
 基于JackDole的Python版本转写，引入一些“真实”的数学模型。
 
  * Python版本链接：[SE Forum](https://forum.spaceengine.org/viewtopic.php?f=3&t=114#p1126)
- * 源码：[Here](Applications/AsterBeltCreator/AsterBeltCreator.cpp)
+ * 源码：[Here](https://github.com/StellarDX/CSpaceEngine-Project/blob/main/Applications/AsterBeltCreator/AsterBeltCreator.cpp)
