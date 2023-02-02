@@ -123,7 +123,7 @@ public:
 	// 2 - log everything,          using min("CatalogLogLevel" in this config, "LogLevel" in the source file)
 	// 3 - log errors and warnings, ignoring "LogLevel" in the source file
 	// 4 - log everything,          ignoring "LogLevel" in the source file
-	#define CatalogLogLevel    2
+	#define CatalogLogLevel    0
 
 	// Level of logging for the System files:
 	// 0 - do not log
@@ -137,7 +137,9 @@ public:
 
 		if (Catalog)
 		{
-			#if CatalogLogLevel == 1 || CatalogLogLevel == 2
+			#if CatalogLogLevel == 0
+			return;
+			#elif CatalogLogLevel == 1 || CatalogLogLevel == 2
 			Level = Level < CatalogLogLevel ? Level : CatalogLogLevel;
 			#elif CatalogLogLevel == 3 || CatalogLogLevel == 4
 			Level = CatalogLogLevel - 2;

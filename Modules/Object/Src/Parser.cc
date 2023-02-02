@@ -46,25 +46,12 @@ vector<array<float64, 6>> GetPerodicTermsParameters(string _Params)
 	return _Final;
 }
 
-Object GetSEObject(ISCStream _Is, string _Name)
+Object ObjectLoader(_STD vector<_CSE _SC table::KeyValue>::iterator& it)
 {
-	// Find object
-	auto it = _Is->Catalogue.begin();
-	auto end = _Is->Catalogue.end();
-	_SC Names _N;
-	while (it != end)
-	{
-		_N = _SC ValueStr(it->Value).as<_SC Names>()->get();
-		if (_STD find(_N.begin(), _N.end(), _Name) != _N.end()) { break; }
-		++it;
-	}
-	_CSE_VERIFY(it != end, _SC ParseException("Object \"" + _Name + "\" is not found in this stream."));
-
-	Log_IS.Out("Object Loader", "INFO", "[CSE Object loader] Loading object - " + _Name, ILogLevel, true);
 	Object _Obj;
 
 	_Obj.Type = it->Key;
-	_Obj.Name = _N;
+	_Obj.Name = _SC ValueStr(it->Value).as<_SC Names>()->get();;
 
 	using _SC GetAs;
 
@@ -844,6 +831,23 @@ Object GetSEObject(ISCStream _Is, string _Name)
 	}
 
 	return _Obj;
+}
+
+Object GetSEObject(ISCStream _Is, string _Name)
+{
+	// Find object
+	auto it = _Is->Catalogue.begin();
+	auto end = _Is->Catalogue.end();
+	_SC Names _N;
+	while (it != end)
+	{
+		_N = _SC ValueStr(it->Value).as<_SC Names>()->get();
+		if (_STD find(_N.begin(), _N.end(), _Name) != _N.end()) { break; }
+		++it;
+	}
+	_CSE_VERIFY(it != end, _SC ParseException("Object \"" + _Name + "\" is not found in this stream."));
+	Log_IS.Out("Object Loader", "INFO", "[CSE Object loader] Loading object - " + _Name, ILogLevel, true);
+	return ObjectLoader(it);
 }
 
 _CSE_END

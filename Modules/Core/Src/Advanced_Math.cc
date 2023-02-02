@@ -35,7 +35,7 @@ _Check_return_ vec3 _cdecl PolarToXYZ(_In_ vec3 Polar)
 
 _EXTERN_C
 
-_Check_return_ float64 _cdecl integral(_In_ float64(*f)(float64 x), _In_ float64 a, _In_ float64 b, float64 Logn)
+_Check_return_ float64 _cdecl integral(_In_ _STD function<float64(float64)> f, _In_ float64 a, _In_ float64 b, float64 Logn)
 {
 	float64 MaxSamples = pow(10, Logn);
 	float64 Step = (b - a) / MaxSamples;

@@ -13,9 +13,15 @@ int main()
     //Object GasGiant = GaseousPlanetBase(0.0748)(random);
     Object GasGiant = RandomGasGiant();
     GasGiant.Name[0] = "GasGiant";
+    Object Moon = RandomMoon();
+    Moon.Name[0] = "Moon";
+    Object SmallMoon = RandomSmallMoon();
+    SmallMoon.Name[0] = "SmallMoon";
+    Object Asteroid = RandomAsteroid();
+    Asteroid.Name[0] = "Asteroid";
     ofstream Report("TestReport_PlanetGen.sc");
     OSCStream fout(Report);
-    fout << NoBooleans << RockyPlanet << GasGiant;
+    fout << NoBooleans << RockyPlanet << GasGiant << Moon << SmallMoon << Asteroid;
 
     Object Sun =
     {

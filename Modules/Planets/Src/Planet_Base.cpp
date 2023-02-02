@@ -53,17 +53,44 @@ _CONSTEXPR20 float64 UBox_PlanetBase_Composition::EscapeVelocity() const
 
 Object RandomRockyPlanet()
 {
-	float64 MassScale = random.uniform(6.4, 7.6);
-	float64 RadScale = random.uniform(2.8, 4.4);
-	float64 BaseRadius = random.uniform(0.15, 2);
+	float64 MassScale = random.uniform(6.4 * MassEarth, 7.6 * MassEarth);
+	float64 RadScale = random.uniform(2.8 * RadEarth, 4.4 * RadEarth);
+	float64 BaseRadius = random.uniform(0.15 * RadEarth, 2 * RadEarth);
 	TerrestrialPlanetBase Model(BaseRadius, BaseRadius, MassScale, RadScale);
 	return Model(random);
 }
 
 Object RandomGasGiant()
 {
-	float64 BaseMass = random.uniform((15 * MassEarth) / MassJupiter, 12);
+	float64 BaseMass = random.uniform(15 * MassEarth, 12 * MassJupiter);
 	GaseousPlanetBase Model(BaseMass);
+	return Model(random);
+}
+
+Object RandomMoon()
+{
+	float64 MassScale = random.uniform(6.4, 7.6);
+	float64 RadScale = random.uniform(2.8, 4.4);
+	float64 BaseRadius = random.uniform(650000, 2300000);
+	TerrestrialPlanetBase Model(BaseRadius, BaseRadius, MassScale, RadScale);
+	return Model(random);
+}
+
+Object RandomSmallMoon()
+{
+	float64 MassScale = random.uniform(6.4, 7.6);
+	float64 RadScale = random.uniform(2.8, 4.4);
+	float64 BaseRadius = random.uniform(150000, 650000);
+	TerrestrialPlanetBase Model(BaseRadius, BaseRadius, MassScale, RadScale);
+	return Model(random);
+}
+
+Object RandomAsteroid()
+{
+	float64 MassScale = random.uniform(6.4, 7.6);
+	float64 RadScale = random.uniform(2.8, 4.4);
+	float64 BaseRadius = random.uniform(20000, 150000);
+	TerrestrialPlanetBase Model(BaseRadius, BaseRadius, MassScale, RadScale);
 	return Model(random);
 }
 

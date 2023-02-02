@@ -39,12 +39,12 @@ public:
 		float64 PressurePow;
 
 		param_type(float64 MinRadius, float64 MaxRadius, float64 MScale, float64 RScale, float64 PPow) : 
-			RadiusRange(MinRadius, MaxRadius), MassScale(MScale), RadScale(RScale), PressurePow(PPow){}
+			RadiusRange(MinRadius / RadEarth, MaxRadius / RadEarth), MassScale(MScale / MassEarth), RadScale(RScale / RadEarth), PressurePow(PPow){}
 	}_Par;
 
-	TerrestrialPlanetBase() : _Par(0.15, 2, 6.41, 3.26, 0){}
-	TerrestrialPlanetBase(float64 Radius) : _Par(Radius, Radius, 6.41, 3.26, 0) {}
-	TerrestrialPlanetBase(float64 MinRadius, float64 MaxRadius, float64 MScale = 6.41, float64 RScale = 3.26, float64 PPow = 0) :
+	TerrestrialPlanetBase() : _Par(0.15 * RadEarth, 2 * RadEarth, 6.41 * MassEarth, 3.26 * RadEarth, 0){}
+	TerrestrialPlanetBase(float64 Radius) : _Par(Radius, Radius, 6.41 * MassEarth, 3.26 * RadEarth, 0) {}
+	TerrestrialPlanetBase(float64 MinRadius, float64 MaxRadius, float64 MScale = 6.41 * MassEarth, float64 RScale = 3.26 * RadEarth, float64 PPow = 0) :
 		_Par(MinRadius, MaxRadius, MScale, RScale, PPow) {}
 
 	template <class _Engine> // Procedural planet generator
@@ -90,12 +90,12 @@ public:
 
 	struct param_type
 	{
-		vec2 MassRange; // in Jupiter mass
+		vec2 MassRange;
 
-		param_type(float64 MinMass, float64 MaxMass) : MassRange(MinMass, MaxMass) {}
+		param_type(float64 MinMass, float64 MaxMass) : MassRange(MinMass / MassJupiter, MaxMass / MassJupiter) {}
 	}_Par;
 
-	GaseousPlanetBase() : _Par((15 * MassEarth) / MassJupiter, 12) {}
+	GaseousPlanetBase() : _Par(15 * MassEarth, 12 * MassJupiter) {}
 	GaseousPlanetBase(float64 Mass) : _Par(Mass, Mass) {}
 	GaseousPlanetBase(float64 MinMass, float64 MaxMass) : _Par(MinMass, MaxMass) {}
 
@@ -172,6 +172,9 @@ public:
 
 Object RandomRockyPlanet();
 Object RandomGasGiant();
+Object RandomMoon();
+Object RandomSmallMoon();
+Object RandomAsteroid();
 
 _CSE_END
 

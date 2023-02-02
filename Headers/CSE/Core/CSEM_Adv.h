@@ -6,6 +6,7 @@
 // These functions are used to solve some very difficaut problems.
 // But its accuracy maybe very low.
 
+#include <functional>
 #include "CSE/Core/CSECore.h"
 #include "CSE/Core/gltypes.h"
 
@@ -57,7 +58,7 @@ _EXTERN_C
 /// <param name="b">Upper limit</param>
 /// <param name="n">Number of samples, expressed as logarithm</param>
 /// <returns>result of integral</returns>
-_Check_return_ float64 _cdecl integral(_In_ float64(*f)(float64 x), _In_ float64 a, _In_ float64 b, float64 Logn = 5);
+_Check_return_ float64 _cdecl integral(_In_ _STD function<float64(float64)> f, _In_ float64 a, _In_ float64 b, float64 Logn = 5);
 
 _END_EXTERN_C
 

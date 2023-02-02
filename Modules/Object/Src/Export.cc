@@ -77,13 +77,13 @@ void AddKeyValue(_SC table* _Table, string _Key, genType _Value, _SC object_ostr
 
 		_Table->push(_KV);
 	}
-	else { Log_OS.Out("OSCStream", "ERROR", "[Table] Failed to add : " + _Key + " because its value is invalid.", OLogLevel); }
+	else { Log_OS.Out("OSCStream", "ERROR", "[Table] Failed to add : " + _Key + " because its value is invalid.", OLogLevel, true); }
 }
 
 template<typename genType> requires convertible_to<genType, string>
 void AddKeyValue(_SC table* _Table, string _Key, genType _Value, _SC object_ostream::fmtflags _Fl, streamsize _Preci)
 {
-	Log_OS.Out("OSCStream", "INFO", "[Table] Adding Key : " + _Key, OLogLevel);
+	Log_OS.Out("OSCStream", "INFO", "[Table] Adding Key : " + _Key, OLogLevel, true);
 	if (_Value != "None")
 	{
 		_SC table::KeyValue _KV;
@@ -98,7 +98,7 @@ void AddKeyValue(_SC table* _Table, string _Key, bool _Value, _SC object_ostream
 {
 	if (!(_Fl & (1 << 16)))
 	{
-		Log_OS.Out("OSCStream", "INFO", "[Table] Adding Key : " + _Key, OLogLevel);
+		Log_OS.Out("OSCStream", "INFO", "[Table] Adding Key : " + _Key, OLogLevel, true);
 		if (_Value)
 		{
 			_SC table::KeyValue _KV;

@@ -122,7 +122,7 @@ struct AsterBeltSettings
 
     // Bastc Settings
     uint64 NParticles; // Number of objects created
-    uint64 NBigBodies; // Number of Moon/DwarfPlanets created
+    uint64 NBigBodies; // Number of Moon/DwarfPlanets created (Unused)
     bool EnableRealNames;
     float64 MinRadius;
     float64 MaxRadius;
@@ -224,7 +224,7 @@ void OblateXZ(vec3* Dim)
 
 void CreateMoon(vector<Object>& Particles, const Object& Particle, const AsterBeltSettings& Conf, size_t Number)
 {
-    TerrestrialPlanetBase Model((Conf.MinRadius / RadEarth) / 5., (Particle.Dimensions.x / RadEarth) / 4., random.uniform(6.4, 7.6), random.uniform(2.8, 4.4));
+    TerrestrialPlanetBase Model(Conf.MinRadius / 5., Particle.Dimensions.x, random.uniform(6.4 * MassEarth, 7.6 * MassEarth), random.uniform(2.8 * RadEarth, 4.4 * RadEarth));
     Object Moon = Model(random);
     float64 MinDist = RocheLimit(&Particle, &Moon, 1) + Moon.Radius() * 2.;
     Object Parent{ .Mass = Conf.CenterObjectMass };
@@ -264,7 +264,7 @@ void CreateMoon(vector<Object>& Particles, const Object& Particle, const AsterBe
 
 void CreateBinary(vector<Object>& Particles, Object& Particle, const AsterBeltSettings& Conf, size_t Number)
 {
-    TerrestrialPlanetBase Model((Conf.MinRadius / RadEarth) / 2., (Particle.Dimensions.x / RadEarth) / 1.1, random.uniform(6.4, 7.6), random.uniform(2.8, 4.4));
+    TerrestrialPlanetBase Model(Conf.MinRadius / 2., Particle.Dimensions.x / 1.1, random.uniform(6.4 * MassEarth, 7.6 * MassEarth), random.uniform(2.8 * RadEarth, 4.4 * RadEarth));
     Object Companion = Model(random);
     Companion.Type = "Asteroid";
     Companion.Class = "Asteroid";
@@ -312,7 +312,7 @@ void RingDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
 {
     for (size_t i = 0; i < Conf.NParticles; i++)
     {
-        TerrestrialPlanetBase Model(Conf.MinRadius / RadEarth, Conf.MaxRadius / RadEarth, random.uniform(6.4, 7.6), random.uniform(2.8, 4.4));
+        TerrestrialPlanetBase Model(Conf.MinRadius, Conf.MaxRadius, random.uniform(6.4 * MassEarth, 7.6 * MassEarth), random.uniform(2.8 * RadEarth, 4.4 * RadEarth));
         Object Particle = Model(random);
         Particle.Type = Conf.Type;
         Particle.Class = "Asteroid";
@@ -367,7 +367,7 @@ void SphereDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf
 {
     for (size_t i = 0; i < Conf.NParticles; i++)
     {
-        TerrestrialPlanetBase Model(Conf.MinRadius / RadEarth, Conf.MaxRadius / RadEarth, random.uniform(6.4, 7.6), random.uniform(2.8, 4.4));
+        TerrestrialPlanetBase Model(Conf.MinRadius, Conf.MaxRadius, random.uniform(6.4 * MassEarth, 7.6 * MassEarth), random.uniform(2.8 * RadEarth, 4.4 * RadEarth));
         Object Particle = Model(random);
         Particle.Type = Conf.Type;
         Particle.Class = "Asteroid";
@@ -465,7 +465,7 @@ void TorusDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
         float64 NewAscNode = arctan(NewNormVec.x / NewNormVec.z);
         //cout << NewIncl << ' ' << NewAscNode << '\n';
 
-        TerrestrialPlanetBase Model(Conf.MinRadius / RadEarth, Conf.MaxRadius / RadEarth, random.uniform(6.4, 7.6), random.uniform(2.8, 4.4));
+        TerrestrialPlanetBase Model(Conf.MinRadius, Conf.MaxRadius, random.uniform(6.4 * MassEarth, 7.6 * MassEarth), random.uniform(2.8 * RadEarth, 4.4 * RadEarth));
         Object Particle = Model(random);
         Particle.Type = Conf.Type;
         Particle.Class = "Asteroid";

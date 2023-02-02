@@ -74,6 +74,11 @@ public:
 	float64 Epoch = NO_DATA_FLOAT_INF;
 	float64 Period = NO_DATA_FLOAT_INF;
 	float64 PericenterDist = NO_DATA_FLOAT_INF;
+	float64 SemiMajorAxis()const
+	{ 
+		if (isinf(Eccentricity)) { return PericenterDist; }
+		return PericenterDist / (1. - Eccentricity);
+	}
 	float64 GravParam = NO_DATA_FLOAT_INF;
 	float64 Eccentricity = NO_DATA_FLOAT_INF;
 	float64 Inclination = NO_DATA_FLOAT_INF;
@@ -443,6 +448,8 @@ public:
 /////////////////////////////////////////////////////////////////////////////////
 
 // Loading Object
+
+Object ObjectLoader(_STD vector<_CSE _SC table::KeyValue>::iterator& it);
 Object GetSEObject(ISCStream _Is, _STD string _Name);
 
 OSCStream& operator<<(OSCStream& _Os, _CSE Object _Obj);

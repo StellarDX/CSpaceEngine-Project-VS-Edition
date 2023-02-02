@@ -40,7 +40,7 @@ namespace consts{
 // List2: Common physic constants
 // -------------------------------------------------------------------------
 //      Name            Value/Equation        Note
-#define GravConstant    6.67430e-11        // (±0.00015)2018 CODATA Value, reference from NIST
+#define GravConstant    6.67430E-11        // (±0.00015)2018 CODATA Value, reference from NIST
 #define SpeedOfLight    299792458          // Exact value defined by 1983 17th CGPM
 #define PPM             0.0001             // by definition, Parts-per million to percent
 #define GasConstant     8.31446261815324   // 2018 CODATA Value
