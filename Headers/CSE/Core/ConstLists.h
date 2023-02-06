@@ -53,6 +53,7 @@ namespace consts{
 #define MagnetConstant  _CONSTS Equation23 // the magnetic permeability in a classical vacuum
 #define ElectricConst   _CONSTS Equation24 // the value of the absolute dielectric permittivity of classical vacuum
 #define Dalton          1.66053906660E-27  // (±0.0000000000050)
+#define StdAtm          101325             // Standard atmosphere, on sea level
 // -------------------------------------------------------------------------
 extern const long double Equation21;
 extern const long double Equation22;
