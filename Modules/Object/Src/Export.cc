@@ -706,10 +706,10 @@ table::KeyValue MakeTable(object_ostream& _Os, Object Obj)
 		table _Atmosphere;
 
 		AddKeyValue(&_Atmosphere, "Model", Obj.Atmosphere.Model, _Os.flags(), _Os.precision());
-		AddKeyValue(&_Atmosphere, "Height", Obj.Atmosphere.Height, _Os.flags(), _Os.precision());
+		AddKeyValue(&_Atmosphere, "Height", Obj.Atmosphere.Height / 1000., _Os.flags(), _Os.precision());
 		AddKeyValue(&_Atmosphere, "Density", Obj.Atmosphere.Density, _Os.flags(), _Os.precision());
 		AddKeyValue(&_Atmosphere, "Adiabat", Obj.Atmosphere.Adiabat, _Os.flags(), _Os.precision());
-		AddKeyValue(&_Atmosphere, "Pressure", Obj.Atmosphere.Pressure, _Os.flags(), _Os.precision());
+		AddKeyValue(&_Atmosphere, "Pressure", Obj.Atmosphere.Pressure / float64(StdAtm), _Os.flags(), _Os.precision());
 		AddKeyValue(&_Atmosphere, "Greenhouse", Obj.Atmosphere.Greenhouse, _Os.flags(), _Os.precision());
 		AddKeyValue(&_Atmosphere, "Bright", Obj.Atmosphere.Bright, _Os.flags(), _Os.precision());
 		AddKeyValue(&_Atmosphere, "Opacity", Obj.Atmosphere.Opacity, _Os.flags(), _Os.precision());

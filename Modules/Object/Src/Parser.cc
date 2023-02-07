@@ -616,10 +616,10 @@ Object ObjectLoader(_STD vector<_CSE _SC table::KeyValue>::iterator& it)
 	{
 		auto Atm = it->SubTable->find("Atmosphere");
 		_Obj.Atmosphere.Model = GetAs<string>(Atm, "Model");
-		_Obj.Atmosphere.Height = GetAs<float64>(Atm, "Height");
+		_Obj.Atmosphere.Height = GetAs<float64>(Atm, "Height") * 1000;
 		_Obj.Atmosphere.Density = GetAs<float64>(Atm, "Density");
 		_Obj.Atmosphere.Adiabat = GetAs<float64>(Atm, "Adiabat");
-		_Obj.Atmosphere.Pressure = GetAs<float64>(Atm, "Pressure");
+		_Obj.Atmosphere.Pressure = GetAs<float64>(Atm, "Pressure") * StdAtm;
 		_Obj.Atmosphere.Greenhouse = GetAs<float64>(Atm, "Greenhouse");
 		_Obj.Atmosphere.Bright = GetAs<float64>(Atm, "Bright");
 		_Obj.Atmosphere.Opacity = GetAs<float64>(Atm, "Opacity");
