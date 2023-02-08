@@ -519,11 +519,11 @@ Object ObjectLoader(_STD vector<_CSE _SC table::KeyValue>::iterator& it)
 		auto Ocean = it->SubTable->find("Ocean");
 		if (Ocean->SubTable->find("Height") != Ocean->SubTable->end())
 		{
-			_Obj.Ocean.Height = GetAs<float64>(Ocean, "Height");
+			_Obj.Ocean.Height = GetAs<float64>(Ocean, "Height") * 1000.;
 		}
 		else if (Ocean->SubTable->find("Depth") != Ocean->SubTable->end())
 		{
-			_Obj.Ocean.Height = GetAs<float64>(Ocean, "Depth");
+			_Obj.Ocean.Height = GetAs<float64>(Ocean, "Depth") * 1000.;
 		}
 
 		_Obj.Ocean.Hapke = GetAs<float64>(Ocean, "Hapke");
