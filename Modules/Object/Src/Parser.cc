@@ -112,11 +112,11 @@ Object ObjectLoader(_STD vector<_CSE _SC table::KeyValue>::iterator& it)
 		_Obj.AlbedoBond = GetAs<float64>(it, "Albedo");
 		_Obj.AlbedoGeom = GetAs<float64>(it, "Albedo");
 	}
-	//else
-	//{
+	else
+	{
 		_Obj.AlbedoBond = GetAs<float64>(it, "AlbedoBond");
 		_Obj.AlbedoGeom = GetAs<float64>(it, "AlbedoGeom");
-	//}
+	}
 
 	if (_Obj.Type == "Star")
 	{
