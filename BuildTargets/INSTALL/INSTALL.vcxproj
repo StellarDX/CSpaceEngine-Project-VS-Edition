@@ -127,7 +127,7 @@
       </AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
-      <Command>lib.exe /OUT:$(SolutionDir)\Libraries\CSE.lib "CSE_Core.lib" "CSE_Lumine.lib" "CSE_Object.lib" "CSE_Random.lib" "CSE_SCStream.lib" "CSE_Stars.lib" "CSE_Planets.lib" /LIBPATH:"$(SolutionDir)\Libraries\$(Configuration)"  /MACHINE:X64 /NOLOGO</Command>
+      <Command>lib.exe /OUT:$(SolutionDir)\Libraries\CSE-Debug.lib "CSE_Core.lib" "CSE_Lumine.lib" "CSE_Object.lib" "CSE_Random.lib" "CSE_SCStream.lib" "CSE_Stars.lib" "CSE_Planets.lib" /LIBPATH:"$(SolutionDir)\Libraries\$(Configuration)"  /MACHINE:X64 /NOLOGO</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
