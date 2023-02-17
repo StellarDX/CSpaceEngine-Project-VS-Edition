@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)\Applications\</OutDir>
-    <TargetName>AsterBeltCreator</TargetName>
+    <TargetName>AsterBeltCreator-Debug</TargetName>
     <LibraryPath>$(SolutionDir)\Libraries\$(Configuration);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
