@@ -287,34 +287,34 @@ _STD basic_ostream<_Elem, _Tr>& operator<<(_STD basic_ostream<_Elem, _Tr>& _Ostr
 	return _Ostr << _Sstr.str();
 }
 
-inline namespace hypercomplex_literals
+inline namespace hypercomplex_literals // The algebra of quaternions is often denoted by H (Hamilton)
 {
-	_NODISCARD constexpr Quaternion<float64> operator""iq(long double _Val)
+	_NODISCARD constexpr Quaternion<float64> operator""ih(long double _Val)
 	{
 		return Quaternion<float64>(0.0, static_cast<float64>(_Val), 0.0, 0.0);
 	}
 
-	_NODISCARD constexpr Quaternion<float64> operator""iq(unsigned long long _Val)
+	_NODISCARD constexpr Quaternion<float64> operator""ih(unsigned long long _Val)
 	{
 		return Quaternion<float64>(0.0, static_cast<float64>(_Val), 0.0, 0.0);
 	}
 
-	_NODISCARD constexpr Quaternion<float64> operator""jq(long double _Val)
+	_NODISCARD constexpr Quaternion<float64> operator""jh(long double _Val)
 	{
 		return Quaternion<float64>(0.0, 0.0, static_cast<float64>(_Val), 0.0);
 	}
 
-	_NODISCARD constexpr Quaternion<float64> operator""jq(unsigned long long _Val)
+	_NODISCARD constexpr Quaternion<float64> operator""jh(unsigned long long _Val)
 	{
 		return Quaternion<float64>(0.0, 0.0, static_cast<float64>(_Val), 0.0);
 	}
 
-	_NODISCARD constexpr Quaternion<float64> operator""kq(long double _Val)
+	_NODISCARD constexpr Quaternion<float64> operator""kh(long double _Val)
 	{
 		return Quaternion<float64>(0.0, 0.0, 0.0, static_cast<float64>(_Val));
 	}
 
-	_NODISCARD constexpr Quaternion<float64> operator""kq(unsigned long long _Val)
+	_NODISCARD constexpr Quaternion<float64> operator""kh(unsigned long long _Val)
 	{
 		return Quaternion<float64>(0.0, 0.0, 0.0, static_cast<float64>(_Val));
 	}
