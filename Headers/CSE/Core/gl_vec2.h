@@ -5,6 +5,7 @@
 
 #include <array>
 #include <vector>
+#include <complex>
 #include <ostream>
 #include "CSE/Core/CSECore.h"
 
@@ -69,6 +70,17 @@ public:
 	operator std::vector<genType>()
 	{
 		return std::vector<genType>({ x, y });
+	}
+
+	constexpr explicit gl_vec2(std::complex<genType> _xy)
+	{
+		x = _xy.real();
+		y = _xy.imag();
+	}
+
+	operator std::complex<genType>()
+	{
+		return std::complex<genType>(x, y);
 	}
 };
 
