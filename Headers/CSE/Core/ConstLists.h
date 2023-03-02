@@ -114,7 +114,7 @@ extern const long double Equation41;
 #define SolarLumBol   3.0128E+28 // zero points of the absolute and apparent bolometric magnitude scales
 
 
-// List8: Molar Masses
+// List8: Molar Masses (in g/mol)
 // Values computed by PubChem 2.1 (PubChem release 2021.05.07): https://pubchem.ncbi.nlm.nih.gov/
 // -------------------------------------------------------------------------
 //      Name          Value        Exact Value
@@ -156,7 +156,7 @@ extern const long double Equation41;
 #define PlanckMass        _CONSTS Equation83 // The dividing point between macro scale and micro scale
 #define PlanckTime        _CONSTS Equation84 // the time it takes for a photon to travel a distance equal to the Planck length, and is the shortest possible time interval that can be measured.
 #define PlanckTemp        _CONSTS Equation85 // At this temperature, the wavelength of light emitted by thermal radiation reaches the Planck length
-#define HubbleParam       73.4               // (+0.99, −1.22 | Format: (Km/s)/Mpc)Value by Pantheon+, 2022-02-08, SN Ia distance ladder (+SH0ES) (preprint)
+#define HubbleParam       68.3               // (±1.5 | Format: (Km/s)/Mpc)Value by South Pole Telescope, 2022-12-12, CMB TT/TE/EE power spectrum. Less than 1σ discrepancy with planck. (Preprint)
 #define HubbleParamSI     _CONSTS Equation86 // Hubble Parameter in SI (Format: 1/s)
 #define CosmoDensityRatio 0.6889             // (±0.0056)ratio between the energy density due to the cosmological constant and the critical density of the universe, according to results published by the Planck Collaboration in 2018
 #define CosmoConstant     _CONSTS Equation87 // constant coefficient of a term Albert Einstein temporarily added to his field equations of general relativity
