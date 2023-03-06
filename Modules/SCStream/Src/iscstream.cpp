@@ -127,7 +127,20 @@ std::string parser::ParseValue(string::iterator& it, const string::iterator& end
 	return Value;
 }
 
-std::shared_ptr<table> parser::ParseSubTable(string::iterator& it, const string::iterator& end)
+int TrueOrFalse(std::string::iterator& it, const std::string::iterator& end)
+{
+	std::string Value;
+	while (it != end && (!isspace(*it) && '(' != *it && '\"' != *it))
+	{
+		Value += *it;
+		++it;
+	}
+	if (Value == "true") { return 1; }
+	if (Value == "false") { return -1; }
+	else { return 0; }
+}
+
+std::shared_ptr<table> parser::ParseSubTable(std::string::iterator& it, const std::string::iterator& end)
 {
 	uint64 SubTableLayer = 0;
 	string SubStr;
@@ -171,18 +184,45 @@ std::shared_ptr<table> parser::ParseSubTable(string::iterator& it, const string:
 		ConsumeWhiteSpace(it2, end2);
 		
 		// Parse Value and SubTable
-		if (it2 != end2 && '{' != *it2)
+		uint64 NValues = 0;
+		auto it2tof = it2;
+		while (it2 != end2 && '{' != *it2 && (!isalpha(*it2) || TrueOrFalse(it2tof, end2)))
 		{
-			Data.Value = ParseValue(it2, end2);
+			if (NValues)
+			{
+				if (Data.SubTable == nullptr)
+				{
+					table Tbl;
+					Data.SubTable = make_shared<table>(Tbl);
+				}
+				Data.SubTable->push({ .Key = "UnnamedValue#" + std::to_string(NValues), .Value = ParseValue(it2, end2) });
+			}
+			else { Data.Value = ParseValue(it2, end2); };
+			++it2;
+			++NValues;
+			ConsumeWhiteSpace(it2, end2);
 		}
 		
 		ConsumeWhiteSpace(it2, end2);
 
 		if (it2 != end2 && '{' == *it2)
 		{
-			if (Data.Key == "PeriodicTermsDiurnal" || Data.Key == "PeriodicTermsSecular")
+			auto it2a = it2;
+			++it2a;
+			ConsumeWhiteSpace(it2a, end2);
+			if (isdigit(*it2a) || '+' == *it2a || '-' == *it2a || '\"' == *it2a)
 			{
-				Data.Value = ParseMatrix(it2, end2);
+				if (!NValues) { Data.Value = ParseMatrix(it2, end2); }
+				else
+				{
+					if (Data.SubTable == nullptr)
+					{
+						table Val;
+						Data.SubTable = make_shared<table>(Val);
+					}
+					std::string Value = ParseMatrix(it2, end2);
+					Data.SubTable->push({ .Key = "UnnamedArray", .Value = Value });
+				}
 			}
 			else { Data.SubTable = ParseSubTable(it2, end2); }
 		}
@@ -283,16 +323,47 @@ table parser::parse()
 		ConsumeWhiteSpace(it, end);
 
 		// Parse Value and SubTable
-		if (it != end && '{' != *it)
+		uint64 NValues = 0;
+		auto ittof = it;
+		while (it != end && '{' != *it && (!isalpha(*it) || TrueOrFalse(ittof, end)))
 		{
-			Data.Value = ParseValue(it, end);
+			if (NValues)
+			{
+				if (Data.SubTable == nullptr)
+				{
+					table Tbl;
+					Data.SubTable = make_shared<table>(Tbl);
+				}
+				Data.SubTable->push({.Key = "UnnamedValue#" + std::to_string(NValues), .Value = ParseValue(it, end) });
+			}
+			else { Data.Value = ParseValue(it, end); }
+			++it;
+			++NValues;
+			ConsumeWhiteSpace(it, end);
 		}
 		
 		ConsumeWhiteSpace(it, end);
 
 		if (it != end && '{' == *it)
 		{
-			Data.SubTable = ParseSubTable(it, end);
+			auto it2a = it;
+			++it2a;
+			ConsumeWhiteSpace(it2a, end);
+			if (isdigit(*it2a) || '+' == *it2a || '-' == *it2a || '\"' == *it2a)
+			{
+				if (!NValues) { Data.Value = ParseMatrix(it, end); }
+				else
+				{
+					if (Data.SubTable == nullptr)
+					{
+						table Val;
+						Data.SubTable = make_shared<table>(Val);
+					}
+					std::string Value = ParseMatrix(it, end);
+					Data.SubTable->push({ .Key = "UnnamedArray", .Value = Value });
+				}
+			}
+			else { Data.SubTable = ParseSubTable(it, end); }
 		}
 		
 		Catalogue.push(Data);
