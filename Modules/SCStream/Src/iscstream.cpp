@@ -262,7 +262,7 @@ string parser::ParseMatrix(string::iterator& it, const string::iterator& end)
 }
 
 #if FORCE_CONVERT_CHAR_ENCODING
-string parser::ConvertChar(const char* str)
+string parser::ConvertChar(const char* str, int SrcEncod)
 {
 	// This function taken from CSDN jianminfly
 	// https://blog.csdn.net/jianminfly/article/details/106186909
@@ -274,9 +274,9 @@ string parser::ConvertChar(const char* str)
 	LPSTR szRes;
 
 	// Get size of variable
-	int i = MultiByteToWideChar(SOURCE_ENCODING, 0, str, -1, NULL, 0);
+	int i = MultiByteToWideChar(SrcEncod, 0, str, -1, NULL, 0);
 	strSrc = new WCHAR[i + 1];
-	MultiByteToWideChar(SOURCE_ENCODING, 0, str, -1, strSrc, i);
+	MultiByteToWideChar(SrcEncod, 0, str, -1, strSrc, i);
 
 	// Get size of variable
 	i = WideCharToMultiByte(TARGET_ENCODING, 0, strSrc, -1, NULL, 0, NULL, NULL);
@@ -291,7 +291,7 @@ string parser::ConvertChar(const char* str)
 }
 #endif
 
-table parser::parse()
+table parser::parse(UINT CodePage)
 {
 	Log_IS.Out("ISCStream", "INFO", "[Parser] Loading - Preprocessing catalog file...", ILogLevel, true);
 	Log_IS.Out("ISCStream", "INFO", "[Parser] Using localization setting: " + LocalInfo, ILogLevel, true);
@@ -299,7 +299,7 @@ table parser::parse()
 	SCString << input.rdbuf();
 	string SCPreProc = SkipComments(SCString.str());
 	#if FORCE_CONVERT_CHAR_ENCODING
-	SCPreProc = ConvertChar(SCPreProc.c_str());
+	SCPreProc = ConvertChar(SCPreProc.c_str(), CodePage);
 	#endif
 	
 	table Catalogue;
@@ -393,13 +393,13 @@ vector<_STD shared_ptr<table>> GetMultipleSubTables(vector<table::KeyValue>::ite
 
 _SC_END
 
-ISCStream ParseFile(string FileName)
+ISCStream ParseFile(string FileName, UINT CodePage)
 {
 	Log_IS.Out("ISCStream", "INFO", "[Parser] Loading file \"" + FileName + "\"", ILogLevel, true);
 	ifstream File(FileName);
 	_CSE_VERIFY(File, _SC ParseException("File \"" + FileName + "\" is not found."));
 	_SC parser se(File);
-	return make_shared<_SC table>(se.parse());
+	return make_shared<_SC table>(se.parse(CodePage));
 }
 
 _CSE_END

@@ -396,7 +396,7 @@ public:
     parser(_STD istream& is) : input(is){}
     parser& operator=(const parser& is) = delete;
 
-    table parse();
+    table parse(UINT CodePage = SOURCE_ENCODING);
 
 private:
     _STD string SkipComments(_STD string input);
@@ -405,7 +405,7 @@ private:
     _STD string ParseMatrix(_STD string::iterator& it, const _STD string::iterator& end);
 
     #if FORCE_CONVERT_CHAR_ENCODING
-    _STD string ConvertChar(const char* str);
+    _STD string ConvertChar(const char* str, int SrcEncod = SOURCE_ENCODING);
     #endif
 };
 
@@ -413,7 +413,7 @@ _SC_END
 
 using ISCStream = _STD shared_ptr<_SC table>;
 
-ISCStream ParseFile(_STD string FileName);
+ISCStream ParseFile(_STD string FileName, UINT CodePage = SOURCE_ENCODING);
 
 _CSE_END
 
