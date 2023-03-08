@@ -210,7 +210,7 @@ std::shared_ptr<table> parser::ParseSubTable(std::string::iterator& it, const st
 			auto it2a = it2;
 			++it2a;
 			ConsumeWhiteSpace(it2a, end2);
-			if (isdigit(*it2a) || '+' == *it2a || '-' == *it2a || '\"' == *it2a)
+			if (it2a != end2 && (isdigit(*it2a) || '+' == *it2a || '-' == *it2a || '\"' == *it2a))
 			{
 				if (!NValues) { Data.Value = ParseMatrix(it2, end2); }
 				else
@@ -349,7 +349,7 @@ table parser::parse(UINT CodePage)
 			auto it2a = it;
 			++it2a;
 			ConsumeWhiteSpace(it2a, end);
-			if (isdigit(*it2a) || '+' == *it2a || '-' == *it2a || '\"' == *it2a)
+			if (it2a != end && (isdigit(*it2a) || '+' == *it2a || '-' == *it2a || '\"' == *it2a))
 			{
 				if (!NValues) { Data.Value = ParseMatrix(it, end); }
 				else
