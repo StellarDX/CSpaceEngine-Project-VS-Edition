@@ -33,20 +33,4 @@ _Check_return_ vec3 _cdecl PolarToXYZ(_In_ vec3 Polar)
 	);
 }
 
-_EXTERN_C
-
-_Check_return_ float64 _cdecl integral(_In_ _STD function<float64(float64)> f, _In_ float64 a, _In_ float64 b, float64 Logn)
-{
-	float64 MaxSamples = pow(10, Logn);
-	float64 Step = (b - a) / MaxSamples;
-	float64 Area = 0;
-	for (size_t i = 0; i < MaxSamples; i++)
-	{
-		Area += (f(a + i * Step) + f(a + (i + 1) * Step)) * Step / 2.;
-	}
-	return Area;
-}
-
-_END_EXTERN_C
-
 _CSE_END
