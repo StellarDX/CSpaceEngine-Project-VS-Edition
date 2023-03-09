@@ -202,8 +202,4 @@ int main()
 	}
 	cout << '\n';
 	Report << '\n';
-
-	float64 Integ = cse::integral(func, 0, 1, 5);
-	cout << Integ << '\n';
-	Report << Integ << '\n';
 }
