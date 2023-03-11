@@ -198,7 +198,7 @@ std::shared_ptr<table> parser::ParseSubTable(std::string::iterator& it, const st
 				Data.SubTable->push({ .Key = "UnnamedValue#" + std::to_string(NValues), .Value = ParseValue(it2, end2) });
 			}
 			else { Data.Value = ParseValue(it2, end2); };
-			++it2;
+			if (it2 != end2){++it2;}
 			++NValues;
 			ConsumeWhiteSpace(it2, end2);
 		}
@@ -210,7 +210,7 @@ std::shared_ptr<table> parser::ParseSubTable(std::string::iterator& it, const st
 			auto it2a = it2;
 			++it2a;
 			ConsumeWhiteSpace(it2a, end2);
-			if (it2a != end2 && (isdigit(*it2a) || '+' == *it2a || '-' == *it2a || '\"' == *it2a))
+			if (it2a != end2 && (isdigit(*it2a) || '+' == *it2a || '-' == *it2a || '\"' == *it2a || '(' == *it2a))
 			{
 				if (!NValues) { Data.Value = ParseMatrix(it2, end2); }
 				else
@@ -240,10 +240,13 @@ std::shared_ptr<table> parser::ParseSubTable(std::string::iterator& it, const st
 string parser::ParseMatrix(string::iterator& it, const string::iterator& end)
 {
 	string Value;
+	bool InString = false;
 
 	while (it != end)
 	{
-		if (*it == '{')
+		if (*it == '\"' && !InString) { InString = true; }
+		else if (*it == '\"' && InString) { InString = false; }
+		if (*it == '{' && !InString)
 		{ 
 			++it;
 			continue; 
@@ -251,7 +254,7 @@ string parser::ParseMatrix(string::iterator& it, const string::iterator& end)
 		Value += *it;
 		++it;
 		if (it == end) { break; }
-		if (*it == '}')
+		if (*it == '}' && !InString)
 		{ 
 			if (it != end) { ++it; }
 			break; 
@@ -337,7 +340,7 @@ table parser::parse(UINT CodePage)
 				Data.SubTable->push({.Key = "UnnamedValue#" + std::to_string(NValues), .Value = ParseValue(it, end) });
 			}
 			else { Data.Value = ParseValue(it, end); }
-			++it;
+			if(it != end){ ++it; }
 			++NValues;
 			ConsumeWhiteSpace(it, end);
 		}
@@ -349,7 +352,7 @@ table parser::parse(UINT CodePage)
 			auto it2a = it;
 			++it2a;
 			ConsumeWhiteSpace(it2a, end);
-			if (it2a != end && (isdigit(*it2a) || '+' == *it2a || '-' == *it2a || '\"' == *it2a))
+			if (it2a != end && (isdigit(*it2a) || '+' == *it2a || '-' == *it2a || '\"' == *it2a || '(' == *it2a))
 			{
 				if (!NValues) { Data.Value = ParseMatrix(it, end); }
 				else
