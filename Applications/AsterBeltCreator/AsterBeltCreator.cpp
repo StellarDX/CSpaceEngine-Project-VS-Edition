@@ -52,7 +52,7 @@ string LngStr24 = "Epoch \n Default = now : ";
 string LngStr25 = "Output file name \n Default = {} : ";
 string LngStr26 = "Inclination to the reference plane in degree \n Default = 0 : ";
 string LngStr27 = "AscendingNode in degrees \n Default = 0 : ";
-string LngStr31 = "Shape of Asteroid belt or rings\n 1 = Ring(Single plane) \n 2 = Sphere \n 3 = Torus(Shape like tire) \n Default = 3 : ";
+string LngStr31 = "Shape of Asteroid belt or rings\n 1 = Ring(Single plane) \n 2 = Sphere \n 3 = Torus(Shape like tire) \n 4 = Cylinder(JackDole's model) \n Default = 3 : ";
 string LngStr32 = "Enable realistic style of names (1 = enable) \n Default = 0 : ";
 string LngStr33 = "Minimum absolute magnitude of comets \n Default = 5 : ";
 string LngStr34 = "Maximum absolute magnitude of comets \n Default = -5 : ";
@@ -737,7 +737,7 @@ int main()
         if (Conf.Shape == "Cylinder")
         {
             GetInput(&Conf.Height, 10., LngStr22);
-            cout << Conf.Inclination << '\n';
+            cout << Conf.Height << '\n';
         }
 
         GetInput(&Conf.AscendingNode, 0., LngStr27);
