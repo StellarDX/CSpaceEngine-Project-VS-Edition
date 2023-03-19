@@ -46,6 +46,7 @@ string LngStr16 = "If you have \033[1m\033[36mKm\033[0m, \033[1mput a '-' sign f
 string LngStr17 = " Default = 6.0 AU : ";
 string LngStr18 = "Minimum radius of objects in \033[1m\033[33mkm\033[0m \n Default = 0.1 : ";
 string LngStr19 = "Maximum radius of objects in \033[1m\033[33mkm\033[0m \n Default = 50.0 : ";
+string LngStr22 = "Angular height in degrees \n Default = 10.0 : ";
 string LngStr23 = "RefPlane (Ecliptic, Equator, Extrasolar) \n Default = Equator : ";
 string LngStr24 = "Epoch \n Default = now : ";
 string LngStr25 = "Output file name \n Default = {} : ";
@@ -55,6 +56,7 @@ string LngStr31 = "Shape of Asteroid belt or rings\n 1 = Ring(Single plane) \n 2
 string LngStr32 = "Enable realistic style of names (1 = enable) \n Default = 0 : ";
 string LngStr33 = "Minimum absolute magnitude of comets \n Default = 5 : ";
 string LngStr34 = "Maximum absolute magnitude of comets \n Default = -5 : ";
+string LngStr35 = "Enable procedural moons or bifurcation of asteroids. \n Default = false : ";
 
 // SE style format strings
 string SEStyleAster = "{} S{}";
@@ -124,6 +126,7 @@ struct AsterBeltSettings
     uint64 NParticles; // Number of objects created
     uint64 NBigBodies; // Number of Moon/DwarfPlanets created (Unused)
     bool EnableRealNames;
+    bool bifurcation;
     float64 MinRadius;
     float64 MaxRadius;
     float64 ProbMoon = 0.11;
@@ -135,6 +138,7 @@ struct AsterBeltSettings
     float64 InnerRadius;
     float64 OuterRadius;
     float64 Inclination;
+    float64 Height;
     float64 AscendingNode;
     string Shape;
     string RefPlane;
@@ -340,17 +344,21 @@ void RingDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
             else if (Conf.Type == "DwarfMoon") { Particle.Name = { vformat(SEStyleDMoon, make_format_args(Conf.Name, i + 1)) }; }
         }
 
-        if (Conf.Type == "Asteroid")
+        if (Conf.Type == "Asteroid" )
         {
-            uint64 HaveMoon = random.probability({ 1. - Conf.ProbMoon, Conf.ProbMoon * (1. - Conf.ProbBinary), Conf.ProbMoon * Conf.ProbBinary });
-            if (HaveMoon == 1)
+            if (Conf.bifurcation)
             {
-                Particles.push_back(Particle);
-                CreateMoon(Particles, Particle, Conf, i + 1);
-            }
-            else if (HaveMoon == 2)
-            {
-                CreateBinary(Particles, Particle, Conf, i + 1);
+                uint64 HaveMoon = random.probability({ 1. - Conf.ProbMoon, Conf.ProbMoon * (1. - Conf.ProbBinary), Conf.ProbMoon * Conf.ProbBinary });
+                if (HaveMoon == 1)
+                {
+                    Particles.push_back(Particle);
+                    CreateMoon(Particles, Particle, Conf, i + 1);
+                }
+                else if (HaveMoon == 2)
+                {
+                    CreateBinary(Particles, Particle, Conf, i + 1);
+                }
+                else { Particles.push_back(Particle); }
             }
             else { Particles.push_back(Particle); }
         }
@@ -401,15 +409,19 @@ void SphereDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf
 
         if (Conf.Type == "Asteroid")
         {
-            uint64 HaveMoon = random.probability({ 1. - Conf.ProbMoon, Conf.ProbMoon * (1. - Conf.ProbBinary), Conf.ProbMoon * Conf.ProbBinary });
-            if (HaveMoon == 1)
+            if (Conf.bifurcation)
             {
-                Particles.push_back(Particle);
-                CreateMoon(Particles, Particle, Conf, i + 1);
-            }
-            else if (HaveMoon == 2)
-            {
-                CreateBinary(Particles, Particle, Conf, i + 1);
+                uint64 HaveMoon = random.probability({ 1. - Conf.ProbMoon, Conf.ProbMoon * (1. - Conf.ProbBinary), Conf.ProbMoon * Conf.ProbBinary });
+                if (HaveMoon == 1)
+                {
+                    Particles.push_back(Particle);
+                    CreateMoon(Particles, Particle, Conf, i + 1);
+                }
+                else if (HaveMoon == 2)
+                {
+                    CreateBinary(Particles, Particle, Conf, i + 1);
+                }
+                else { Particles.push_back(Particle); }
             }
             else { Particles.push_back(Particle); }
         }
@@ -495,15 +507,113 @@ void TorusDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
 
         if (Conf.Type == "Asteroid")
         {
-            uint64 HaveMoon = random.probability({ 1. - Conf.ProbMoon, Conf.ProbMoon * (1. - Conf.ProbBinary), Conf.ProbMoon * Conf.ProbBinary });
-            if (HaveMoon == 1)
+            if (Conf.bifurcation)
             {
-                Particles.push_back(Particle);
-                CreateMoon(Particles, Particle, Conf, i + 1);
+                uint64 HaveMoon = random.probability({ 1. - Conf.ProbMoon, Conf.ProbMoon * (1. - Conf.ProbBinary), Conf.ProbMoon * Conf.ProbBinary });
+                if (HaveMoon == 1)
+                {
+                    Particles.push_back(Particle);
+                    CreateMoon(Particles, Particle, Conf, i + 1);
+                }
+                else if (HaveMoon == 2)
+                {
+                    CreateBinary(Particles, Particle, Conf, i + 1);
+                }
+                else { Particles.push_back(Particle); }
             }
-            else if (HaveMoon == 2)
+            else { Particles.push_back(Particle); }
+        }
+        else if (Conf.Type == "Comet")
+        {
+            Particle.AbsMagn = random.uniform(Conf.MaxAbsMagn, Conf.MinAbsMagn);
+            Particles.push_back(Particle);
+        }
+        else { Particles.push_back(Particle); }
+    }
+}
+
+void CylDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
+{
+    for (size_t i = 0; i < Conf.NParticles; i++)
+    {
+        vec3 CenterPoint(0);
+        // Generating Lat/Lon
+        float64 InclVar = Conf.Height / 2.;
+        vec3 HPoint(random.uniform(0, 360), random.uniform(0, InclVar), 0);
+
+        // Generating Distances
+        float64 MinDist = Conf.InnerRadius;
+        float64 MaxDist = Conf.OuterRadius;
+        HPoint.z = random.uniform(MinDist, MaxDist);
+        float64 AphelionDist = random.uniform(HPoint.z, MaxDist);
+        float64 Eccentricity0 = (AphelionDist - HPoint.z) / (AphelionDist + HPoint.z);
+
+        // Now, there are 2 points: Highest point("HPoint", Circular orbit by default), Center point(0, 0, 0)
+        // Another point is needed to create orbital plane, Here use the ascending node.
+        vec3 AscNode(HPoint.x - 90, 0, HPoint.z); // In fact, the result is not affect by distances.
+
+        // Convert the Highest point and ascending node into XYZ coordinates
+        // and create normal vector of this plane
+        vec3 HPointXYZ = PolarToXYZ(HPoint);
+        vec3 AscNodeXYZ = PolarToXYZ(AscNode);
+        vec3 NormalVec = cross(HPointXYZ, AscNodeXYZ);
+
+        // Rotate the normal vector base on X-axis by inclination
+        vec2 NormalYZ(NormalVec.y, NormalVec.z);
+        vec2 NormalYZPolar = XYToPolar(NormalYZ);
+        NormalYZPolar.y += Conf.Inclination;
+        vec2 NewNormYZ = PolarToXY(NormalYZPolar);
+        vec3 NewNormVec(NormalVec.x, NewNormYZ); // Final plane normal vector
+
+        // Then, find the new inclination and longitude of ascending node.
+        vec3 RefNorm(0, 1, 0);
+        float64 NewIncl = arccos(dot(NewNormVec, RefNorm) / (Length(NewNormVec) * Length(RefNorm)));
+        float64 NewAscNode = arctan(NewNormVec.x / NewNormVec.z);
+        //cout << NewIncl << ' ' << NewAscNode << '\n';
+
+        TerrestrialPlanetBase Model(Conf.MinRadius, Conf.MaxRadius, random.uniform(6.4 * MassEarth, 7.6 * MassEarth), random.uniform(2.8 * RadEarth, 4.4 * RadEarth));
+        Object Particle = Model(random);
+        Particle.Type = Conf.Type;
+        Particle.Class = "Asteroid";
+        Particle.ParentBody = Conf.CenterObjectName;
+        Particle.Rotation = Rotation(&Particle);
+        Oblate(&Particle);
+        OblateXZ(&Particle.Dimensions);
+        Particle.Orbit =
+        {
+            .RefPlane = Conf.RefPlane,
+            .Epoch = Conf.Epoch,
+            .PericenterDist = HPoint.z,
+            .Eccentricity = Eccentricity0,
+            .Inclination = NewIncl,
+            .AscendingNode = NewAscNode + Conf.AscendingNode,
+            .ArgOfPericenter = random.uniform(0, 360),
+            .MeanAnomaly = random.uniform(0, 360)
+        };
+
+        if (Conf.EnableRealNames) { Particle.Name = { NameStr(Conf, Particle, i + 1) }; }
+        else
+        {
+            if (Conf.Type == "Asteroid") { Particle.Name = { vformat(SEStyleAster, make_format_args(Conf.Name, i + 1)) }; }
+            else if (Conf.Type == "Comet") { Particle.Name = { vformat(SEStyleComet, make_format_args(Conf.Name, i + 1)) }; }
+            else if (Conf.Type == "DwarfMoon") { Particle.Name = { vformat(SEStyleDMoon, make_format_args(Conf.Name, i + 1)) }; }
+        }
+
+        if (Conf.Type == "Asteroid")
+        {
+            if (Conf.bifurcation)
             {
-                CreateBinary(Particles, Particle, Conf, i + 1);
+                uint64 HaveMoon = random.probability({ 1. - Conf.ProbMoon, Conf.ProbMoon * (1. - Conf.ProbBinary), Conf.ProbMoon * Conf.ProbBinary });
+                if (HaveMoon == 1)
+                {
+                    Particles.push_back(Particle);
+                    CreateMoon(Particles, Particle, Conf, i + 1);
+                }
+                else if (HaveMoon == 2)
+                {
+                    CreateBinary(Particles, Particle, Conf, i + 1);
+                }
+                else { Particles.push_back(Particle); }
             }
             else { Particles.push_back(Particle); }
         }
@@ -524,6 +634,7 @@ void gen(const AsterBeltSettings& Config, OSCStream& fout)
     if (Config.Shape == "Ring") { RingDistribution(Particles, Config); }
     else if (Config.Shape == "Sphere") { SphereDistribution(Particles, Config); }
     else if (Config.Shape == "Torus") { TorusDistribution(Particles, Config); }
+    else if (Config.Shape == "Cylinder") { CylDistribution(Particles, Config); }
     fout << NoBooleans;
     fout.precision(15);
 
@@ -562,6 +673,12 @@ int main()
 
     if (Conf.Type == "Asteroid")
     {
+        GetInput(&Conf.bifurcation, false, LngStr35);
+        cout << Conf.bifurcation << '\n';
+    }
+
+    if (Conf.Type == "Asteroid" && Conf.bifurcation)
+    {
         GetInput(&Conf.CenterObjectMass, 1., LngStr07 + LngStr08 + LngStr09 + LngStr10);
         if (Conf.CenterObjectMass < 0) { Conf.CenterObjectMass = cse::abs(Conf.CenterObjectMass * MassEarth); }
         else { Conf.CenterObjectMass = Conf.CenterObjectMass * MassSol; } // Convert into Kg
@@ -598,6 +715,7 @@ int main()
     if (Conf.Shape == "1" || Conf.Shape == "Ring") { Conf.Shape = "Ring"; }
     else if (Conf.Shape == "2" || Conf.Shape == "Sphere") { Conf.Shape = "Sphere"; }
     else if (Conf.Shape == "3" || Conf.Shape == "Torus") { Conf.Shape = "Torus"; }
+    else if (Conf.Shape == "4" || Conf.Shape == "Cylinder") { Conf.Shape = "Cylinder"; }
     else { Conf.Shape = "Torus"; }
     cout << Conf.Shape << '\n';
 
@@ -615,6 +733,12 @@ int main()
     {
         GetInput(&Conf.Inclination, 0., LngStr26);
         cout << Conf.Inclination << '\n';
+
+        if (Conf.Shape == "Cylinder")
+        {
+            GetInput(&Conf.Height, 10., LngStr22);
+            cout << Conf.Inclination << '\n';
+        }
 
         GetInput(&Conf.AscendingNode, 0., LngStr27);
         cout << Conf.AscendingNode << '\n';

@@ -622,7 +622,7 @@ table::KeyValue MakeTable(object_ostream& _Os, Object Obj)
 		Ocean.Key = "Ocean";
 		table _Ocean;
 
-		AddKeyValue(&_Ocean, "Height", Obj.Ocean.Height, _Os.flags(), _Os.precision());
+		AddKeyValue(&_Ocean, "Height", Obj.Ocean.Height / 1000., _Os.flags(), _Os.precision());
 		AddKeyValue(&_Ocean, "Hapke", Obj.Ocean.Hapke, _Os.flags(), _Os.precision());
 		AddKeyValue(&_Ocean, "SpotBright", Obj.Ocean.HapkeParams.x, _Os.flags(), _Os.precision());
 		AddKeyValue(&_Ocean, "SpotWidth", Obj.Ocean.HapkeParams.y, _Os.flags(), _Os.precision());
