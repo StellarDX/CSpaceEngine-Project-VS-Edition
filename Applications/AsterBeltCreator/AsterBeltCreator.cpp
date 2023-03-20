@@ -21,6 +21,7 @@
 #include "CSE/SCStream.h"
 #include "CSE/Object.h"
 #include "CSE/Planets.h"
+#include "CSE/StellarColor.h"
 
 using namespace std;
 using namespace cse;
@@ -57,6 +58,8 @@ string LngStr32 = "Enable realistic style of names (1 = enable) \n Default = 0 :
 string LngStr33 = "Minimum absolute magnitude of comets \n Default = 5 : ";
 string LngStr34 = "Maximum absolute magnitude of comets \n Default = -5 : ";
 string LngStr35 = "Enable procedural moons or bifurcation of asteroids. \n Default = false : ";
+string LngStr36 = "Enable custom color of objects. \n Default = false : ";
+string LngStr37 = "Kernal Color, using hexdecimal : ";
 
 // SE style format strings
 string SEStyleAster = "{} S{}";
@@ -144,6 +147,12 @@ struct AsterBeltSettings
     string RefPlane;
     float64 Epoch;
 
+    // Colors
+    bool EnableCustomColor;
+    _Color_RGB8 ColorKernal;
+    _Color_RGB8 ColorGas;
+    _Color_RGB8 ColorDust;
+
     string OutputFileName;
 };
 
@@ -162,6 +171,16 @@ void GetAllLine(string* Dst, string Def, string arg = "")
 {
     cout << arg;
     getline(cin, *Dst);
+    cin.clear();
+    cin.ignore();
+    cin.sync();
+}
+
+void GetHex(unsigned* Dst, unsigned Def, string arg = "")
+{
+    cout << arg;
+    cin >> hex >> *Dst >> dec;
+    if (cin.fail()) { *Dst = Def; }
     cin.clear();
     cin.ignore();
     cin.sync();
@@ -247,6 +266,7 @@ void CreateMoon(vector<Object>& Particles, const Object& Particle, const AsterBe
         Moon.ParentBody = Particle.Name[0];
         if (Conf.EnableRealNames) { Moon.Name = { vformat(RealDMoonString(i + 1, epoch::CSEDate::fromJulianDay(Conf.Epoch).year(), "DwarfMoon", vformat("({})", make_format_args(Number)), ""), make_format_args(Conf.Name)) }; }
         else { Moon.Name = { vformat(Moon.ParentBody + ".{}", make_format_args(i + 1)) }; }
+        Moon.Color = Particle.Color;
         Moon.TidalLocked = true;
         Moon.Orbit =
         {
@@ -272,6 +292,7 @@ void CreateBinary(vector<Object>& Particles, Object& Particle, const AsterBeltSe
     Object Companion = Model(random);
     Companion.Type = "Asteroid";
     Companion.Class = "Asteroid";
+    Companion.Color = Particle.Color;
     Object Parent{ .Mass = Conf.CenterObjectMass };
 
     Object Barycenter = *MakeBinary
@@ -322,6 +343,7 @@ void RingDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
         Particle.Class = "Asteroid";
         Particle.ParentBody = Conf.CenterObjectName;
         Particle.Rotation = Rotation(&Particle);
+        if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal.norm(); }
         Oblate(&Particle);
         OblateXZ(&Particle.Dimensions);
         Particle.Orbit =
@@ -381,6 +403,7 @@ void SphereDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf
         Particle.Class = "Asteroid";
         Particle.ParentBody = Conf.CenterObjectName;
         Particle.Rotation = Rotation(&Particle);
+        if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal.norm(); }
         Oblate(&Particle);
         OblateXZ(&Particle.Dimensions);
 
@@ -483,6 +506,7 @@ void TorusDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
         Particle.Class = "Asteroid";
         Particle.ParentBody = Conf.CenterObjectName;
         Particle.Rotation = Rotation(&Particle);
+        if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal.norm(); }
         Oblate(&Particle);
         OblateXZ(&Particle.Dimensions);
         Particle.Orbit =
@@ -577,6 +601,7 @@ void CylDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
         Particle.Class = "Asteroid";
         Particle.ParentBody = Conf.CenterObjectName;
         Particle.Rotation = Rotation(&Particle);
+        if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal.norm(); }
         Oblate(&Particle);
         OblateXZ(&Particle.Dimensions);
         Particle.Orbit =
@@ -701,6 +726,16 @@ int main()
     GetInput(&Conf.MaxRadius, 50., LngStr19);
     Conf.MaxRadius *= 1000; // Convert to metres
     cout << Conf.MaxRadius << '\n';
+
+    GetInput(&Conf.EnableCustomColor, false, LngStr36);
+
+    if (Conf.EnableCustomColor)
+    {
+        unsigned Hex;
+        GetHex(&Hex, 0xFFFFFFU, LngStr37);
+        Conf.ColorKernal = _Color_RGB8(Hex);
+        cout << ivec3(Conf.ColorKernal.x, Conf.ColorKernal.y, Conf.ColorKernal.z) << '\n';
+    }
 
     if (Conf.Type == "Comet")
     {

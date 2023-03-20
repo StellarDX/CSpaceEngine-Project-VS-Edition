@@ -187,6 +187,9 @@
     <ProjectReference Include="..\..\Modules\Stars\Tests\Tests_StarModels\Tests_StarModels.vcxproj">
       <Project>{54299f93-1dba-40dc-b191-468a456a21c3}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\Modules\StellarColor\StellarColor.vcxproj">
+      <Project>{aa317c84-d4b6-417c-82bd-792ecc3b9782}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
