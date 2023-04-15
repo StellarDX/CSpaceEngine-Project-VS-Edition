@@ -76,7 +76,7 @@ float64 RocheLimit(const Object* Primary, const Object* Companion, int Mode)
 		float64 DensityP = Primary->Mass / ((4. / 3.) * CSE_PI * AxisP.x * AxisP.y * AxisP.z);
 		float64 DensityC = Companion->Mass / ((4. / 3.) * CSE_PI * AxisC.x * AxisC.y * AxisC.z);
 		float64 PFlattening = (max(AxisC.x, AxisC.z) - AxisC.y) / max(AxisC.x, AxisC.z);
-		return 2.243 * MaxRadius * cbrt(DensityP / DensityC) *
+		return 2.423 * MaxRadius * cbrt(DensityP / DensityC) *
 			cbrt(((1. + Companion->Mass / (3. * Primary->Mass)) + (1. / 3.) * PFlattening * (1. + Companion->Mass / Primary->Mass)) / (1. - PFlattening));
 	}
 }
