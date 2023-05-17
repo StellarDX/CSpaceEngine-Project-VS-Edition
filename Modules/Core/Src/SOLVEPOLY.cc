@@ -317,4 +317,169 @@ uint64 SolvePoly(InputArray Coeffs, OutputArray Roots, _SOLVEPOLY_CONFIG Conf)
 	return it;
 }
 
+
+
+
+
+
+
+
+
+
+
+// Fast algorithm for soving quintic equation develop by Shen Tianheng, but it is unsafe.
+__declspec(deprecated("This function maybe unsafe, consider using general function \"SolvePoly\" instead for solving Quintic or higher function."))
+int __Solving_Quintic_Function_Fast(InputArray Coeffs, OutputArray Roots, int64 p_Error)
+{
+	if (Coeffs.size() != 6) { throw MathException("Number of Coefficients is not match."); }
+	Roots.clear();
+	float64 a = Coeffs[0];
+	float64 b = Coeffs[1];
+	float64 c = Coeffs[2];
+	float64 d = Coeffs[3];
+	float64 e = Coeffs[4];
+	float64 f = Coeffs[5];
+
+	if (a == 0) { throw MathException("Highest power of polynomial can't be zero."); }
+
+	float64 L = 2. * pow(b, 2) - 5. * a * c;
+	float64 M = 4. * pow(b, 3) - 15. * a * b * c + 25. * pow(a, 2) * d;
+	float64 N = 7. * pow(b, 4) + 25. * pow(a, 2) * pow(c, 2) - 35. * a * pow(b, 2) * c + 50. * pow(a, 2) * b * d - 125. * pow(a, 3) * e;
+	float64 P = 4. * pow(b, 5) - 25. * a * pow(b, 3) * c + 125. * pow(a, 2) * pow(b, 2) * d - 625. * pow(a, 3) * b * e + 3125. * pow(a, 4) * f;
+
+	float64 G = 4. * pow(L, 3) - 9. * pow(M, 2) + 8 * L * N;
+	float64 H = 10. * pow(L, 2) * M - 6. * M * N + L * P;
+	float64 J = 4. * pow(L, 4) - 4. * pow(L, 2) * N + 3. * M * P;
+	float64 K = pow(M, 4) * pow(N, 3) * M * N * P;
+
+	float64 E = 2. * pow(G, 2) * pow(L, 2) - 2. * pow(G, 2) * N + 3 * G * H * M - 4. * pow(H, 2) * L - G * J * L;
+	float64 F = pow(G, 2) * P + 3. * G * J * M - 4. * H * J * L;
+
+	float64 A = pow(F, 2) - 12. * E * L;
+	float64 B = 6. * pow(F, 3) - 64. * pow(E, 2) * F * L - 72. * pow(E, 3) * M;
+	float64 C = 3. * pow(F, 4) - 24. * pow(E, 2) * pow(F, 2) * L - 48. * pow(E, 3) * F * M - 80. * pow(E, 4) * pow(L, 2);
+	float64 D = pow(F, 2) * G + 4. * E * F * H - 4. * pow(E, 2) * J;
+
+	float64 del1 = pow(B, 2) - 4. * A * C, del2 = pow(P, 2) - 4. * pow(L, 5);
+
+	if (IsZero(L, p_Error) && IsZero(M, p_Error) && IsZero(N, p_Error) && IsZero(P, p_Error))
+	{
+		Roots.push_back(-(b / (5. * a)));
+		Roots.push_back(Roots[0]); // -(c/(2.*b))
+		Roots.push_back(Roots[0]); // -(d/c)
+		Roots.push_back(Roots[0]); // -((2.*e)/d)
+		Roots.push_back(Roots[0]); // -((-5.*f)/e)
+
+		return 1;
+	}
+
+	if (!IsZero(L, p_Error) && (IsZero(G, p_Error) && IsZero(H, p_Error) && IsZero(J, p_Error)))
+	{
+		if (IsZero(7. * pow(L, 2) - 4. * N, p_Error))
+		{
+			Roots.push_back(-(b * L + 2. * M) / (5. * a * L));
+			Roots.push_back((-2. * b * L + M) / (10. * a * L));
+			Roots.push_back(Roots[1]);
+			Roots.push_back(Roots[1]);
+			Roots.push_back(Roots[1]);
+		}
+		else
+		{
+			Roots.push_back(-(2. * b * L + 9. * M) / (10. * a * L));
+			Roots.push_back(Roots[0]);
+			Roots.push_back((-b * L + 3. * M) / (5. * a * L));
+			Roots.push_back(Roots[2]);
+			Roots.push_back(Roots[2]);
+		}
+
+		return 2;
+	}
+
+	if (!IsZero(G, p_Error) && (IsZero(E, p_Error) && IsZero(F, p_Error)))
+	{
+		if (IsZero(pow(H, 2) + G * J, p_Error))
+		{
+			Roots.push_back((-2. * B * G - 3. * H + sqrt(complex64(20. * pow(G, 2) * L - 15. * pow(H, 2)))[0]) / (10. * a * G));
+			Roots.push_back((-2. * B * G - 3. * H - sqrt(complex64(20. * pow(G, 2) * L - 15. * pow(H, 2)))[0]) / (10. * a * G));
+			Roots.push_back((-b * G + H) / (5. * a * G));
+			Roots.push_back(Roots[2]);
+			Roots.push_back(Roots[2]);
+		}
+		else
+		{
+			Roots.push_back(-((b * G + 4. * H) / (5. * a * G)));
+			Roots.push_back((-b * G + H + sqrt(complex64(pow(H, 2) + G * J))[0]) / (5. * a * G));
+			Roots.push_back((-b * G + H - sqrt(complex64(pow(H, 2) + G * J))[0]) / (5. * a * G));
+			Roots.push_back(Roots[1]);
+			Roots.push_back(Roots[2]);
+		}
+
+		return 3;
+	}
+
+	if (!IsZero(E, p_Error) && IsZero(D, p_Error))
+	{
+		Roots.push_back(-((2. * b * E + F) / (10. * a * E)));
+		Roots.push_back(Roots[0]);
+
+		if (del1 > 0)
+		{
+			float64 y1 = 10. * A * F + 15. * ((-B + sqrt(del1)) / 2.);
+			float64 y2 = 10. * A * F + 15. * ((-B - sqrt(del1)) / 2.);
+
+			Roots.push_back((-6. * b * E + 2. * F - (cbrt(y1) + cbrt(y2))) / (30. * a * E));
+			Roots.push_back(((-12. * b * E + 4. * F + (cbrt(y1) + cbrt(y2))) / (60. * a * E)) + ((sqrt(3) * (cbrt(y1) - cbrt(y2))) / (60. * a * E)) * 1i);
+			Roots.push_back(((-12. * b * E + 4. * F + (cbrt(y1) + cbrt(y2))) / (60. * a * E)) - ((sqrt(3) * (cbrt(y1) - cbrt(y2))) / (60. * a * E)) * 1i);
+		}
+		else
+		{
+			float64 tet = arccos((3. * B - 4. * A * F) / (2. * A * sqrt(-5. * A)));
+
+			Roots.push_back((-3. * b * E + F - sqrt(-5. * A) * cos(tet / 3.)) / (15. * a * E));
+			Roots.push_back((-6. * b * E + 2. * F + sqrt(-5. * A) * (cos(tet / 3.) + sqrt(3) * sin(tet / 3.))) / (30. * a * E));
+			Roots.push_back((-6. * b * E + 2. * F + sqrt(-5. * A) * (cos(tet / 3.) - sqrt(3) * sin(tet / 3.))) / (30. * a * E));
+		}
+
+		return 4;
+	}
+
+	if (!IsZero(D, p_Error) && (IsZero(M, p_Error) && IsZero(N, p_Error)) && del2 > 0)
+	{
+		float64 y1 = (P + sqrt(del2)) / 2.;
+		float64 y2 = (P - sqrt(del2)) / 2.;
+
+		Roots.push_back((-b - (yroot(5, y1) + yroot(5, y2))) / (5. * a));
+		Roots.push_back(((-b + ((1. - sqrt(5)) / 4.) * (yroot(5, y1) + yroot(5, y2))) / (5. * a)) + (((sqrt(10. + 2. * sqrt(5)) / 4.) * (yroot(5, y1) - yroot(5, y2))) / (5. * a)) * 1i);
+		Roots.push_back(((-b + ((1. - sqrt(5)) / 4.) * (yroot(5, y1) + yroot(5, y2))) / (5. * a)) - (((sqrt(10. + 2. * sqrt(5)) / 4.) * (yroot(5, y1) - yroot(5, y2))) / (5. * a)) * 1i);
+		Roots.push_back(((-b + ((1. + sqrt(5)) / 4.) * (yroot(5, y1) + yroot(5, y2))) / (5. * a)) + (((sqrt(10. - 2. * sqrt(5)) / 4.) * (yroot(5, y1) - yroot(5, y2))) / (5. * a)) * 1i);
+		Roots.push_back(((-b + ((1. + sqrt(5)) / 4.) * (yroot(5, y1) + yroot(5, y2))) / (5. * a)) - (((sqrt(10. - 2. * sqrt(5)) / 4.) * (yroot(5, y1) - yroot(5, y2))) / (5. * a)) * 1i);
+
+		return 5;
+	}
+
+	if (!IsZero(D, p_Error) && (IsZero(M, p_Error) && IsZero(N, p_Error)) && del2 < 0)
+	{
+		float64 tet = arccos(P / (2. * pow(L, 2) * sqrt(L)));
+
+		Roots.push_back((-b - 2. * sqrt(L) * cos(tet / 5.)) / (5. * a));
+		Roots.push_back((-b + sqrt(L) * (((1. - sqrt(5)) / 2.) * cos(tet / 5.) + (sqrt(10. + 2. * sqrt(5)) / 2.) * sin(tet / 5.))) / (5. * a));
+		Roots.push_back((-b + sqrt(L) * (((1. - sqrt(5)) / 2.) * cos(tet / 5.) - (sqrt(10. + 2. * sqrt(5)) / 2.) * sin(tet / 5.))) / (5. * a));
+		Roots.push_back((-b + sqrt(L) * (((1. + sqrt(5)) / 2.) * cos(tet / 5.) + (sqrt(10. - 2. * sqrt(5)) / 2.) * sin(tet / 5.))) / (5. * a));
+		Roots.push_back((-b + sqrt(L) * (((1. + sqrt(5)) / 2.) * cos(tet / 5.) - (sqrt(10. - 2. * sqrt(5)) / 2.) * sin(tet / 5.))) / (5. * a));
+
+		return 6;
+	}
+
+	if (!IsZero(D, p_Error) && !IsZero(M * N, p_Error) && (IsZero(L, p_Error) && IsZero(K, p_Error)))
+	{
+		Roots.push_back((-b - yroot(5, pow(N, 2) / M) - yroot(5, pow(M, 3) / N)) / (5. * a));
+		Roots.push_back((-b + ((1 - sqrt(5)) / 4.) * yroot(5, pow(N, 2) / M) + ((1 + sqrt(5)) / 4.) * yroot(5, pow(M, 3) / N)) + ((sqrt(10. + 2. * sqrt(5)) / 4.) * yroot(5, pow(N, 2) / M) + (sqrt(10. - 2. * sqrt(5)) / 4.) * yroot(5, pow(M, 3) / N)) * 1i);
+		Roots.push_back((-b + ((1 - sqrt(5)) / 4.) * yroot(5, pow(N, 2) / M) + ((1 + sqrt(5)) / 4.) * yroot(5, pow(M, 3) / N)) - ((sqrt(10. + 2. * sqrt(5)) / 4.) * yroot(5, pow(N, 2) / M) + (sqrt(10. - 2. * sqrt(5)) / 4.) * yroot(5, pow(M, 3) / N)) * 1i);
+		Roots.push_back((-b + ((1 + sqrt(5)) / 4.) * yroot(5, pow(N, 2) / M) + ((1 - sqrt(5)) / 4.) * yroot(5, pow(M, 3) / N)) + ((sqrt(10. - 2. * sqrt(5)) / 4.) * yroot(5, pow(N, 2) / M) - (sqrt(10. + 2. * sqrt(5)) / 4.) * yroot(5, pow(M, 3) / N)) * 1i);
+		Roots.push_back((-b + ((1 + sqrt(5)) / 4.) * yroot(5, pow(N, 2) / M) + ((1 - sqrt(5)) / 4.) * yroot(5, pow(M, 3) / N)) - ((sqrt(10. - 2. * sqrt(5)) / 4.) * yroot(5, pow(N, 2) / M) - (sqrt(10. + 2. * sqrt(5)) / 4.) * yroot(5, pow(M, 3) / N)) * 1i);
+	}
+
+	return -(int)SolvePoly(Coeffs, Roots, { .P_ERROR = (float64)p_Error });
+}
+
 _CSE_END

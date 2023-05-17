@@ -191,9 +191,20 @@ double GetJDFromBesEpoch(const double Epoch);
 /// </summary>
 double TimeToJDFract(const _TIME CSETime& Time);
 
-_TIME CSETime getTimeFromJulianDay(const double jd);
+/// <summary>
+/// Inverse function of TimeToJDFract(CSETime&)
+/// (This function is taken from Stellarium.)
+/// </summary>
+_TIME CSETime JDFractToTime(const double jd);
 
 int NumOfDaysInMonthInYear(const int month, const int year); // From Stellarium
+
+/// <summary>
+/// A safer function from Stellarium using to convert Date and Time to Julian day.
+/// </summary>
+/// <param name="Date">Input Date time</param>
+/// <returns>Julian Day</returns>
+float64 getJDFromDate(CSEDateTime Date);
 
 _CSE_END
 

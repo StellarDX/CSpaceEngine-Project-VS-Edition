@@ -776,12 +776,11 @@ CSEDateTime jdToDateTime(const double& jd, const TimeSpec timeSpec)
 		GetTimeZoneInformation(&TimeZone);
 		Offset = TimeZone.Bias / (-60);
 	}
-	CSEDateTime result = CSEDateTime(_TIME CSEDate().fromJulianDay(jd), getTimeFromJulianDay(jd), TimeZone).AddSecs(Offset * 3600);
+	CSEDateTime result = CSEDateTime(_TIME CSEDate().fromJulianDay(jd), JDFractToTime(jd), TimeZone).AddSecs(Offset * 3600);
 	if (!result.IsValid())
 	{
-		TimeLog.Out("DateTime", "ERROR", "Invalid DateTime.", SysLogLevel);
+		throw _TIME TimeException("Invalid DateTime.");
 	}
-	assert(result.IsValid());
 	return result;
 }
 
@@ -797,10 +796,10 @@ double GetJDFromBesEpoch(const double Epoch)
 
 double TimeToJDFract(const _TIME CSETime& Time)
 {
-	return static_cast<double>((Time.hour() - 12.0) / 24 + Time.minute() / 1440.0 + (Time.second() + Time.msec() / 1000.0) / 86400.0);
+	return static_cast<double>((Time.hour() - 12.0) / 24.0 + Time.minute() / 1440.0 + (Time.second() + Time.msec() / 1000.0) / 86400.0);
 }
 
-_TIME CSETime getTimeFromJulianDay(const double jd) // Stellarium function
+_TIME CSETime JDFractToTime(const double jd) // Stellarium function
 {
 	double decHours = std::fmod(jd + 0.5, 1.0) * 24.;
 	int hours = int(std::floor(decHours));
@@ -835,9 +834,8 @@ _TIME CSETime getTimeFromJulianDay(const double jd) // Stellarium function
 	_TIME CSETime tm = _TIME CSETime(hours, mins, sec, ms);
 	if (!tm.IsValid())
 	{
-		TimeLog.Out("DateTime", "WARNING", "Invalid Time:" + std::to_string(hours) + "/" + std::to_string(mins) + "/" + std::to_string(sec) + "/" + std::to_string(ms), SysLogLevel);
+		throw _TIME TimeException("Invalid Time:" + std::to_string(hours) + "/" + std::to_string(mins) + "/" + std::to_string(sec) + "/" + std::to_string(ms));
 	}
-	assert(tm.IsValid());
 	return tm;
 }
 
@@ -890,6 +888,97 @@ int NumOfDaysInMonthInYear(const int month, const int year) // From Stellarium
 	}
 
 	return 0;
+}
+
+float64 getJDFromDate(CSEDateTime Date)
+{
+	const int y = Date.date().year();
+	const int m = Date.date().month();
+	const int d = Date.date().day();
+	const int h = Date.time().hour();
+	const int min = Date.time().minute();
+	const float64 s = (float64)Date.time().second() + Date.time().msec() / 1000.;
+
+	#ifndef _USE_ALTER_ALGORITHM_FOR_JULIAN
+
+	static const long IGREG2 = 15 + 31L * (10 + 12L * 1582);
+	float64 deltaTime = (h / 24.0) + (min / (1440.0)) + (s / (86400.0)) - 0.5;
+
+	#ifndef _FORCE_USE_SAFER_JULIAN_ALG
+	_TIME CSEDate test((y <= 0 ? y - 1 : y), m, d);
+	if (test.IsValid() && y > 1582)
+	{
+		float64 jd = (float64)test.toJulianDay();
+		jd += deltaTime;
+		return jd;
+	}
+	else
+	{
+	#endif
+
+		/*
+		 * Algorithm taken from "Numerical Recipes in C, 2nd Ed." (1992), pp. 11-12
+		 * Stellarium converted it to integer math.
+		 */
+		long ljul;
+		long jy, jm;
+		long laa, lbb, lcc, lee;
+
+		jy = y;
+		if (m > 2)
+		{
+			jm = m + 1;
+		}
+		else
+		{
+			--jy;
+			jm = m + 13;
+		}
+
+		laa = 1461 * jy / 4;
+		if (jy < 0 && jy % 4)
+		{
+			--laa;
+		}
+		lbb = 306001 * jm / 10000;
+		ljul = laa + lbb + d + 1720995L;
+
+		if (d + 31L * (m + 12L * y) >= IGREG2)
+		{
+			lcc = jy / 100;
+			if (jy < 0 && jy % 100)
+			{
+				--lcc;
+			}
+			lee = lcc / 4;
+			if (lcc < 0 && lcc % 4)
+			{
+				--lee;
+			}
+			ljul += 2 - lcc + lee;
+		}
+		float64 jd = (float64)(ljul);
+		jd += deltaTime;
+		return jd;
+
+	#ifndef _FORCE_USE_SAFER_JULIAN_ALG
+	}
+	#endif
+
+	#else
+
+	double extra = (100.0 * y) + m - 190002.5;
+	double rjd = 367.0 * y;
+	rjd -= floor(7.0 * (y + floor((m + 9.0) / 12.0)) / 4.0);
+	rjd += floor(275.0 * m / 9.0);
+	rjd += d;
+	rjd += (h + (min + s / 60.0) / 60.) / 24.0;
+	rjd += 1721013.5;
+	rjd -= 0.5 * extra / std::fabs(extra);
+	rjd += 0.5;
+	return rjd;
+
+	#endif
 }
 
 _CSE_END

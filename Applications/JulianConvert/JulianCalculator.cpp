@@ -13,7 +13,7 @@ using namespace cse;
 #define PROGEND }
 
 // ----------Adjustable Variables---------- //
-static const int Precision = 8;
+static const int Precision = 15;
 
 // ----------Internal Variables---------- //
 char ConvertFrom;
@@ -72,7 +72,7 @@ double UnixTime(double JD) // https://en.wikipedia.org/wiki/Unix_time
 
 int64 dotNetDateTime(double JD) // https://en.wikipedia.org/wiki/.NET
 {
-    return (int64)(JD - 1721425.5) * 864000000000;
+    return int64((JD - 1721425.5) * 864000000000.);
 }
 
 double BesselianYear(double JD)
@@ -146,7 +146,7 @@ void ConvertFromGMT()
     }
 
     cout << "Base: [GMT]" << DateTime.date().toString() << ' ' << DateTime.time().toString() << '\n';
-    float64 JD = DateTime.date().toJulianDay() + TimeToJDFract(DateTime.time());
+    float64 JD = getJDFromDate(DateTime);
     Display(DateTime, JD);
 }
 
