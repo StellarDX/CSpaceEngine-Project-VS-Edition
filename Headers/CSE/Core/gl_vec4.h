@@ -103,7 +103,7 @@ public:
 
 	operator std::array<genType, 4>()
 	{
-		return std::array<genType, 4>(x, y, z, w);
+		return std::array<genType, 4>({ x, y, z, w });
 	}
 
 	constexpr explicit gl_vec4(std::vector<genType> _xyzw)

@@ -58,7 +58,7 @@ public:
 
 	operator std::array<genType, 2>()
 	{
-		return std::array<genType, 2>(x, y);
+		return std::array<genType, 2>({ x, y });
 	}
 
 	constexpr explicit gl_vec2(std::vector<genType> _xy)

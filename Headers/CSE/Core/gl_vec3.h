@@ -71,7 +71,7 @@ public:
 
 	operator std::array<genType, 3>()
 	{
-		return std::array<genType, 3>(x, y, z);
+		return std::array<genType, 3>({ x, y, z });
 	}
 
 	constexpr explicit gl_vec3(std::vector<genType> _xyz)

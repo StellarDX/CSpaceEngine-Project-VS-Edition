@@ -448,6 +448,9 @@ public:
     }
 };
 
+_EXPORT_STD template <class _Fty = float64(float64), uint64 _MaxIterLog = 4, uint64 _Perr = 8>
+using IntegralFunction = AntiderivateFunction<_Fty, _MaxIterLog, _Perr>;
+
 // A debug function for Romberg integration
 matrix<float64, 5, 5> RombergAnalysis(_STD function<float64(float64)> _Func, float64 _Min, float64 _Max);
 
