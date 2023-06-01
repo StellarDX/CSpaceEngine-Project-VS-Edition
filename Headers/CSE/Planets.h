@@ -9,6 +9,7 @@
 #include "CSE/Planets/Rotation.h"
 
 //#ifdef _USE_EXTERNAL_PHS_FUNC
+// Functions for planet's physical characteristics
 _CSE_BEGIN
 inline namespace planet
 {
@@ -22,11 +23,10 @@ inline namespace planet
 		float64 a = max(Obj.Dimensions.x, Obj.Dimensions.z) / 2.;
 		float64 b = min(Obj.Dimensions.x, Obj.Dimensions.z) / 2.;
 		float64 Eccentricity = sqrt(1. - (pow(b, 2) / pow(a, 2)));
-		auto dE = [Eccentricity](float64 x)->float64
+		IntegralFunction<float64(float64)> E = [Eccentricity](float64 x)->float64
 		{
 			return sqrt(1. - pow(Eccentricity, 2) * pow(sin(degrees(x)), 2));
 		};
-		IntegralFunction<float64(float64)> E = dE;
 		return 4. * a * E(0, CSE_PI_D2);
 	}
 
@@ -35,11 +35,10 @@ inline namespace planet
 		float64 a = max(Obj.Dimensions.x, Obj.Dimensions.y) / 2.;
 		float64 b = min(Obj.Dimensions.x, Obj.Dimensions.y) / 2.;
 		float64 Eccentricity = sqrt(1. - (pow(b, 2) / pow(a, 2)));
-		auto dE = [Eccentricity](float64 x)->float64
+		IntegralFunction<float64(float64)> E = [Eccentricity](float64 x)->float64
 		{
 			return sqrt(1. - pow(Eccentricity, 2) * pow(sin(degrees(x)), 2));
 		};
-		IntegralFunction<float64(float64)> E = dE;
 		return 4. * a * E(0, CSE_PI_D2);
 	}
 
@@ -50,20 +49,22 @@ inline namespace planet
 		float64 a = Radiuses[0], b = Radiuses[1], c = Radiuses[2];
 		float64 phi = radians(arccos(c / a)),
 			k = sqrt((pow(a, 2) * (pow(b, 2) - pow(c, 2))) / (pow(b, 2) * (pow(a, 2) - pow(c, 2))));
-		auto dF = [k](float64 x)->float64
+		IntegralFunction<float64(float64)> F = [k](float64 x)->float64
 		{
 			return 1. / sqrt(1. - pow(k, 2) * pow(sin(degrees(x)), 2));
-		};
-		auto dE = [k](float64 x)->float64
+		}, 
+		E = [k](float64 x)->float64
 		{
 			return sqrt(1. - pow(k, 2) * pow(sin(degrees(x)), 2));
 		};
-		IntegralFunction<float64(float64)> F = dF;
-		IntegralFunction<float64(float64)> E = dE;
 		return 2. * CSE_PI * pow(c, 2) +
 			((2. * CSE_PI * a * b) / sin(degrees(phi))) *
 			(E(0, phi) * pow(sin(degrees(phi)), 2) + F(0, phi) * pow(cos(degrees(phi)), 2));
 	}
+
+	inline float64 Volume(Object Obj) { return (4. / 3.) * CSE_PI * (Obj.Dimensions.x / 2.) * (Obj.Dimensions.y / 2.) * (Obj.Dimensions.z / 2.); }
+	inline float64 MeanDensity(Object Obj) { return Obj.Mass / Volume(Obj); }
+	inline float64 SurfaceGravity(Object Obj) { return (GravConstant * Obj.Mass) / pow(Obj.Radius(), 2); }
 }
 _CSE_END
 //#endif
