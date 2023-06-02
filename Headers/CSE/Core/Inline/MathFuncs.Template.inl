@@ -5,6 +5,14 @@
 
 _CSE_BEGIN
 
+#define _VECGENTYPE_FUNCTION_TEMPLATE_S(Func)                            \
+template<typename genType> requires vecType<genType>                     \
+_Check_return_ genType __cdecl Func(_In_ genType _X)                     \
+{                                                                        \
+	for (size_t i = 0; i < _X.size(); i++) { _X[i] = Func(_X[i]); }      \
+	return _X;                                                           \
+}                                                                        \
+
 ////////////////////////////////////// EXP /////////////////////////////////////
 
 template<typename genType> requires vecType<genType>
