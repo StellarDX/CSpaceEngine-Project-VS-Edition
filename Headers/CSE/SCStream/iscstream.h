@@ -405,6 +405,7 @@ private:
     _STD string ParseMatrix(_STD string::iterator& it, const _STD string::iterator& end);
 
     #if FORCE_CONVERT_CHAR_ENCODING
+public:
     _STD string ConvertChar(const char* str, int SrcEncod = SOURCE_ENCODING);
     #endif
 };
