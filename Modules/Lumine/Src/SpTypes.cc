@@ -687,9 +687,9 @@ bool IsMainSequence(SPECSTR _Spec)
 		return _Cl == 7;
 	};
 
-	return _NLumClass(_Spec.LumMax) || _NLumClass(_Spec.LumMin) ||
+	return (_NLumClass(_Spec.LumMax) || _NLumClass(_Spec.LumMin) ||
 		_NLumClass(_Spec.Lum2Max) || _NLumClass(_Spec.Lum2Min) ||
-		_NLumClass(_Spec.Lum3Max) || _NLumClass(_Spec.Lum3Min);
+		_NLumClass(_Spec.Lum3Max) || _NLumClass(_Spec.Lum3Min)) && !IsBrownDwarf(_Spec);
 }
 
 bool IsSubDwarf(SPECSTR _Spec)
