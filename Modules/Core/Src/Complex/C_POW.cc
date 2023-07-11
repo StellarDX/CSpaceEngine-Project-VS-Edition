@@ -1,5 +1,5 @@
 ﻿#include "CSE/Core/IEEE754/MathFuncs.h"
-#include "CSE/Core/CSEM_Algo.h"
+#include "CSE/Core/Algorithms.h"
 
 _CSE_BEGIN
 

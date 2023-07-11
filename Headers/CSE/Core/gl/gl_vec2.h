@@ -142,6 +142,6 @@ using uvec2 = _GL gl_vec2<uint64>;
 
 _CSE_END
 
-#include "CSE/Core/Inline/gl_vec2.inl"
+#include "CSE/Core/gl/gl_vec2.inl"
 
 #endif

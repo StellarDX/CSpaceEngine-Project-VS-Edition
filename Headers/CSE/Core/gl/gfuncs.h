@@ -1,11 +1,48 @@
 ﻿#include "CSE/Core/gltypes.h"
 
-#include <cmath>
-
 #ifndef __GLTYPES_INL_
 #define __GLTYPES_INL_
 
 _CSE_BEGIN
+
+#if 0
+template<typename genType>struct vecType;
+template<>struct vecType<vec2> { typedef vec2 type; };
+template<>struct vecType<vec3> { typedef vec3 type; };
+template<>struct vecType<vec4> { typedef vec4 type; };
+#endif
+
+template<typename genType> // Only used in C++20
+concept vecType =
+(
+	_STD is_same_v<genType, vec2> ||
+	_STD is_same_v<genType, vec3> ||
+	_STD is_same_v<genType, vec4>
+);
+
+template<typename genIType> // Only used in C++20
+concept vecIType =
+(
+	_STD is_same_v<genIType, ivec2> ||
+	_STD is_same_v<genIType, ivec3> ||
+	_STD is_same_v<genIType, ivec4>
+);
+
+template<typename genUType> // Only used in C++20
+concept vecUType =
+(
+	_STD is_same_v<genUType, uvec2> ||
+	_STD is_same_v<genUType, uvec3> ||
+	_STD is_same_v<genUType, uvec4>
+);
+
+template<typename genBType> // Only used in C++20
+concept vecBType =
+(
+	_STD is_same_v<genBType, bvec2> ||
+	_STD is_same_v<genBType, bvec3> ||
+	_STD is_same_v<genBType, bvec4>
+);
 
 template<typename genType>
 requires _STD convertible_to<genType, float64> || _STD convertible_to<genType, int64> || _STD convertible_to<genType, uint64>

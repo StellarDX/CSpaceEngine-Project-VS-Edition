@@ -145,6 +145,6 @@ using uvec3 = _GL gl_vec3<uint64>;
 
 _CSE_END
 
-#include "CSE/Core/Inline/gl_vec3.inl"
+#include "CSE/Core/gl/gl_vec3.inl"
 
 #endif

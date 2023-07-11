@@ -92,6 +92,6 @@ genType refract(genType I, genType N, float64 UpperMediaIndex, float64 LowerMedi
 
 _CSE_END
 
-#include "CSE/Core/Inline/VecGeom.Template.inl"
+#include "CSE/Core/Templates/VecGeom.Template.inl"
 
 #endif

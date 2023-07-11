@@ -1,5 +1,5 @@
 ﻿#include <cassert>
-#include "CSE/Core/matrix.h"
+#include "CSE/Core/gl/matrix.h"
 #include "CSE/Core/CSECore.h"
 
 _CSE_BEGIN

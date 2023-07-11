@@ -1,4 +1,4 @@
-﻿#include "CSE/Core/CSEM_Algo.h"
+﻿#include "CSE/Core/Algorithms.h"
 #include "CSE/Core/IEEE754/MathFuncs.h"
 
 _CSE_BEGIN

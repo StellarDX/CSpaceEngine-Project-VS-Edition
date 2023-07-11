@@ -5,12 +5,7 @@
 
 #include "CSE/Core/CSECore.h"
 #include "CSE/Core/ConstLists.h"
-
-#if 0//(defined _MSC_VER && _MSC_VER >= 1900) || defined(__EMSCRIPTEN__)
-#include <cmath>   // Base on STD Math
-#endif
-
-#include "CSE/Core/CSEM_Algo.h"
+#include "CSE/Core/Algorithms.h"
 #include <array>
 #include <vector>
 //#include "Complex.h"
@@ -176,7 +171,7 @@ _Check_return_ genType __cdecl ln(_In_ genType _X);
 #else
 #define CBRT_FREXP frexp
 #define CBRT_LDEXP ldexp
-#define __pow      __IEEE754_POWF
+#define __pow      std::pow // __IEEE754_POWF
 #define __sqrt     __IBM_SQRTF64
 #define __cbrt     __IEEE754_CBRTF64
 #endif
@@ -586,7 +581,7 @@ _STL_RESTORE_CLANG_WARNINGS
 #pragma warning(pop)
 #pragma pack(pop)
 
-#include "CSE/Core/Inline/MathFuncs.Template.inl"
+#include "CSE/Core/Templates/MathFuncs.Template.inl"
 
 #pragma warning(pop)
 

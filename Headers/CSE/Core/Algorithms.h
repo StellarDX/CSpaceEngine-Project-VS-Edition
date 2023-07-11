@@ -232,6 +232,6 @@ _STL_RESTORE_CLANG_WARNINGS
 #pragma warning(pop)
 #pragma pack(pop)
 
-#include "CSE/Core/Inline/Algorithms.Template.inl"
+#include "CSE/Core/Templates/Algorithms.Template.inl"
 
 #endif

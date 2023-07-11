@@ -47,30 +47,30 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Headers\CSE\Core.h" />
+    <ClInclude Include="..\..\Headers\CSE\Core\Advanced_Math.h" />
+    <ClInclude Include="..\..\Headers\CSE\Core\Algorithms.h" />
     <ClInclude Include="..\..\Headers\CSE\Core\AsMath.h" />
     <ClInclude Include="..\..\Headers\CSE\Core\ConstLists.h" />
     <ClInclude Include="..\..\Headers\CSE\Core\CSECore.h" />
-    <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Adv.h" />
-    <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Algo.h" />
-    <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Geom.h" />
     <ClInclude Include="..\..\Headers\CSE\Core\DateTime.h" />
+    <ClInclude Include="..\..\Headers\CSE\Core\Geometry.h" />
     <ClInclude Include="..\..\Headers\CSE\Core\gltypes.h" />
-    <ClInclude Include="..\..\Headers\CSE\Core\gl_vec2.h" />
-    <ClInclude Include="..\..\Headers\CSE\Core\gl_vec3.h" />
-    <ClInclude Include="..\..\Headers\CSE\Core\gl_vec4.h" />
+    <ClInclude Include="..\..\Headers\CSE\Core\gl\gfuncs.h" />
+    <ClInclude Include="..\..\Headers\CSE\Core\gl\gl_vec2.h" />
+    <ClInclude Include="..\..\Headers\CSE\Core\gl\gl_vec3.h" />
+    <ClInclude Include="..\..\Headers\CSE\Core\gl\gl_vec4.h" />
+    <ClInclude Include="..\..\Headers\CSE\Core\gl\matrix.h" />
     <ClInclude Include="..\..\Headers\CSE\Core\IEEE754\IEEE754.h" />
     <ClInclude Include="..\..\Headers\CSE\Core\IEEE754\MathFuncs.h" />
-    <ClInclude Include="..\..\Headers\CSE\Core\matrix.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Headers\CSE\Core\Inline\Algorithms.Template.inl" />
-    <None Include="..\..\Headers\CSE\Core\Inline\gl_vec2.inl" />
-    <None Include="..\..\Headers\CSE\Core\Inline\gl_vec3.inl" />
-    <None Include="..\..\Headers\CSE\Core\Inline\gl_vec4.inl" />
-    <None Include="..\..\Headers\CSE\Core\Inline\MathFuncs.Template.inl" />
-    <None Include="..\..\Headers\CSE\Core\Inline\matrix.inl" />
-    <None Include="..\..\Headers\CSE\Core\Inline\VecGeom.Template.inl" />
-    <None Include="..\..\Headers\CSE\Core\Inline\vector.inl" />
+    <None Include="..\..\Headers\CSE\Core\gl\gl_vec2.inl" />
+    <None Include="..\..\Headers\CSE\Core\gl\gl_vec3.inl" />
+    <None Include="..\..\Headers\CSE\Core\gl\gl_vec4.inl" />
+    <None Include="..\..\Headers\CSE\Core\gl\matrix.inl" />
+    <None Include="..\..\Headers\CSE\Core\Templates\Algorithms.Template.inl" />
+    <None Include="..\..\Headers\CSE\Core\Templates\MathFuncs.Template.inl" />
+    <None Include="..\..\Headers\CSE\Core\Templates\VecGeom.Template.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

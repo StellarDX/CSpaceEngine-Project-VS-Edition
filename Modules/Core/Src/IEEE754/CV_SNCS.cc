@@ -190,7 +190,7 @@ _Check_return_ float64 __cdecl __CV_COS_ANGLES(_In_ float64 _X)
 
 	return cosa * cosb - sina * sinb;
 
-#endif
+	#endif
 }
 
 _Check_return_ float64 __cdecl __CV_TAN_ANGLES(_In_ float64 _X)

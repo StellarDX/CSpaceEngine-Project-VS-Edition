@@ -1,6 +1,6 @@
 ﻿#include <cassert>
 #include "CSE/Core/CSECore.h"
-#include "CSE/Core/gl_vec4.h"
+#include "CSE/Core/gl/gl_vec4.h"
 
 _CSE_BEGIN
 _GL_BEGIN

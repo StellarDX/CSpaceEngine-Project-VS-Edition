@@ -178,6 +178,6 @@ using uvec4 = _GL gl_vec4<uint64>;
 
 _CSE_END
 
-#include "CSE/Core/Inline/gl_vec4.inl"
+#include "CSE/Core/gl/gl_vec4.inl"
 
 #endif

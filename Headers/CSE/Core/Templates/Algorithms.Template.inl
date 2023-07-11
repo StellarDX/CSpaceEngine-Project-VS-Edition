@@ -1,7 +1,7 @@
 #ifndef __ALGORITHMS_TEMP__
 #define __ALGORITHMS_TEMP__
 
-#include "CSE/Core/CSEM_Algo.h"
+#include "CSE/Core/Algorithms.h"
 
 _CSE_BEGIN
 

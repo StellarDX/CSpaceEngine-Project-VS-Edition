@@ -720,7 +720,7 @@ using matrix = _GL basic_matrix<_Ty, _Column, _Line>;
 
 _CSE_END
 
-#include "CSE/Core/Inline/matrix.inl"
+#include "CSE/Core/gl/matrix.inl"
 
 #pragma pop_macro("new")
 _STL_RESTORE_CLANG_WARNINGS

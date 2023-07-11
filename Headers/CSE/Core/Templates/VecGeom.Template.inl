@@ -1,7 +1,7 @@
 #ifndef __GEOMETRY_TEMP__
 #define __GEOMETRY_TEMP__
 
-#include "CSE/Core/CSEM_Geom.h"
+#include "CSE/Core/Geometry.h"
 
 _CSE_BEGIN
 
