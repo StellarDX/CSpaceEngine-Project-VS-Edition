@@ -406,7 +406,7 @@ private:
 
     #if FORCE_CONVERT_CHAR_ENCODING
 public:
-    _STD string ConvertChar(const char* str, int SrcEncod = SOURCE_ENCODING);
+    static _STD string ConvertChar(const char* str, int SrcEncod = SOURCE_ENCODING);
     #endif
 };
 
