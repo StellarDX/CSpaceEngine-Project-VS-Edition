@@ -16,6 +16,9 @@
 //#include "Complex.h"
 #include <complex> // and add complex types
 
+#pragma warning(push, _STL_WARNING_LEVEL)
+#pragma warning(disable : _STL_DISABLED_WARNINGS 4190)
+
 /* ************************************************************************** *\
    genTypes in Templates can be multiple data types:
 	   genType = float64, complex64, vec2, vec3, vec4
@@ -34,6 +37,26 @@ _STL_DISABLE_CLANG_WARNINGS
 
 _CSE_BEGIN
 
+#define _USE_CUSTOM_FUNCTIONS
+using __Float64 = IEEE754_Dbl64;
+
+// INFs and NANs
+#ifdef _QUAD_PRECISION // Unused
+#define _FType            __Float128
+#define CSE_POSITIVE_ZERO POS_ZERO_QUADUPLE
+#define CSE_NEGATIVE_ZERO NEG_ZERO_QUADUPLE
+#define CSE_POSITIVE_INF  POS_INF_QUADUPLE
+#define CSE_NEGATIVE_INF  NEG_INF_QUADUPLE
+#define CSE_NAN           BIG_NAN_QUADUPLE
+#else
+#define _FType            __Float64
+#define CSE_POSITIVE_ZERO POS_ZERO_DOUBLE
+#define CSE_NEGATIVE_ZERO NEG_ZERO_DOUBLE
+#define CSE_POSITIVE_INF  POS_INF_DOUBLE
+#define CSE_NEGATIVE_INF  NEG_INF_DOUBLE
+#define CSE_NAN           BIG_NAN_DOUBLE
+#endif
+
 // Temporary definations
 using InputArray = const std::vector<float64>&;
 using OutputArray = std::vector<complex64>&;
@@ -50,43 +73,68 @@ public:
 *                                          E X P                                         *
 \****************************************************************************************/
 
-extern const float96 _Exponential_Tab[]; // the default table used to calculate exp(x)
+// Configs for quaduple-precision algorithm
+#ifdef _QUAD_PRECISION // Unused
+#define EXP_himark 11356.523406294143949491931077970765L
+#define EXP_lomark -11433.4627433362978788372438434526231L
+#define EXP_TINY   1.0E-4900L
+#define EXP_EMAX   5.94865747678615882542879663314003565E+4931L
+#define EXP_UNSAFE 15000
+#define EXP_ROUND  roundl
+#define __exp      __IEEE754_EXPF128
+#else
+#define EXP_himark 709.78271289338399678773454114191496482
+#define EXP_lomark -744.44007192138126231410729844608163411
+#define EXP_TINY   1.0E-308
+#define EXP_EMAX   8.988465674311579538646525953945123668E+307
+#define EXP_UNSAFE 1020
+#define EXP_ROUND  round
+#define __exp      __IEEE754_EXPF64
+#endif
 
-struct EXP_CONFIG // Default settings
-{
-	uint64           BITSEXPO   = 11;
-	uint64           BITSFRAC   = 52;
-	const float96*   TABLE      = _Exponential_Tab;
-	uint64           SCALE      = 6;
-	uint64           MASK       = (1 << SCALE) - 1;
-};
+_EXTERN_C
+// TABLES
+extern const unsigned long long __Expf64_table[]; // For Double
+//extern const _FType __Expf128_table[]; // For Quaduple
+// BASE FUNCTIONS
+_Check_return_ __Float64 __cdecl __IEEE754_EXPF64(_In_ __Float64 _X);
+//_Check_return_ _FType __cdecl __IEEE754_EXPF128(_In_ _FType _X);
+_END_EXTERN_C
 
 /// <summary>
 /// Returns the natural exponentiation of x. i.e., e^x.
 /// </summary>
-_Check_return_ float64 __cdecl exp(_In_ float64 _X, EXP_CONFIG _Conf = EXP_CONFIG());
-_Check_return_ complex64 __cdecl exp(_In_ complex64 _X, EXP_CONFIG _Conf = EXP_CONFIG());
+_Check_return_ _FType __cdecl exp(_In_ _FType _X);
+_Check_return_ complex64 __cdecl expc(_In_ complex64 _X);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl exp(_In_ genType _X, EXP_CONFIG _Conf = EXP_CONFIG());
+_Check_return_ genType __cdecl exp(_In_ genType _X);
 
 /****************************************************************************************\
 *                                          L O G                                         *
 \****************************************************************************************/
 
-extern const float96 _Logarithm_Tab[]; // the default table used to calculate ln(x)
+#ifdef _QUAD_PRECISION // Unused
+#define LOG_FREXP frexpl
+#define LN_FREXP  frexpl
+#define __log     __IEEE754_LOGF128_CF64
+#define __ln      __IEEE754_LNF128
+#else
+#define LOG_FREXP frexp
+#define LN_FREXP  frexp
+#define __log     __IEEE754_LOGF128_CF64
+#define __ln      __IEEE754_LNF64
+#endif
 
-struct LOG_CONFIG // used for ln(x) function
-{
-	uint64           BITSEXPO   = 11;
-	uint64           BITSFRAC   = 52;
-	uint64           SCALE      = 8;
-	uint64           MASK       = (1ui64 << SCALE) - 1;
-	const float96*   TABLE      = _Logarithm_Tab;
-	uint64           TABSIZE    = (MASK + 1) * 2;
-
-	int64            K_OFFSET   = 0; // for complex
-};
+_EXTERN_C
+// TABLES
+extern const double __Lnf64_table[]; // For Double
+//extern const _FType __Lnf128_table[]; // For Quaduple
+// BASE FUNCTIONS
+_Check_return_ _FType __cdecl __IEEE754_LOGF128_CF64(_In_ _FType _X); // quaduple precision function, but can be used for double precision.
+_Check_return_ __Float64 __cdecl __IEEE754_LNF64(_In_ __Float64 _X); // natural logarithm for double precision
+//_Check_return_ _FType __cdecl __IEEE754_LNF128(_In_ _FType _X); // natural logarithm for quaduple precision
+_END_EXTERN_C
 
 /// <summary>
 /// Returns the logarithm of x, i.e. the value y which satisfies x=base^y.
@@ -96,47 +144,68 @@ struct LOG_CONFIG // used for ln(x) function
 /// </summary>
 /// <param name="_Base">Specify the base value</param>
 /// <param name="_X">Specify the value of which to take the logarithm.</param>
-_Check_return_ float64 __cdecl log(_In_ float64 _Base, _In_ float64 _X, LOG_CONFIG _Conf = LOG_CONFIG());
-_Check_return_ float64 __cdecl log(_In_ float64 _X, LOG_CONFIG _Conf = LOG_CONFIG());
-_Check_return_ float64 __cdecl ln(_In_ float64 _X, LOG_CONFIG _Conf = LOG_CONFIG());
-_Check_return_ complex64 __cdecl log(_In_ complex64 _Base, _In_ complex64 _X, LOG_CONFIG _Conf = LOG_CONFIG());
-_Check_return_ complex64 __cdecl log(_In_ complex64 _X, LOG_CONFIG _Conf = LOG_CONFIG());
-_Check_return_ complex64 __cdecl ln(_In_ complex64 _X, LOG_CONFIG _Conf = LOG_CONFIG());
+_Check_return_ _FType __cdecl log(_In_ _FType _Base, _In_ _FType _X);
+_Check_return_ _FType __cdecl log(_In_ _FType _X);
+_Check_return_ _FType __cdecl ln(_In_ _FType _X);
+_Check_return_ complex64 __cdecl logc(_In_ complex64 _Base, _In_ complex64 _X, int64 K_OFFSET = 0);
+_Check_return_ complex64 __cdecl logc(_In_ complex64 _X, int64 K_OFFSET = 0);
+_Check_return_ complex64 __cdecl lnc(_In_ complex64 _X, int64 K_OFFSET = 0);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl log(_In_ float64 _Base, _In_ genType _X, LOG_CONFIG _Conf = LOG_CONFIG());
+_Check_return_ genType __cdecl log(_In_ float64 _Base, _In_ genType _X);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl log(_In_ genType _Base, _In_ genType _X, LOG_CONFIG _Conf = LOG_CONFIG());
+_Check_return_ genType __cdecl log(_In_ genType _Base, _In_ genType _X);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl log(_In_ genType _X, LOG_CONFIG _Conf = LOG_CONFIG());
+_Check_return_ genType __cdecl log(_In_ genType _X);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl ln(_In_ genType _X, LOG_CONFIG _Conf = LOG_CONFIG());
+_Check_return_ genType __cdecl ln(_In_ genType _X);
 
 /****************************************************************************************\
 *                                    P O W E R                                           *
 \****************************************************************************************/
 
-struct POWER_CONFIG
-{
-	int64            K_OFFSET   = 0; // for complex
-};
+#ifdef _QUAD_PRECISION // Unused
+#define CBRT_FREXP frexpl
+#define CBRT_LDEXP ldexpl
+#define __pow      __CosmoCXX_Fast_Power
+#define __sqrt     __CosmoCXX_Fast_SquareRoot
+#define __cbrt     __IEEE754_CBRTF128
+#else
+#define CBRT_FREXP frexp
+#define CBRT_LDEXP ldexp
+#define __pow      __IEEE754_POWF
+#define __sqrt     __IBM_SQRTF64
+#define __cbrt     __IEEE754_CBRTF64
+#endif
+
+_EXTERN_C
+// TABLES
+extern const double __IBM_inroot_table[128];
+// BASE FUNCTIONS
+_Check_return_ __Float64 __cdecl __IEEE754_POWF(_In_ __Float64 _X, _In_ __Float64 _Power); // Power function in older version, only used for double precision.
+_Check_return_ _FType __cdecl __CosmoCXX_Fast_Power(_In_ _FType _X, _In_ _FType _Power); // Power function use for double and quaduple precision
+_Check_return_ __Float64 __cdecl __IBM_SQRTF64(_In_ __Float64 _X); // IBM's implemention of square root (Extremely high precision in double precision.)
+_Check_return_ _FType __cdecl __CosmoCXX_Fast_SquareRoot(_In_ _FType _X); // solving square root in common routine.
+_Check_return_ __Float64 __cdecl __IEEE754_CBRTF64(_In_ __Float64 _X);
+//_Check_return_ _FType __cdecl __IEEE754_CBRTF128(_In_ _FType _X); // Cube root for quaduple precision
+_END_EXTERN_C
 
 /// <summary>
 /// Returns the value of x raised to the y power, i.e. x^y.
 /// </summary>
 /// <param name="_X">Specify the value to raise to the power y.</param>
 /// <param name="_Power">Specify the power to which to raise x.</param>
-_Check_return_ float64 __cdecl pow(_In_ float64 _X, _In_ float64 _Power, POWER_CONFIG _Conf = POWER_CONFIG()); // base functions
-_Check_return_ complex64 __cdecl pow(_In_ complex64 _X, _In_ complex64 _Power, POWER_CONFIG _Conf = POWER_CONFIG());
+_Check_return_ _FType __cdecl pow(_In_ _FType _X, _In_ _FType _Power); // base functions
+_Check_return_ complex64 __cdecl powc(_In_ complex64 _X, _In_ complex64 _Power, int64 K_OFFSET = 0);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl pow(_In_ genType _X, _In_ float64 _Power, POWER_CONFIG _Conf = POWER_CONFIG());
+_Check_return_ genType __cdecl pow(_In_ genType _X, _In_ float64 _Power);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl pow(_In_ genType _X, _In_ genType _Power, POWER_CONFIG _Conf = POWER_CONFIG());
+_Check_return_ genType __cdecl pow(_In_ genType _X, _In_ genType _Power);
 
 template<typename _Ty, size_t _Size>
 _Check_return_ _GL basic_matrix<_Ty, _Size, _Size> __cdecl pow(_In_ _GL basic_matrix<_Ty, _Size, _Size> _A, _In_ uint64 _Power);
@@ -144,44 +213,37 @@ _Check_return_ _GL basic_matrix<_Ty, _Size, _Size> __cdecl pow(_In_ _GL basic_ma
 /// <summary>
 /// Returns the square root of x, i.e. the value √x.
 /// </summary>
-_Check_return_ float64 __cdecl sqrt(_In_ float64 _X, POWER_CONFIG _Conf = POWER_CONFIG());
-_Check_return_ std::array<complex64, 2> __cdecl sqrt(_In_ complex64 _X, POWER_CONFIG _Conf = POWER_CONFIG());
+_Check_return_ _FType __cdecl sqrt(_In_ _FType _X);
+_Check_return_ std::array<complex64, 2> __cdecl sqrtc(_In_ complex64 _X);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl sqrt(_In_ genType _X, POWER_CONFIG _Conf = POWER_CONFIG());
+_Check_return_ genType __cdecl sqrt(_In_ genType _X);
 
 /// <summary>
 /// Returns the inverse of the square root of x, i.e. the value 1/√x
 /// </summary>
-_Check_return_ float64 __cdecl inversesqrt(_In_ float64 _X, POWER_CONFIG _Conf = POWER_CONFIG());
-_Check_return_ complex64 __cdecl inversesqrt(_In_ complex64 _X, POWER_CONFIG _Conf = POWER_CONFIG());
+_Check_return_ _FType __cdecl inversesqrt(_In_ _FType _X);
+_Check_return_ complex64 __cdecl inversesqrtc(_In_ complex64 _X);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl inversesqrt(_In_ genType _X, POWER_CONFIG _Conf = POWER_CONFIG());
-
-struct CBRT_CONFIG
-{
-	uint64           BITSEXPO   = 11;
-	uint64           BITSFRAC   = 52;
-	uint64           NUMITER    = 6;
-};
+_Check_return_ genType __cdecl inversesqrt(_In_ genType _X);
 
 /// <summary>
 /// Returns the cube root of x, i.e. the value 3√x.
 /// </summary>
-_Check_return_ float64 __cdecl cbrt(_In_ float64 _X, CBRT_CONFIG _Conf = CBRT_CONFIG());
-_Check_return_ std::array<complex64, 3> __cdecl cbrt(_In_ complex64 _X, CBRT_CONFIG _Conf = CBRT_CONFIG());
+_Check_return_ _FType __cdecl cbrt(_In_ _FType _X);
+_Check_return_ std::array<complex64, 3> __cdecl cbrtc(_In_ complex64 _X);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl cbrt(_In_ genType _X, CBRT_CONFIG _Conf = CBRT_CONFIG());
+_Check_return_ genType __cdecl cbrt(_In_ genType _X);
 
 /// <summary>
 /// Returns the nth-root of x, i.e. the value n√x.
 /// </summary>
 /// <param name="_Expo">Specify the value of exponential of root.</param>
 /// <param name="_X">Specify the value to find root.</param>
-_Check_return_ float64 __cdecl yroot(_In_ float64 _Expo, _In_ float64 _X);
-_Check_return_ std::vector<complex64> __cdecl yroot(_In_ complex64 _Expo, _In_ complex64 _X, POWER_CONFIG _Conf = POWER_CONFIG());
+_Check_return_ _FType __cdecl yroot(_In_ _FType _Expo, _In_ _FType _X);
+_Check_return_ std::vector<complex64> __cdecl yrootc(_In_ complex64 _Expo, _In_ complex64 _X, int64 K_OFFSET = 0);
 
 template<typename genType> requires vecType<genType>
 _Check_return_ genType __cdecl yroot(_In_ float64 _Expo, _In_ genType _X);
@@ -205,126 +267,182 @@ _Check_return_ genType __cdecl yroot(_In_ genType _Expo, _In_ genType _X);
 /// <summary>
 /// Converts degrees into radians.
 /// </summary>
-_Check_return_ float64 __cdecl radians(_In_ float64 _Deg);
+_Check_return_ _FType __cdecl radians(_In_ _FType _Deg);
 
 /// <summary>
 /// converts radians into degrees.
 /// </summary>
-_Check_return_ float64 __cdecl degrees(_In_ float64 _Rad);
+_Check_return_ _FType __cdecl degrees(_In_ _FType _Rad);
 
-extern const float96 _SinCos_Tab[];
+// define "_USE_RADIANS_FOR_SINCOS" to force using radians.
+#ifdef _QUAD_PRECISION // Unused
+#define __sin // Not implemented.
+#define __cos
+#define __tan
+#else
+#ifdef _USE_RADIANS_FOR_SINCOS
+#define __sin __IBM_SINF64
+#define __cos __IBM_COSF64
+#define __tan __IBM_TANF64
+#else
+#define __sin __CV_SIN_ANGLES
+#define __cos __CV_COS_ANGLES
+#define __tan __CV_TAN_ANGLES
+#endif
+#endif
 
-struct SINCOS_CONFIG
-{
-	const float96*   TABLE      = _SinCos_Tab;
-	uint64           TABSIZE    = 64;
-};
+// Safe mode for angles function, recommand to open when input number is very large.
+#define __CV_SNCS_SAFE_MODE
+
+// Trigonometric functions for angles
+// TABLES
+extern const float64 __CV_SinCos_Tab[];
+// BASE FUNCTIONS
+_Check_return_ float64 __cdecl __CV_SIN_ANGLES(_In_ float64 _X);
+_Check_return_ float64 __cdecl __CV_COS_ANGLES(_In_ float64 _X);
+_Check_return_ float64 __cdecl __CV_TAN_ANGLES(_In_ float64 _X);
+// Trigonometric functions for radians
+_EXTERN_C
+// TABLES
+extern const union __IBM_Table_Type440 __IBM_sincostab;
+extern const __Float64 __IBM_TANF64_XFGTBL[186][4];
+// BASE FUNCTIONS
+_Check_return_ __Float64 __cdecl __IBM_SINF64(_In_ __Float64 x);
+_Check_return_ __Float64 __cdecl __IBM_COSF64(_In_ __Float64 x);
+_Check_return_ __Float64 __cdecl __IBM_TANF64(_In_ __Float64 x);
+_END_EXTERN_C
+
 
 /// <summary>
 /// The standard trigonometric sine function(Real number based on degrees, Complex based on radians).
 /// </summary>
-_Check_return_ float64 __cdecl sin(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG());
-_Check_return_ complex64 __cdecl sin(_In_ complex64 _X, EXP_CONFIG _Conf = EXP_CONFIG());
+_Check_return_ _FType __cdecl sin(_In_ _FType _X);
+_Check_return_ complex64 __cdecl sinc(_In_ complex64 _X);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl sin(_In_ genType _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG());
+_Check_return_ genType __cdecl sin(_In_ genType _X);
 
 /// <summary>
 /// The standard trigonometric cosine function(Real number based on degrees, Complex based on radians).
 /// </summary>
-_Check_return_ float64 __cdecl cos(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG());
-_Check_return_ complex64 __cdecl cos(_In_ complex64 _X, EXP_CONFIG _Conf = EXP_CONFIG());
+_Check_return_ _FType __cdecl cos(_In_ _FType _X);
+_Check_return_ complex64 __cdecl cosc(_In_ complex64 _X);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl cos(_In_ genType _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG());
+_Check_return_ genType __cdecl cos(_In_ genType _X);
 
 /// <summary>
 /// The standard trigonometric tangent function(Real number based on degrees, Complex based on radians).
 /// </summary>
-_Check_return_ float64 __cdecl tan(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG());
-_Check_return_ complex64 __cdecl tan(_In_ complex64 _X, EXP_CONFIG _Conf = EXP_CONFIG());
+_Check_return_ _FType __cdecl tan(_In_ _FType _X);
+_Check_return_ complex64 __cdecl tanc(_In_ complex64 _X);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl tan(_In_ genType _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG());
+_Check_return_ genType __cdecl tan(_In_ genType _X);
 
 /// <summary>
 /// The standard trigonometric cotangent function(Real number based on degrees, Complex based on radians).
 /// </summary>
-_Check_return_ float64 __cdecl ctg(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG());
-_Check_return_ complex64 __cdecl ctg(_In_ complex64 _X, EXP_CONFIG _Conf = EXP_CONFIG());
+_Check_return_ _FType __cdecl ctg(_In_ _FType _X);
+_Check_return_ complex64 __cdecl ctgc(_In_ complex64 _X);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl ctg(_In_ genType _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG());
+_Check_return_ genType __cdecl ctg(_In_ genType _X);
 
 /// <summary>
 /// The standard trigonometric secant function(Real number based on degrees, Complex based on radians).
 /// </summary>
-_Check_return_ float64 __cdecl sec(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG());
-_Check_return_ complex64 __cdecl sec(_In_ complex64 _X, EXP_CONFIG _Conf = EXP_CONFIG());
+_Check_return_ _FType __cdecl sec(_In_ _FType _X);
+_Check_return_ complex64 __cdecl secc(_In_ complex64 _X);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl sec(_In_ genType _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG());
+_Check_return_ genType __cdecl sec(_In_ genType _X);
 
 /// <summary>
 /// The standard trigonometric cosecant function(Real number based on degrees, Complex based on radians).
 /// </summary>
-_Check_return_ float64 __cdecl csc(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG());
-_Check_return_ complex64 __cdecl csc(_In_ complex64 _X, EXP_CONFIG _Conf = EXP_CONFIG());
+_Check_return_ _FType __cdecl csc(_In_ _FType _X);
+_Check_return_ complex64 __cdecl cscc(_In_ complex64 _X);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl csc(_In_ genType _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG());
+_Check_return_ genType __cdecl csc(_In_ genType _X);
 
 ///////////////////////////////////// INVERSE ////////////////////////////////////
 
-struct ATAN_CONFIG
-{
-	// Nothing...
-};
+// Use degrees for real number functions, radians for complex functions.
+// define "_USE_RADIANS_FOR_SINCOS" to force using radians.
+#ifdef _QUAD_PRECISION // Unused
+#define __asin // Not implemented.
+#define __acos
+#define __atan
+#else
+#ifdef _USE_RADIANS_FOR_SINCOS
+#define __asin __IBM_ASINF64
+#define __acos __IBM_ACOSF64
+#define __atan __IBM_ATANF64
+#else
+#define __asin __IBM_ASINF64
+#define __acos __IBM_ACOSF64
+#define __atan __IEEE754_ATANF128_CF64
+#endif
+#endif
+
+_EXTERN_C
+// TABLES
+extern const union __IBM_Table_Type2568 __IBM_asncs_table;
+extern const _FType __ArctanF128_table_deg[];
+extern const _FType __ArctanF128_table_rad[];
+// BASE FUNCTIONS
+_Check_return_ __Float64 __cdecl __IBM_ASINF64(_In_ __Float64 x);
+_Check_return_ __Float64 __cdecl __IBM_ACOSF64(_In_ __Float64 x);
+// _Check_return_ __Float64 __cdecl __IBM_ATANF64(_In_ __Float64 x);
+_Check_return_ _FType __cdecl __IEEE754_ATANF128_CF64(_In_ _FType x);
+_END_EXTERN_C
 
 /// <summary>
 /// Arc Sine. Returns the angle whose trigonometric sine is x. The range of values returned by asin is [-90, 90].
 /// </summary>
-_Check_return_ float64 __cdecl arcsin(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-_Check_return_ complex64 __cdecl arcsin(_In_ complex64 _X, _In_range_(0, 1) int _SqrtIdx = 0, LOG_CONFIG _Conf = LOG_CONFIG());
+_Check_return_ _FType __cdecl arcsin(_In_ _FType _X);
+_Check_return_ complex64 __cdecl arcsinc(_In_ complex64 _X, _In_range_(0, 1) int _SqrtIdx = 0, int64 K_OFFSET = 0);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl arcsin(_In_ genType _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
+_Check_return_ genType __cdecl arcsin(_In_ genType _X);
 
 /// <summary>
 /// Arc cosine. Returns the angle whose trigonometric cosine is x. The range of values returned by acos is [0, 180].
 /// </summary>
-_Check_return_ float64 __cdecl arccos(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-_Check_return_ complex64 __cdecl arccos(_In_ complex64 _X, _In_range_(0, 1) int _SqrtIdx = 0, LOG_CONFIG _Conf = LOG_CONFIG());
+_Check_return_ _FType __cdecl arccos(_In_ _FType _X);
+_Check_return_ complex64 __cdecl arccosc(_In_ complex64 _X, _In_range_(0, 1) int _SqrtIdx = 0, int64 K_OFFSET = 0);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl arccos(_In_ genType _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
+_Check_return_ genType __cdecl arccos(_In_ genType _X);
 
 /// <summary>
 /// Arc tangent. Returns the angle whose tangent is x. The value returned in this case is in the range [-90, 90].
 /// </summary>
-_Check_return_ float64 __cdecl arctan(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-_Check_return_ complex64 __cdecl arctan(_In_ complex64 _X, LOG_CONFIG _Conf = LOG_CONFIG());
+_Check_return_ _FType __cdecl arctan(_In_ _FType _X);
+_Check_return_ complex64 __cdecl arctanc(_In_ complex64 _X, int64 K_OFFSET = 0);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl arctan(_In_ genType _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
+_Check_return_ genType __cdecl arctan(_In_ genType _X);
 
-_Check_return_ float64 __cdecl arcctg(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-_Check_return_ complex64 __cdecl arcctg(_In_ complex64 _X, LOG_CONFIG _Conf = LOG_CONFIG());
-
-template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl arcctg(_In_ genType _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-
-_Check_return_ float64 __cdecl arcsec(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-_Check_return_ complex64 __cdecl arcsec(_In_ complex64 _X, _In_range_(0, 1) int _SqrtIdx = 0, LOG_CONFIG _Conf = LOG_CONFIG());
+_Check_return_ _FType __cdecl arcctg(_In_ _FType _X);
+_Check_return_ complex64 __cdecl arcctgc(_In_ complex64 _X, int64 K_OFFSET = 0);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl arcsec(_In_ genType _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
+_Check_return_ genType __cdecl arcctg(_In_ genType _X);
 
-_Check_return_ float64 __cdecl arccsc(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-_Check_return_ complex64 __cdecl arccsc(_In_ complex64 _X, _In_range_(0, 1) int _SqrtIdx = 0, LOG_CONFIG _Conf = LOG_CONFIG());
+_Check_return_ _FType __cdecl arcsec(_In_ _FType _X);
+_Check_return_ complex64 __cdecl arcsecc(_In_ complex64 _X, _In_range_(0, 1) int _SqrtIdx = 0, int64 K_OFFSET = 0);
 
 template<typename genType> requires vecType<genType>
-_Check_return_ genType __cdecl arccsc(_In_ genType _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
+_Check_return_ genType __cdecl arcsec(_In_ genType _X);
+
+_Check_return_ _FType __cdecl arccsc(_In_ _FType _X);
+_Check_return_ complex64 __cdecl arccscc(_In_ complex64 _X, _In_range_(0, 1) int _SqrtIdx = 0, int64 K_OFFSET = 0);
+
+template<typename genType> requires vecType<genType>
+_Check_return_ genType __cdecl arccsc(_In_ genType _X);
 
 ///////////////////////////////////// EXPAND ////////////////////////////////////
 
@@ -337,38 +455,38 @@ _Check_return_ genType __cdecl arccsc(_In_ genType _X, ATAN_CONFIG _Conf = ATAN_
 
 #ifdef _USE_FULL_TRIGONOMETRY_SYSTEM
 
-_Check_return_ float64 __cdecl crd(_In_ float64 _X, _In_ float64 _Radius = 1, SINCOS_CONFIG _Conf = SINCOS_CONFIG()); // chord
-_Check_return_ float64 __cdecl arc(_In_ float64 _X, _In_ float64 _Radius = 1, SINCOS_CONFIG _Conf = SINCOS_CONFIG()); // arc
+_Check_return_ _FType __cdecl crd(_In_ _FType _X, _In_ _FType _Radius = 1); // chord
+_Check_return_ _FType __cdecl arc(_In_ _FType _X, _In_ _FType _Radius = 1); // arc
 
-_Check_return_ float64 __cdecl siv(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG()); // versed sine
-_Check_return_ float64 __cdecl vcs(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG()); // versed cosine
-_Check_return_ float64 __cdecl cvs(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG()); // coversed sine
-_Check_return_ float64 __cdecl cvc(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG()); // coversed cosine
+_Check_return_ _FType __cdecl siv(_In_ _FType _X); // versed sine
+_Check_return_ _FType __cdecl vcs(_In_ _FType _X); // versed cosine
+_Check_return_ _FType __cdecl cvs(_In_ _FType _X); // coversed sine
+_Check_return_ _FType __cdecl cvc(_In_ _FType _X); // coversed cosine
 
-_Check_return_ float64 __cdecl hvs(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG()); // haversed sine
-_Check_return_ float64 __cdecl hvc(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG()); // haversed cosine
-_Check_return_ float64 __cdecl hcv(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG()); // hacoversed sine
-_Check_return_ float64 __cdecl hcc(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG()); // hacoversed cosine
+_Check_return_ _FType __cdecl hvs(_In_ _FType _X); // haversed sine
+_Check_return_ _FType __cdecl hvc(_In_ _FType _X); // haversed cosine
+_Check_return_ _FType __cdecl hcv(_In_ _FType _X); // hacoversed sine
+_Check_return_ _FType __cdecl hcc(_In_ _FType _X); // hacoversed cosine
 
-_Check_return_ float64 __cdecl exs(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG()); // exsecant
-_Check_return_ float64 __cdecl exc(_In_ float64 _X, SINCOS_CONFIG _Conf = SINCOS_CONFIG()); // excosecant
+_Check_return_ _FType __cdecl exs(_In_ _FType _X); // exsecant
+_Check_return_ _FType __cdecl exc(_In_ _FType _X); // excosecant
 
 // Inverse functions
 
-_Check_return_ float64 __cdecl arccrd(_In_ float64 _X, _In_ float64 _Radius = 1, ATAN_CONFIG _Conf = ATAN_CONFIG());
+_Check_return_ _FType __cdecl arccrd(_In_ _FType _X, _In_ _FType _Radius = 1);
 
-_Check_return_ float64 __cdecl arcsiv(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-_Check_return_ float64 __cdecl arcvcs(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-_Check_return_ float64 __cdecl arccvs(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-_Check_return_ float64 __cdecl arccvc(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
+_Check_return_ _FType __cdecl arcsiv(_In_ _FType _X);
+_Check_return_ _FType __cdecl arcvcs(_In_ _FType _X);
+_Check_return_ _FType __cdecl arccvs(_In_ _FType _X);
+_Check_return_ _FType __cdecl arccvc(_In_ _FType _X);
 
-_Check_return_ float64 __cdecl archvs(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-_Check_return_ float64 __cdecl archvc(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-_Check_return_ float64 __cdecl archcv(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-_Check_return_ float64 __cdecl archcc(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
+_Check_return_ _FType __cdecl archvs(_In_ _FType _X);
+_Check_return_ _FType __cdecl archvc(_In_ _FType _X);
+_Check_return_ _FType __cdecl archcv(_In_ _FType _X);
+_Check_return_ _FType __cdecl archcc(_In_ _FType _X);
 
-_Check_return_ float64 __cdecl arcexs(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
-_Check_return_ float64 __cdecl arcexc(_In_ float64 _X, ATAN_CONFIG _Conf = ATAN_CONFIG());
+_Check_return_ _FType __cdecl arcexs(_In_ _FType _X);
+_Check_return_ _FType __cdecl arcexc(_In_ _FType _X);
 
 #endif
 
@@ -469,5 +587,7 @@ _STL_RESTORE_CLANG_WARNINGS
 #pragma pack(pop)
 
 #include "CSE/Core/Inline/MathFuncs.Template.inl"
+
+#pragma warning(pop)
 
 #endif

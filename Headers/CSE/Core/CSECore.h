@@ -62,23 +62,9 @@ _STL_DISABLE_CLANG_WARNINGS
 #define _SC_END   }
 #define _SC  sc::
 
-// Values only for development.(Be careful to use!!!)
-// -------------------------------------------------------------------------
-//      Name                 Value                 Note
-// The following defines are pecular values in double format.
-#define MIN_SNORM_POS_DOUBLE 0x0000000000000001 // Min. subnormal positive double
-#define MAX_SNORM_DOUBLE     0x000FFFFFFFFFFFFF // Max. subnormal double
-#define MIN_NORM_POS_DOUBLE  0x0010000000000000 // Min. normal positive double
-#define MAX_DOUBLE           0x7FEFFFFFFFFFFFFF // Max. Double
-#define POS_ZERO_DOUBLE      0x0000000000000000 // +0
-#define NEG_ZERO_DOUBLE      0x8000000000000000 // -0
-#define POS_INF_DOUBLE       0x7FF0000000000000 // +inf
-#define NEG_INF_DOUBLE       0xFFF0000000000000 // -inf
-#define S_NAN_DOUBLE         0x7FF0000000000001 // Singaling NAN
-#define Q_NAN_DOUBLE         0x7FF8000000000001 // Quiet NAN
-#define BIG_NAN_DOUBLE       0x7FFFFFFFFFFFFFFF // an alternative encoding of NaN
-
 _CSE_BEGIN
+
+#include "CSE/Core/IEEE754/IEEE754.h"
 
 using int64              = long long;
 using float64            = double;

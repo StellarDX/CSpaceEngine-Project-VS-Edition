@@ -13,7 +13,7 @@ float64 func(float64 x) {return cse::pow(x, 2);}
 int main()
 {
 	ofstream Report("TestReport_CVMathFuncs.txt");
-	#if !defined(_USE_CV_FUNCTIONS) && ((defined _MSC_VER && _MSC_VER >= 1900) || defined(__EMSCRIPTEN__))
+	#if !defined(_USE_CUSTOM_FUNCTIONS) && ((defined _MSC_VER && _MSC_VER >= 1900) || defined(__EMSCRIPTEN__))
 	cout.precision(15);
 	Report.precision(15);
 	cout << "CSpaceEngine is now using STD math, so it doesn't need to test math functions.\n";
@@ -30,7 +30,7 @@ int main()
 		i += 0.2;
 	}
 
-	Report << "Testing: LOG" << '\n';
+	Report << "Testing: LN" << '\n';
 	i = 0;
 	while (i < 50)
 	{
@@ -42,9 +42,21 @@ int main()
 		i += 0.2;
 	}
 
+	Report << "Testing: LOG" << '\n';
+	i = 0;
+	while (i < 50)
+	{
+		float64 e1 = cse::log(i);
+		float64 e2 = std::log10(i);
+		float64 er = (e1 - e2) / e2;
+		cout << format("result: {} ----- log(x) = {} ----- error: {:e}\n", e1, e2, er);
+		Report << format("result: {} ----- log(x) = {} ----- error: {:e}\n", e1, e2, er);
+		i += 0.2;
+	}
+
 	Report << "Testing: POWER" << '\n';
 	i = -25;
-	float64 j = 50;
+	float64 j = 3.5;
 	while (i < 25)
 	{
 		float64 e1 = cse::pow(i, j);
@@ -52,6 +64,30 @@ int main()
 		float64 er = (e1 - e2) / e2;
 		cout << format("result: {} ----- pow(x, y) = {} ----- error: {:e}\n", e1, e2, er);
 		Report << format("result: {} ----- pow(x, y) = {} ----- error: {:e}\n", e1, e2, er);
+		i += 0.2;
+	}
+
+	Report << "Testing: SQRT" << '\n';
+	i = 0;
+	while (i < 50)
+	{
+		float64 e1 = cse::sqrt(i);
+		float64 e2 = std::sqrt(i);
+		float64 er = (e1 - e2) / e2;
+		cout << format("result: {} ----- sqrt(x, y) = {} ----- error: {:e}\n", e1, e2, er);
+		Report << format("result: {} ----- sqrt(x, y) = {} ----- error: {:e}\n", e1, e2, er);
+		i += 0.2;
+	}
+
+	Report << "Testing: CBRT" << '\n';
+	i = 0;
+	while (i < 50)
+	{
+		float64 e1 = cse::cbrt(i);
+		float64 e2 = std::cbrt(i);
+		float64 er = (e1 - e2) / e2;
+		cout << format("result: {} ----- cbrt(x, y) = {} ----- error: {:e}\n", e1, e2, er);
+		Report << format("result: {} ----- cbrt(x, y) = {} ----- error: {:e}\n", e1, e2, er);
 		i += 0.2;
 	}
 
@@ -76,6 +112,55 @@ int main()
 		Report << format("result: {} ----- cos(x) = {} ----- error: {:e}\n", e1, e2, er);
 		i += 1;
 	}
+
+	Report << "Testing: TAN" << '\n';
+	i = -25;
+	while (i < 25)
+	{
+		float64 e1 = cse::tan(i);
+		float64 e2 = std::tan(radians(i));
+		float64 er = (e1 - e2) / e2;
+		cout << format("result: {} ----- tan(x, y) = {} ----- error: {:e}\n", e1, e2, er);
+		Report << format("result: {} ----- tan(x, y) = {} ----- error: {:e}\n", e1, e2, er);
+		i += 0.2;
+	}
+
+	Report << "Testing: ASIN" << '\n';
+	i = -1;
+	while (i < 1)
+	{
+		float64 e1 = cse::arcsin(i);
+		float64 e2 = degrees(std::asin(i));
+		float64 er = (e1 - e2) / e2;
+		cout << format("result: {} ----- arcsin(x, y) = {} ----- error: {:e}\n", e1, e2, er);
+		Report << format("result: {} ----- arcsin(x, y) = {} ----- error: {:e}\n", e1, e2, er);
+		i += 0.008;
+	}
+
+	Report << "Testing: ACOS" << '\n';
+	i = -1;
+	while (i < 1)
+	{
+		float64 e1 = cse::arccos(i);
+		float64 e2 = degrees(std::acos(i));
+		float64 er = (e1 - e2) / e2;
+		cout << format("result: {} ----- arccos(x, y) = {} ----- error: {:e}\n", e1, e2, er);
+		Report << format("result: {} ----- arccos(x, y) = {} ----- error: {:e}\n", e1, e2, er);
+		i += 0.01;
+	}
+
+	Report << "Testing: ATAN" << '\n';
+	i = -25;
+	while (i < 25)
+	{
+		float64 e1 = cse::arctan(i);
+		float64 e2 = degrees(std::atan(i));
+		float64 er = (e1 - e2) / e2;
+		cout << format("result: {} ----- arctan(x, y) = {} ----- error: {:e}\n", e1, e2, er);
+		Report << format("result: {} ----- arctan(x, y) = {} ----- error: {:e}\n", e1, e2, er);
+		i += 0.2;
+	}
+
 	#endif
 
 	Report << "Testing: SOLVEPOLY" << '\n';

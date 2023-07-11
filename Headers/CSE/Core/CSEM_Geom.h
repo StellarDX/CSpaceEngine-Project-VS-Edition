@@ -3,7 +3,7 @@
 #ifndef _CSE_MATH_GEOMETRY
 #define _CSE_MATH_GEOMETRY
 
-#include "CSE/Core/CSEM_Func.h"
+#include "CSE/Core/IEEE754/MathFuncs.h"
 
 _CSE_BEGIN
 

@@ -57,7 +57,7 @@
 //M*/
 
 #include "CSE/Core/CSEM_Algo.h"
-#include "CSE/Core/CSEM_Func.h"
+#include "CSE/Core/IEEE754/MathFuncs.h"
 #include "CSE/Core/CSEM_Geom.h"
 #include "CSE/Core/CSEM_Adv.h"
 

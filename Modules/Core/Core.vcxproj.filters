@@ -14,22 +14,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Src\_ATAN.cc">
+    <ClCompile Include="Src\Complex\C_ATAN.cc">
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\Algorithms.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="Src\CV_EXP.cc">
+    <ClCompile Include="Src\Complex\C_EXP.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="Src\CV_LOG.cc">
+    <ClCompile Include="Src\Complex\C_LOG.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="Src\CV_SINCOS.cc">
+    <ClCompile Include="Src\Complex\C_SINCOS.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="Src\IEEE754_POW.cc">
+    <ClCompile Include="Src\Complex\C_POW.cc">
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\SOLVEPOLY.cc">
@@ -44,6 +44,51 @@
     <ClCompile Include="Src\Advanced_Math.cc">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="Src\IEEE754\IBM_UATAN.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\IEEE754_ATAN.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\IBM_UASNCS.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\EX_TRIGONOMETRY.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\IBM_USNCS.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\IBM_UTAN.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\CV_SNCS.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\IEEE754_CBRT.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\IEEE754_POW.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\YROOT.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\IBM_UROOT.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\IEEE754_LN.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\IEEE754_LOG.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\LOG.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\IEEE754\IEEE754_EXP.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Headers\CSE\Core\AsMath.h">
@@ -56,9 +101,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Algo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Func.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Geom.h">
@@ -86,6 +128,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Headers\CSE\Core\CSEM_Adv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\IEEE754\IEEE754.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Core\IEEE754\MathFuncs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

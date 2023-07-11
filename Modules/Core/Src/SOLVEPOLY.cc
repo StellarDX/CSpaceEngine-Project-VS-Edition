@@ -1,4 +1,4 @@
-#include "CSE/Core/CSEM_Func.h"
+#include "CSE/Core/IEEE754/MathFuncs.h"
 
 _CSE_BEGIN
 
@@ -30,8 +30,8 @@ int SolveQuadratic(InputArray Coeffs, OutputArray Roots)
 
 	float64 del = _CSE pow(b, 2) - 4.0 * a * c;
 
-	Roots.push_back((-b + _CSE sqrt(complex64(del))[0]) / (2.0 * a));
-	Roots.push_back((-b - _CSE sqrt(complex64(del))[0]) / (2.0 * a));
+	Roots.push_back((-b + _CSE sqrtc(complex64(del))[0]) / (2.0 * a));
+	Roots.push_back((-b - _CSE sqrtc(complex64(del))[0]) / (2.0 * a));
 
 	return 0;
 }
@@ -148,9 +148,9 @@ int SolveQuartic(InputArray Coeffs, OutputArray Roots, int64 p_Error)
 
 	if (IsZero(E, p_Error) && IsZero(F, p_Error) && !IsZero(D, p_Error))
 	{
-		Roots.push_back((-b + _CSE sqrt(complex64(D))[0]) / (4. * a));
+		Roots.push_back((-b + _CSE sqrtc(complex64(D))[0]) / (4. * a));
 		Roots.push_back(Roots[0]);
-		Roots.push_back((-b - _CSE sqrt(complex64(D))[0]) / (4. * a));
+		Roots.push_back((-b - _CSE sqrtc(complex64(D))[0]) / (4. * a));
 		Roots.push_back(Roots[2]);
 
 		return 3;
@@ -158,8 +158,8 @@ int SolveQuartic(InputArray Coeffs, OutputArray Roots, int64 p_Error)
 
 	if (!IsZero(A * B * C, p_Error) && IsZero(del, p_Error))
 	{
-		Roots.push_back((-b + (2. * A * E) / B + _CSE sqrt(complex64((2. * B) / A))[0]) / (4. * a));
-		Roots.push_back((-b + (2. * A * E) / B - _CSE sqrt(complex64((2. * B) / A))[0]) / (4. * a));
+		Roots.push_back((-b + (2. * A * E) / B + _CSE sqrtc(complex64((2. * B) / A))[0]) / (4. * a));
+		Roots.push_back((-b + (2. * A * E) / B - _CSE sqrtc(complex64((2. * B) / A))[0]) / (4. * a));
 		Roots.push_back((-b - (2. * A * E) / B) / (4. * a));
 		Roots.push_back(Roots[2]);
 
@@ -172,10 +172,10 @@ int SolveQuartic(InputArray Coeffs, OutputArray Roots, int64 p_Error)
 		float64 z2 = A * D + 3. * ((-B - _CSE sqrt(del)) / 2.);
 		complex64 z = _CSE pow(D, 2.) - D * (_CSE cbrt(z1) + _CSE cbrt(z2)) + pow((_CSE cbrt(z1) + _CSE cbrt(z2)), 2.) - 3. * A;
 
-		Roots.push_back((-b + sgn(E) * _CSE sqrt((D + _CSE cbrt(z1) + _CSE cbrt(z2)) / 3.) + _CSE sqrt((2. * D - (_CSE cbrt(z1) + _CSE cbrt(z2)) + 2. * _CSE sqrt(z)[0]) / 3.)[0]) / (4. * a));
-		Roots.push_back((-b + sgn(E) * _CSE sqrt((D + _CSE cbrt(z1) + _CSE cbrt(z2)) / 3.) - _CSE sqrt((2. * D - (_CSE cbrt(z1) + _CSE cbrt(z2)) + 2. * _CSE sqrt(z)[0]) / 3.)[0]) / (4. * a));
-		Roots.push_back((-b - sgn(E) * _CSE sqrt((D + _CSE cbrt(z1) + _CSE cbrt(z2)) / 3.)) / (4. * a) + (_CSE sqrt((-2. * D + _CSE cbrt(z1) + _CSE cbrt(z2) + 2. * _CSE sqrt(z)[0]) / 3.)[0] / (4. * a)) * 1i);
-		Roots.push_back((-b - sgn(E) * _CSE sqrt((D + _CSE cbrt(z1) + _CSE cbrt(z2)) / 3.)) / (4. * a) - (_CSE sqrt((-2. * D + _CSE cbrt(z1) + _CSE cbrt(z2) + 2. * _CSE sqrt(z)[0]) / 3.)[0] / (4. * a)) * 1i);
+		Roots.push_back((-b + sgn(E) * _CSE sqrt((D + _CSE cbrt(z1) + _CSE cbrt(z2)) / 3.) + _CSE sqrtc((2. * D - (_CSE cbrt(z1) + _CSE cbrt(z2)) + 2. * _CSE sqrtc(z)[0]) / 3.)[0]) / (4. * a));
+		Roots.push_back((-b + sgn(E) * _CSE sqrt((D + _CSE cbrt(z1) + _CSE cbrt(z2)) / 3.) - _CSE sqrtc((2. * D - (_CSE cbrt(z1) + _CSE cbrt(z2)) + 2. * _CSE sqrtc(z)[0]) / 3.)[0]) / (4. * a));
+		Roots.push_back((-b - sgn(E) * _CSE sqrt((D + _CSE cbrt(z1) + _CSE cbrt(z2)) / 3.)) / (4. * a) + (_CSE sqrtc((-2. * D + _CSE cbrt(z1) + _CSE cbrt(z2) + 2. * _CSE sqrtc(z)[0]) / 3.)[0] / (4. * a)) * 1i);
+		Roots.push_back((-b - sgn(E) * _CSE sqrt((D + _CSE cbrt(z1) + _CSE cbrt(z2)) / 3.)) / (4. * a) - (_CSE sqrtc((-2. * D + _CSE cbrt(z1) + _CSE cbrt(z2) + 2. * _CSE sqrtc(z)[0]) / 3.)[0] / (4. * a)) * 1i);
 
 		return 5;
 	}
@@ -267,7 +267,7 @@ uint64 SolvePoly(InputArray Coeffs, OutputArray Roots, _SOLVEPOLY_CONFIG Conf)
 	// Initialize p, q, r, s:
 	for (size_t i = 0; i < _Coeffs.size() - 1; i++)
 	{
-		Roots.push_back(_CSE pow(Conf.BASE, complex64((float64)i)));
+		Roots.push_back(_CSE powc(Conf.BASE, complex64((float64)i)));
 	}
 	
 	// Make the substitutions
@@ -276,7 +276,7 @@ uint64 SolvePoly(InputArray Coeffs, OutputArray Roots, _SOLVEPOLY_CONFIG Conf)
 		complex64 SIG = 0;
 		for (size_t i = 0; i < _Coeffs.size(); i++)
 		{
-			SIG += _Coeffs[i] * _CSE pow(x, (complex64)(_Coeffs.size() - i - 1.));
+			SIG += _Coeffs[i] * _CSE powc(x, (complex64)(_Coeffs.size() - i - 1.));
 		}
 		return SIG;
 	};
@@ -399,8 +399,8 @@ int __Solving_Quintic_Function_Fast(InputArray Coeffs, OutputArray Roots, int64 
 	{
 		if (IsZero(pow(H, 2) + G * J, p_Error))
 		{
-			Roots.push_back((-2. * B * G - 3. * H + sqrt(complex64(20. * pow(G, 2) * L - 15. * pow(H, 2)))[0]) / (10. * a * G));
-			Roots.push_back((-2. * B * G - 3. * H - sqrt(complex64(20. * pow(G, 2) * L - 15. * pow(H, 2)))[0]) / (10. * a * G));
+			Roots.push_back((-2. * B * G - 3. * H + sqrtc(complex64(20. * pow(G, 2) * L - 15. * pow(H, 2)))[0]) / (10. * a * G));
+			Roots.push_back((-2. * B * G - 3. * H - sqrtc(complex64(20. * pow(G, 2) * L - 15. * pow(H, 2)))[0]) / (10. * a * G));
 			Roots.push_back((-b * G + H) / (5. * a * G));
 			Roots.push_back(Roots[2]);
 			Roots.push_back(Roots[2]);
@@ -408,8 +408,8 @@ int __Solving_Quintic_Function_Fast(InputArray Coeffs, OutputArray Roots, int64 
 		else
 		{
 			Roots.push_back(-((b * G + 4. * H) / (5. * a * G)));
-			Roots.push_back((-b * G + H + sqrt(complex64(pow(H, 2) + G * J))[0]) / (5. * a * G));
-			Roots.push_back((-b * G + H - sqrt(complex64(pow(H, 2) + G * J))[0]) / (5. * a * G));
+			Roots.push_back((-b * G + H + sqrtc(complex64(pow(H, 2) + G * J))[0]) / (5. * a * G));
+			Roots.push_back((-b * G + H - sqrtc(complex64(pow(H, 2) + G * J))[0]) / (5. * a * G));
 			Roots.push_back(Roots[1]);
 			Roots.push_back(Roots[2]);
 		}
