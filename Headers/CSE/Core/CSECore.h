@@ -29,9 +29,12 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <format>
 #include <tchar.h>
 
-#define CSE_TITLE_STRING _T("StellarDX CSpaceEngine Runtime Platform Binary")
+#define CSE_TITLE_STRING     "StellarDX CSpaceEngine Runtime Platform Binary"
+#define CSE_TITLE_WSTRING   L"StellarDX CSpaceEngine Runtime Platform Binary"
+#define CSE_TITLE_U8STRING u8"StellarDX CSpaceEngine Runtime Platform Binary"
 
 #if defined _MSC_VER
 #define COMPILER_VERSION std::string("MSC " + std::to_string(_MSC_FULL_VER) + "(" + std::to_string(_MSC_BUILD) + ")")
@@ -168,6 +171,23 @@ public:
 		else {throw except; exit(-1);}                               \
 
 _CSE_END
+
+// IEEE754 Format output
+template<>
+struct std::formatter<cse::IEEE754_Dbl64, char>
+{
+	auto parse(std::format_parse_context& parseContext)
+	{
+		auto symbolsEnd = std::ranges::find(parseContext, '}');
+		auto symbols = std::string_view(parseContext.begin(), symbolsEnd);
+		return symbolsEnd;
+	}
+
+	auto format(cse::IEEE754_Dbl64 const& my, std::format_context& formatContext)
+	{
+		return std::format_to(formatContext.out(), "{}", my.Val);
+	}
+};
 
 #pragma pop_macro("new")
 _STL_RESTORE_CLANG_WARNINGS

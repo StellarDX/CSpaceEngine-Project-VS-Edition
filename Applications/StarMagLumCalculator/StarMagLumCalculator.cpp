@@ -391,7 +391,7 @@ void SelectLuminosityMode()
 
 int main(void)
 {
-    SetConsoleTitle(CSE_TITLE_STRING);
+    SetConsoleTitleA(CSE_TITLE_STRING);
 
     while(true)
     {

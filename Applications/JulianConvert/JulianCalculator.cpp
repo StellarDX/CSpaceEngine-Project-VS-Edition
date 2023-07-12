@@ -216,7 +216,7 @@ void WikipediaLink()
 
 int main()
 {
-    SetConsoleTitleW(CSE_TITLE_STRING);
+    SetConsoleTitleA(CSE_TITLE_STRING);
 	PROGSTART
 
     cout << '\n'

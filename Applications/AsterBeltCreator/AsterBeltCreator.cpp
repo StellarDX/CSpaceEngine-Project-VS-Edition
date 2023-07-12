@@ -675,7 +675,7 @@ void gen(const AsterBeltSettings& Config, OSCStream& fout)
 int main()
 {
     _WHILE_TRUE
-    SetConsoleTitle(CSE_TITLE_STRING);
+    SetConsoleTitleA(CSE_TITLE_STRING);
     CSEDateTime DateTime = CSEDateTime::currentDateTimeUTC();
     cout.precision(15);
     
