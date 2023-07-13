@@ -10,10 +10,10 @@ _CSE_BEGIN
 
 Titius_Bode_Engine     SolarSys_TBL  (0.4, 0.3);
 
-Mary_Blagg_Engine      SolarSys_BLF  (0.4162, 2.0250, 112.4, 56.6, -2);
-Mary_Blagg_Engine      Jupiter_BLF   (0.4523, 1.8520, 113.0, 36.0, -2);
-Mary_Blagg_Engine      Saturn_BLF    (3.0740, 0.0071, 118.0, 10.0, -3);
-Mary_Blagg_Engine      Uranus_BLF    (2.9800, 0.0805, 125.7, 12.5, -2);
+Fast_Blagg_Engine      SolarSys_BLF  (0.4162, 2.0250, 112.4, 56.6, -2);
+Fast_Blagg_Engine      Jupiter_BLF   (0.4523, 1.8520, 113.0, 36.0, -2);
+Fast_Blagg_Engine      Saturn_BLF    (3.0740, 0.0071, 118.0, 10.0, -3);
+Fast_Blagg_Engine      Uranus_BLF    (2.9800, 0.0805, 125.7, 12.5, -2);
 
 Stanley_Dermott_Engine Jovian_DML    (0.444, 2.03);
 Stanley_Dermott_Engine Saturnian_DML (0.462, 1.59);

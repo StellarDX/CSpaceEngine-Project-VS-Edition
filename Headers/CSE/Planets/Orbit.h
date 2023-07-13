@@ -44,9 +44,9 @@ private:
 	float64 Variation;
 };
 
-struct Mary_Blagg_Engine
+struct Fast_Blagg_Engine
 {
-	Mary_Blagg_Engine(float64 _Ax0, float64 _Bx0, float64 _Alf, float64 _Bet, int64 _Offset = -2)
+	Fast_Blagg_Engine(float64 _Ax0, float64 _Bx0, float64 _Alf, float64 _Bet, int64 _Offset = -2)
 		: Ax0(_Ax0), Bx0(_Bx0), Alf(_Alf), Bet(_Bet), Offset(_Offset) {}
 
 	float64 operator[](int64 _Idx)
@@ -95,10 +95,10 @@ private:
 
 extern Titius_Bode_Engine     SolarSys_TBL;
 
-extern Mary_Blagg_Engine      SolarSys_BLF;
-extern Mary_Blagg_Engine      Jupiter_BLF;
-extern Mary_Blagg_Engine      Saturn_BLF;
-extern Mary_Blagg_Engine      Uranus_BLF;
+extern Fast_Blagg_Engine      SolarSys_BLF;
+extern Fast_Blagg_Engine      Jupiter_BLF;
+extern Fast_Blagg_Engine      Saturn_BLF;
+extern Fast_Blagg_Engine      Uranus_BLF;
 
 extern Stanley_Dermott_Engine Jovian_DML;
 extern Stanley_Dermott_Engine Saturnian_DML;

@@ -27,7 +27,6 @@ FAST_POLYTROPIC_EOS Carbon_Exponential_Graphite   (2250, 0.00350, 0.514);
 FAST_POLYTROPIC_EOS SiC_Exponential               (3220, 0.00172, 0.537);
 
 // ---------- Parameters for the TFD Model ---------- //
-#if _ENABLE_TFD_EOS // TODO...
 //                     Mineral or element  A       Z          Note
 THOMAS_FERMI_DIRAC_EOS Bismuth_TFD        (209.00, 83.00); // Bi
 THOMAS_FERMI_DIRAC_EOS Plumbum_TFD        (207.00, 82.00); // Pb
@@ -65,6 +64,5 @@ THOMAS_FERMI_DIRAC_EOS Enstatite_TFD      ( 20.00, 10.00); // MgO.SiO2
 THOMAS_FERMI_DIRAC_EOS Periclase_TFD      ( 20.00, 10.00); // MgO
 THOMAS_FERMI_DIRAC_EOS Spodumene_TFD      ( 18.60,  9.20); // Li2O.Al2O3.4SiO2
 THOMAS_FERMI_DIRAC_EOS Beryl_TFD          ( 18.52,  9.17); // 3BeO.Al2O3.6SiO2
-#endif
 
 _CSE_END

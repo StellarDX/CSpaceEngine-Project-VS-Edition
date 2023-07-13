@@ -62,7 +62,7 @@ private:
     float64 _K1;
     float64 _Rho0;
 };
-
+#if 0
 struct BIRCH_MURNAGHAN_4TH_EOS : public BIRCH_MURNAGHAN_EOS
 {
     using _Mybase = BIRCH_MURNAGHAN_EOS;
@@ -80,8 +80,7 @@ struct BIRCH_MURNAGHAN_4TH_EOS : public BIRCH_MURNAGHAN_EOS
 private:
     float64 _K2;
 };
-
-#if _ENABLE_TFD_EOS // TFD EOS is still incomplete.
+#endif
 static const float64 TFD_GAMMA_TABLE[] =
 {
   +1.512E-2, +8.955E-2, +1.090E-1, +5.089E+0, -5.980E+0,
@@ -90,11 +89,14 @@ static const float64 TFD_GAMMA_TABLE[] =
   -1.384E-2, -6.520E-1, +3.529E+0, -2.095E+1, +2.264E+1
 };
 
-// Thomas-Fermi-Dirac method for high-pressure
+// Thomas-Fermi-Dirac method for huge-pressure
+// In very huge pressure(~1E13 dyne/cm^2, ~1TPa), atoms will be cracked.
+// So matter's pressure-density relation will only affect by relative atomic mass and atomic number.
+// But this method is not accurate in normal pressure because of crystallizations and chemical bonds.
 // Reference: E. E. SALPZTXR AND H.S.ZAPOISKV (Received 9 February 1967)
 // "Theoretical High-Pressure Equations of State including Correlation Energy"
 // https://lweb.cfa.harvard.edu/~lzeng/papers/salpeter_zapolsky_1967.pdf
-struct THOMAS_FERMI_DIRAC_EOS // this algorithm has problems and reasons are still unknown...
+struct THOMAS_FERMI_DIRAC_EOS
 {
     THOMAS_FERMI_DIRAC_EOS(float64 _Ax0, float64 _Zx0) : AtomicWeight(_Ax0), NProton(_Zx0) {}
 
@@ -128,7 +130,6 @@ private:
     float64 AtomicWeight;
     float64 NProton;
 };
-#endif
 
 // Fast exponential EOS model
 // Reference: S. Seager, M. Kuchner, C. A. Hier-Majumder, and B. Militzer
@@ -172,6 +173,43 @@ extern FAST_POLYTROPIC_EOS MgFeSiO3_Exponential;
 extern FAST_POLYTROPIC_EOS H2O_Exponential_IceVII;
 extern FAST_POLYTROPIC_EOS Carbon_Exponential_Graphite;
 extern FAST_POLYTROPIC_EOS SiC_Exponential;
+
+extern THOMAS_FERMI_DIRAC_EOS Bismuth_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Plumbum_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Aurum_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Galena_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Stannum_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Cadmium_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Argentum_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Zinc_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Cuprum_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Nickel_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Ferrum_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Sphalerite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Troilite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Pyrite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Wustite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Oldhamite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Magnetite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Hematite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Fayalite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Rutile_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Andratite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Pyrope_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Grossularite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Diopside_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Anorthite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Orthoclase_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Corundum_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Spinel_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Jadeite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Albite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Quartz_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Forsterite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Enstatite_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Periclase_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Spodumene_TFD;
+extern THOMAS_FERMI_DIRAC_EOS Beryl_TFD;
 
 _CSE_END
 
