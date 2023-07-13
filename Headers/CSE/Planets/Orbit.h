@@ -22,6 +22,8 @@ public:
 // Reference:
 // Wikipedia. Titius-Bode law
 // https://en.wikipedia.org/wiki/Titius_Bode_law
+// M. A. Blagg "On a Suggested Substitute for Bode's Law. (Plate 12.)"
+// https://academic.oup.com/mnras/article/73/6/414/1075034
 // G. G. Lobban, A. E. Roy and J. C. Brown "A Review Of Blagg's Formula In The Light Of Recently Discovered Planetary Moons And Rings"
 // http://articles.adsabs.harvard.edu//full/1982JBAA...92..260L/0000260.000.html
 // Wikipedia. Dermott's law
@@ -54,6 +56,33 @@ struct Fast_Blagg_Engine
 		int64 n = _Idx + Offset;
 		float64 Psi = Alf + n * Bet - 27.5;
 		float64 f = 0.249 + 0.86 * ((cse::cos(Psi) / (3. - cse::cos(2. * Psi))) + (1. / (6. - 4. * cse::cos(2. * (Psi - 30.)))));
+		return Ax0 * pow(1.7275, (float64)n) * (Bx0 + f);
+	}
+
+private:
+	float64 Ax0;
+	float64 Bx0;
+	float64 Alf;
+	float64 Bet;
+	int64 Offset;
+};
+
+struct Polynomial_Blagg_Engine
+{
+	Polynomial_Blagg_Engine(float64 _Ax0, float64 _Bx0, float64 _Alf, float64 _Bet, int64 _Offset = -2)
+		: Ax0(_Ax0), Bx0(_Bx0), Alf(_Alf), Bet(_Bet), Offset(_Offset) {}
+
+	float64 operator[](int64 _Idx)
+	{
+		int64 n = _Idx + Offset;
+		float64 tet = Alf + n * Bet;
+		float64 E1 = 0.396 * pow(cos(tet - 27.4), 1);
+		float64 E2 = 0.168 * pow(cos(tet - 60.4), 2);
+		float64 E3 = 0.062 * pow(cos(tet - 28.1), 3);
+		float64 E4 = 0.053 * pow(cos(tet - 77.2), 4);
+		float64 E5 = 0.009 * pow(cos(tet - 22.0), 5);
+		float64 E7 = 0.012 * pow(cos(tet - 40.4), 7);
+		float64 f = 0.4594 + E1 + E2 + E3 + E4 + E5 + E7;
 		return Ax0 * pow(1.7275, (float64)n) * (Bx0 + f);
 	}
 
