@@ -25,7 +25,7 @@ void AddKeyValue(_SC table* _Table, string _Key, float64 _Value, _SC object_ostr
 
 #if 0
 		ostringstream ValueStr;
-		if (_Fl & (1 << 15)) { ValueStr << fixed; }
+		if (_Fl & (0x80000000U >> 1)) { ValueStr << fixed; }
 		ValueStr << setprecision(_Preci) << _Value;
 		_KV.Value = ValueStr.str();
 #endif
@@ -33,7 +33,7 @@ void AddKeyValue(_SC table* _Table, string _Key, float64 _Value, _SC object_ostr
 		ostringstream _FmtStr;
 		_FmtStr << "{:";
 		if (_Preci != 0) { _FmtStr << '.' << _Preci; }
-		if (_Fl & (1 << 15)) { _FmtStr << 'f'; }
+		if (_Fl & (0x80000000U >> 1)) { _FmtStr << 'f'; }
 		else { _FmtStr << 'g'; }
 		_FmtStr << '}';
 		_KV.Value = vformat(_FmtStr.str(), make_format_args(_Value));
@@ -54,7 +54,7 @@ void AddKeyValue(_SC table* _Table, string _Key, genType _Value, _SC object_ostr
 
 #if 0
 		ostringstream ValueStr;
-		if (_Fl & (1 << 15)) { ValueStr << fixed; }
+		if (_Fl & (0x80000000U >> 1)) { ValueStr << fixed; }
 		ValueStr << setprecision(_Preci) << _Value;
 		_KV.Value = ValueStr.str();
 #endif
@@ -63,7 +63,7 @@ void AddKeyValue(_SC table* _Table, string _Key, genType _Value, _SC object_ostr
 		ostringstream _FmtStr;
 		_FmtStr << "{:";
 		if (_Preci != 0) { _FmtStr << '.' << _Preci; }
-		if (_Fl & (1 << 15)) { _FmtStr << 'f'; }
+		if (_Fl & (0x80000000U >> 1)) { _FmtStr << 'f'; }
 		else { _FmtStr << 'g'; }
 		_FmtStr << '}';
 		_ValueStr << '(';
@@ -96,7 +96,7 @@ void AddKeyValue(_SC table* _Table, string _Key, genType _Value, _SC object_ostr
 
 void AddKeyValue(_SC table* _Table, string _Key, bool _Value, _SC object_ostream::fmtflags _Fl, streamsize _Preci)
 {
-	if (!(_Fl & (1 << 16)))
+	if (!(_Fl & (0x80000000U >> 2)))
 	{
 		Log_OS.Out("OSCStream", "INFO", "[Table] Adding Key : " + _Key, OLogLevel, true);
 		if (_Value)
@@ -113,7 +113,7 @@ void AddKeyValue(_SC table* _Table, string _Key, bool _Value, _SC object_ostream
 void AddPTMatrix(_SC table* _Table, string _Unit, vector<_STD array<float64, 6>> PT, _SC object_ostream::fmtflags _Fl, streamsize _Preci, uint64 _WSpace)
 {
 	ostringstream ValueStr;
-	if (_Fl & (1 << 15)) { ValueStr << _STD fixed; }
+	if (_Fl & (0x80000000U >> 1)) { ValueStr << _STD fixed; }
 	ValueStr << setprecision(_Preci);
 	Log_OS.Out("OSCStream", "INFO", "[Table] Adding Key : PeriodicTerms", OLogLevel);
 	if (!PT.empty())
@@ -172,9 +172,9 @@ table::KeyValue MakeTable(object_ostream& _Os, Object Obj)
 
 	AddKeyValue(&Data, "MassKg", Obj.Mass, _Os.flags(), _Os.precision());
 
-	if (!any(isinf(Obj.Dimensions)) && _Os.flags() & (1 << 18))
+	if (!any(isinf(Obj.Dimensions)) && (_Os.flags() & (0x80000000U >> 4)))
 	{
-		if (_Os.flags() & (1 << 19))
+		if (_Os.flags() & (0x80000000U >> 5))
 		{
 			float64 Radius = max({ Obj.Dimensions.x, Obj.Dimensions.y, Obj.Dimensions.z }) / 2;
 			vec3 Oblateness = vec3
@@ -247,7 +247,7 @@ table::KeyValue MakeTable(object_ostream& _Os, Object Obj)
 	{
 		Log_OS.Out("OSCStream", "INFO", "[" + Obj.Name[0] + "] Getting - Rotation parameters", OLogLevel, true);
 
-		if (_Os.flags() & (1 << 17) && Obj.TidalLocked)
+		if ((_Os.flags() & (0x80000000U >> 3)) && Obj.TidalLocked)
 		{
 			AddKeyValue(&Data, "TidalLocked", Obj.TidalLocked, _Os.flags(), _Os.precision());
 		}
@@ -612,6 +612,22 @@ table::KeyValue MakeTable(object_ostream& _Os, Object Obj)
 
 		Surface.SubTable = make_shared<table>(_Surface);
 		Data.push(Surface);
+	}
+
+	if (Obj.EnableCustomClimate && _Os.flags() & (1 << 15))
+	{
+		Log_OS.Out("OSCStream", "INFO", "[" + Obj.Name[0] + "] Getting - Cliamte parameters", OLogLevel, true);
+		table::KeyValue Climate;
+		Climate.Key = "Climate";
+		table _Climate;
+
+		AddKeyValue(&_Climate, "AtmoProfile", Obj.Climate.AtmoProfile, _Os.flags(), _Os.precision());
+		AddKeyValue(&_Climate, "MinSurfaceTemp", Obj.Climate.MinSurfaceTemp, _Os.flags(), _Os.precision());
+		AddKeyValue(&_Climate, "MaxSurfaceTemp", Obj.Climate.MaxSurfaceTemp, _Os.flags(), _Os.precision());
+		AddKeyValue(&_Climate, "GlobalWindSpeed", Obj.Climate.GlobalWindSpeed, _Os.flags(), _Os.precision());
+
+		Climate.SubTable = make_shared<table>(_Climate);
+		Data.push(Climate);
 	}
 
 	AddKeyValue(&Data, "NoOcean", Obj.NoOcean, _Os.flags(), _Os.precision());

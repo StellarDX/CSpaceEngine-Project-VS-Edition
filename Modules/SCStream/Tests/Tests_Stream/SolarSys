@@ -36,7 +36,7 @@ Star	"Sun/Sol"
 	MassSol     1.0
 	RadSol      1.0
 	Oblateness  9e-6
-
+	
 	RotationModel "IAU"
 	{
 		Epoch			2451545	// J2000
@@ -45,7 +45,7 @@ Star	"Sun/Sol"
 		PrimeMeridian	84.176	// degrees
 		RotationRate	14.1844	// degrees/day
 	}
-
+	
 	Orbit
 	{
 		AnalyticModel  "Sun-DE"
@@ -55,6 +55,7 @@ Star	"Sun/Sol"
 
 Planet	"Mercury"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Sun"
 	Class          "Ferria"
 
@@ -62,10 +63,10 @@ Planet	"Mercury"
 	Radius          2440
 
 	AlbedoBond      0.088 // Mallama, 2017
-	AlbedoGeom	    0.142
+	AlbedoGeom      0.142
 	Brightness      1.0
 	BrightnessReal  0.45 // J. Veverka et al., 1988
-
+	
 	RotationPeriod  1407.509405
 	RotationOffset  291.2
 	Obliquity       7.01
@@ -90,7 +91,7 @@ Planet	"Mercury"
 			0, 0, -0.00000532, 153.955429, 20.461675, 0,
 		}
 	}
-
+	
 	Interior
 	{
 		Composition // mass fraction, values in percent
@@ -133,13 +134,20 @@ Planet	"Mercury"
 		MeanLongitude   252.251
 		ArgOfPeriPreces 227000 // period of precession in years
 	}
+
+	Climate
+	{
+		MinSurfaceTemp   53  // Kelvin. Wikipedia
+		MaxSurfaceTemp   700 // Kelvin. Wikipedia
+	}
 }
 
 Planet	"Venus"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Sun"
 	Class          "Terra"
-
+	
 	Mass            0.815
 	Radius          6052
 
@@ -182,6 +190,9 @@ Planet	"Venus"
 		BumpHeight      13.7
 		BumpOffset      2.9
 
+		// Flip the map by 180°
+		FlipMap         true
+		
 		ModulateColor  (1.0 0.84 0.70)
 	}
 
@@ -190,10 +201,14 @@ Planet	"Venus"
 		// Surface map author: "Snowfall"
 		DiffMap        "Venus/Clouds-SF"
 		DiffMapAlpha   "None"
-		Height          50
-		Velocity       -264 // km/h
+
+		// Flip the map by 180°
+		FlipMap         true
+
 		ModulateColor  (1.0 1.0 1.0)
-		Hapke         0
+		Hapke           0
+		Height          50
+		Velocity        264 // km/h
 	}
 
 	Atmosphere
@@ -206,7 +221,7 @@ Planet	"Venus"
 		Bright      10.0
 		Opacity     1.0
 		SkyLight    3.0
-
+		
 		Composition // values in percent
 		{
 			CO2 96.5
@@ -245,6 +260,14 @@ Planet	"Venus"
 		MeanLongitude   181.979
 	}
 /**/
+	
+	Climate
+	{
+		GlobalWindSpeed 1.5 // characteristic global windspeed in m/s, for new climate model. https://www.jpl.nasa.gov/news/magellan-scientists-studies-venus-surface-features
+		MinSurfaceTemp  735 // Kelvin. Wikipedia
+		MaxSurfaceTemp  740 // Kelvin. Wikipedia		
+		AtmoProfile     "Venus PSG"	// name of vertical atmosphere profile
+	}
 }
 
 Barycenter	"Earth-Moon"
@@ -266,6 +289,7 @@ Barycenter	"Earth-Moon"
 
 Planet	"Earth"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Earth-Moon"
 	Class          "Terra"
 
@@ -334,8 +358,8 @@ Planet	"Earth"
 		GlowColor      (1.0 1.0 1.0)	// map itself is RGB
 		GlowBright      1.0
 
-		SpecBrightIce   0.0
-		SpecBrightWater 0.35
+		SpecBrightIce   0.65
+		SpecBrightWater 0.85
 		colorSea       (0.012 0.03 0.06 1.00)
 		colorShelf     (0.15 0.48 0.46 1.00)
 	}
@@ -380,7 +404,7 @@ Planet	"Earth"
 		Bright      10.0
 		Opacity     1.0
 		SkyLight    3.0
-
+		
 		Composition // values in percent
 		{
 			N2  77.7729
@@ -434,10 +458,19 @@ Planet	"Earth"
 		//AscNodePreces   18.6		// years
 		//ArgOfPeriPreces 5.997		// years
 	}
+
+	Climate
+	{
+		GlobalWindSpeed 3.3 // characteristic global windspeed in m/s, for new climate model. https://www.scientificamerican.com/article/the-worlds-winds-are-speeding-up/
+		MinSurfaceTemp  230 // Kelvin
+		MaxSurfaceTemp  320 // Kelvin
+		AtmoProfile     "Earth PSG"	// name of vertical atmosphere profile
+	}
 }
 
 Moon	"Moon/Earth I"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Earth-Moon"
 	Class          "Terra"
 
@@ -527,10 +560,17 @@ Moon	"Moon/Earth I"
 		//AscNodePreces   18.6		// years
 		//ArgOfPeriPreces 5.997		// years
 	}
+
+	Climate
+	{
+		MinSurfaceTemp   100 // Kelvin. Wikipedia
+		MaxSurfaceTemp   390 // Kelvin. Wikipedia
+	}
 }
 
 Planet	"Mars"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Sun"
 	Class          "Terra"
 
@@ -613,7 +653,7 @@ Planet	"Mars"
 		Height          15
 		Velocity        0.0 // km/h
 	}
-
+	
 	Clouds // high-altitude water-ice clouds
 	{
 		ModulateColor  (1.0 1.0 1.0)
@@ -643,7 +683,7 @@ Planet	"Mars"
 		Bright      4.0
 		Opacity     1.0
 		SkyLight    2.0
-
+		
 		Composition // values in percent
 		{
 			CO2 95.97
@@ -669,10 +709,19 @@ Planet	"Mars"
 		LongOfPericen   336.041
 		MeanLongitude   355.453
 	}
+
+	Climate
+	{
+		GlobalWindSpeed 4.0 // characteristic global windspeed in m/s, for new climate model. http://cab.inta-csic.es/rems/en/mars-atmosphere/
+		MinSurfaceTemp  163 // Kelvin. Wikipedia
+		MaxSurfaceTemp  308 // Kelvin. Wikipedia
+		AtmoProfile     "Mars PSG"	// name of vertical atmosphere profile
+	}
 }
 
 DwarfMoon	"Phobos/Mars I"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Mars"
 	Class          "Asteroid"
 
@@ -717,7 +766,7 @@ DwarfMoon	"Phobos/Mars I"
 	{
 		// Surface map author: Phil Stooke
 		DiffMap        "Phobos/Surface-PS"
-
+		
 		ModulateColor  (1.0 0.88 0.76)
 
 		// Elevation map author: Vladimir Romanyuk "SpaceEngineer"
@@ -742,10 +791,17 @@ DwarfMoon	"Phobos/Mars I"
 		ArgOfPericen    213.804
 		MeanAnomaly     191.771
 	}
+
+	Climate
+	{
+		MinSurfaceTemp   161 // Kelvin. Wikipedia
+		MaxSurfaceTemp   269 // Kelvin. Wikipedia
+	}
 }
 
 DwarfMoon	"Deimos/Mars II"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Mars"
 	Class          "Asteroid"
 
@@ -816,10 +872,17 @@ DwarfMoon	"Deimos/Mars II"
 		ArgOfPericen    208.213
 		MeanAnomaly     344.128
 	}
+
+	Climate
+	{
+		MinSurfaceTemp   161 // Kelvin. similar values to Phobos
+		MaxSurfaceTemp   269 // Kelvin. similar values to Phobos
+	}
 }
 
 DwarfPlanet	"Ceres/(1) Ceres"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Sun"
 	Class          "Terra"
 
@@ -867,7 +930,7 @@ DwarfPlanet	"Ceres/(1) Ceres"
 		SpotBright      1.35  // Schrцder et al., 2017
 		SpotWidth       0.072 // Schrцder et al., 2017
 	}
-
+	
 	NoRings true
 
 	Orbit
@@ -881,6 +944,12 @@ DwarfPlanet	"Ceres/(1) Ceres"
 		AscendingNode   80.3301
 		ArgOfPericenter 72.1671
 		MeanAnomaly     327.854
+	}
+
+	Climate
+	{
+		MinSurfaceTemp   180 // Kelvin. https://solarsystem.nasa.gov/news/593/new-clues-to-ceres-bright-spots-and-origins/
+		MaxSurfaceTemp   240 // Kelvin. https://solarsystem.nasa.gov/news/593/new-clues-to-ceres-bright-spots-and-origins/ 
 	}
 }
 
@@ -918,6 +987,7 @@ Asteroid	"Pallas/(2) Pallas"
 
 Asteroid	"Juno/(3) Juno"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Sun"
 	Class          "Asteroid"
 
@@ -945,10 +1015,16 @@ Asteroid	"Juno/(3) Juno"
 		ArgOfPericenter 248.31
 		MeanAnomaly     257.639
 	}
+
+	Climate
+	{
+		MaxSurfaceTemp   301 // Kelvin. https://www.cs.mcgill.ca/~rwest/wikispeedia/wpcd/wp/3/3_Juno.htm
+	}
 }
 
 Asteroid	"Vesta/(4) Vesta"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Sun"
 	Class          "Asteroid"
 
@@ -1009,10 +1085,17 @@ Asteroid	"Vesta/(4) Vesta"
 		ArgOfPericenter 150.94
 		MeanAnomaly     218.172
 	}
+
+	Climate
+	{
+		MinSurfaceTemp   85 // Kelvin. https://www.cs.mcgill.ca/~rwest/wikispeedia/wpcd/wp/4/4_Vesta.htm
+		MaxSurfaceTemp   255 // Kelvin. https://www.cs.mcgill.ca/~rwest/wikispeedia/wpcd/wp/4/4_Vesta.htm
+	}
 }
 
 Asteroid	"Hygiea/(10) Hygiea"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Sun"
 	Class          "Asteroid"
 
@@ -1035,10 +1118,16 @@ Asteroid	"Hygiea/(10) Hygiea"
 		ArgOfPericenter 312.758
 		MeanAnomaly     121.957
 	}
+
+	Climate
+	{
+		MaxSurfaceTemp   247 // Kelvin. 
+	}
 }
 
 Planet	"Jupiter"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Sun"
 	Class          "Jupiter"
 
@@ -1055,7 +1144,7 @@ Planet	"Jupiter"
 	AlbedoGeom      0.538 // Mallama et al., 2017
 	Brightness      0.75
 	BrightnessReal  0.9
-
+	
 	EndogenousHeating 158.5 // for correct temperature at 1 bar
 
 	RotationModel "IAU"
@@ -1107,7 +1196,7 @@ Planet	"Jupiter"
 		Bright   2.0
 		Opacity  0.0
 		SkyLight 0.0
-
+		
 		Composition // values in percent
 		{
 			H2   89.8
@@ -1168,10 +1257,17 @@ Planet	"Jupiter"
 		LongOfPericen   14.7539
 		MeanLongitude   34.404
 	}
+
+	Climate
+	{
+        GlobalWindSpeed 100.0 // characteristic global windspeed in m/s, for new climate model. https://www.universetoday.com/15132/weather-on-jupiter/
+		AtmoProfile     "Jupiter PSG"	// name of vertical atmosphere profile
+	}
 }
 
 DwarfMoon	"Amalthea/Jupiter V"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Jupiter"
 	Class          "Asteroid"
 
@@ -1212,7 +1308,7 @@ DwarfMoon	"Amalthea/Jupiter V"
 		BumpMap        "Amalthea/Bump-SE"
 		BumpHeight      96.496507
 		BumpOffset      31.63857
-
+		
 		Hapke           1.0
 		SpotWidth       0.041 // Kulyk and Jockers, 2004 -- Average of leading and trailing hemispheres
 		SpotBright      1.75  // Kulyk and Jockers, 2004 -- Average of leading and trailing hemispheres
@@ -1229,10 +1325,16 @@ DwarfMoon	"Amalthea/Jupiter V"
 		ArgOfPericen    301.622765
 		MeanAnomaly     315.352094
 	}
+
+	Climate
+	{
+		MaxSurfaceTemp   165 // Kelvin. Wikipedia
+	}
 }
 
 Moon	"Io/Jupiter I"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Jupiter"
 	Class          "Terra"
 
@@ -1305,7 +1407,7 @@ Moon	"Io/Jupiter I"
 		Opacity     0.0
 		SkyLight    0.0
 		Greenhouse  0
-
+		
 		Composition // values in percent
 		{
 			SO2  90.66
@@ -1326,10 +1428,17 @@ Moon	"Io/Jupiter I"
 		LongOfPericen  97.735
 		MeanLongitude  106.724
 	}
+
+	Climate
+	{
+		MinSurfaceTemp  90  // Kelvin. Wikipedia
+		MaxSurfaceTemp  130 // Kelvin. Wikipedia
+	}
 }
 
 Moon	"Europa/Jupiter II"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Jupiter"
 	Class          "Aquaria"
 
@@ -1403,10 +1512,17 @@ Moon	"Europa/Jupiter II"
 		LongOfPericen  155.512
 		MeanLongitude  176.377
 	}
+	
+	Climate
+	{
+		MinSurfaceTemp  50  // Kelvin. Wikipedia
+		MaxSurfaceTemp  125 // Kelvin. Wikipedia
+	}
 }
 
 Moon	"Ganymede/Jupiter III"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Jupiter"
 	Class          "Aquaria"
 
@@ -1415,6 +1531,7 @@ Moon	"Ganymede/Jupiter III"
 
 	Mass            0.0248
 	Radius          2631.2
+	IntertiaMoment  0.3159 // doi:10.1029/2022GL099475 (2022)
 
 	Color         ( 0.529 0.478 0.424 )
 	Albedo          0.42
@@ -1479,10 +1596,17 @@ Moon	"Ganymede/Jupiter III"
 		LongOfPericen  188.831
 		MeanLongitude  121.206
 	}
+
+	Climate
+	{
+		MinSurfaceTemp  70  // Kelvin. Wikipedia
+		MaxSurfaceTemp  152 // Kelvin. Wikipedia
+	}
 }
 
 Moon	"Callisto/Jupiter IV"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Jupiter"
 	Class          "Aquaria"
 
@@ -1547,7 +1671,7 @@ Moon	"Callisto/Jupiter IV"
 		Greenhouse  0
 		Model      "Sun"
 		Bright      0.4
-
+		
 		Composition // values in percent
 		{
 			O2  96.25
@@ -1567,10 +1691,17 @@ Moon	"Callisto/Jupiter IV"
 		LongOfPericen  335.933
 		MeanLongitude  85.091
 	}
+
+	Climate
+	{
+		MinSurfaceTemp 80  // Kelvin. Wikipedia
+		MaxSurfaceTemp 165 // Kelvin. Wikipedia
+	}
 }
 
 Planet	"Saturn"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Sun"
 	Class          "Jupiter"
 
@@ -1584,7 +1715,7 @@ Planet	"Saturn"
 	AlbedoGeom      0.47
 	Brightness      0.7
 	BrightnessReal  0.65
-
+	
 	EndogenousHeating 130 // for correct temperature at 1 bar
 
 	RotationPeriod  10.65622
@@ -1632,7 +1763,7 @@ Planet	"Saturn"
 		Bright   5.0
 		Opacity  0.2
 		SkyLight 0.002
-
+		
 		Composition // values in percent
 		{
 			H2   96.3
@@ -1683,7 +1814,7 @@ Planet	"Saturn"
 		SelfShadow      1.0
 		PlanetShadow    1.0
 		Hapke           1.0
-		SpotBright      0.45  // avg of A and B rings across visible wavelengths (SH only, no CB); French et al. (2007) - 10.1086/519982
+		SpotBright      0.45  // avg of A and B rings across visible wavelengths (SH only, no CB); French et al. (2007) - 10.1086/519982 
 		SpotWidth       0.015 // avg of A and B rings across visible wavelengths (SH only, no CB); French et al. (2007) - 10.1086/519982
 		SpotBrightCB    1.95  // paper yields value of 0.39, but I had to multiply by 5 to match photos
 		SpotWidthCB     0.00245 // 0.00145, + 0.001 to account for angular width of Sun
@@ -1701,10 +1832,17 @@ Planet	"Saturn"
 		LongOfPericen   92.432
 		MeanLongitude   49.944
 	}
+
+	Climate
+	{
+		GlobalWindSpeed 1100.0 // characteristic global windspeed in m/s, for new climate model. https://solarsystem.nasa.gov/resources/11480/saturns-winds/
+		AtmoProfile     "Saturn PSG"	// name of vertical atmosphere profile
+	}
 }
 
 Moon	"Mimas/Saturn I"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Saturn"
 	Class          "Aquaria"
 
@@ -1755,7 +1893,7 @@ Moon	"Mimas/Saturn I"
 		SpotBright      0.95 // 0.667 / Hapke -- Verbiscer & Veverka (1992); 10.1016/0019-1035(92)90171-3
 		SpotWidth       0.082 // Verbiscer & Veverka (1992); 10.1016/0019-1035(92)90171-3
 	}
-
+	
 	Interior
 	{
 		Composition // mass fraction, values in percent
@@ -1777,10 +1915,17 @@ Moon	"Mimas/Saturn I"
 		AscendingNode  177.459
 		MeanAnomaly    100.173
 	}
+
+	Climate
+	{
+		MinSurfaceTemp  96 // Kelvin. https://www.nasa.gov/mission_pages/cassini/multimedia/pia12867.html
+		MaxSurfaceTemp  74 // Kelvin. https://www.nasa.gov/mission_pages/cassini/multimedia/pia12867.html
+	}
 }
 
 Moon	"Enceladus/Saturn II"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Saturn"
 	Class          "Aquaria"
 
@@ -1821,7 +1966,7 @@ Moon	"Enceladus/Saturn II"
 
 		Hapke           0.5
 	}
-
+	
 	Interior
 	{
 		Composition // mass fraction, values in percent
@@ -1843,10 +1988,17 @@ Moon	"Enceladus/Saturn II"
 		AscendingNode  137.077
 		MeanAnomaly    162.044
 	}
+
+	Climate
+	{
+		MinSurfaceTemp 32.9 // Kelvin. Wikipedia
+		MaxSurfaceTemp 145  // Kelvin. Wikipedia
+	}
 }
 
 Moon	"Tethys/Saturn III"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Saturn"
 	Class          "Aquaria"
 
@@ -1890,7 +2042,7 @@ Moon	"Tethys/Saturn III"
 
 		Hapke           0.5
 	}
-
+	
 	Interior
 	{
 		Composition // mass fraction, values in percent
@@ -1911,6 +2063,12 @@ Moon	"Tethys/Saturn III"
 		ArgOfPericen   149.166
 		AscendingNode  149.174
 		MeanAnomaly    28.755
+	}
+
+	Climate
+	{
+		MinSurfaceTemp 70 // Kelvin. https://www.nasa.gov/mission_pages/cassini/multimedia/pia16198.html
+		MaxSurfaceTemp 90 // Kelvin. https://www.nasa.gov/mission_pages/cassini/multimedia/pia16198.html
 	}
 }
 
@@ -1952,7 +2110,7 @@ Moon	"Dione/Saturn IV"
 
 		Hapke           1.0
 	}
-
+	
 	Interior
 	{
 		Composition // mass fraction, values in percent
@@ -1978,6 +2136,7 @@ Moon	"Dione/Saturn IV"
 
 Moon	"Rhea/Saturn V"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Saturn"
 	Class          "Aquaria"
 
@@ -2022,7 +2181,7 @@ Moon	"Rhea/Saturn V"
 		Hapke           0.7
 		Gamma           0.7
 	}
-
+	
 	Interior
 	{
 		Composition // mass fraction, values in percent
@@ -2044,10 +2203,17 @@ Moon	"Rhea/Saturn V"
 		ArgOfPericen   205.869
 		MeanAnomaly    109.204
 	}
+	
+	Climate
+	{
+		MinSurfaceTemp 53 // Kelvin. Wikipedia
+		MaxSurfaceTemp 99 // Kelvin. Wikipedia
+	}
 }
 
 Moon	"Titan/Saturn VI"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Saturn"
 	Class          "Aquaria"
 
@@ -2087,10 +2253,10 @@ Moon	"Titan/Saturn VI"
 
 		// Surface map author: Ian Regan and retro-visor
 		BumpMap        "Titan/Bump-RV"
-
+		
 		BumpHeight      2.100 // Titan average elevation // 1.9km + 200 meters below sea level
 		BumpOffset      0.200 // 200 meters below sea level // Ligeia Mare
-
+		
 		Hapke           0.59
 		DayAmbient      1
 		SpecBrightWater 0.75
@@ -2161,7 +2327,7 @@ Moon	"Titan/Saturn VI"
 		Bright      5.0
 		SkyLight    1.667
 		Model      "Titan"
-
+		
 		Composition // values in percent
 		{
 			N2  98.4
@@ -2183,6 +2349,14 @@ Moon	"Titan/Saturn VI"
 		AscendingNode  44.046
 		ArgOfPericen   172.749
 		MeanAnomaly    192.132
+	}
+
+	Climate
+	{
+		GlobalWindSpeed 0.3  // characteristic global windspeed in m/s, for new climate model. https://www.nasa.gov/mission_pages/cassini/whycassini/cassinif-20070601-05.html
+		MinSurfaceTemp  89.5 // Kelvin. https://www.nasa.gov/image-feature/jpl/pia20020/titan-temperature-lag-maps-animation
+		MaxSurfaceTemp  94.5 // Kelvin. https://www.nasa.gov/image-feature/jpl/pia20020/titan-temperature-lag-maps-animation
+		AtmoProfile     "Titan PSG"	// name of vertical atmosphere profile
 	}
 }
 
@@ -2238,6 +2412,7 @@ DwarfMoon	"Hyperion/Saturn VII"
 
 Moon	"Iapetus/Saturn VIII"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Saturn"
 	Class          "Aquaria"
 
@@ -2289,10 +2464,17 @@ Moon	"Iapetus/Saturn VIII"
 		ArgOfPericen   275.85
 		MeanAnomaly    350.306
 	}
+
+	Climate
+	{
+		MinSurfaceTemp 55  // Kelvin. https://solarsystem.nasa.gov/resources/12283/iapetus-temperature-variation-map/
+		MaxSurfaceTemp 130 // Kelvin. https://solarsystem.nasa.gov/resources/12283/iapetus-temperature-variation-map/
+	}
 }
 
 DwarfMoon	"Phoebe/Saturn IX"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Saturn"
 	Class          "Asteroid"
 
@@ -2335,10 +2517,17 @@ DwarfMoon	"Phoebe/Saturn IX"
 		ArgOfPericen   337.537
 		MeanAnomaly    174.569
 	}
+
+	Climate
+	{
+		MinSurfaceTemp 78  // Kelvin. https://solarsystem.nasa.gov/resources/11909/phoebe-temperature-maps/
+		MaxSurfaceTemp 112 // Kelvin. https://solarsystem.nasa.gov/resources/11909/phoebe-temperature-maps/
+	}
 }
 
 Planet	"Uranus"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Sun"
 	Class          "Neptune"
 
@@ -2354,7 +2543,7 @@ Planet	"Uranus"
 	BrightnessReal  0.6
 	AlbedoBond      0.30
 	AlbedoGeom      0.51
-
+	
 	EndogenousHeating 69 // for correct temperature at 1 bar
 
 	RotationModel "IAU"
@@ -2453,6 +2642,12 @@ Planet	"Uranus"
 		AscendingNode   74.23
 		LongOfPericen   170.964
 		MeanLongitude   313.232
+	}
+
+	Climate
+	{
+		GlobalWindSpeed 200.0 // characteristic global windspeed in m/s, for new climate model. https://en.wikipedia.org/wiki/Climate_of_Uranus
+		AtmoProfile     "Uranus PSG"	// name of vertical atmosphere profile
 	}
 }
 
@@ -2708,6 +2903,7 @@ Moon	"Oberon/Uranus IV"
 
 Planet	"Neptune"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Sun"
 	Class          "Neptune"
 
@@ -2717,13 +2913,13 @@ Planet	"Neptune"
 	Mass            17.147
 	Radius          24766
 	Oblateness      0.01708
-
+	
 	EndogenousHeating 69 // for correct temperature at 1 bar
 
 	Color         ( 0.500 0.650 1.000 )
 	Brightness      0.5
 	BrightnessReal  0.7
-	AlbedoBond      0.29
+	AlbedoBond      0.29 
 	AlbedoGeom      0.41
 
 	RotationPeriod  16.11
@@ -2775,7 +2971,7 @@ Planet	"Neptune"
 		SkyLight   0.2
 		Hue        0
 		Saturation 1.2
-
+		
 		Composition // values in percent
 		{
 			H2   80
@@ -2835,6 +3031,12 @@ Planet	"Neptune"
 		LongOfPericen   44.971
 		MeanLongitude   304.88
 	}
+
+	Climate
+	{
+		GlobalWindSpeed 310.0 // characteristic global windspeed in m/s, for new climate model. https://www.weather.gov/fsd/neptune
+		AtmoProfile     "Neptune PSG"	// name of vertical atmosphere profile
+	}
 }
 
 Moon	"Proteus/Neptune VIII/S|1989 N1"
@@ -2888,6 +3090,7 @@ Moon	"Proteus/Neptune VIII/S|1989 N1"
 
 Moon	"Triton/Neptune I"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Neptune"
 	Class          "Aquaria"
 
@@ -2962,7 +3165,7 @@ Moon	"Triton/Neptune I"
 		Bright      2.2
 		Opacity     0.2
 		SkyLight    0.01
-
+		
 		Composition // values in percent
 		{
 			N2  99.82
@@ -2984,6 +3187,12 @@ Moon	"Triton/Neptune I"
 		AscendingNode  147.899288
 		ArgOfPericen   293.0924
 		MeanAnomaly    315.726316
+	}
+
+	Climate
+	{
+		MinSurfaceTemp 35.6 // Kelvin. Wikipedia
+		MaxSurfaceTemp 44   // Kelvin. Wikipedia
 	}
 }
 
@@ -3035,6 +3244,7 @@ Barycenter "Pluto-Charon"
 
 DwarfPlanet	"Pluto/(134340) Pluto"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Pluto-Charon"
 	Class          "Aquaria"
 	AsterType      "Plutino"
@@ -3048,8 +3258,9 @@ DwarfPlanet	"Pluto/(134340) Pluto"
 
 	// Color          (0.580 0.435 0.333) // (0.443 0.392 0.310)
 	AlbedoBond      0.72 // Buratti et al. (2016) - 10.1016/j.icarus.2016.11.012
-	AlbedoGeom      0.62
-	Brightness      1.0
+	AlbedoGeom      0.62 
+	Brightness      0.5
+	BrightnessReal  1.0
 	AbsMagn        -0.8
 	SlopeParam      0.15
 
@@ -3093,7 +3304,7 @@ DwarfPlanet	"Pluto/(134340) Pluto"
 		Bright      0.5
 		Opacity     0.15
 		SkyLight    0.01
-
+		
 		Composition // values in percent
 		{
 			N2   99.7
@@ -3118,10 +3329,17 @@ DwarfPlanet	"Pluto/(134340) Pluto"
 		ArgOfPericen    337.92
 		MeanAnomaly     56.9861
 	}
+
+	Climate
+	{
+		MinSurfaceTemp  33 // Kelvin. Wikipedia
+		MaxSurfaceTemp  55 // Kelvin. Wikipedia
+	}
 }
 
 Moon	"Charon/Pluto I"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Pluto-Charon"
 	Class          "Aquaria"
 
@@ -3178,6 +3396,12 @@ Moon	"Charon/Pluto I"
 		ArgOfPericen    157.92
 		MeanAnomaly     56.9861
 	}
+
+	Climate
+	{
+		MinSurfaceTemp  15 // Kelvin. Wikipedia
+		MaxSurfaceTemp  60 // Kelvin. Wikipedia
+	}
 }
 
 DwarfMoon	"Styx/Pluto V"
@@ -3205,6 +3429,7 @@ DwarfMoon	"Styx/Pluto V"
 
 DwarfMoon	"Nix/Pluto II"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Pluto-Charon"
 	Class          "Asteroid"
 
@@ -3224,6 +3449,12 @@ DwarfMoon	"Nix/Pluto II"
 		AscendingNode   223.0539
 		ArgOfPericen    270.877
 		MeanAnomaly     260.688
+	}
+
+	Climate
+	{
+		MinSurfaceTemp  33 // Kelvin. Wikipedia
+		MaxSurfaceTemp  55 // Kelvin. Wikipedia
 	}
 }
 
@@ -3252,6 +3483,7 @@ DwarfMoon	"Kerberos/Pluto IV"
 
 DwarfMoon	"Hydra/Pluto III"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Pluto-Charon"
 	Class          "Asteroid"
 
@@ -3270,6 +3502,12 @@ DwarfMoon	"Hydra/Pluto III"
 		ArgOfPericen   149.649
 		MeanAnomaly    336.760
 		RefPlane      "Ecliptic"
+	}
+
+	Climate
+	{
+		MinSurfaceTemp  33 // Kelvin. https://solarstory.net/satellites/pluto
+		MaxSurfaceTemp  55 // Kelvin. https://solarstory.net/satellites/pluto
 	}
 }
 
@@ -3359,6 +3597,7 @@ DwarfMoon	"Namaka/Haumea II"
 
 DwarfPlanet	"Makemake/(136472) Makemake/2005 FY9"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Sun"
 	AsterType      "Cubewano"
 
@@ -3385,6 +3624,12 @@ DwarfPlanet	"Makemake/(136472) Makemake/2005 FY9"
 		AscendingNode   79.2872
 		ArgOfPericenter 297.077
 		MeanAnomaly     154.559
+	}
+	
+	Climate
+	{
+		MinSurfaceTemp  32 // Kelvin. Wikipedia
+		MaxSurfaceTemp  36 // Kelvin. Wikipedia
 	}
 }
 
@@ -3458,13 +3703,15 @@ DwarfMoon	"Xiangliu/S|2010 (225088) 1"
 
 DwarfPlanet	"Eris/(136199) Eris/2003 UB313"
 {
+	DateUpdated    "2023-04-04"
 	ParentBody     "Sun"
 	Class          "Aquaria"
 
 	Radius          1163
 	Mass            0.0028
 
-	RotationPeriod  25.9
+	RotationPeriod  378.528 // tidally-locked to Dysnomia; https://arxiv.org/pdf/2211.07987.pdf
+	//RotationPeriod  25.9
 	EqAscendNode    142  // used Dysnomia's orbit AscendingNode
 	Obliquity       139  // used Dysnomia's orbit Inclination
 
@@ -3475,7 +3722,7 @@ DwarfPlanet	"Eris/(136199) Eris/2003 UB313"
 
 	Surface
 	{
-		Style		0.0
+		Style           0.0
 		colorSea       (1.000 1.000 1.000 0.500)
 		colorShelf     (0.950 0.950 0.950 0.500)
 		colorBeach     (0.750 0.750 0.750 1.000)
@@ -3488,7 +3735,7 @@ DwarfPlanet	"Eris/(136199) Eris/2003 UB313"
 		colorUpPlants  (0.930 0.930 0.930 1.000)
 		//DayAmbient      0.2
 	}
-
+	
 	NoRings true
 
 	Orbit
@@ -3503,6 +3750,13 @@ DwarfPlanet	"Eris/(136199) Eris/2003 UB313"
 		ArgOfPericenter 150.804
 		MeanAnomaly     203.207
 	}
+
+	Climate
+	{
+		MinSurfaceTemp  30 // Kelvin. Wikipedia
+		MaxSurfaceTemp  56 // Kelvin. Wikipedia
+	}
+
 }
 
 Moon	"Dysnomia/Eris I"

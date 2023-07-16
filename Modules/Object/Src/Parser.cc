@@ -510,6 +510,19 @@ Object ObjectLoader(_STD vector<_CSE _SC table::KeyValue>::iterator& it)
 		}
 	}
 
+	Log_IS.Out("Object Loader", "INFO", "[" + _Obj.Name[0] + "] " + "Loading - Custom climate model parameters", ILogLevel, true);
+
+	auto FoundClimate = it->SubTable->find("Climate") != it->SubTable->end();
+	if (FoundClimate)
+	{
+		_Obj.EnableCustomClimate = true;
+		auto Climate = it->SubTable->find("Climate");
+		_Obj.Climate.AtmoProfile = GetAs<string>(Climate, "AtmoProfile");
+		_Obj.Climate.MinSurfaceTemp = GetAs<float64>(Climate, "MinSurfaceTemp");
+		_Obj.Climate.MaxSurfaceTemp = GetAs<float64>(Climate, "MaxSurfaceTemp");
+		_Obj.Climate.GlobalWindSpeed = GetAs<float64>(Climate, "GlobalWindSpeed");
+	}
+
 	Log_IS.Out("Object Loader", "INFO", "[" + _Obj.Name[0] + "] " + "Loading - Ocean parameters", ILogLevel, true);
 
 	auto FoundOcean = it->SubTable->find("Ocean") != it->SubTable->end();

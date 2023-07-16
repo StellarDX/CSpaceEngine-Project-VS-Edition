@@ -27,7 +27,7 @@ int main()
 	os.encod(CP_UTF8);
 	os << NoBooleans << MenuStar << MenuPlanet << MenuMoon;
 	os << WDStar;
-	os << Earth << Mars;
+	os << Fixed << Earth << Mars;
 	os << Polaris;
 	os.write();
 }

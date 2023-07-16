@@ -171,6 +171,18 @@ struct Landscape // Many parameters were merged.
 };
 
 /*-------------------------------------------------------------------------*\
+|                                  Climate                                  |
+\*-------------------------------------------------------------------------*/
+
+struct ClimateParam
+{
+	std::string AtmoProfile = NO_DATA_STRING; // name of vertical atmosphere profile
+	float64 MinSurfaceTemp = NO_DATA_FLOAT_INF;
+	float64 MaxSurfaceTemp = NO_DATA_FLOAT_INF;
+	float64 GlobalWindSpeed = NO_DATA_FLOAT_INF; // characteristic global windspeed in m/s, for new climate model
+};
+
+/*-------------------------------------------------------------------------*\
 |                                   Ocean                                   |
 \*-------------------------------------------------------------------------*/
 
@@ -418,6 +430,9 @@ public:
 	// Landscape parameters
 	bool EnableSurface = false;
 	Landscape Surface;
+	// Climate
+	bool EnableCustomClimate = false;
+	ClimateParam Climate;
 	// Ocean/Lava parameters
 	bool NoOcean = true;
 	OceanParam Ocean;

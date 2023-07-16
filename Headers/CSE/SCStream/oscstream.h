@@ -61,17 +61,20 @@ public:
     static constexpr _Fmtflags Corona     = static_cast<_Fmtflags>(0b00000000000000000001000000000000);
     static constexpr _Fmtflags CometTail  = static_cast<_Fmtflags>(0b00000000000000000010000000000000);
     static constexpr _Fmtflags AutoOrbit  = static_cast<_Fmtflags>(0b00000000000000000100000000000000);
+    static constexpr _Fmtflags CustomClim = static_cast<_Fmtflags>(0b00000000000000001000000000000000);
 
     static constexpr _Fmtflags DisableWM  = static_cast<_Fmtflags>(0b10000000000000000000000000000000);
-    static constexpr _Fmtflags Fixed      = static_cast<_Fmtflags>(0b00000000000000001000000000000000);
-    static constexpr _Fmtflags NoBooleans = static_cast<_Fmtflags>(0b00000000000000010000000000000000);
-    static constexpr _Fmtflags FTidalLock = static_cast<_Fmtflags>(0b00000000000000100000000000000000);
-    static constexpr _Fmtflags DisAutoRad = static_cast<_Fmtflags>(0b00000000000001000000000000000000);
-    static constexpr _Fmtflags DimAsRadOb = static_cast<_Fmtflags>(0b00000000000010000000000000000000);
+    static constexpr _Fmtflags Fixed      = static_cast<_Fmtflags>(0b01000000000000000000000000000000);
+    static constexpr _Fmtflags NoBooleans = static_cast<_Fmtflags>(0b00100000000000000000000000000000);
+    static constexpr _Fmtflags FTidalLock = static_cast<_Fmtflags>(0b00010000000000000000000000000000);
+    static constexpr _Fmtflags DisAutoRad = static_cast<_Fmtflags>(0b00001000000000000000000000000000);
+    static constexpr _Fmtflags DimAsRadOb = static_cast<_Fmtflags>(0b00000100000000000000000000000000);
+
+    static constexpr _Fmtflags Default    = static_cast<_Fmtflags>(0b00000000000000001111111111111111);
 
     _Ty __CLR_OR_THIS_CALL _BaseInit()
     {
-        return 0b00000000000000000111111111111111; // Default FMTFlag
+        return Default; // Default FMTFlag
     }
 };
 
@@ -474,13 +477,13 @@ inline OSCStream& __CLRCALL_OR_CDECL FlatObjectDimAsRadius(OSCStream& _Os)
 inline OSCStream& __CLRCALL_OR_CDECL Simple(OSCStream& _Os)
 {
     Log_OS.Out("OSCStream", "WARNING", "[CSE Smart Output] Output mode is switching to simple output mode, this will cause data loss!", OLogLevel, true);
-    _Os.flags(0b00000000000000010000000000000000);
+    _Os.flags(0b00100000000000000000000000000000);
     return _Os;
 }
 
 inline OSCStream& __CLRCALL_OR_CDECL Resetf(OSCStream& _Os)
 {
-    _Os.flags(0b00000000000000000111111111111111);
+    _Os.flags(OSCStream::Default);
     return _Os;
 }
 

@@ -118,7 +118,7 @@ struct THOMAS_FERMI_DIRAC_EOS
         for (size_t i = 2; i <= 5; i++)
         {
             size_t j = (i - 2) * 5;
-            bet[i] = 1. / pow(gam[j] + gam[j + 1] * pow(eps, 1. / 2.) + gam[j + 2] * eps + gam[j + 3] * pow(eps, 3. / 2.) + gam[j + 4] * pow(eps, 2), i);
+            bet[i] = 1. / pow(gam[j] + gam[j + 1] * pow(eps, 1. / 2.) + gam[j + 2] * eps + gam[j + 3] * pow(eps, 3. / 2.) + gam[j + 4] * pow(eps, 2), float64(i));
         }
 
         float64 ksi = pow(Pressure / 9.524E+13, 1. / 5.) * pow(NProton, -2. / 3.);
