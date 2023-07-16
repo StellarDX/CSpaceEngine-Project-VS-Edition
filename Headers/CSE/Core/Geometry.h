@@ -48,10 +48,22 @@ inline vec3 cross(vec3 x, vec3 y)
 	);
 }
 
-/*inline vec4 cross(vec4 x, vec4 y, vec4 z)
+/// <summary>
+/// Corss product on 4-dimension, using 3 vectors
+/// Refernece: https://www.researchgate.net/publication/318543243_Vector_Cross_Product_in_4D_Euclidean_Space_A_Maple_worksheet
+/// </summary>
+inline vec4 cross(vec4 u, vec4 v, vec4 t)
 {
-
-}*/
+	mat4 U
+	({
+		{0, -u.w * v.z + u.z * v.w, +u.w * v.y - u.y * v.w, +u.y * v.z - u.z * v.y},
+		{+u.w * v.z - u.z * v.w, 0, -u.w * v.x + u.x * v.w, -u.x * v.z + u.z * v.x},
+		{-u.w * v.y + u.y * v.w, +u.w * v.x - u.x * v.w, 0, +u.x * v.y - u.y * v.x},
+		{-u.y * v.z + u.z * v.y, +u.x * v.z - u.z * v.x, -u.x * v.y + u.y * v.x, 0}
+	});
+	matrix<float64, 1, 4> T({t.x, t.y, t.z, t.w});
+	return vec4((U * T)[0]);
+}
 
 /// <summary>
 /// Returns a vector with the same direction as its parameter, v, but with length 1.

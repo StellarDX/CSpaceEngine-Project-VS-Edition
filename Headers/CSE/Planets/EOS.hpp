@@ -103,6 +103,8 @@ struct THOMAS_FERMI_DIRAC_EOS
     float64 A()const { return AtomicWeight; }
     float64 Z()const { return NProton; }
 
+    // Unit of the input value is dyne/cm^2, which equals 0.1 pa.
+    // and return value is g/cm^3, which equals 1000 Kg/m^3
     float64 Density(float64 Pressure)
     {
         float64 eps = cbrt(3. / (32. * pow(CSE_PI, 2) * pow(NProton, 2)));
