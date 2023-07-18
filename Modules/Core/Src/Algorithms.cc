@@ -51,7 +51,7 @@ _NODISCARD _Check_return_ int64 floor(_In_ float64 _Xx)noexcept
 _NODISCARD _Check_return_ int64 ceil(_In_ float64 _Xx)noexcept
 {
 	int64 i = int64(_Xx);
-	return i + (i > _Xx);
+	return i + (i < _Xx);
 }
 
 ////////////////////////////////////// FractionalPart /////////////////////////////////////

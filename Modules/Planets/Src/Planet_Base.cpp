@@ -55,7 +55,7 @@ Object RandomRockyPlanet()
 {
 	float64 MassScale = random.uniform(6.4 * MassEarth, 7.6 * MassEarth);
 	float64 RadScale = random.uniform(2.8 * RadEarth, 4.4 * RadEarth);
-	float64 BaseRadius = random.uniform(0.15 * RadEarth, 2 * RadEarth);
+	float64 BaseRadius = random.uniform(2500000, 2 * RadEarth); // min is 0.15*REarth
 	TerrestrialPlanetBase Model(BaseRadius, BaseRadius, MassScale, RadScale);
 	return Model(random);
 }
@@ -71,7 +71,7 @@ Object RandomMoon()
 {
 	float64 MassScale = random.uniform(6.4, 7.6);
 	float64 RadScale = random.uniform(2.8, 4.4);
-	float64 BaseRadius = random.uniform(650000, 2300000);
+	float64 BaseRadius = random.uniform(1000000, 2500000);
 	TerrestrialPlanetBase Model(BaseRadius, BaseRadius, MassScale, RadScale);
 	return Model(random);
 }
@@ -80,7 +80,7 @@ Object RandomSmallMoon()
 {
 	float64 MassScale = random.uniform(6.4, 7.6);
 	float64 RadScale = random.uniform(2.8, 4.4);
-	float64 BaseRadius = random.uniform(150000, 650000);
+	float64 BaseRadius = random.uniform(200000, 1000000);
 	TerrestrialPlanetBase Model(BaseRadius, BaseRadius, MassScale, RadScale);
 	return Model(random);
 }
@@ -89,7 +89,7 @@ Object RandomAsteroid()
 {
 	float64 MassScale = random.uniform(6.4, 7.6);
 	float64 RadScale = random.uniform(2.8, 4.4);
-	float64 BaseRadius = random.uniform(20000, 150000);
+	float64 BaseRadius = random.uniform(20000, 200000);
 	TerrestrialPlanetBase Model(BaseRadius, BaseRadius, MassScale, RadScale);
 	return Model(random);
 }

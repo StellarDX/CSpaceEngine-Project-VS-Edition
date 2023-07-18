@@ -113,7 +113,7 @@ public:
 		float64 BaseMass = _Eng.uniform(_Par.MassRange.x, _Par.MassRange.y);
 		_Obj.Mass = BaseMass * MassJupiter;
 		_CSE_GEN_LOG("INFO", _STD vformat("Base Mass: {}", _STD make_format_args(BaseMass)));
-		float64 BaseRadius = CalculateRadius(BaseMass) + _Eng.uniform(-.12 * pow(BaseMass, -.215), +.12 * pow(BaseMass, -.215));
+		float64 BaseRadius = _Eng.normal(CalculateRadius(BaseMass), .12 * pow(BaseMass, -.215));
 		_CSE_GEN_LOG("INFO", _STD vformat("Base Radius: {}", _STD make_format_args(BaseRadius)));
 		_Obj.Dimensions = vec3(BaseRadius * RadJupiter * 2.);
 		return _Obj;
