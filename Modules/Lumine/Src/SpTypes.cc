@@ -874,7 +874,7 @@ bool IsBlackHole(SPECSTR _Spec)
 
 bool IsStarRemnant(SPECSTR _Spec)
 {
-	return IsWhiteDwarf(_Spec.Cls) || IsNeutronStar(_Spec.Cls2) || IsBlackHole(_Spec.Cls3);
+	return IsWhiteDwarf(_Spec) || IsNeutronStar(_Spec) || IsBlackHole(_Spec);
 }
 
 _CSE_END

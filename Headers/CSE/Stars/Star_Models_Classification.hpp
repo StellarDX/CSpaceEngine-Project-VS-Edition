@@ -155,13 +155,13 @@ public:
 #undef _STAR_RADIUS_PROTECTION
 
 using SubdwarfOStarModel =
-class ExtendedHorizontalBranch : public HorizontalBranch
+class ExtendedHorizontalBranchO : public HorizontalBranch
 {
 public:
 	using _Mybase = HorizontalBranch;
 	_STD string ModelName = "Extended Horizontal Brunch Model";
 
-	ExtendedHorizontalBranch() : _Mybase
+	ExtendedHorizontalBranchO() : _Mybase
 	(
 		param_type::NORMAL, 0.5, 0.01,
 		static_cast<param_type::param_mode>(-1), NO_DATA_FLOAT_INF, NO_DATA_FLOAT_INF,

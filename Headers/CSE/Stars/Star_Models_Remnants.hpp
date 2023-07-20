@@ -79,7 +79,7 @@ public:
 		float64 LIndex = _Par.spec().MinType();
 		if (LIndex == -1){ _Obj.Teff = _Eng.uniform(4000, 150000); }
 		else { _Obj.Teff = 50400. / LIndex; }
-		_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
+		//_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
 		_Obj.KerrSpin = 0;
 		_Obj.KerrCharge = 0;
 		return _Obj;

@@ -10,9 +10,14 @@ _Check_return_ vec2 _cdecl XYToPolar(_In_ vec2 XY)
 
 _Check_return_ vec3 _cdecl XYZToPolar(_In_ vec3 XYZ)
 {
+	float64 Correction = 0;
+	if (XYZ.x <= 0 && XYZ.z < 0) { Correction = 0; }
+	else if (XYZ.x <= 0 && XYZ.z >= 0) { Correction = 180; }
+	else if (XYZ.x > 0 && XYZ.z >= 0) { Correction = -180; }
+	else { Correction = 0; }
 	return vec3
 	(
-		arctan(XYZ.x / XYZ.z),
+		arctan(XYZ.x / XYZ.z) + Correction,
 		arcsin(XYZ.y / sqrt(XYZ.x * XYZ.x + XYZ.y * XYZ.y + XYZ.z * XYZ.z)),
 		sqrt(XYZ.x * XYZ.x + XYZ.y * XYZ.y + XYZ.z * XYZ.z)
 	);
