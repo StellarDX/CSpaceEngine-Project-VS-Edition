@@ -149,9 +149,9 @@ struct AsterBeltSettings
 
     // Colors
     bool EnableCustomColor;
-    _Color_RGB8 ColorKernal;
-    _Color_RGB8 ColorGas;
-    _Color_RGB8 ColorDust;
+    vec3 ColorKernal;
+    vec3 ColorGas;
+    vec3 ColorDust;
 
     string OutputFileName;
 };
@@ -343,7 +343,7 @@ void RingDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
         Particle.Class = "Asteroid";
         Particle.ParentBody = Conf.CenterObjectName;
         Particle.Rotation = Rotation(&Particle);
-        if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal.norm(); }
+        if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal / 255.; }
         Oblate(&Particle);
         OblateXZ(&Particle.Dimensions);
         Particle.Orbit =
@@ -403,7 +403,7 @@ void SphereDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf
         Particle.Class = "Asteroid";
         Particle.ParentBody = Conf.CenterObjectName;
         Particle.Rotation = Rotation(&Particle);
-        if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal.norm(); }
+        if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal / 255.; }
         Oblate(&Particle);
         OblateXZ(&Particle.Dimensions);
 
@@ -506,7 +506,7 @@ void TorusDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
         Particle.Class = "Asteroid";
         Particle.ParentBody = Conf.CenterObjectName;
         Particle.Rotation = Rotation(&Particle);
-        if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal.norm(); }
+        if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal / 255.; }
         Oblate(&Particle);
         OblateXZ(&Particle.Dimensions);
         Particle.Orbit =
@@ -601,7 +601,7 @@ void CylDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
         Particle.Class = "Asteroid";
         Particle.ParentBody = Conf.CenterObjectName;
         Particle.Rotation = Rotation(&Particle);
-        if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal.norm(); }
+        if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal / 255.; }
         Oblate(&Particle);
         OblateXZ(&Particle.Dimensions);
         Particle.Orbit =
@@ -733,8 +733,9 @@ int main()
     {
         unsigned Hex;
         GetHex(&Hex, 0xFFFFFFU, LngStr37);
-        Conf.ColorKernal = _Color_RGB8(Hex);
-        cout << ivec3(Conf.ColorKernal.x, Conf.ColorKernal.y, Conf.ColorKernal.z) << '\n';
+        auto uv = color::HexToRGB(Hex);
+        Conf.ColorKernal = vec3((float64)uv.x, (float64)uv.y, (float64)uv.z);
+        cout << uvec3((uint64)Conf.ColorKernal.x, (uint64)Conf.ColorKernal.y, (uint64)Conf.ColorKernal.z) << '\n';
     }
 
     if (Conf.Type == "Comet")

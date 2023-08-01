@@ -70,6 +70,11 @@ _NODISCARD _Check_return_ float64 FractionalPart(float64 _Xx)noexcept;
 template<typename genType> requires vecType<genType>
 _NODISCARD _Check_return_ genType FractionalPart(genType _Xx)noexcept;
 
+_NODISCARD _Check_return_ float64 fract(float64 _Xx)noexcept;
+
+template<typename genType> requires vecType<genType>
+_NODISCARD _Check_return_ genType fract(genType _Xx)noexcept;
+
 /// <summary>
 /// Returns the value of x modulo y.
 /// </summary>

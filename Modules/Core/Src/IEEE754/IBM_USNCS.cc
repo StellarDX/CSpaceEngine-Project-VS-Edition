@@ -582,7 +582,7 @@ int __IBM_branred(__Float64 x, __Float64* a, __Float64* aa)
     __Float64 r[6], s, t, sum, b, bb, sum1, sum2, b1, bb1, b2, bb2, x1, x2, t1, t2;
 
     x *= tm600;
-    t = x * split.Val;   /* split x to two numbers */
+    t = x * split.x;   /* split x to two numbers */
     x1 = t - (t - x);
     x2 = x - x1;
     sum = 0;
@@ -594,7 +594,7 @@ int __IBM_branred(__Float64 x, __Float64* a, __Float64* aa)
     gor.parts.msw -= ((k * 24) << 20);
     for (i = 0;i < 6;i++)
     {
-        r[i] = x1 * toverp[k + i].Val * gor;
+        r[i] = x1 * toverp[k + i].x * gor;
         gor *= tm24;
     }
     for (i = 0;i < 3;i++) 
@@ -626,7 +626,7 @@ int __IBM_branred(__Float64 x, __Float64* a, __Float64* aa)
     gor.parts.msw -= ((k * 24) << 20);
     for (i = 0;i < 6;i++)
     {
-        r[i] = x2 * toverp[k + i].Val * gor;
+        r[i] = x2 * toverp[k + i].x * gor;
         gor *= tm24;
     }
     for (i = 0;i < 3;i++) 
@@ -663,7 +663,7 @@ int __IBM_branred(__Float64 x, __Float64* a, __Float64* aa)
     }
     s = b + (bb + bb1 + bb2);
     t = ((b - s) + bb) + (bb1 + bb2);
-    b = s * split.Val;
+    b = s * split.x;
     t1 = b - (b - s);
     t2 = s - t1;
     b = s * hp0;
@@ -767,7 +767,7 @@ static inline __Float64 __IBM_sincos(__Float64 a, __Float64 da, int n)
         retval = __IBM_Kernal_sin(a, da);
     }
 
-    return (n & 2) ? -retval.Val : retval.Val;
+    return (n & 2) ? -retval.x : retval.x;
 }
 
 

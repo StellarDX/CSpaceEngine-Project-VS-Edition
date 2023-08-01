@@ -364,7 +364,11 @@ public:
 	// Physical properties
 	float64 Mass = NO_DATA_FLOAT_INF; // Mass in Kg
 	vec3 Dimensions = vec3(NO_DATA_FLOAT_INF); // Dimensions in 3 directions
-	float64 Radius()const { return cbrt((Dimensions.x / 2.) * (Dimensions.y / 2.) * (Dimensions.z / 2.)); }
+	float64 Radius()const
+	{
+		if (any(isinf(Dimensions))) { return NO_DATA_FLOAT_INF; }
+		return cbrt((Dimensions.x / 2.) * (Dimensions.y / 2.) * (Dimensions.z / 2.));
+	}
 	float64 InertiaMoment = NO_DATA_FLOAT_INF; // Moment of Inertia
 	float64 AlbedoBond = NO_DATA_FLOAT_INF; // Bond albedo
 	float64 AlbedoGeom = NO_DATA_FLOAT_INF; // Geometric albedo

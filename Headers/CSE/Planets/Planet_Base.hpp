@@ -114,6 +114,7 @@ public:
 		_Obj.Mass = BaseMass * MassJupiter;
 		_CSE_GEN_LOG("INFO", _STD vformat("Base Mass: {}", _STD make_format_args(BaseMass)));
 		float64 BaseRadius = _Eng.normal(CalculateRadius(BaseMass), .12 * pow(BaseMass, -.215));
+		if (BaseRadius < 0) { BaseRadius = 1.6 * RadEarth / RadJupiter; }
 		_CSE_GEN_LOG("INFO", _STD vformat("Base Radius: {}", _STD make_format_args(BaseRadius)));
 		_Obj.Dimensions = vec3(BaseRadius * RadJupiter * 2.);
 		return _Obj;

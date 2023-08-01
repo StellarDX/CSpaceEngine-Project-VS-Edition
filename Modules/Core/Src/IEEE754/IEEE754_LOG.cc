@@ -100,7 +100,7 @@ _Check_return_ _FType __cdecl __IEEE754_LOGF128_CF64(_In_ _FType _X)
         p -= 1;
         do
         {
-            y = y * x + (*p).Val;
+            y = y * x + (*p).x;
             p -= 1;
         } while (--n > 0);
         return y;
@@ -110,11 +110,11 @@ _Check_return_ _FType __cdecl __IEEE754_LOGF128_CF64(_In_ _FType _X)
     {
         _FType y;
         p += n;
-        y = x.Val + (*p).Val;
+        y = x.x + (*p).x;
         p -= 1;
         do
         {
-            y = y * x + (*p).Val;
+            y = y * x + (*p).x;
             p -= 1;
         } while (--n > 0);
         return y;

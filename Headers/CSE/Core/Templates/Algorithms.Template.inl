@@ -55,6 +55,13 @@ _NODISCARD _Check_return_ genType FractionalPart(genType _Xx)noexcept
 }
 
 template<typename genType> requires vecType<genType>
+_NODISCARD _Check_return_ genType fract(genType _Xx)noexcept
+{
+	for (size_t i = 0; i < _Xx.size(); i++) { _Xx[i] = _CSE fract(_Xx[i]); }
+	return _Xx;
+}
+
+template<typename genType> requires vecType<genType>
 _NODISCARD _Check_return_ genType mod(genType _Left, float64 _Right)noexcept
 {
 	for (size_t i = 0; i < _Left.size(); i++) { _Left[i] = _CSE mod(_Left[i], _Right); }

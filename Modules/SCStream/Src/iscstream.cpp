@@ -217,8 +217,8 @@ std::shared_ptr<table> parser::ParseSubTable(std::string::iterator& it, const st
 				{
 					if (Data.SubTable == nullptr)
 					{
-						table Val;
-						Data.SubTable = make_shared<table>(Val);
+						table x;
+						Data.SubTable = make_shared<table>(x);
 					}
 					std::string Value = ParseMatrix(it2, end2);
 					Data.SubTable->push({ .Key = "UnnamedArray", .Value = Value });
@@ -359,8 +359,8 @@ table parser::parse(UINT CodePage)
 				{
 					if (Data.SubTable == nullptr)
 					{
-						table Val;
-						Data.SubTable = make_shared<table>(Val);
+						table x;
+						Data.SubTable = make_shared<table>(x);
 					}
 					std::string Value = ParseMatrix(it, end);
 					Data.SubTable->push({ .Key = "UnnamedArray", .Value = Value });

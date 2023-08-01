@@ -58,7 +58,14 @@ _NODISCARD _Check_return_ int64 ceil(_In_ float64 _Xx)noexcept
 
 _NODISCARD _Check_return_ float64 FractionalPart(float64 _Xx)noexcept
 {
-	return _Xx - _CSE floor(_Xx);
+	return modf(_Xx, nullptr);
+}
+
+////////////////////////////////////// Fract /////////////////////////////////////
+
+_NODISCARD _Check_return_ float64 fract(float64 _Xx)noexcept
+{
+	return _Xx - floor(_Xx);
 }
 
 ////////////////////////////////////// MOD /////////////////////////////////////

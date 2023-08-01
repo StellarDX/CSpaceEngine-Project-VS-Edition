@@ -146,8 +146,8 @@ _Check_return_ __Float64 __cdecl __IBM_SQRTF64(_In_ __Float64 _X)
                 zz = (((hx * hy - z) + hx * ty) + tx * hy) + tx * ty;
             };
             EMULV(res, res1, z, zz); /* (z+zz)=res*res1 */
-            res = ((((z - s) + zz) < 0) ? std::max(res.Val, res1.Val) :
-                std::min(res.Val, res1.Val));
+            res = ((((z - s) + zz) < 0) ? std::max(res.x, res1.x) :
+                std::min(res.x, res1.x));
             ret = res * c;
         }
 

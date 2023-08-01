@@ -835,7 +835,7 @@ _Check_return_ __Float64 __cdecl __IBM_TANF64(_In_ __Float64 x)
         return x - x;
     }
 
-    w = (x < 0.0) ? -x.Val : x.Val;
+    w = (x < 0.0) ? -x.x : x.x;
 
     /* (I) The case abs(x) <= 1.259e-8 */
     if (w <= g1) { return x; }
@@ -859,7 +859,7 @@ _Check_return_ __Float64 __cdecl __IBM_TANF64(_In_ __Float64 x)
     if (w <= g3)
     {
         i = ((int)(mfftnhf + 256 * w));
-        z = w - __IBM_TANF64_XFGTBL[i][0].Val;
+        z = w - __IBM_TANF64_XFGTBL[i][0].x;
         z2 = z * z;
         s = (x < 0.0) ? -1 : 1;
         pz = z + z * z2 * (e0 + z2 * e1);
@@ -958,7 +958,7 @@ _Check_return_ __Float64 __cdecl __IBM_TANF64(_In_ __Float64 x)
         /* (VII) The case 0.787 < abs(x) <= 25,    0.0608 < abs(y) <= 0.787 */
 
         i = ((int)(mfftnhf + 256 * ya));
-        z = (z0 = (ya - __IBM_TANF64_XFGTBL[i][0].Val)) + yya;
+        z = (z0 = (ya - __IBM_TANF64_XFGTBL[i][0].x)) + yya;
         z2 = z * z;
         pz = z + z * z2 * (e0 + z2 * e1);
         fi = __IBM_TANF64_XFGTBL[i][1];
@@ -1042,7 +1042,7 @@ _Check_return_ __Float64 __cdecl __IBM_TANF64(_In_ __Float64 x)
 
         /* (IX) The case 25 < abs(x) <= 1e8,    0.0608 < abs(y) <= 0.787 */
         i = ((int)(mfftnhf + 256 * ya));
-        z = (z0 = (ya - __IBM_TANF64_XFGTBL[i][0].Val)) + yya;
+        z = (z0 = (ya - __IBM_TANF64_XFGTBL[i][0].x)) + yya;
         z2 = z * z;
         pz = z + z * z2 * (e0 + z2 * e1);
         fi = __IBM_TANF64_XFGTBL[i][1];
@@ -1114,7 +1114,7 @@ _Check_return_ __Float64 __cdecl __IBM_TANF64(_In_ __Float64 x)
 
     /* (XI) The case 1e8 < abs(x) < 2**1024,    0.0608 < abs(y) <= 0.787 */
     i = ((int)(mfftnhf + 256 * ya));
-    z = (z0 = (ya - __IBM_TANF64_XFGTBL[i][0].Val)) + yya;
+    z = (z0 = (ya - __IBM_TANF64_XFGTBL[i][0].x)) + yya;
     z2 = z * z;
     pz = z + z * z2 * (e0 + z2 * e1);
     fi = __IBM_TANF64_XFGTBL[i][1];

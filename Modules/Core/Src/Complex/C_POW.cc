@@ -18,10 +18,10 @@ _Check_return_ std::array<complex64, 2> __cdecl sqrtc(_In_ complex64 _X)
 	float64 Sign = sgn(_X.imag());
 	if (Sign == 0)
 	{
-		if (_X.real() > 0) { return { sqrt(_X.real()).Val, -sqrt(_X.real()).Val }; }
-		if (_X.real() < 0) { return { 1i * sqrt(-_X.real()).Val, 1i * -sqrt(-_X.real()) }; }
+		if (_X.real() > 0) { return { sqrt(_X.real()).x, -sqrt(_X.real()).x }; }
+		if (_X.real() < 0) { return { 1i * sqrt(-_X.real()).x, 1i * -sqrt(-_X.real()) }; }
 	}
-	_Res = _CSE sqrt((_CSE abs(_X) + _X.real()) / 2.).Val + 1i * Sign * _CSE sqrt((_CSE abs(_X) - _X.real()) / 2.).Val;
+	_Res = _CSE sqrt((_CSE abs(_X) + _X.real()) / 2.).x + 1i * Sign * _CSE sqrt((_CSE abs(_X) - _X.real()) / 2.).x;
 	return { _Res, -_Res };
 }
 
@@ -55,7 +55,7 @@ _Check_return_ std::vector<complex64> __cdecl yrootc(_In_ complex64 _Expo, _In_ 
 		float64 tet = std::atan2(_X.imag(), _X.real());
 		for (size_t i = 0; i < Real; ++i)
 		{
-			Buffer.push_back(yroot(Real, r).Val * _CSE expc(1i * complex64(tet + (i + K_OFFSET) * 2. * CSE_PI) / Real));
+			Buffer.push_back(yroot(Real, r).x * _CSE expc(1i * complex64(tet + (i + K_OFFSET) * 2. * CSE_PI) / Real));
 		}
 		return Buffer;
 	}

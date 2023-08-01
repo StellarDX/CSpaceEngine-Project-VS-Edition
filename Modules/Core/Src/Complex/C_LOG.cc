@@ -9,7 +9,7 @@ _Check_return_ complex64 __cdecl lnc(_In_ complex64 _X, int64 K_OFFSET)
 	// Convert to polar form (r, tet)
 	float64 r = _CSE abs(_X);
 	float64 tet = std::atan2(_X.imag(), _X.real());
-	return ln(r).Val + 1i * float64(tet + 2. * CSE_PI * K_OFFSET);
+	return ln(r).x + 1i * float64(tet + 2. * CSE_PI * K_OFFSET);
 }
 
 _Check_return_ complex64 __cdecl logc(_In_ complex64 _X, int64 K_OFFSET)

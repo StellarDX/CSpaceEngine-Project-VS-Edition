@@ -11,10 +11,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Src\hsv.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Color.cpp">
+    <ClCompile Include="Src\hsv.cc">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -264,8 +264,8 @@ _Check_return_ _FType __cdecl __IEEE754_ATANF128_CF64(_In_ _FType x)
         if (((k - 0x7ff00000) | lx) != 0) { return _FType::FromBytes(CSE_NAN); }
 
         /* Infinity. */
-        if (sign) { return -__ArctanF128_table[83].Val; }
-        else { return __ArctanF128_table[83].Val; }
+        if (sign) { return -__ArctanF128_table[83].x; }
+        else { return __ArctanF128_table[83].x; }
     }
 
     if (k <= 0x3c800000) /* |x| <= 2**-55.  */
@@ -277,8 +277,8 @@ _Check_return_ _FType __cdecl __IEEE754_ATANF128_CF64(_In_ _FType x)
     if (k >= 0x46c00000) /* |x| >= 2**109.  */
     {
         /* Saturate result to {-,+}90.  */
-        if (sign) { return -__ArctanF128_table[83].Val; }
-        else { return __ArctanF128_table[83].Val; }
+        if (sign) { return -__ArctanF128_table[83].x; }
+        else { return __ArctanF128_table[83].x; }
     }
 
     if (sign) { x = -x; }
@@ -318,7 +318,7 @@ _Check_return_ _FType __cdecl __IEEE754_ATANF128_CF64(_In_ _FType x)
     u = t * u * p / q + t;
 
     /* arctan x = arctan u  +  arctan t */
-    u = __ArctanF128_table[k].Val + __ConvertUnit(u);
+    u = __ArctanF128_table[k].x + __ConvertUnit(u);
     if (sign) { return (-u); }
     else { return u; }
 }

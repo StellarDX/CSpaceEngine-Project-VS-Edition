@@ -2747,14 +2747,14 @@ _Check_return_ __Float64 __cdecl __IBM_ASINF64(_In_ __Float64 x)
         y = (c + t24) - t24;
         cc = (z - y * y) / (t + y);
         p = (((((f6 * z + f5) * z + f4) * z + f3) * z + f2) * z + f1) * z;
-        cor = (hp1.Val - 2.0 * cc) - 2.0 * (y + cc) * p;
-        res1 = hp0.Val - 2.0 * y;
+        cor = (hp1.x - 2.0 * cc) - 2.0 * (y + cc) * p;
+        res1 = hp0.x - 2.0 * y;
         res = res1 + cor;
         /* Max ULP is 0.5015.  */
         return _ConvertUnit((m > 0) ? res : -res);
     }    /*   else  if (k < 0x3ff00000)    */
     /*---------------------------- |x|>=1 -------------------------------*/
-    else if (k == 0x3ff00000 && u.parts.lsw == 0) { return _ConvertUnit((m > 0) ? hp0.Val : -hp0.Val); }
+    else if (k == 0x3ff00000 && u.parts.lsw == 0) { return _ConvertUnit((m > 0) ? hp0.x : -hp0.x); }
     else { return __Float64::FromBytes(BIG_NAN_DOUBLE); };
 }
 
@@ -2769,15 +2769,15 @@ _Check_return_ __Float64 __cdecl __IBM_ACOSF64(_In_ __Float64 x)
     m = u.parts.msw;
     k = 0x7fffffff & m;
     /*-------------------  |x|<2.77556*10^-17 ----------------------*/
-    if (k < 0x3c880000) { return _ConvertUnit(hp0.Val); }
+    if (k < 0x3c880000) { return _ConvertUnit(hp0.x); }
 
     /*-----------------  2.77556*10^-17 <= |x| < 2^-3 --------------*/
     else if (k < 0x3fc00000) 
     {
         x2 = x * x;
         t = (((((f6 * x2 + f5) * x2 + f4) * x2 + f3) * x2 + f2) * x2 + f1) * (x2 * x);
-        r = hp0.Val - x;
-        cor = (((hp0.Val - r) - x) + hp1.Val) - t;
+        r = hp0.x - x;
+        cor = (((hp0.x - r) - x) + hp1.x) - t;
         res = r + cor;
         /* Max ULP is 0.502.  */
         return _ConvertUnit(res);
@@ -2791,8 +2791,8 @@ _Check_return_ __Float64 __cdecl __IBM_ACOSF64(_In_ __Float64 x)
         else { xx = -x - __IBM_asncs_table.x[n]; }
 
         t = __IBM_asncs_table.x[n + 1] * xx + xx * xx * (__IBM_asncs_table.x[n + 2] + xx * (__IBM_asncs_table.x[n + 3] + xx * (__IBM_asncs_table.x[n + 4] + xx * (__IBM_asncs_table.x[n + 5] + xx * __IBM_asncs_table.x[n + 6])))) + __IBM_asncs_table.x[n + 7];
-        y = (m > 0) ? (hp0.Val - __IBM_asncs_table.x[n + 8]) : (hp0.Val + __IBM_asncs_table.x[n + 8]);
-        t = (m > 0) ? (hp1.Val - t) : (hp1.Val + t);
+        y = (m > 0) ? (hp0.x - __IBM_asncs_table.x[n + 8]) : (hp0.x + __IBM_asncs_table.x[n + 8]);
+        t = (m > 0) ? (hp1.x - t) : (hp1.x + t);
         /* Max ULP is 0.51.  */
         return _ConvertUnit(y + t);
     }    /*   else  if (k < 0x3fe00000)    */
@@ -2805,8 +2805,8 @@ _Check_return_ __Float64 __cdecl __IBM_ACOSF64(_In_ __Float64 x)
         else { xx = -x - __IBM_asncs_table.x[n]; }
 
         t = __IBM_asncs_table.x[n + 1] * xx + xx * xx * (__IBM_asncs_table.x[n + 2] + xx * (__IBM_asncs_table.x[n + 3] + xx * (__IBM_asncs_table.x[n + 4] + xx * (__IBM_asncs_table.x[n + 5] + xx * (__IBM_asncs_table.x[n + 6] + xx * __IBM_asncs_table.x[n + 7]))))) + __IBM_asncs_table.x[n + 8];
-        y = (m > 0) ? (hp0.Val - __IBM_asncs_table.x[n + 9]) : (hp0.Val + __IBM_asncs_table.x[n + 9]);
-        t = (m > 0) ? (hp1.Val - t) : (hp1.Val + t);
+        y = (m > 0) ? (hp0.x - __IBM_asncs_table.x[n + 9]) : (hp0.x + __IBM_asncs_table.x[n + 9]);
+        t = (m > 0) ? (hp1.x - t) : (hp1.x + t);
         /* Max ULP is 0.523 based on random sampling.  */
         return _ConvertUnit(y + t);
     }    /*   else  if (k < 0x3fe80000)    */
@@ -2819,8 +2819,8 @@ _Check_return_ __Float64 __cdecl __IBM_ACOSF64(_In_ __Float64 x)
         else { xx = -x - __IBM_asncs_table.x[n]; }
 
         t = __IBM_asncs_table.x[n + 1] * xx + xx * xx * (__IBM_asncs_table.x[n + 2] + xx * (__IBM_asncs_table.x[n + 3] + xx * (__IBM_asncs_table.x[n + 4] + xx * (__IBM_asncs_table.x[n + 5] + xx * (__IBM_asncs_table.x[n + 6] + xx * (__IBM_asncs_table.x[n + 7] + xx * __IBM_asncs_table.x[n + 8])))))) + __IBM_asncs_table.x[n + 9];
-        y = (m > 0) ? (hp0.Val - __IBM_asncs_table.x[n + 10]) : (hp0.Val + __IBM_asncs_table.x[n + 10]);
-        t = (m > 0) ? (hp1.Val - t) : (hp1.Val + t);
+        y = (m > 0) ? (hp0.x - __IBM_asncs_table.x[n + 10]) : (hp0.x + __IBM_asncs_table.x[n + 10]);
+        t = (m > 0) ? (hp1.x - t) : (hp1.x + t);
         /* Max ULP is 0.523 based on random sampling.  */
         return _ConvertUnit(y + t);
     }    /*   else  if (k < 0x3fed8000)    */
@@ -2833,8 +2833,8 @@ _Check_return_ __Float64 __cdecl __IBM_ACOSF64(_In_ __Float64 x)
         else { xx = -x - __IBM_asncs_table.x[n]; }
 
         t = __IBM_asncs_table.x[n + 1] * xx + xx * xx * (__IBM_asncs_table.x[n + 2] + xx * (__IBM_asncs_table.x[n + 3] + xx * (__IBM_asncs_table.x[n + 4] + xx * (__IBM_asncs_table.x[n + 5] + xx * (__IBM_asncs_table.x[n + 6] + xx * (__IBM_asncs_table.x[n + 7] + xx * (__IBM_asncs_table.x[n + 8] + xx * __IBM_asncs_table.x[n + 9]))))))) + __IBM_asncs_table.x[n + 10];
-        y = (m > 0) ? (hp0.Val - __IBM_asncs_table.x[n + 11]) : (hp0.Val + __IBM_asncs_table.x[n + 11]);
-        t = (m > 0) ? (hp1.Val - t) : (hp1.Val + t);
+        y = (m > 0) ? (hp0.x - __IBM_asncs_table.x[n + 11]) : (hp0.x + __IBM_asncs_table.x[n + 11]);
+        t = (m > 0) ? (hp1.x - t) : (hp1.x + t);
         /* Max ULP is 0.523 based on random sampling.  */
         return _ConvertUnit(y + t);
     }    /*   else  if (k < 0x3fee8000)    */
@@ -2847,8 +2847,8 @@ _Check_return_ __Float64 __cdecl __IBM_ACOSF64(_In_ __Float64 x)
         else { xx = -x - __IBM_asncs_table.x[n]; }
 
         t = __IBM_asncs_table.x[n + 1] * xx + xx * xx * (__IBM_asncs_table.x[n + 2] + xx * (__IBM_asncs_table.x[n + 3] + xx * (__IBM_asncs_table.x[n + 4] + xx * (__IBM_asncs_table.x[n + 5] + xx * (__IBM_asncs_table.x[n + 6] + xx * (__IBM_asncs_table.x[n + 7] + xx * (__IBM_asncs_table.x[n + 8] + xx * (__IBM_asncs_table.x[n + 9] + xx * __IBM_asncs_table.x[n + 10])))))))) + __IBM_asncs_table.x[n + 11];;
-        y = (m > 0) ? (hp0.Val - __IBM_asncs_table.x[n + 12]) : (hp0.Val + __IBM_asncs_table.x[n + 12]);
-        t = (m > 0) ? (hp1.Val - t) : (hp1.Val + t);
+        y = (m > 0) ? (hp0.x - __IBM_asncs_table.x[n + 12]) : (hp0.x + __IBM_asncs_table.x[n + 12]);
+        t = (m > 0) ? (hp1.x - t) : (hp1.x + t);
         /* Max ULP is 0.523 based on random sampling.  */
         return _ConvertUnit(y + t);
     }    /*   else  if (k < 0x3fef0000)    */
@@ -2868,8 +2868,8 @@ _Check_return_ __Float64 __cdecl __IBM_ACOSF64(_In_ __Float64 x)
         p = (((((f6 * z + f5) * z + f4) * z + f3) * z + f2) * z + f1) * z;
         if (m < 0) 
         {
-            cor = (hp1.Val - cc) - (y + cc) * p;
-            res1 = hp0.Val - y;
+            cor = (hp1.x - cc) - (y + cc) * p;
+            res1 = hp0.x - y;
             res = res1 + cor;
             /* Max ULP is 0.501.  */
             return _ConvertUnit(res + res);
@@ -2884,7 +2884,7 @@ _Check_return_ __Float64 __cdecl __IBM_ACOSF64(_In_ __Float64 x)
     }    /*   else  if (k < 0x3ff00000)    */
 
     /*---------------------------- |x|>=1 -----------------------*/
-    else if (k == 0x3ff00000 && u.parts.lsw == 0) { return _ConvertUnit((m > 0) ? 0 : 2.0 * hp0.Val); }
+    else if (k == 0x3ff00000 && u.parts.lsw == 0) { return _ConvertUnit((m > 0) ? 0 : 2.0 * hp0.x); }
     else { return __Float64::FromBytes(BIG_NAN_DOUBLE); }
 }
 

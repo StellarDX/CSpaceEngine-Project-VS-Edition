@@ -146,7 +146,7 @@ public:
 		_Obj.Mass = _Eng.uniform(1.1 * MassSol, TOVLimit);
 		float64 Density = _Eng.uniform(3.7E+17, 5.9E+17);
 		_Obj.Dimensions = vec3(2. * cbrt((_Obj.Mass / Density) / ((4. / 3.) * CSE_PI)));
-		_Obj.Teff = 1E+12 - 9.99999E+11 * (_Eng.exponential() / 5.);
+		_Obj.Teff = 5E+7 * (1. - _Eng.exponential(6)); // Newly formed neutron stars maybe up to 1E12 K
 		//_Obj.LumBol = ToLuminosity1(_Obj.Radius(), _Obj.Teff);
 		_Obj.KerrSpin = 0;
 		_Obj.KerrCharge = 0;

@@ -185,7 +185,7 @@ struct std::formatter<cse::IEEE754_Dbl64, char>
 
 	auto format(cse::IEEE754_Dbl64 const& my, std::format_context& formatContext)
 	{
-		return std::format_to(formatContext.out(), "{}", my.Val);
+		return std::format_to(formatContext.out(), "{}", my.x);
 	}
 };
 

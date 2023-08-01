@@ -149,8 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Src\Color.cpp" />
-    <ClCompile Include="Src\hsv.cpp" />
+    <ClCompile Include="Src\hsv.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Headers\CSE\StellarColor.h" />

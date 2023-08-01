@@ -33,7 +33,7 @@
 // Reference: 
 union IEEE754_Dbl64
 {
-	double Val;
+	double x;
 	unsigned long long Bytes;
 	struct
 	{
@@ -51,8 +51,8 @@ union IEEE754_Dbl64
 
 	// Constructors
 	IEEE754_Dbl64() {}
-	IEEE754_Dbl64(double d) : Val(d) {}
-	operator double() { return Val; }
+	IEEE754_Dbl64(double d) : x(d) {}
+	operator double() { return x; }
 
 	static IEEE754_Dbl64 FromBytes(unsigned long long _By)
 	{
@@ -65,7 +65,7 @@ union IEEE754_Dbl64
 	#define IEEE754_UNARY_OPERATOR(operation) \
 	_CONSTEXPR20 IEEE754_Dbl64& operator operation (const IEEE754_Dbl64& scaler) \
 	{ \
-		this->Val operation scaler.Val; \
+		this->x operation scaler.x; \
 		return *this; \
 	} \
 
@@ -80,7 +80,7 @@ union IEEE754_Dbl64
 #define IEEE754_BINARY_OPERATOR(operation) \
 IEEE754_Dbl64 operator operation (IEEE754_Dbl64 const& _Ax0, IEEE754_Dbl64 const& _Bx0) \
 { \
-	return IEEE754_Dbl64(_Ax0.Val operation _Bx0.Val); \
+	return IEEE754_Dbl64(_Ax0.x operation _Bx0.x); \
 } \
 
 IEEE754_BINARY_OPERATOR(+)
@@ -109,7 +109,7 @@ IEEE754_BINARY_OPERATOR(/)
 #if 0
 union IEEE754_Float128 // Quaduple-presision floating point
 {
-	__float128 Val;
+	__float128 x;
 	unsigned __int128 Bytes;
 	struct
 	{
@@ -131,8 +131,8 @@ union IEEE754_Float128 // Quaduple-presision floating point
 
 	// Constructors
 	IEEE754_Float128() {}
-	IEEE754_Float128(__float128 d) : Val(d) {}
-	operator __float128() { return Val; }
+	IEEE754_Float128(__float128 d) : x(d) {}
+	operator __float128() { return x; }
 
 	static IEEE754_Float128 FromBytes(unsigned __int128 _By)
 	{
@@ -145,7 +145,7 @@ union IEEE754_Float128 // Quaduple-presision floating point
 	#define IEEE754_UNARY_OPERATOR(operation) \
 	_CONSTEXPR20 IEEE754_Float128& operator operation (const IEEE754_Float128& scaler) \
 	{ \
-		this->Val operation scaler.Val; \
+		this->x operation scaler.x; \
 		return *this; \
 	} \
 
