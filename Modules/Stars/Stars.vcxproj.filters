@@ -32,6 +32,9 @@
     <ClInclude Include="..\..\Headers\CSE\Stars\BlackHole.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Headers\CSE\Stars\StarBarycenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Star_Models_Base.cpp">

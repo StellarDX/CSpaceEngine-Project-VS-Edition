@@ -76,6 +76,16 @@ public:
     {
         return Default; // Default FMTFlag
     }
+
+    bool PecularKey(_STD string Key, uint64* Mode)const noexcept
+    {
+        if (Key.find("PeriodicTerms") != Key.npos)
+        {
+            *Mode = 1;
+            return 1;
+        }
+        return 0;
+    }
 };
 
 _SC_BEGIN
@@ -340,14 +350,21 @@ public:
 
             // Pecular value list:
 
-            if (_Buffer.Catalogue[i].Key.find("PeriodicTerms") != _Buffer.Catalogue[i].Key.npos)
+            uint64 _PecMode = 0;
+            if (_TyBase::PecularKey(_Buffer.Catalogue[i].Key, &_PecMode))
             {
                 _Os << _Buffer.Catalogue[i].Key << '\n';
-                for (uint64 j = 0; j < WSpace; ++j) { _Os << "\t"; }
-                _Os << "{\n";
+                if (_PecMode == 1)
+                {
+                    for (uint64 j = 0; j < WSpace; ++j) { _Os << "\t"; }
+                    _Os << "{\n";
+                }
                 _Os << _Buffer.Catalogue[i].Value;
-                for (uint64 j = 0; j < WSpace; ++j) { _Os << "\t"; }
-                _Os << "}\n";
+                if (_PecMode == 1)
+                {
+                    for (uint64 j = 0; j < WSpace; ++j) { _Os << "\t"; }
+                    _Os << "}\n";
+                }
             }
 
             // -------------------------------------------------------------------------

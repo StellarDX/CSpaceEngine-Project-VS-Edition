@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Headers\CSE\Stars.h" />
     <ClInclude Include="..\..\Headers\CSE\Stars\BlackHole.hpp" />
+    <ClInclude Include="..\..\Headers\CSE\Stars\StarBarycenter.h" />
     <ClInclude Include="..\..\Headers\CSE\Stars\Star_Models_Base.hpp" />
     <ClInclude Include="..\..\Headers\CSE\Stars\Star_Models_Classification.hpp" />
     <ClInclude Include="..\..\Headers\CSE\Stars\Star_Models_Evolution.hpp" />

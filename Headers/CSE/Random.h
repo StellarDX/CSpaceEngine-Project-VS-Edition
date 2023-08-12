@@ -70,6 +70,67 @@ class pareto_distribution
 	// Nothing...
 };*/
 
+/// <summary>
+/// Custom distribution model from StackOverflow
+/// </summary>
+/// <typeparam name="_Tp">Return type</typeparam>
+/// <typeparam name="_Fty">Function type, using CDF which is the integral function of PDF</typeparam>
+template <typename _Tp = double, typename _Fty = _Tp(_Tp), bool Interpolate = true>
+class _Custom_Distribution
+{
+public:
+	using CDFFunc = _Fty;
+
+	_Custom_Distribution(CDFFunc cdfFunc, _Tp low, _Tp high, unsigned resolution = 200)
+		: mLow(low), mHigh(high), mRes(resolution), mDist(0.0, 1.0)
+	{
+		if (mLow >= mHigh){ throw _STD exception("Low value larger than high value."); }
+
+		mSampledCDF.resize((uint64)mRes + 1);
+		const _Tp cdfLow = cdfFunc(low);
+		const _Tp cdfHigh = cdfFunc(high);
+		_Tp last_p = 0;
+		for (uint64 i = 0; i < mSampledCDF.size(); ++i)
+		{
+			const _Tp x = i / mRes * (mHigh - mLow) + mLow;
+			const _Tp p = (cdfFunc(x) - cdfLow) / (cdfHigh - cdfLow); // normalising 
+			if (!(p >= last_p)) { exit(2); }
+			mSampledCDF[i] = Sample{ p, x };
+			last_p = p;
+		}
+	}
+
+	template <typename Generator>
+	_Tp operator()(Generator& g)
+	{
+		_Tp cdf = mDist(g);
+		auto s = std::upper_bound(mSampledCDF.begin(), mSampledCDF.end(), cdf);
+		auto bs = s - 1;
+		if (Interpolate && bs >= mSampledCDF.begin())
+		{
+			const _Tp r = (cdf - bs->prob) / (s->prob - bs->prob);
+			return r * bs->value + (1 - r) * s->value;
+		}
+		return s->value;
+	}
+
+private:
+	//struct InvalidBounds : public std::runtime_error { InvalidBounds() : std::runtime_error("") {} };
+	//struct CDFNotMonotonic : public std::runtime_error { CDFNotMonotonic() : std::runtime_error("") {} };
+
+	const _Tp mLow, mHigh;
+	const double mRes;
+
+	struct Sample
+	{
+		_Tp prob, value;
+		friend bool operator<(_Tp p, const Sample& s) { return p < s.prob; }
+	};
+
+	std::vector<Sample> mSampledCDF;
+	std::uniform_real_distribution<> mDist;
+};
+
 _RAND_END
 
 // Random Engine

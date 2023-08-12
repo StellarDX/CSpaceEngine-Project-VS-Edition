@@ -15,5 +15,6 @@
 #include "CSE/Stars/Star_Models_Classification.hpp"
 #include "CSE/Stars/Star_Models_Remnants.hpp"
 #include "CSE/Stars/Star_Models_Related.hpp"
+#include "CSE/Stars/BlackHole.hpp"
 
 #endif
