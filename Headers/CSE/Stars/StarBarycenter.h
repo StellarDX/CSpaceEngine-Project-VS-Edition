@@ -9,6 +9,10 @@
 
 _CSE_BEGIN
 
+////////////////////////////////////////////////////////////
+//                Coordinate definations                  //
+////////////////////////////////////////////////////////////
+
 // Structure of coordinate:
 // 
 // 0b00000000000000000000000000000000000000000000000000000000000000000000000000000000
@@ -38,7 +42,7 @@ struct _Coordinate360_Base80
     uint16_t sec1 : 16;
     uint16_t sec0 : 15;
     uint16_t min : 6;
-    uint16_t hrs : 9;
+    uint16_t deg : 9;
 };
 
 struct _Coordinate90_Base80
@@ -49,7 +53,7 @@ struct _Coordinate90_Base80
     uint16_t sec0 : 15;
     uint16_t neg : 1;
     uint16_t min : 6;
-    uint16_t hrs : 7;
+    uint16_t deg : 7;
 };
 
 union UCoordinate24;
@@ -70,6 +74,7 @@ public:
     float64 sec()const;
 
     operator float64();
+    UCoordinate24 operator=(float64 h);
 };
 
 union Coordinate90
@@ -79,13 +84,15 @@ union Coordinate90
 public:
     Coordinate90() {};
     Coordinate90(float64 d);
-    Coordinate90(uint64 d, uint64 m, float64 s);
+    Coordinate90(int64 d, uint64 m, float64 s);
 
+    bool neg()const;
     uint64 deg()const;
     uint64 min()const;
     float64 sec()const;
 
     operator float64();
+    Coordinate90 operator=(float64 h);
 };
 
 union UCoordinate360
@@ -94,29 +101,59 @@ union UCoordinate360
     uint16_t Bytes[5]; // 80 bits
 public:
     UCoordinate360() {};
-    UCoordinate360(float64 h);
-    UCoordinate360(uint64 h, uint64 m, float64 s);
+    UCoordinate360(float64 d);
+    UCoordinate360(uint64 d, uint64 m, float64 s);
 
-    uint64 hrs()const;
+    uint64 deg()const;
     uint64 min()const;
     float64 sec()const;
 
     operator float64();
+    UCoordinate360 operator=(float64 d);
 };
 
-class StarBarycenter
+////////////////////////////////////////////////////////////
+//                       OPERATORS                        //
+////////////////////////////////////////////////////////////
+
+_STD ostream& operator<<(_STD ostream& os, UCoordinate24 Coord);
+_STD ostream& operator<<(_STD ostream& os, Coordinate90 Coord);
+_STD ostream& operator<<(_STD ostream& os, UCoordinate360 Coord);
+
+////////////////////////////////////////////////////////////
+//                    StarBarycenter                      //
+////////////////////////////////////////////////////////////
+
+using StarBarycenter = 
+class Location
 {
 public:
     UCoordinate24 RA;
     Coordinate90 Dec;
     float64 Dist;
+
+    Location() {}
+    Location(vec3 P) : RA(P.x), Dec(P.y), Dist(P.z) {}
+
+    operator vec3();
+};
+
+class StarLocation : public Location
+{
+public:
     _STD shared_ptr<Object> Pointer = nullptr;
 };
 
 template<typename _Ty> requires std::is_same_v<_Ty, int>
 class _StarBarycen_Base
 {
+public:
     _Ty __CLR_OR_THIS_CALL _BaseInit()
+    {
+        return 0; // nothing
+    }
+
+    bool PecularKey(_STD string Key, uint64* Mode)const noexcept
     {
         return 0; // nothing
     }
@@ -188,6 +225,8 @@ StarBarycenter BarycenterLoader(_STD vector<_CSE _SC table::KeyValue>::iterator&
 StarBarycenter GetBarycenter(ISCStream _Is, _STD string _Name);
 
 OBarycenterStream& operator<<(OBarycenterStream& _Os, _CSE StarBarycenter _Obj);
+
+
 
 _CSE_END
 

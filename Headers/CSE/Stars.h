@@ -10,6 +10,7 @@
 #define _CSE_PROC_STAR_GEN
 
 // Star models
+#include "CSE/Stars/StarBarycenter.h"
 #include "CSE/Stars/Star_Models_Base.hpp"
 #include "CSE/Stars/Star_Models_Evolution.hpp"
 #include "CSE/Stars/Star_Models_Classification.hpp"

@@ -168,7 +168,7 @@ public:
 // Report fatal errors
 #define _CSE_VERIFY(cond, except)                                    \
         if (cond) { /* contextually convertible to bool paranoia */ }\
-		else {throw except; exit(-1);}                               \
+		else {throw except;}                               \
 
 _CSE_END
 

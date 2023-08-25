@@ -83,7 +83,7 @@ static const float64 __CV_SinCos_Tab[]
 	-0.09801714032956060199419556388864L
 );
 
-_Check_return_ float64 __cdecl __CV_SIN_ANGLES(_In_ float64 _X)
+_Check_return_ float64 __cdecl __CV_SIN_DEGREES(_In_ float64 _X)
 {
 	#if !defined(_USE_CUSTOM_FUNCTIONS) && ((defined _MSC_VER && _MSC_VER >= 1900) || defined(__EMSCRIPTEN__)) && !defined(_QUAD_PRECISION)
 	return std::sin(radians(_X));
@@ -144,7 +144,7 @@ _Check_return_ float64 __cdecl __CV_SIN_ANGLES(_In_ float64 _X)
 
 // cos(x) = sin(90 - x)
 
-_Check_return_ float64 __cdecl __CV_COS_ANGLES(_In_ float64 _X)
+_Check_return_ float64 __cdecl __CV_COS_DEGREES(_In_ float64 _X)
 {
 	#if !defined(_USE_CUSTOM_FUNCTIONS) && ((defined _MSC_VER && _MSC_VER >= 1900) || defined(__EMSCRIPTEN__)) && !defined(_QUAD_PRECISION)
 	return std::cos(radians(_X));
@@ -193,7 +193,7 @@ _Check_return_ float64 __cdecl __CV_COS_ANGLES(_In_ float64 _X)
 	#endif
 }
 
-_Check_return_ float64 __cdecl __CV_TAN_ANGLES(_In_ float64 _X)
+_Check_return_ float64 __cdecl __CV_TAN_DEGREES(_In_ float64 _X)
 {
 	#if !defined(_USE_CUSTOM_FUNCTIONS) && ((defined _MSC_VER && _MSC_VER >= 1900) || defined(__EMSCRIPTEN__)) && !defined(_QUAD_PRECISION)
 	return std::tan(radians(_X));

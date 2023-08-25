@@ -30,6 +30,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\BlackHole.cpp" />
+    <ClCompile Include="Src\Coordinates.cc" />
+    <ClCompile Include="Src\StarBarycenter.cc" />
     <ClCompile Include="Src\Star_Models_Base.cpp" />
     <ClCompile Include="Src\Star_Tables.cpp" />
   </ItemGroup>

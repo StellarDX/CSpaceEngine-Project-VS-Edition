@@ -101,34 +101,34 @@ _Check_return_ float64 __cdecl arcoth(_In_ float64 _X)
 
 // INVERSE FUNCTIONS FOR COMPLEX
 
-_Check_return_ complex64 __cdecl arsinh(_In_ complex64 _X, _In_ uint64 K1, _In_ int64 K2, _In_ int64 K3, _In_ int64 K4)
+_Check_return_ complex64 __cdecl arsinhc(_In_ complex64 _X, _In_ uint64 K1, _In_ int64 K2, _In_ int64 K3)
 {
-	return ln(_X + sqrt(pow(_X, 2, { .K_OFFSET = K4 }) + 1., { .K_OFFSET = K2 })[K1], { .K_OFFSET = K3 });
+	return lnc(_X + sqrtc(powc(_X, 2, K2) + 1.)[K1], K3);
 }
 
-_Check_return_ complex64 __cdecl arcosh(_In_ complex64 _X, _In_ uint64 K1, _In_ int64 K2, _In_ int64 K3, _In_ int64 K4)
+_Check_return_ complex64 __cdecl arcoshc(_In_ complex64 _X, _In_ uint64 K1, _In_ int64 K2, _In_ int64 K3)
 {
-	return ln(_X + sqrt(pow(_X, 2, { .K_OFFSET = K4 }) - 1., { .K_OFFSET = K2 })[K1], { .K_OFFSET = K3 });
+	return lnc(_X + sqrtc(powc(_X, 2, K2) - 1.)[K1], K3);
 }
 
-_Check_return_ complex64 __cdecl artanh(_In_ complex64 _X, _In_ int64 K)
+_Check_return_ complex64 __cdecl artanhc(_In_ complex64 _X, _In_ int64 K)
 {
-	return (1. / 2.) * ln((1. + _X) / (1. - _X), { .K_OFFSET = K });
+	return (1. / 2.) * lnc((1. + _X) / (1. - _X), K);
 }
 
-_Check_return_ complex64 __cdecl arcsch(_In_ complex64 _X, _In_ uint64 K1, _In_ int64 K2, _In_ int64 K3, _In_ int64 K4)
+_Check_return_ complex64 __cdecl arcschc(_In_ complex64 _X, _In_ uint64 K1, _In_ int64 K2, _In_ int64 K3)
 {
-	return arsinh(1. / _X, K1, K2, K3, K4);
+	return arsinhc(1. / _X, K1, K2, K3);
 }
 
-_Check_return_ complex64 __cdecl arsech(_In_ complex64 _X, _In_ uint64 K1, _In_ int64 K2, _In_ int64 K3, _In_ int64 K4)
+_Check_return_ complex64 __cdecl arsechc(_In_ complex64 _X, _In_ uint64 K1, _In_ int64 K2, _In_ int64 K3)
 {
-	return arcosh(1. / _X, K1, K2, K3, K4);
+	return arcoshc(1. / _X, K1, K2, K3);
 }
 
-_Check_return_ complex64 __cdecl arcoth(_In_ complex64 _X, _In_ int64 K)
+_Check_return_ complex64 __cdecl arcothc(_In_ complex64 _X, _In_ int64 K)
 {
-	return artanh(1. / _X, K);
+	return artanhc(1. / _X, K);
 }
 
 _HPB_END

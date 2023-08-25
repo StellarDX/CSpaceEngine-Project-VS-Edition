@@ -46,5 +46,11 @@
     <ClCompile Include="Src\BlackHole.cpp">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Coordinates.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\StarBarycenter.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

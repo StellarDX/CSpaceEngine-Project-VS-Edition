@@ -29,6 +29,20 @@ _Check_return_ _FType __cdecl csc(_In_ _FType _X)
 	return 1. / _CSE sin(_X);
 }
 
+_Check_return_ int64 __cdecl Quadrant(_In_ _FType _X)
+{
+	while (_X < 0) { _X += 360; }
+	while (_X >= 360) { _X -= 360; }
+	if (_X == 0) { return 0; }
+	if (_X > 0 && _X < 90) { return 1; }
+	if (_X == 90) { return 2; }
+	if (_X > 90 && _X < 180) { return 3; }
+	if (_X == 180) { return 4; }
+	if (_X > 180 && _X < 270) { return 5; }
+	if (_X == 270) { return 6; }
+	if (_X > 270 && _X < 360) { return 7; }
+}
+
 ///////////////////////////////////// EXPAND ////////////////////////////////////
 
 // Chord and Arcs

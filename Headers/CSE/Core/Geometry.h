@@ -24,6 +24,18 @@ float64 Length(genType x);
 template<typename genType> requires vecType<genType>
 float64 Distance(genType p0, genType p1);
 
+inline float64 DistancePolar(vec2 p0, vec2 p1)
+{
+	return sqrt(pow(p0.x, 2) + pow(p1.x, 2) - 2. * p0.x * p1.x * cse::cos(p0.y - p1.y));
+}
+
+inline float64 AngularSeparation(vec3 p0, vec3 p1, float64 RABase = 24)
+{
+	p0.x *= 360. / RABase;
+	p1.x *= 360. / RABase;
+	return arccos(cse::cos(p0.y) * cse::cos(p1.y) * cse::sin(p0.x - p1.x) + cse::sin(p0.y) * cse::sin(p1.y));
+}
+
 /// <summary>
 /// Returns the dot product of two vectors
 /// </summary>

@@ -139,6 +139,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PlanetSystem", "Extensions\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hyperbolic", "Extensions\Hyperbolic\Hyperbolic.vcxproj", "{5323FC17-E334-4DCD-BB21-84900D3F1AD1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{060323F5-A950-4055-8A2C-2A344E53FCAD} = {060323F5-A950-4055-8A2C-2A344E53FCAD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -37,12 +37,12 @@ _Check_return_ float64 __cdecl arcoth(_In_ float64 _X);
 _Check_return_ float64 __cdecl arsech(_In_ float64 _X);
 _Check_return_ float64 __cdecl arcsch(_In_ float64 _X);
 
-_Check_return_ complex64 __cdecl arsinh(_In_ complex64 _X, _In_ uint64 K1 = 0, _In_ int64 K2 = 0, _In_ int64 K3 = 0, _In_ int64 K4 = 0);
-_Check_return_ complex64 __cdecl arcosh(_In_ complex64 _X, _In_ uint64 K1 = 0, _In_ int64 K2 = 0, _In_ int64 K3 = 0, _In_ int64 K4 = 0);
-_Check_return_ complex64 __cdecl artanh(_In_ complex64 _X, _In_ int64 K = 0);
-_Check_return_ complex64 __cdecl arcsch(_In_ complex64 _X, _In_ uint64 K1 = 0, _In_ int64 K2 = 0, _In_ int64 K3 = 0, _In_ int64 K4 = 0);
-_Check_return_ complex64 __cdecl arsech(_In_ complex64 _X, _In_ uint64 K1 = 0, _In_ int64 K2 = 0, _In_ int64 K3 = 0, _In_ int64 K4 = 0);
-_Check_return_ complex64 __cdecl arcoth(_In_ complex64 _X, _In_ int64 K = 0);
+_Check_return_ complex64 __cdecl arsinhc(_In_ complex64 _X, _In_ uint64 K1 = 0, _In_ int64 K2 = 0, _In_ int64 K3 = 0);
+_Check_return_ complex64 __cdecl arcoshc(_In_ complex64 _X, _In_ uint64 K1 = 0, _In_ int64 K2 = 0, _In_ int64 K3 = 0);
+_Check_return_ complex64 __cdecl artanhc(_In_ complex64 _X, _In_ int64 K = 0);
+_Check_return_ complex64 __cdecl arcschc(_In_ complex64 _X, _In_ uint64 K1 = 0, _In_ int64 K2 = 0, _In_ int64 K3 = 0);
+_Check_return_ complex64 __cdecl arsechc(_In_ complex64 _X, _In_ uint64 K1 = 0, _In_ int64 K2 = 0, _In_ int64 K3 = 0);
+_Check_return_ complex64 __cdecl arcothc(_In_ complex64 _X, _In_ int64 K = 0);
 
 // VECTOR FUNCTIONS
 

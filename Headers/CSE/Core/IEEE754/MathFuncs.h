@@ -280,9 +280,9 @@ _Check_return_ _FType __cdecl degrees(_In_ _FType _Rad);
 #define __cos __IBM_COSF64
 #define __tan __IBM_TANF64
 #else
-#define __sin __CV_SIN_ANGLES
-#define __cos __CV_COS_ANGLES
-#define __tan __CV_TAN_ANGLES
+#define __sin __CV_SIN_DEGREES
+#define __cos __CV_COS_DEGREES
+#define __tan __CV_TAN_DEGREES
 #endif
 #endif
 
@@ -293,9 +293,9 @@ _Check_return_ _FType __cdecl degrees(_In_ _FType _Rad);
 // TABLES
 extern const float64 __CV_SinCos_Tab[];
 // BASE FUNCTIONS
-_Check_return_ float64 __cdecl __CV_SIN_ANGLES(_In_ float64 _X);
-_Check_return_ float64 __cdecl __CV_COS_ANGLES(_In_ float64 _X);
-_Check_return_ float64 __cdecl __CV_TAN_ANGLES(_In_ float64 _X);
+_Check_return_ float64 __cdecl __CV_SIN_DEGREES(_In_ float64 _X);
+_Check_return_ float64 __cdecl __CV_COS_DEGREES(_In_ float64 _X);
+_Check_return_ float64 __cdecl __CV_TAN_DEGREES(_In_ float64 _X);
 // Trigonometric functions for radians
 _EXTERN_C
 // TABLES
@@ -361,6 +361,22 @@ _Check_return_ complex64 __cdecl cscc(_In_ complex64 _X);
 
 template<typename genType> requires vecType<genType>
 _Check_return_ genType __cdecl csc(_In_ genType _X);
+
+/// <summary>
+/// returns the axes of a two-dimensional XYZ coordinates divide the plane into four infinite regions.
+/// </summary>
+/// <param name="_X">angle in degrees.</param>
+/// <returns>
+/// 0 -> x-pos |
+/// 1 -> Quadrant I |
+/// 2 -> y-pos |
+/// 3 -> Quadrant II |
+/// 4 -> x-neg |
+/// 5 -> Quadrant III |
+/// 6 -> y-neg |
+/// 7 -> Quadrant IV |
+/// </returns>
+_Check_return_ int64 __cdecl Quadrant(_In_ _FType _X);
 
 ///////////////////////////////////// INVERSE ////////////////////////////////////
 
