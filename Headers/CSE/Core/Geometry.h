@@ -33,7 +33,7 @@ inline float64 AngularSeparation(vec3 p0, vec3 p1, float64 RABase = 24)
 {
 	p0.x *= 360. / RABase;
 	p1.x *= 360. / RABase;
-	return arccos(cse::cos(p0.y) * cse::cos(p1.y) * cse::sin(p0.x - p1.x) + cse::sin(p0.y) * cse::sin(p1.y));
+	return arccos(cse::cos(p0.y) * cse::cos(p1.y) * cse::cos(p0.x - p1.x) + cse::sin(p0.y) * cse::sin(p1.y));
 }
 
 /// <summary>

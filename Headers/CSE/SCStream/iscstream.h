@@ -83,7 +83,7 @@ public:
         genType _Dst;
         _STD istringstream is(_Src);
         is >> _Dst;
-        return make_shared<Value<genType>>(Value<genType>(_Dst));
+        return _STD make_shared<Value<genType>>(Value<genType>(_Dst));
     }
 
     template<typename genType>

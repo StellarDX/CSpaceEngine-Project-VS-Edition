@@ -130,10 +130,11 @@ class Location
 public:
     UCoordinate24 RA;
     Coordinate90 Dec;
-    float64 Dist;
+    float64 Dist; // Distance in parsec
 
     Location() {}
     Location(vec3 P) : RA(P.x), Dec(P.y), Dist(P.z) {}
+    Location(UCoordinate24 alf, Coordinate90 del, float64 Ds = 0) : RA(alf), Dec(del), Dist(Ds) {}
 
     operator vec3();
 };
@@ -221,12 +222,13 @@ _SC_END
 
 using OBarycenterStream = _SC starbarycen_ostream;
 
-StarBarycenter BarycenterLoader(_STD vector<_CSE _SC table::KeyValue>::iterator& it);
-StarBarycenter GetBarycenter(ISCStream _Is, _STD string _Name);
+StarBarycenter BarycenterLoader(_STD vector<_CSE _SC table::KeyValue>::iterator& it, Object* StarDetails = nullptr);
+StarLocation StarLoader(_STD vector<_CSE _SC table::KeyValue>::iterator& it);
+StarBarycenter GetBarycenter(ISCStream _Is, _STD string _Name, Object* StarDetails = nullptr);
+StarLocation GetSEStar(ISCStream _Is, _STD string _Name);
 
 OBarycenterStream& operator<<(OBarycenterStream& _Os, _CSE StarBarycenter _Obj);
-
-
+OBarycenterStream& operator<<(OBarycenterStream& _Os, _CSE StarLocation _Obj);
 
 _CSE_END
 
