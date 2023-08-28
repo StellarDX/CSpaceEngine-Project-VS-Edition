@@ -51,7 +51,7 @@ Object ObjectLoader(_STD vector<_CSE _SC table::KeyValue>::iterator& it)
 	Object _Obj;
 
 	_Obj.Type = it->Key;
-	_Obj.Name = _SC ValueStr(it->Value).as<_SC Names>()->get();;
+	_Obj.Name = _SC ValueStr(it->Value).as<_SC Names>()->get();
 
 	using _SC GetAs;
 

@@ -128,6 +128,9 @@ using StarBarycenter =
 class Location
 {
 public:
+    _STD vector<_STD string> Name;
+    _STD string CenterOf = NO_DATA_STRING;
+
     UCoordinate24 RA;
     Coordinate90 Dec;
     float64 Dist; // Distance in parsec
@@ -139,10 +142,14 @@ public:
     operator vec3();
 };
 
-class StarLocation : public Location
+class StarLocation : virtual public Location
 {
 public:
     _STD shared_ptr<Object> Pointer = nullptr;
+    Object GetSEObject()const { return *Pointer; }
+
+    _NODISCARD Object& operator*() const noexcept;
+    _NODISCARD Object* operator->() const noexcept;
 };
 
 template<typename _Ty> requires std::is_same_v<_Ty, int>
