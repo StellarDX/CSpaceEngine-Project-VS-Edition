@@ -190,4 +190,82 @@ StarLocation StarLoader(::std::vector<_CSE _SC table::KeyValue>::iterator& it)
 	return Barycen;
 }
 
+// OStream capabilities
+
+void AddKeyValue(_SC table* _Table, _STD string _Key, float64 _Value, _SC object_ostream::fmtflags _Fl, _STD streamsize _Preci);
+
+template<typename genType> requires (vecType<genType> || vecIType<genType> || vecUType<genType>)
+void AddKeyValue(_SC table* _Table, _STD string _Key, genType _Value, _SC object_ostream::fmtflags _Fl, _STD streamsize _Preci);
+
+template<typename genType> requires _STD convertible_to<genType, _STD string>
+void AddKeyValue(_SC table* _Table, _STD string _Key, genType _Value, _SC object_ostream::fmtflags _Fl, _STD streamsize _Preci);
+
+void AddKeyValue(_SC table* _Table, _STD string _Key, bool _Value, _SC object_ostream::fmtflags _Fl, _STD streamsize _Preci);
+
+template<typename CoordType>
+void AddRADec(_SC table* _Table, _STD string _Key, CoordType _Value, bool _Sign, _SC object_ostream::fmtflags _Fl, _STD streamsize _Preci)
+{
+	Log_OS.Out("OSCStream", "INFO", "[Table] Adding Key : " + _Key, OLogLevel, true);
+	if (!isinf(_Value))
+	{
+		_SC table::KeyValue _KV;
+		_KV.Key = _Key;
+		_STD ostringstream _FmtStr;
+		_FmtStr << "{:";
+		if (_Sign) { _FmtStr << "+"; }
+		_FmtStr << "02} {:02} ";
+		_FmtStr << "{:";
+		if (_Preci != 0) { _FmtStr << '.' << _Preci; }
+		if (_Fl & (0x80000000U >> 1)) { _FmtStr << 'f'; }
+		else { _FmtStr << 'g'; }
+		_FmtStr << '}';
+		_KV.Value = _STD vformat(_FmtStr.str(), _STD make_format_args((_Value.neg()?-1.:1.)*_Value.deg(), _Value.min(), _Value.sec()));
+
+		_Table->push(_KV);
+	}
+	else { Log_OS.Out("OSCStream", "ERROR", "[Table] Failed to add : " + _Key + " because its value is invalid.", OLogLevel, true); }
+}
+
+_SC_BEGIN
+
+table::KeyValue MakeTable(starbarycen_ostream& _Os, StarBarycenter Bar)
+{
+	using _SC table;
+	table::KeyValue _KV;
+
+	_KV.Key = "StarBarycenter";
+	_KV.Value += '\"';
+	for (size_t i = 0; i < Bar.Name.size(); i++)
+	{
+		_KV.Value += Bar.Name[i];
+		if (i < Bar.Name.size() - 1) { _KV.Value += '/'; }
+	}
+	_KV.Value += '\"';
+
+	table Data;
+	AddKeyValue(&Data, "CenterOf", Bar.CenterOf, _Os.flags(), _Os.precision());
+	if (_Os.flags() & (0x80000000U >> 2))
+	{
+		AddKeyValue(&Data, "RA", Bar.RA, _Os.flags(), _Os.precision());
+		AddKeyValue(&Data, "Dec", Bar.Dec, _Os.flags(), _Os.precision());
+	}
+	else
+	{
+		AddRADec(&Data, "RA", Bar.RA, 0, _Os.flags(), _Os.precision());
+		AddRADec(&Data, "Dec", Bar.Dec, 1, _Os.flags(), _Os.precision());
+	}
+	AddKeyValue(&Data, "Dist", Bar.Dist, _Os.flags(), _Os.precision());
+
+	_KV.SubTable = _STD make_shared<table>(Data);
+	return _KV;
+}
+
+_SC_END
+
+OBarycenterStream& operator<<(OBarycenterStream& _Os, _CSE StarBarycenter _Obj)
+{
+	_Os._Buf.push(_SC MakeTable(_Os, _Obj));
+	return _Os;
+}
+
 _CSE_END

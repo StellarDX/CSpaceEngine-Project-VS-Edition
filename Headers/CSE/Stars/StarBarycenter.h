@@ -69,7 +69,9 @@ public:
     UCoordinate24(float64 h);
     UCoordinate24(uint64 h, uint64 m, float64 s);
 
+    bool neg()const { return 0; }
     uint64 hrs()const;
+    uint64 deg()const { return hrs(); }
     uint64 min()const;
     float64 sec()const;
 
@@ -104,6 +106,7 @@ public:
     UCoordinate360(float64 d);
     UCoordinate360(uint64 d, uint64 m, float64 s);
 
+    bool neg()const { return 0; }
     uint64 deg()const;
     uint64 min()const;
     float64 sec()const;
@@ -156,9 +159,22 @@ template<typename _Ty> requires std::is_same_v<_Ty, int>
 class _StarBarycen_Base
 {
 public:
+    enum _Fmtflags
+    {
+        // constants for formatting options
+        _Fmtmask = 0b11111111111111111111111111111111,
+        _Fmtzero = 0b00000000000000000000000000000000
+    };
+
+    static constexpr _Fmtflags DisableWM  = static_cast<_Fmtflags>(0b10000000000000000000000000000000);
+    static constexpr _Fmtflags Fixed      = static_cast<_Fmtflags>(0b01000000000000000000000000000000);
+    static constexpr _Fmtflags FltCoord   = static_cast<_Fmtflags>(0b00100000000000000000000000000000);
+
+    static constexpr _Fmtflags Default    = _Fmtzero;
+
     _Ty __CLR_OR_THIS_CALL _BaseInit()
     {
-        return 0; // nothing
+        return Default;
     }
 
     bool PecularKey(_STD string Key, uint64* Mode)const noexcept
@@ -236,6 +252,30 @@ StarLocation GetSEStar(ISCStream _Is, _STD string _Name);
 
 OBarycenterStream& operator<<(OBarycenterStream& _Os, _CSE StarBarycenter _Obj);
 OBarycenterStream& operator<<(OBarycenterStream& _Os, _CSE StarLocation _Obj);
+
+inline OBarycenterStream& __CLRCALL_OR_CDECL Fixed(OBarycenterStream& _Os)
+{
+    _Os.setf(OBarycenterStream::Fixed);
+    return _Os;
+}
+
+inline OBarycenterStream& __CLRCALL_OR_CDECL NoWaterMarks(OBarycenterStream& _Os)
+{
+    _Os.setf(OBarycenterStream::DisableWM);
+    return _Os;
+}
+
+inline OBarycenterStream& __CLRCALL_OR_CDECL CoordAsFloat(OBarycenterStream& _Os)
+{
+    _Os.setf(OBarycenterStream::FltCoord);
+    return _Os;
+}
+
+inline OBarycenterStream& __CLRCALL_OR_CDECL Resetf(OBarycenterStream& _Os)
+{
+    _Os.flags(OBarycenterStream::Default);
+    return _Os;
+}
 
 _CSE_END
 

@@ -325,7 +325,7 @@ public:
         using namespace std;
         ostringstream _Os;
 
-        if (!DisableWM && _Fmtfl > 0)
+        if (!DisableWM && _Fmtfl >= 0)
         {
             ostringstream FmtFlHex;
             FmtFlHex << hex << "0x" << _Fmtfl;

@@ -170,7 +170,7 @@ float64 Coordinate90::sec() const
 
 Coordinate90::operator float64()
 {
-	return deg() + min() / 60. + sec() / 3600.;
+	return (neg() ? -1. : 1.) * (deg() + min() / 60. + sec() / 3600.);
 }
 
 Coordinate90 Coordinate90::operator=(float64 h)
