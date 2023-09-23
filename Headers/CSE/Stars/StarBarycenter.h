@@ -156,7 +156,7 @@ public:
 };
 
 template<typename _Ty> requires std::is_same_v<_Ty, int>
-class _StarBarycen_Base
+class _StarBarycen_Base : public __OSC_BASE<_Ty>
 {
 public:
     enum _Fmtflags

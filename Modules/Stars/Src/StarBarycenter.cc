@@ -192,6 +192,8 @@ StarLocation StarLoader(::std::vector<_CSE _SC table::KeyValue>::iterator& it)
 
 // OStream capabilities
 
+void AddEmptyTag(_SC table* _Table);
+
 void AddKeyValue(_SC table* _Table, _STD string _Key, float64 _Value, _SC object_ostream::fmtflags _Fl, _STD streamsize _Preci);
 
 template<typename genType> requires (vecType<genType> || vecIType<genType> || vecUType<genType>)
@@ -260,9 +262,73 @@ table::KeyValue MakeTable(starbarycen_ostream& _Os, StarBarycenter Bar)
 	return _KV;
 }
 
+table::KeyValue MakeTable(starbarycen_ostream& _Os, StarLocation Bar)
+{
+	using _SC table;
+	table::KeyValue _KV;
+
+	_KV.Key = "Star";
+	_KV.Value += '\"';
+	for (size_t i = 0; i < Bar.Name.size(); i++)
+	{
+		_KV.Value += Bar.Name[i];
+		if (i < Bar.Name.size() - 1) { _KV.Value += '/'; }
+	}
+	_KV.Value += '\"';
+
+	table Data;
+
+	AddKeyValue(&Data, "CenterOf", Bar.CenterOf, _Os.flags(), _Os.precision());
+
+	// Observation
+	if (_Os.flags() & (0x80000000U >> 2))
+	{
+		AddKeyValue(&Data, "RA", Bar.RA, _Os.flags(), _Os.precision());
+		AddKeyValue(&Data, "Dec", Bar.Dec, _Os.flags(), _Os.precision());
+	}
+	else
+	{
+		AddRADec(&Data, "RA", Bar.RA, 0, _Os.flags(), _Os.precision());
+		AddRADec(&Data, "Dec", Bar.Dec, 1, _Os.flags(), _Os.precision());
+	}
+	if (Bar.Pointer && !isinf(Bar->AbsMagn)) { AddKeyValue(&Data, "AppMagn", ToAppMagn1(Bar->AbsMagn, Bar.Dist), _Os.flags(), _Os.precision()); }
+	AddEmptyTag(&Data);
+
+	// Characteristics
+	if (Bar.Pointer) { AddKeyValue(&Data, "Class", Bar->SpecClass, _Os.flags(), _Os.precision()); }
+	AddEmptyTag(&Data);
+
+	// Astrometry
+	AddKeyValue(&Data, "Dist", Bar.Dist, _Os.flags(), _Os.precision());
+	if (Bar.Pointer) { AddKeyValue(&Data, "AbsMagn", Bar->AbsMagn, _Os.flags(), _Os.precision()); }
+	AddEmptyTag(&Data);
+	
+	// Details
+	if (Bar.Pointer)
+	{
+		AddKeyValue(&Data, "MassSol", Bar->Mass / MassSol, _Os.flags(), _Os.precision());
+		AddKeyValue(&Data, "Radius", (max({ Bar->Dimensions.x, Bar->Dimensions.y, Bar->Dimensions.z })/2.) / 1000., _Os.flags(), _Os.precision());
+		AddKeyValue(&Data, "Luminosity", Bar->Luminosity / SolarLum, _Os.flags(), _Os.precision());
+		AddKeyValue(&Data, "LumBol", Bar->LumBol / SolarLum, _Os.flags(), _Os.precision());
+		AddKeyValue(&Data, "Teff", Bar->Teff, _Os.flags(), _Os.precision());
+		AddKeyValue(&Data, "FeH", Bar->FeH, _Os.flags(), _Os.precision());
+		AddKeyValue(&Data, "CtoO", Bar->CtoO, _Os.flags(), _Os.precision());
+		AddKeyValue(&Data, "Age", Bar->Age, _Os.flags(), _Os.precision());
+	}
+
+	_KV.SubTable = _STD make_shared<table>(Data);
+	return _KV;
+}
+
 _SC_END
 
 OBarycenterStream& operator<<(OBarycenterStream& _Os, _CSE StarBarycenter _Obj)
+{
+	_Os._Buf.push(_SC MakeTable(_Os, _Obj));
+	return _Os;
+}
+
+OBarycenterStream& operator<<(OBarycenterStream& _Os, _CSE StarLocation _Obj)
 {
 	_Os._Buf.push(_SC MakeTable(_Os, _Obj));
 	return _Os;

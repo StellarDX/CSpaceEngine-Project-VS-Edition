@@ -35,7 +35,22 @@ extern CSELog Log_OS;
 // --Output Base Settings-- //
 
 template<typename _Ty> requires std::is_same_v<_Ty, int>
-class _CelObject_Base
+struct __OSC_BASE
+{
+    // define templatized bitmask/enumerated types, instantiate on demand
+    enum _Fmtflags
+    {
+        // constants for formatting options
+        _Fmtmask = 0b11111111111111111111111111111111,
+        _Fmtzero = 0b00000000000000000000000000000000
+    };
+
+    virtual _Ty __CLR_OR_THIS_CALL _BaseInit() = 0;
+    virtual bool PecularKey(_STD string Key, uint64* Mode)const noexcept = 0;
+};
+
+template<typename _Ty> requires std::is_same_v<_Ty, int>
+class _CelObject_Base : public __OSC_BASE<_Ty>
 {
 public:
     // define templatized bitmask/enumerated types, instantiate on demand
@@ -96,7 +111,7 @@ public:
     explicit OutputException(const _STD string& _Message) : runtime_error(_Message) {}
 };
 
-template<typename _TyBase, int _DefEncod = CP_UTF8>
+template<typename _TyBase = __OSC_BASE<int>, int _DefEncod = CP_UTF8>
 class _Smart_Output_Base : public _TyBase
 {
     // base class for smart output
