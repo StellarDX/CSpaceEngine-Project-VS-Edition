@@ -367,6 +367,7 @@ public:
 	float64 Radius()const
 	{
 		if (any(isinf(Dimensions))) { return NO_DATA_FLOAT_INF; }
+		if (Dimensions.x == Dimensions.y && Dimensions.x == Dimensions.z) { return Dimensions.x / 2.; }
 		return cbrt((Dimensions.x / 2.) * (Dimensions.y / 2.) * (Dimensions.z / 2.));
 	}
 	float64 InertiaMoment = NO_DATA_FLOAT_INF; // Moment of Inertia

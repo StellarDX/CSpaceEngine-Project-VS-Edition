@@ -69,7 +69,7 @@ extern const long double Equation24;
 #define ProtonMass    1.67262192369E-27 // (±0.00000000051)2018 CODATA Value
 #define NeutronMass   1.67492749804E-27 // (±0.00000000095)2018 CODATA Value
 #define MassMoon      7.342E+22         // 
-#define MassEarth     5.97217E+24       // (±0.00028)Estimated value from planetary ephemeris DE421
+#define MassEarth     5.972168E+24      // (±0.00028)Estimated value from planetary ephemeris DE421
 #define MassJupiter   1.898125E+27      // (±0.000088)value from Jovian Satellite ephemeris JUP310
 #define MassSol       1.98847E+30       // (±0.00007)given by solving Kepler's third law
 

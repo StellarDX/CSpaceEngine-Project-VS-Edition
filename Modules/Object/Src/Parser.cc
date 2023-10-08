@@ -769,8 +769,8 @@ Object ObjectLoader(_STD vector<_CSE _SC table::KeyValue>::iterator& it)
 		_Obj.AccretionDisk.ThicknessPow = GetAs<float64>(AccDisk, "ThicknessPow");
 		_Obj.AccretionDisk.AccretionRate = GetAs<float64>(AccDisk, "AccretionRate");
 		_Obj.AccretionDisk.Density = GetAs<float64>(AccDisk, "Density");
-		_Obj.AccretionDisk.Luminosity = GetAs<float64>(AccDisk, "Luminosity");
-		_Obj.AccretionDisk.LumBol = GetAs<float64>(AccDisk, "LuminosityBol");
+		_Obj.AccretionDisk.Luminosity = GetAs<float64>(AccDisk, "Luminosity") * SolarLum;
+		_Obj.AccretionDisk.LumBol = GetAs<float64>(AccDisk, "LuminosityBol") * SolarLum;
 
 		_Obj.AccretionDisk.DiskParams4.x = GetAs<float64>(AccDisk, "OctaveDistortionX");
 		_Obj.AccretionDisk.DiskParams4.y = GetAs<float64>(AccDisk, "OctaveDistortionY");
