@@ -13,47 +13,26 @@ _CSE_BEGIN
 //                Coordinate definations                  //
 ////////////////////////////////////////////////////////////
 
-// Structure of coordinate:
-// 
-// 0b00000000000000000000000000000000000000000000000000000000000000000000000000000000
-//   |---||---||----|||---------||--------------------------------------------------|
-//         hrs  min  n sec.expo   sec.mantissa
-// 
-// hrs:          hour bits (5 - 9 bits)
-// min:          minute bits (6 bits)
-// n:            sign bit, maybe unused (1 bit)
-// sec.expo:     second exponential bits, using IEEE754 double precision (11 bits)
-// sec.mantissa: second mantissa bits (52 bits)
-
-struct _Coordinate24_Base80
+struct _Coordinate24_Base
 {
-    uint16_t sec3 : 16;
-    uint16_t sec2 : 16;
-    uint16_t sec1 : 16;
-    uint16_t sec0 : 15;
-    uint16_t min : 6;
-    uint16_t hrs : 5;
+    float64  sec;
+    uint16_t min;
+    uint16_t hrs;
 };
 
-struct _Coordinate360_Base80
+struct _Coordinate360_Base
 {
-    uint16_t sec3 : 16;
-    uint16_t sec2 : 16;
-    uint16_t sec1 : 16;
-    uint16_t sec0 : 15;
-    uint16_t min : 6;
-    uint16_t deg : 9;
+    float64  sec;
+    uint16_t min;
+    uint16_t deg;
 };
 
-struct _Coordinate90_Base80
+struct _Coordinate90_Base
 {
-    uint16_t sec3 : 16;
-    uint16_t sec2 : 16;
-    uint16_t sec1 : 16;
-    uint16_t sec0 : 15;
-    uint16_t neg : 1;
-    uint16_t min : 6;
-    uint16_t deg : 7;
+    float64  sec;
+    uint16_t min;
+    uint16_t deg;
+    bool     neg;
 };
 
 union UCoordinate24;
@@ -62,7 +41,7 @@ union UCoordinate360;
 
 union UCoordinate24
 {
-    _Coordinate24_Base80 _Data;
+    _Coordinate24_Base _Data;
     uint16_t Bytes[5]; // 80 bits
 public:
     UCoordinate24() {};
@@ -81,7 +60,7 @@ public:
 
 union Coordinate90
 {
-    _Coordinate90_Base80 _Data;
+    _Coordinate90_Base _Data;
     uint16_t Bytes[5]; // 80 bits
 public:
     Coordinate90() {};
@@ -99,7 +78,7 @@ public:
 
 union UCoordinate360
 {
-    _Coordinate360_Base80 _Data;
+    _Coordinate360_Base _Data;
     uint16_t Bytes[5]; // 80 bits
 public:
     UCoordinate360() {};

@@ -21,10 +21,12 @@ using cse::float64;
 float64 AppMagn;
 float64 AppMagn1;
 float64 AppMagn2;
+float64 Extinction;
 float64 Parallax;
 float64 Dist;
 float64 DistModulus;
 float64 AbsMagn;
+float64 AbsMagnBol;
 
 float64 Mass;
 float64 Luminosity;
@@ -40,7 +42,7 @@ using std::cin;
 
 /*AppMagn*/
 
-void ToAppMagn1(float64 AbsMagn, float64 Dist)
+void ToAppMagn1()
 {
     cout << "Star Absolute Magnitude: ";
     cin >> AbsMagn;
@@ -56,10 +58,14 @@ void ToAppMagn1(float64 AbsMagn, float64 Dist)
 
     cout << Dist << '\n';
 
-    cout << std::format("AppMagn: {}\n", cse::ToAppMagn1(AbsMagn, Dist));
+    cout << "Interstellar Extinction (Default is 0): ";
+    cin >> Extinction;
+    cout << Extinction << '\n';
+
+    cout << std::format("AppMagn: {}\n", cse::ToAppMagn1(AbsMagn, Dist, Extinction));
 }
 
-void ToAppMagn2(float64 AppMagn1, float64 AppMagn2)
+void ToAppMagn2()
 {
     cout << "Obj1 Magnitude: ";
     cin >> AppMagn1;
@@ -83,7 +89,7 @@ void ToAppMagn2(float64 AppMagn1, float64 AppMagn2)
 
 /*AbsMagn*/
 
-void ToAbsMagn1(float64 AppMagn, float64 Dist)
+void ToAbsMagn1()
 {
     cout << "Star Apparent Magnitude: ";
     cin >> AppMagn;
@@ -99,10 +105,14 @@ void ToAbsMagn1(float64 AppMagn, float64 Dist)
 
     cout << Dist << '\n';
 
-    cout << std::format("AbsMagn: {}\n", cse::ToAbsMagn1(AppMagn, Dist));
+    cout << "Interstellar Extinction (Default is 0): ";
+    cin >> Extinction;
+    cout << Extinction << '\n';
+
+    cout << std::format("AbsMagn: {}\n", cse::ToAbsMagn1(AppMagn, Dist, Extinction));
 }
 
-void ToAbsMagn2(float64 Parallax, float64 AppMagn)
+void ToAbsMagn2()
 {
     cout << "Parallax: ";
     cin >> Parallax;
@@ -112,10 +122,14 @@ void ToAbsMagn2(float64 Parallax, float64 AppMagn)
     cin >> AppMagn;
     cout << AppMagn << '\n';
 
-    cout << std::format("AbsMagn: {}\n", cse::ToAbsMagn2(Parallax, AppMagn));
+    cout << "Interstellar Extinction (Default is 0): ";
+    cin >> Extinction;
+    cout << Extinction << '\n';
+
+    cout << std::format("AbsMagn: {}\n", cse::ToAbsMagn2(Parallax, AppMagn, Extinction));
 }
 
-void ToAbsMagn3(float64 AppMagn, float64 DistModulus)
+void ToAbsMagn3()
 {
     cout << "Apparent Magnitude: ";
     cin >> AppMagn;
@@ -128,7 +142,7 @@ void ToAbsMagn3(float64 AppMagn, float64 DistModulus)
     cout << std::format("AbsMagn: {}\n", AppMagn - DistModulus);
 }
 
-void ToAbsMagn4(float64 LumBol)
+void ToAbsMagn4()
 {
     cout << "Bolometric Luminosity in Watts: \nIf you have LSun, put a '-' sign for the number\n";
     cin >> LumBol;
@@ -145,7 +159,7 @@ void ToAbsMagn4(float64 LumBol)
 
 /*Luminosity*/
 
-void ToLuminosity1(float64 Radius, float64 Teff)
+void ToLuminosity1()
 {
     cout << "Radius in Metres: \n";
     cout << "If you have SolarRadius, put a '-' sign for the number\n";
@@ -192,7 +206,7 @@ void ToLuminosity1(float64 Radius, float64 Teff)
     cout << std::format("Flux Density: {} W/m^2\n", FluxDensity);
 }
 
-void ToLuminosity2(float64 Mass)
+void ToLuminosity2()
 {
     cout << "Star's Mass in MSun: ";
     cin >> Mass;
@@ -265,7 +279,7 @@ void ToLuminosity2(float64 Mass)
     }
 }
 
-void ToLuminosity3(float64 AbsMagnBol)
+void ToLuminosity3()
 {
     cout << "Absolute Bolometric Magnitude: ";
     cin >> AbsMagnBol;
@@ -307,18 +321,18 @@ void SelectAppMagnMode()
     switch (ToAppMagn)
     {
     case 1:
-        ToAppMagn1(AbsMagn, Dist);
+        ToAppMagn1();
         break;
 
     case 2:
-        ToAppMagn2(AppMagn1, AppMagn2);
+        ToAppMagn2();
         break;
 
     case 0:
         break;
 
     default:
-        ToAppMagn1(AbsMagn, Dist);
+        ToAppMagn1();
         break;
     }
 }
@@ -333,26 +347,26 @@ void SelectAbsMagnMode()
     switch (ToAbsMagn)
     {
     case 1:
-        ToAbsMagn1(AppMagn, Dist);
+        ToAbsMagn1();
         break;
 
     case 2:
-        ToAbsMagn2(Parallax, AppMagn);
+        ToAbsMagn2();
         break;
 
     case 3:
-        ToAbsMagn3(AppMagn, DistModulus);
+        ToAbsMagn3();
         break;
 
     case 4:
-        ToAbsMagn4(LumBol);
+        ToAbsMagn4();
         break;
 
     case 0:
         break;
 
     default:
-        ToAbsMagn4(LumBol);
+        ToAbsMagn4();
         break;
     }
 }
@@ -367,22 +381,22 @@ void SelectLuminosityMode()
     switch (ToLuminosity)
     {
     case 1:
-        ToLuminosity1(Radius, Teff);
+        ToLuminosity1();
         break;
 
     case 2:
-        ToLuminosity2(Mass);
+        ToLuminosity2();
         break;
 
     case 3:
-        ToLuminosity3(AbsMagn);
+        ToLuminosity3();
         break;
 
     case 0:
         break;
 
     default:
-        ToLuminosity1(Radius, Teff);
+        ToLuminosity1();
         break;
     }
 }

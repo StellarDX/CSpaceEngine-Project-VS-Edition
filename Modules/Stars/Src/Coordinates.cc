@@ -33,10 +33,7 @@ UCoordinate24::UCoordinate24(uint64 h, uint64 m, float64 s)
 
 	_Data.hrs = h;
 	_Data.min = m;
-	_Data.sec0 = __Float64(s).parts.msw >> 16;
-	_Data.sec1 = __Float64(s).parts.msw & uint32_t(0x0000FFFF);
-	_Data.sec2 = __Float64(s).parts.lsw >> 16;
-	_Data.sec3 = __Float64(s).parts.lsw & uint32_t(0x0000FFFF);
+	_Data.sec = s;
 }
 
 uint64 UCoordinate24::hrs() const
@@ -51,12 +48,7 @@ uint64 UCoordinate24::min() const
 
 float64 UCoordinate24::sec() const
 {
-	union { float64 f; uint16_t i[4]; } Buf;
-	Buf.i[0] = _Data.sec3;
-	Buf.i[1] = _Data.sec2;
-	Buf.i[2] = _Data.sec1;
-	Buf.i[3] = _Data.sec0;
-	return Buf.f;
+	return _Data.sec;
 }
 
 UCoordinate24::operator float64()
@@ -137,10 +129,7 @@ Coordinate90::Coordinate90(int64 d, uint64 m, float64 s)
 	_Data.neg = Sign;
 	_Data.deg = d;
 	_Data.min = m;
-	_Data.sec0 = __Float64(s).parts.msw >> 16;
-	_Data.sec1 = __Float64(s).parts.msw & uint32_t(0x0000FFFF);
-	_Data.sec2 = __Float64(s).parts.lsw >> 16;
-	_Data.sec3 = __Float64(s).parts.lsw & uint32_t(0x0000FFFF);
+	_Data.sec = s;
 }
 
 bool Coordinate90::neg() const
@@ -160,12 +149,7 @@ uint64 Coordinate90::min() const
 
 float64 Coordinate90::sec() const
 {
-	union { float64 f; uint16_t i[4]; } Buf;
-	Buf.i[0] = _Data.sec3;
-	Buf.i[1] = _Data.sec2;
-	Buf.i[2] = _Data.sec1;
-	Buf.i[3] = _Data.sec0;
-	return Buf.f;
+	return _Data.sec;
 }
 
 Coordinate90::operator float64()
@@ -217,10 +201,7 @@ UCoordinate360::UCoordinate360(uint64 d, uint64 m, float64 s)
 
 	_Data.deg = d;
 	_Data.min = m;
-	_Data.sec0 = __Float64(s).parts.msw >> 16;
-	_Data.sec1 = __Float64(s).parts.msw & uint32_t(0x0000FFFF);
-	_Data.sec2 = __Float64(s).parts.lsw >> 16;
-	_Data.sec3 = __Float64(s).parts.lsw & uint32_t(0x0000FFFF);
+	_Data.sec = s;
 }
 
 uint64 UCoordinate360::deg() const
@@ -235,12 +216,7 @@ uint64 UCoordinate360::min() const
 
 float64 UCoordinate360::sec() const
 {
-	union { float64 f; uint16_t i[4]; } Buf;
-	Buf.i[0] = _Data.sec3;
-	Buf.i[1] = _Data.sec2;
-	Buf.i[2] = _Data.sec1;
-	Buf.i[3] = _Data.sec0;
-	return Buf.f;
+	return _Data.sec;
 }
 
 UCoordinate360::operator float64()
