@@ -35,14 +35,9 @@ struct _Coordinate90_Base
     bool     neg;
 };
 
-union UCoordinate24;
-union Coordinate90;
-union UCoordinate360;
-
-union UCoordinate24
+class UCoordinate24
 {
     _Coordinate24_Base _Data;
-    uint16_t Bytes[5]; // 80 bits
 public:
     UCoordinate24() {};
     UCoordinate24(float64 h);
@@ -58,10 +53,9 @@ public:
     UCoordinate24 operator=(float64 h);
 };
 
-union Coordinate90
+class Coordinate90
 {
     _Coordinate90_Base _Data;
-    uint16_t Bytes[5]; // 80 bits
 public:
     Coordinate90() {};
     Coordinate90(float64 d);
@@ -76,10 +70,9 @@ public:
     Coordinate90 operator=(float64 h);
 };
 
-union UCoordinate360
+class UCoordinate360
 {
     _Coordinate360_Base _Data;
-    uint16_t Bytes[5]; // 80 bits
 public:
     UCoordinate360() {};
     UCoordinate360(float64 d);

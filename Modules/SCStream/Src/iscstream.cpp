@@ -28,7 +28,7 @@ string parser::SkipComments(string input)
 
 	Comments S = NoComment;
 
-	for (size_t i = 0; i < input.size() - 1; i++)
+	for (size_t i = 0; i < input.size(); i++)
 	{
 		if ('\"' == input[i] && S == NoComment)
 		{
@@ -41,12 +41,12 @@ string parser::SkipComments(string input)
 
 		if ('/' == input[i])
 		{
-			if ("//" == input.substr(i, 2) && S == NoComment)
+			if (i < input.size() - 1 && "//" == input.substr(i, 2) && S == NoComment)
 			{
 				S = SingleLine;
 				continue;
 			}
-			else if ("/*" == input.substr(i, 2) && S == NoComment)
+			else if (i < input.size() - 1 && "/*" == input.substr(i, 2) && S == NoComment)
 			{
 				S = MultiLine;
 				continue;
@@ -56,7 +56,7 @@ string parser::SkipComments(string input)
 		if
 		(
 			('\n' == input[i] && S == SingleLine) ||
-			('*' == input[i] && "*/" == input.substr(i, 2) && S == MultiLine)
+			(i < input.size() - 1 && '*' == input[i] && "*/" == input.substr(i, 2) && S == MultiLine)
 		) // End of line
 		{
 			if (S == MultiLine) { ++i; }

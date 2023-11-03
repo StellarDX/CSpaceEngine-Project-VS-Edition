@@ -30,6 +30,7 @@ using namespace cse;
 #define _END_WHILE_TRUE }
 
 #define MaxMoonNumber 5
+#define DisableFlattening 1
 
 string LngStr02 = "Type of object \n 1 = Asteroid belt \n 2 = Comet cluster \n 3 = Minor moons of a planet \n 0 = Exit \n Default = 1 : ";
 string LngStr03 = "Number of objects \n Default = 50 : ";
@@ -249,6 +250,7 @@ void CreateMoon(vector<Object>& Particles, const Object& Particle, const AsterBe
 {
     TerrestrialPlanetBase Model(Conf.MinRadius / 5., Particle.Dimensions.x, random.uniform(6.4 * MassEarth, 7.6 * MassEarth), random.uniform(2.8 * RadEarth, 4.4 * RadEarth));
     Object Moon = Model(random);
+
     float64 MinDist = RocheLimit(&Particle, &Moon, 1) + Moon.Radius() * 2.;
     Object Parent{ .Mass = Conf.CenterObjectMass };
     float64 MaxDist = HillSphere(&Parent, &Particle) / 2.5;
@@ -317,8 +319,8 @@ void CreateBinary(vector<Object>& Particles, Object& Particle, const AsterBeltSe
     else
     {
         Barycenter.Name = Particle.Name;
-        Particle.Name[0] = Particle.Name[0] + " A";
         Companion.Name[0] = Particle.Name[0] + " B";
+        Particle.Name[0] = Particle.Name[0] + " A";
     }
 
     Particle.ParentBody = Barycenter.Name[0];
@@ -344,8 +346,10 @@ void RingDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
         Particle.ParentBody = Conf.CenterObjectName;
         Particle.Rotation = Rotation(&Particle);
         if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal / 255.; }
+        #ifndef DisableFlattening
         Oblate(&Particle);
         OblateXZ(&Particle.Dimensions);
+        #endif
         Particle.Orbit =
         {
             .RefPlane        = Conf.RefPlane,
@@ -404,9 +408,10 @@ void SphereDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf
         Particle.ParentBody = Conf.CenterObjectName;
         Particle.Rotation = Rotation(&Particle);
         if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal / 255.; }
+        #ifndef DisableFlattening
         Oblate(&Particle);
         OblateXZ(&Particle.Dimensions);
-
+        #endif
         float64 PericenterDist0 = random.uniform(Conf.InnerRadius, Conf.OuterRadius);
         float64 AphelionDistance = random.uniform(PericenterDist0, Conf.OuterRadius);
         float64 Eccentricity0 = (AphelionDistance - PericenterDist0) / (AphelionDistance + PericenterDist0);
@@ -507,8 +512,10 @@ void TorusDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
         Particle.ParentBody = Conf.CenterObjectName;
         Particle.Rotation = Rotation(&Particle);
         if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal / 255.; }
+        #ifndef DisableFlattening
         Oblate(&Particle);
         OblateXZ(&Particle.Dimensions);
+        #endif
         Particle.Orbit =
         {
             .RefPlane = Conf.RefPlane,
@@ -602,8 +609,10 @@ void CylDistribution(vector<Object>& Particles, const AsterBeltSettings& Conf)
         Particle.ParentBody = Conf.CenterObjectName;
         Particle.Rotation = Rotation(&Particle);
         if (Conf.EnableCustomColor) { Particle.Color = Conf.ColorKernal / 255.; }
+        #ifndef DisableFlattening
         Oblate(&Particle);
         OblateXZ(&Particle.Dimensions);
+        #endif
         Particle.Orbit =
         {
             .RefPlane = Conf.RefPlane,
