@@ -154,6 +154,8 @@ public:
 
 	static CSEDateTime currentDateTime();
 	static CSEDateTime currentDateTimeUTC();
+
+	std::string toString(std::string _Fmt = "{}-{:02}-{:02}T{:02}:{:02}:{:02}.{:03}{:+03}:{:02}");
 };
 
 // Internal functons

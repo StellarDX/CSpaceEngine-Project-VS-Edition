@@ -144,6 +144,16 @@ CSEDateTime CSEDateTime::currentDateTimeUTC()
 	);
 }
 
+std::string CSEDateTime::toString(std::string _Fmt)
+{
+	return std::vformat(_Fmt, std::make_format_args
+	(
+		_Date.year(), _Date.month(), _Date.day(),
+		_Time.hour(), _Time.minute(), _Time.second(), _Time.msec(),
+		(int)OffsetSecs / 3600, (((int)OffsetSecs % 3600) / 60) + ((OffsetSecs / 60) - int(OffsetSecs / 60))
+	));
+}
+
 _TIME_BEGIN
 
 class TimeException : public std::runtime_error // output errors
