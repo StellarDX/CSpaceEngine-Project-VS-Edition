@@ -6,6 +6,9 @@ Using C++ to define, modify, complete Celestral Objects in SpaceEngine.
 
 License: [GPLv2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 
+## NOTICE：
+This project has been refactored, [Click here](https://github.com/StellarDX/CSpaceEngine-Project) to enter the new repository.
+
 ## Examples
 **Loading a sc file**
 ```loading file

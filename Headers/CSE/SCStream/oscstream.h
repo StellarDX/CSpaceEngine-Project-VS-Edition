@@ -41,7 +41,7 @@ struct __OSC_BASE
     enum _Fmtflags
     {
         // constants for formatting options
-        _Fmtmask = 0b11111111111111111111111111111111,
+        _Fmtmask = 0B11111111111111111111111111111111,
         _Fmtzero = 0b00000000000000000000000000000000
     };
 
@@ -152,7 +152,7 @@ public:
     }
 
     void __CLR_OR_THIS_CALL resetstate(outstate _State = Normal)
-    { 
+    {
         // set state to argument
         _SetState(_State, false);
     }
@@ -163,7 +163,7 @@ public:
     }
 
     void __CLR_OR_THIS_CALL setstate(outstate _State, bool _Exreraise = false)
-    { 
+    {
         // merge in state argument, possibly reraise exception
         _SetState(state() | _State, _Exreraise);
     }
@@ -204,33 +204,33 @@ public:
 
     // Setting State
 
-    _NODISCARD bool __CLR_OR_THIS_CALL normal() const 
+    _NODISCARD bool __CLR_OR_THIS_CALL normal() const
     {
         return state() == Normal;
     }
 
-    _NODISCARD bool __CLR_OR_THIS_CALL end() const 
+    _NODISCARD bool __CLR_OR_THIS_CALL end() const
     {
         return state() & End;
     }
 
-    _NODISCARD bool __CLR_OR_THIS_CALL fail() const 
+    _NODISCARD bool __CLR_OR_THIS_CALL fail() const
     {
         return state() & (Bad | Failed);
     }
 
-    _NODISCARD bool __CLR_OR_THIS_CALL bad() const 
+    _NODISCARD bool __CLR_OR_THIS_CALL bad() const
     {
         return state() & Bad;
     }
 
-    _NODISCARD outstate __CLR_OR_THIS_CALL exceptions() const 
+    _NODISCARD outstate __CLR_OR_THIS_CALL exceptions() const
     {
         return _Except;
     }
 
     void __CLR_OR_THIS_CALL exceptions(outstate _Newexcept)
-    { 
+    {
         // set exception mask to argument
         _Except = _Newexcept & _Statmask;
         setstate(state());
@@ -243,8 +243,8 @@ public:
         return _Fmtfl;
     }
 
-    fmtflags __CLR_OR_THIS_CALL flags(fmtflags _Newfmtflags) 
-    { 
+    fmtflags __CLR_OR_THIS_CALL flags(fmtflags _Newfmtflags)
+    {
         // set format flags to argument
         const fmtflags _Oldfmtflags = _Fmtfl;
         _Fmtfl = _Newfmtflags & _TyBase::_Fmtmask;
@@ -252,7 +252,7 @@ public:
     }
 
     fmtflags __CLR_OR_THIS_CALL setf(fmtflags _Newfmtflags, fmtflags _Mask = _TyBase::_Fmtmask)
-    { 
+    {
         // merge in format flags argument under mask argument
         const fmtflags _Oldfmtflags = _Fmtfl;
         _Fmtfl = _Oldfmtflags | (_Newfmtflags & _Mask & _TyBase::_Fmtmask);
@@ -295,8 +295,8 @@ public:
         return _KeyWide;
     }
 
-    _STD streamsize __CLR_OR_THIS_CALL width(_STD streamsize _Newwidth) 
-    { 
+    _STD streamsize __CLR_OR_THIS_CALL width(_STD streamsize _Newwidth)
+    {
         // set key width to argument
         const _STD streamsize _Oldwidth = _KeyWide;
         _KeyWide = _Newwidth;
@@ -336,7 +336,7 @@ public:
     // Output
 
     _STD string _Write(const table& _Buffer, bool DisableWM = false, uint64 WSpace = 0)const
-    {   
+    {
         using namespace std;
         ostringstream _Os;
 

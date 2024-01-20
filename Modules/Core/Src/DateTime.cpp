@@ -144,7 +144,7 @@ CSEDateTime CSEDateTime::currentDateTimeUTC()
 	);
 }
 
-std::string CSEDateTime::toString(std::string _Fmt)
+std::string CSEDateTime::toString(std::string _Fmt)const
 {
 	return std::vformat(_Fmt, std::make_format_args
 	(

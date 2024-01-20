@@ -9,6 +9,9 @@
 
 </div>
 
+## 置顶通知：
+本工程已重构，[点此](https://github.com/StellarDX/CSpaceEngine-Project)进入新仓库。
+
 ## 功能
  - 来自GLSL的数据类型
  - 读写SpeceEngine的sc天体数据文件
