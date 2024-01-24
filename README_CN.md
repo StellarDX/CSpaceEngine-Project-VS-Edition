@@ -10,7 +10,7 @@
 </div>
 
 ## 置顶通知：
-本工程已重构，[点此](https://github.com/StellarDX/CSpaceEngine-Project)进入新仓库。
+本工程已重构并且不再更新，[点此](https://github.com/StellarDX/CSpaceEngine-Project)进入新仓库。
 
 ## 功能
  - 来自GLSL的数据类型
